@@ -20,7 +20,10 @@
   /* El contenido necesita z-index relativo para estar debajo del grid */
   body > * { position: relative; z-index: 0; }
 
-  /* ── Swatches con hex ── */
+  /* ── Animación título metro_theme ── */
+  .metro-title-anim {
+    transition: color .6s ease;
+  }
   .swatch-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
   .swatch {
     width: 80px;
@@ -49,7 +52,7 @@
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
   <div style="font-family:var(--mono);font-size:28px;font-weight:700;letter-spacing:-2px">
-    metro<span class="accent" style="color:var(--accent)">_theme</span>
+    metro<span class="metro-title-anim">_theme</span>
   </div>
   <button class="theme-btn" data-metro-toggle onclick="metro.toggleTheme()">☾ Dark</button>
 </div>
@@ -240,7 +243,7 @@
 
 <hr class="divider">
 <p class="muted" style="text-align:center;margin-top:32px;font-family:var(--mono);font-size:11px">
-  metro_theme · by RemiH06 · AGPL-3.0
+  metro_theme · by RemiH06 · iroFactory · AGPL-3.0
 </p>
 
 <script src="metro_theme.js"></script>
@@ -274,6 +277,22 @@ function updateHexes() {
     if (el) el.textContent = cssVar(token);
   });
 }
+
+// Ciclo de color en "_theme" → rojo · amarillo · verde
+(function () {
+  const el = document.querySelector('.metro-title-anim');
+  if (!el) return;
+  const tokens = ['--red', '--yellow', '--green'];
+  let i = 0;
+  function cycle() {
+    const color = getComputedStyle(document.body).getPropertyValue(tokens[i]).trim();
+    el.style.color = color;
+    i = (i + 1) % tokens.length;
+  }
+  cycle();
+  setInterval(cycle, 1200);
+  metro.onThemeChange(() => { i = 0; cycle(); });
+})();
 
 // Actualizar al cargar y al cambiar tema
 document.addEventListener('DOMContentLoaded', updateHexes);
