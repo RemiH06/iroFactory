@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>metro_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="metro_theme.css">
+<style>
+  html, body { height: 100%; }
+  body { padding: 40px; max-width: 860px; margin: 0 auto; }
+
+  /* ── Grid por encima del contenido ── */
+  .metro.metro-grid::before {
+    z-index: 10;
+    pointer-events: none;
+  }
+  /* El contenido necesita z-index relativo para estar debajo del grid */
+  body > * { position: relative; z-index: 0; }
+
+  /* ── Swatches con hex ── */
+  .swatch-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+  .swatch {
+    width: 80px;
+    font-family: var(--mono); font-size: 9px; color: var(--text2);
+    text-align: center;
+  }
+  .swatch-box {
+    height: 48px; border-radius: 4px; margin-bottom: 6px;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .swatch-hex {
+    position: absolute;
+    bottom: 4px; left: 5px;
+    font-family: var(--mono); font-size: 9px;
+    color: rgba(255,255,255,.75);
+    mix-blend-mode: difference;
+    letter-spacing: -.3px;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+</style>
+</head>
+<body class="metro metro-grid">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
+  <div style="font-family:var(--mono);font-size:28px;font-weight:700;letter-spacing:-2px">
+    metro<span class="accent" style="color:var(--accent)">_theme</span>
+  </div>
+  <button class="theme-btn" data-metro-toggle onclick="metro.toggleTheme()">☾ Dark</button>
+</div>
+
+<!-- ── Paleta completa ── -->
+<h2>Paleta de colores</h2>
+<p class="muted">Todos los tokens disponibles como variables CSS. Cambian automáticamente con el tema.</p>
+
+<h3>Semáforo</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--red)"><span class="swatch-hex" id="hex-red"></span></div>--red</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--yellow)"><span class="swatch-hex" id="hex-yellow"></span></div>--yellow</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--green)"><span class="swatch-hex" id="hex-green"></span></div>--green</div>
+</div>
+
+<h3>Paleta extendida</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--blue)"><span class="swatch-hex" id="hex-blue"></span></div>--blue</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--purple)"><span class="swatch-hex" id="hex-purple"></span></div>--purple</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--orange)"><span class="swatch-hex" id="hex-orange"></span></div>--orange</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--pink)"><span class="swatch-hex" id="hex-pink"></span></div>--pink</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--brown)"><span class="swatch-hex" id="hex-brown"></span></div>--brown</div>
+</div>
+
+<h3>Neutros</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div>
+</div>
+
+<h3>Acento y semánticos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--accent2)"><span class="swatch-hex" id="hex-accent2"></span></div>--accent2</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Callouts ── -->
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento (default)</div><p>Usar para notas generales e información importante.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Verde</div><p>Confirmaciones, resultados exitosos, pasos completados.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Amarillo</div><p>Advertencias, cosas a tener en cuenta, pendientes.</p></div>
+<div class="callout danger"><div class="callout-title">Danger · Rojo</div><p>Errores, restricciones críticas, cosas que no hacer.</p></div>
+<div class="callout blue"><div class="callout-title">Blue</div><p>Información técnica, referencias, documentación.</p></div>
+<div class="callout purple"><div class="callout-title">Purple</div><p>Experimental, features en desarrollo, ideas.</p></div>
+<div class="callout orange"><div class="callout-title">Orange</div><p>Rendimiento, optimizaciones, métricas clave.</p></div>
+<div class="callout pink"><div class="callout-title">Pink</div><p>Diseño, UI, experiencia de usuario.</p></div>
+<div class="callout brown"><div class="callout-title">Brown</div><p>Histórico, legado, contexto del proyecto.</p></div>
+<div class="callout gray"><div class="callout-title">Gray</div><p>Notas secundarias, información opcional.</p></div>
+
+<hr class="divider">
+
+<!-- ── Badges ── -->
+<h2>Badges</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0">
+  <span class="badge accent">accent</span>
+  <span class="badge ok">ok</span>
+  <span class="badge warn">warn</span>
+  <span class="badge danger">danger</span>
+  <span class="badge blue">blue</span>
+  <span class="badge purple">purple</span>
+  <span class="badge orange">orange</span>
+  <span class="badge pink">pink</span>
+  <span class="badge brown">brown</span>
+  <span class="badge gray">gray</span>
+  <span class="badge">default</span>
+</div>
+
+<hr class="divider">
+
+<!-- ── Botones ── -->
+<h2>Botones</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0">
+  <button class="btn primary">Primary</button>
+  <button class="btn">Default</button>
+  <button class="btn ok">OK</button>
+  <button class="btn warn">Warn</button>
+  <button class="btn danger">Danger</button>
+  <button class="btn blue">Blue</button>
+  <button class="btn purple">Purple</button>
+  <button class="btn orange">Orange</button>
+  <button class="btn pink">Pink</button>
+</div>
+
+<hr class="divider">
+
+<!-- ── Métricas ── -->
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">354</div><div class="metric-lbl">Nodos (accent)</div></div>
+  <div class="metric"><div class="metric-val green">1,036</div><div class="metric-lbl">Llegadas (green)</div></div>
+  <div class="metric"><div class="metric-val red">367</div><div class="metric-lbl">Detenidos (red)</div></div>
+  <div class="metric"><div class="metric-val blue">672</div><div class="metric-lbl">Aristas (blue)</div></div>
+  <div class="metric"><div class="metric-val purple">550</div><div class="metric-lbl">Episodios (purple)</div></div>
+  <div class="metric"><div class="metric-val yellow">15×</div><div class="metric-lbl">Mejora (yellow)</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Código ── -->
+<h2>Código</h2>
+<p>Inline: <code>metro.toggleTheme()</code> alterna entre modo claro y oscuro.</p>
+<pre><span class="cm"># Ejemplo de uso</span>
+<span class="kw">import</span> metro_theme
+
+<span class="fn">def</span> <span class="kw">setup</span>():
+    theme = metro_theme.getTheme()  <span class="cm"># 'dark' | 'light'</span>
+    colors = {
+        <span class="str">'accent'</span>: <span class="str">'#00e5a0'</span>,
+        <span class="str">'danger'</span>: <span class="str">'#ff4560'</span>,
+        <span class="str">'value'</span>:  <span class="num">42</span>,
+    }
+    <span class="kw">return</span> colors</pre>
+
+<hr class="divider">
+
+<!-- ── Tabla ── -->
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Uso</th></tr>
+  <tr><td><code>--accent</code></td><td>#6B1A2A</td><td>#00e5a0</td><td>Color principal de la UI</td></tr>
+  <tr><td><code>--red</code></td><td>#8B1A1A</td><td>#ff4560</td><td>Semáforo rojo · peligro</td></tr>
+  <tr><td><code>--yellow</code></td><td>#C4691A</td><td>#f5a623</td><td>Semáforo amarillo · advertencia</td></tr>
+  <tr><td><code>--green</code></td><td>#2A6B3A</td><td>#00e5a0</td><td>Semáforo verde · OK</td></tr>
+  <tr><td><code>--blue</code></td><td>#1A3A6B</td><td>#457BFF</td><td>Info técnica · links</td></tr>
+  <tr><td><code>--purple</code></td><td>#4A1A6B</td><td>#9B6DFF</td><td>Experimental · RL</td></tr>
+  <tr><td><code>--orange</code></td><td>#A84510</td><td>#FF7A30</td><td>Rendimiento · alertas</td></tr>
+  <tr><td><code>--pink</code></td><td>#8B1A4A</td><td>#FF4D8F</td><td>UI · diseño</td></tr>
+  <tr><td><code>--brown</code></td><td>#5C3317</td><td>#C4855A</td><td>Histórico · contexto</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ── Timeline ── -->
+<h2>Timeline</h2>
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-dot done">✓</div>
+    <div><h4>Paso completado</h4><p style="font-size:12px;color:var(--text2)">Descripción del hito completado.</p></div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot warn">!</div>
+    <div><h4>En progreso</h4><p style="font-size:12px;color:var(--text2)">Trabajo en curso, pendiente de revisión.</p></div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot pending">—</div>
+    <div><h4>Pendiente</h4><p style="font-size:12px;color:var(--text2)">Aún no iniciado.</p></div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot danger">✕</div>
+    <div><h4>Bloqueado</h4><p style="font-size:12px;color:var(--text2)">Requiere resolución de dependencia.</p></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Step rows ── -->
+<h2>Pasos de proceso</h2>
+<div class="step-row">
+  <div class="step-num">1</div>
+  <div><h4>Primer paso</h4><p style="font-size:13px;color:var(--text2)">Descripción del primer paso del proceso.</p></div>
+</div>
+<div class="step-row">
+  <div class="step-num">2</div>
+  <div><h4>Segundo paso</h4><p style="font-size:13px;color:var(--text2)">Descripción del segundo paso del proceso.</p></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Cards ── -->
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card">
+    <strong>Card básica</strong>
+    <p style="font-size:13px;margin-top:8px;color:var(--text2)">Contenido libre dentro de un card con borde y fondo bg2.</p>
+  </div>
+  <div class="card">
+    <strong>Card con badge</strong>
+    <span class="badge ok" style="margin-left:8px">activo</span>
+    <p style="font-size:13px;margin-top:8px;color:var(--text2)">Cards con cualquier contenido interno.</p>
+  </div>
+</div>
+
+<hr class="divider">
+<p class="muted" style="text-align:center;margin-top:32px;font-family:var(--mono);font-size:11px">
+  metro_theme · by RemiH06 · AGPL-3.0
+</p>
+
+<script src="metro_theme.js"></script>
+<script>
+// Leer hex de variable CSS y actualizar swatches
+function cssVar(name) {
+  return getComputedStyle(document.body).getPropertyValue(name).trim();
+}
+
+function updateHexes() {
+  const tokens = {
+    'hex-red':     '--red',
+    'hex-yellow':  '--yellow',
+    'hex-green':   '--green',
+    'hex-blue':    '--blue',
+    'hex-purple':  '--purple',
+    'hex-orange':  '--orange',
+    'hex-pink':    '--pink',
+    'hex-brown':   '--brown',
+    'hex-black':   '--black',
+    'hex-gray':    '--gray',
+    'hex-white':   '--white',
+    'hex-accent':  '--accent',
+    'hex-accent2': '--accent2',
+    'hex-ok':      '--ok',
+    'hex-warn':    '--warn',
+    'hex-danger':  '--danger',
+  };
+  Object.entries(tokens).forEach(([id, token]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = cssVar(token);
+  });
+}
+
+// Actualizar al cargar y al cambiar tema
+document.addEventListener('DOMContentLoaded', updateHexes);
+metro.onThemeChange(updateHexes);
+</script>
+</html>

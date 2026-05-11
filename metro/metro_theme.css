@@ -1,0 +1,649 @@
+/*
+ * metro_theme.css
+ * ───────────────────────────────────────────────────────
+ * Sistema de diseño metro_theme · by RemiH06
+ * Basado en tanGo docs · mayo 2026
+ *
+ * Uso:
+ *   <link rel="stylesheet" href="metro_theme.css">
+ *   <script src="metro_theme.js"></script>
+ *   <body class="metro">        ← modo claro por defecto
+ *   <body class="metro dark">   ← modo oscuro
+ *
+ * Tokens disponibles como variables CSS:
+ *   Fondos    → --bg, --bg2, --bg3
+ *   Texto     → --text, --text2
+ *   Borde     → --border
+ *   Semáforo  → --red, --yellow, --green
+ *   Paleta    → --blue, --purple, --orange, --pink, --brown
+ *   Neutros   → --black, --white, --gray
+ *   Acento    → --accent, --accent2
+ *   Estado    → --ok, --warn, --danger
+ *   Tipografía → --mono, --sans
+ */
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — MODO CLARO
+══════════════════════════════════════════════════════ */
+.metro {
+  /* Fondos */
+  --bg:      #F5F0E8;
+  --bg2:     #EDE8DC;
+  --bg3:     #E4DDD0;
+
+  /* Texto */
+  --text:    #1A1410;
+  --text2:   #6B5E50;
+
+  /* Borde */
+  --border:  #C8BFB0;
+
+  /* ── Semáforo ── */
+  --red:     #8B1A1A;
+  --yellow:  #C4691A;
+  --green:   #2A6B3A;
+
+  /* ── Paleta extendida ── */
+  --blue:    #1A3A6B;
+  --purple:  #4A1A6B;
+  --orange:  #A84510;
+  --pink:    #8B1A4A;
+  --brown:   #5C3317;
+
+  /* ── Neutros ── */
+  --black:   #0D0A08;
+  --white:   #FAF7F2;
+  --gray:    #9A8E82;
+
+  /* ── Acento principal (heredado de tanGo claro) ── */
+  --accent:  #6B1A2A;
+  --accent2: #C4691A;
+
+  /* ── Semánticos ── */
+  --ok:      #2A6B3A;    /* = --green */
+  --warn:    #C4691A;    /* = --yellow */
+  --danger:  #8B1A1A;    /* = --red */
+
+  /* Tipografía */
+  --mono:    'Space Mono', 'Courier New', monospace;
+  --sans:    'DM Sans', system-ui, sans-serif;
+
+  /* Espaciado base */
+  --radius:  4px;
+  --radius-lg: 8px;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — MODO OSCURO
+══════════════════════════════════════════════════════ */
+.metro.dark {
+  /* Fondos */
+  --bg:      #0a0c10;
+  --bg2:     #0f1219;
+  --bg3:     #161b26;
+
+  /* Texto */
+  --text:    #e8eaf0;
+  --text2:   #7a8099;
+
+  /* Borde */
+  --border:  #1e2535;
+
+  /* ── Semáforo ── */
+  --red:     #ff4560;
+  --yellow:  #f5a623;
+  --green:   #00e5a0;
+
+  /* ── Paleta extendida ── */
+  --blue:    #457BFF;
+  --purple:  #9B6DFF;
+  --orange:  #FF7A30;
+  --pink:    #FF4D8F;
+  --brown:   #C4855A;
+
+  /* ── Neutros ── */
+  --black:   #000000;
+  --white:   #ffffff;
+  --gray:    #4a5568;
+
+  /* ── Acento principal (heredado de tanGo oscuro) ── */
+  --accent:  #00e5a0;    /* = --green */
+  --accent2: #457BFF;    /* = --blue  */
+
+  /* ── Semánticos ── */
+  --ok:      #00e5a0;    /* = --green */
+  --warn:    #f5a623;    /* = --yellow */
+  --danger:  #ff4560;    /* = --red */
+}
+
+/* ══════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════ */
+.metro *, .metro *::before, .metro *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.metro {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ── Scrollbar ── */
+.metro ::-webkit-scrollbar { width: 5px; height: 5px; }
+.metro ::-webkit-scrollbar-track { background: transparent; }
+.metro ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.metro { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+
+/* ══════════════════════════════════════════════════════
+   GRID DE FONDO (opcional — añadir clase .metro-grid al body)
+══════════════════════════════════════════════════════ */
+.metro.metro-grid::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 0 0;
+  opacity: .25;
+  pointer-events: none;
+  z-index: 10;
+  transform: translateZ(0);
+}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+══════════════════════════════════════════════════════ */
+.metro h1 {
+  font-family: var(--mono);
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.metro h1 .accent { color: var(--accent); }
+
+.metro h2 {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -.5px;
+}
+
+.metro h3 {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 24px 0 10px;
+}
+
+.metro h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.metro p {
+  margin-bottom: 14px;
+  line-height: 1.8;
+}
+
+.metro p.muted { color: var(--text2); font-size: 13px; }
+.metro .subtitle { font-size: 14px; color: var(--text2); font-style: italic; margin-bottom: 32px; }
+.metro strong { font-weight: 600; color: var(--text); }
+.metro a { color: var(--accent); text-decoration: none; }
+.metro a:hover { text-decoration: underline; }
+
+/* ══════════════════════════════════════════════════════
+   CÓDIGO
+══════════════════════════════════════════════════════ */
+.metro code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: var(--radius);
+  color: var(--accent);
+}
+
+.metro pre {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.metro pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* Syntax highlight helpers */
+.metro pre .kw  { color: var(--blue); }
+.metro pre .cm  { color: var(--text2); font-style: italic; }
+.metro pre .str { color: var(--green); }
+.metro pre .num { color: var(--yellow); }
+.metro pre .fn  { color: var(--purple); }
+
+/* ══════════════════════════════════════════════════════
+   CALLOUTS
+══════════════════════════════════════════════════════ */
+.metro .callout {
+  border-left: 3px solid var(--accent);
+  background: var(--bg2);
+  padding: 14px 18px;
+  margin: 20px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.metro .callout-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.metro .callout p { margin-bottom: 0; font-size: 13px; }
+
+/* Variantes de color */
+.metro .callout.ok     { border-color: var(--ok);     }
+.metro .callout.warn   { border-color: var(--warn);   }
+.metro .callout.danger { border-color: var(--danger); }
+.metro .callout.blue   { border-color: var(--blue);   }
+.metro .callout.purple { border-color: var(--purple); }
+.metro .callout.orange { border-color: var(--orange); }
+.metro .callout.pink   { border-color: var(--pink);   }
+.metro .callout.brown  { border-color: var(--brown);  }
+.metro .callout.gray   { border-color: var(--gray);   }
+
+.metro .callout.ok     .callout-title { color: var(--ok);     }
+.metro .callout.warn   .callout-title { color: var(--warn);   }
+.metro .callout.danger .callout-title { color: var(--danger); }
+.metro .callout.blue   .callout-title { color: var(--blue);   }
+.metro .callout.purple .callout-title { color: var(--purple); }
+.metro .callout.orange .callout-title { color: var(--orange); }
+.metro .callout.pink   .callout-title { color: var(--pink);   }
+.metro .callout.brown  .callout-title { color: var(--brown);  }
+.metro .callout.gray   .callout-title { color: var(--gray);   }
+
+/* ══════════════════════════════════════════════════════
+   TABLAS
+══════════════════════════════════════════════════════ */
+.metro table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 13px;
+}
+.metro th {
+  background: var(--bg3);
+  padding: 8px 12px;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}
+.metro td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.metro tr:hover td { background: var(--bg3); }
+
+/* ══════════════════════════════════════════════════════
+   BOTONES
+══════════════════════════════════════════════════════ */
+.metro .btn {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  color: var(--text);
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+}
+.metro .btn:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+/* Variantes */
+.metro .btn.primary  { background: color-mix(in srgb, var(--accent) 15%, transparent); border-color: var(--accent); color: var(--accent); }
+.metro .btn.ok       { border-color: var(--ok);     color: var(--ok);     }
+.metro .btn.warn     { border-color: var(--warn);   color: var(--warn);   }
+.metro .btn.danger   { border-color: var(--danger); color: var(--danger); }
+.metro .btn.blue     { border-color: var(--blue);   color: var(--blue);   }
+.metro .btn.purple   { border-color: var(--purple); color: var(--purple); }
+.metro .btn.orange   { border-color: var(--orange); color: var(--orange); }
+.metro .btn.pink     { border-color: var(--pink);   color: var(--pink);   }
+
+/* ══════════════════════════════════════════════════════
+   BADGES / PILLS
+══════════════════════════════════════════════════════ */
+.metro .badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2);
+}
+.metro .badge.accent  { border-color: var(--accent);  color: var(--accent);  }
+.metro .badge.ok      { border-color: var(--ok);      color: var(--ok);      }
+.metro .badge.warn    { border-color: var(--warn);    color: var(--warn);    }
+.metro .badge.danger  { border-color: var(--danger);  color: var(--danger);  }
+.metro .badge.blue    { border-color: var(--blue);    color: var(--blue);    }
+.metro .badge.purple  { border-color: var(--purple);  color: var(--purple);  }
+.metro .badge.orange  { border-color: var(--orange);  color: var(--orange);  }
+.metro .badge.pink    { border-color: var(--pink);    color: var(--pink);    }
+.metro .badge.brown   { border-color: var(--brown);   color: var(--brown);   }
+.metro .badge.gray    { border-color: var(--gray);    color: var(--gray);    }
+
+/* ══════════════════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════════════════ */
+.metro .card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  transition: border-color .2s;
+}
+.metro .card:hover { border-color: var(--accent); }
+
+.metro .card-header {
+  padding: 10px 16px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--radius) var(--radius) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ══════════════════════════════════════════════════════
+   MÉTRICAS
+══════════════════════════════════════════════════════ */
+.metro .metrics-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.metro .metric {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 18px;
+  flex: 1;
+  min-width: 100px;
+}
+.metro .metric-val {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.metro .metric-lbl {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+
+/* Colores de métrica */
+.metro .metric-val.red    { color: var(--red);    }
+.metro .metric-val.yellow { color: var(--yellow); }
+.metro .metric-val.green  { color: var(--green);  }
+.metro .metric-val.blue   { color: var(--blue);   }
+.metro .metric-val.purple { color: var(--purple); }
+.metro .metric-val.orange { color: var(--orange); }
+.metro .metric-val.pink   { color: var(--pink);   }
+.metro .metric-val.brown  { color: var(--brown);  }
+.metro .metric-val.gray   { color: var(--gray);   }
+.metro .metric-val.muted  { color: var(--text2);  }
+
+/* ══════════════════════════════════════════════════════
+   DIVIDERS
+══════════════════════════════════════════════════════ */
+.metro .divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT HELPERS
+══════════════════════════════════════════════════════ */
+.metro .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.metro .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.metro .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.metro .full   { grid-column: 1 / -1; }
+
+@media (max-width: 600px) {
+  .metro .grid-2,
+  .metro .grid-3,
+  .metro .grid-4 { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════════════ */
+.metro .metro-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 52px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.metro .metro-logo {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+.metro .metro-logo .accent { color: var(--accent); }
+
+/* ══════════════════════════════════════════════════════
+   SIDEBAR NAV
+══════════════════════════════════════════════════════ */
+.metro .metro-nav {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.metro .nav-section {
+  padding: 8px 16px 4px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+.metro .nav-item {
+  display: block;
+  padding: 7px 16px;
+  font-size: 12px;
+  color: var(--text2);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+  text-decoration: none;
+}
+.metro .nav-item:hover { color: var(--text); background: var(--bg3); border-left-color: var(--border); }
+.metro .nav-item.active { color: var(--accent); background: var(--bg3); border-left-color: var(--accent); }
+.metro .nav-item.sub { padding-left: 28px; font-size: 11px; }
+
+/* ══════════════════════════════════════════════════════
+   THEME TOGGLE BUTTON
+══════════════════════════════════════════════════════ */
+.metro .theme-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 12px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .2s;
+}
+.metro .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ══════════════════════════════════════════════════════
+   INPUT / SEARCH
+══════════════════════════════════════════════════════ */
+.metro input[type="text"],
+.metro input[type="search"],
+.metro input[type="email"],
+.metro textarea {
+  width: 100%;
+  padding: 7px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  outline: none;
+  transition: border-color .15s;
+}
+.metro input:focus,
+.metro textarea:focus { border-color: var(--accent); }
+.metro input::placeholder,
+.metro textarea::placeholder { color: var(--text2); }
+
+/* ══════════════════════════════════════════════════════
+   STEP ROW (para algoritmos / procesos)
+══════════════════════════════════════════════════════ */
+.metro .step-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin: 16px 0;
+  padding: 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.metro .step-num {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 32px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════════════════════
+   TIMELINE / KAN LIST
+══════════════════════════════════════════════════════ */
+.metro .timeline { margin: 16px 0; }
+.metro .timeline-item {
+  display: flex;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.metro .timeline-item:last-child { border-bottom: none; }
+.metro .timeline-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 2px;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  background: var(--bg3);
+}
+.metro .timeline-dot.done {
+  background: color-mix(in srgb, var(--ok) 15%, transparent);
+  border-color: var(--ok);
+  color: var(--ok);
+}
+.metro .timeline-dot.pending {
+  background: var(--bg3);
+  border-color: var(--border);
+  color: var(--text2);
+}
+.metro .timeline-dot.warn {
+  background: color-mix(in srgb, var(--warn) 15%, transparent);
+  border-color: var(--warn);
+  color: var(--warn);
+}
+.metro .timeline-dot.danger {
+  background: color-mix(in srgb, var(--danger) 15%, transparent);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ══════════════════════════════════════════════════════
+   DIAGRAM CARD (para SVGs)
+══════════════════════════════════════════════════════ */
+.metro .diagram-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 24px 0;
+  padding: 24px;
+  overflow-x: auto;
+}
+.metro .diagram-card svg text { fill: currentColor; }
+.metro .diagram-cap {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text2);
+  margin-top: 12px;
+  text-align: center;
+  letter-spacing: .05em;
+}
