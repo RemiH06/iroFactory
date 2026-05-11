@@ -175,23 +175,9 @@
 .sherry ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 0; }
 .sherry { scrollbar-width: thin; scrollbar-color: var(--border2) var(--bg); }
 
-/* ── Scanlines permanentes en modo claro (textura base) ── */
-.sherry.light::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9998;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent 2px,
-    rgba(0,0,0,.018) 2px,
-    rgba(0,0,0,.018) 4px
-  );
-}
-
-
+/* ══════════════════════════════════════════════════════
+   SCANLINES (efecto CRT — siempre encima)
+══════════════════════════════════════════════════════ */
 .sherry.sherry-crt::after {
   content: '';
   position: fixed;

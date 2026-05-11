@@ -1,0 +1,588 @@
+/*
+ * elixir_theme.css
+ * ───────────────────────────────────────────────────────
+ * elixir — datos · modelos · predicción · clasificación
+ * by RemiH06 · iroFactory
+ *
+ * Claro por defecto. Oscuro disponible con .elixir.dark
+ *
+ * Uso:
+ *   <link rel="stylesheet" href="elixir_theme.css">
+ *   <script src="elixir_theme.js"></script>
+ *   <body class="elixir">        ← claro (default)
+ *   <body class="elixir dark">   ← oscuro
+ *
+ * Figura: triángulos isóceles · patrón asanoha
+ * Paleta: analítica pura — teal, índigo, verde pizarra,
+ *         gris azulado frío · neones fríos en oscuro
+ */
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — MODO CLARO (default)
+   Fondo: gris frío azulado — papel milimétrico, laboratorio
+══════════════════════════════════════════════════════ */
+.elixir {
+  /* Fondos — gris frío con temperatura azulada */
+  --bg:      #EEF0F5;
+  --bg2:     #E4E7EF;
+  --bg3:     #D8DCE8;
+
+  /* Texto */
+  --text:    #0E1018;
+  --text2:   #4A5068;
+
+  /* Borde */
+  --border:  #B8BDD0;
+
+  /* ── Señal de modelo ──
+     input  → dato entrante   · índigo apagado
+     train  → entrenando      · teal pizarra
+     output → resultado listo · verde pizarra   */
+  --input:   #2A3A7A;
+  --train:   #0A5C58;
+  --output:  #1A5C30;
+
+  /* ── Paleta analítica ── */
+  --teal:    #0A5C58;
+  --indigo:  #2A3A7A;
+  --pine:    #1A5C30;   /* verde pizarra */
+  --slate:   #3A4A6A;
+  --steel:   #2A3C52;
+  --violet:  #3A2A6A;
+  --arctic:  #1A4A6A;   /* azul ártico   */
+
+  /* ── Neutros ── */
+  --black:   #080C14;
+  --white:   #F4F6FA;
+  --gray:    #7A80A0;
+
+  /* ── Acento ── */
+  --accent:  #0A5C58;   /* teal pizarra  */
+  --accent2: #2A3A7A;   /* índigo        */
+
+  /* ── Semánticos ── */
+  --ok:      #1A5C30;
+  --warn:    #7A5A0A;
+  --danger:  #7A1A2A;
+
+  /* Tipografía */
+  --mono:    'Iosevka', 'Fira Code', 'Courier New', monospace;
+  --sans:    'Iosevka', 'Fira Code', 'Courier New', monospace;
+
+  --radius:    3px;
+  --radius-lg: 6px;
+
+  /* Scanlines */
+  --scanline-color: rgba(0,0,0,.022);
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — MODO OSCURO
+   Fondo: casi negro frío azulado · neones fríos
+══════════════════════════════════════════════════════ */
+.elixir.dark {
+  /* Fondos */
+  --bg:      #080C14;
+  --bg2:     #0C1018;
+  --bg3:     #10161E;
+
+  /* Texto */
+  --text:    #DCE0F0;
+  --text2:   #5A6080;
+
+  /* Borde */
+  --border:  #181E2E;
+
+  /* ── Señal de modelo · neón frío ── */
+  --input:   #4D8FFF;   /* índigo eléctrico */
+  --train:   #00E8D8;   /* teal neón        */
+  --output:  #00F090;   /* verde lima frío  */
+
+  /* ── Paleta analítica neón ── */
+  --teal:    #00E8D8;
+  --indigo:  #4D8FFF;
+  --pine:    #00F090;
+  --slate:   #7090C0;
+  --steel:   #5080A0;
+  --violet:  #8060FF;
+  --arctic:  #00C8FF;   /* cian ártico */
+
+  /* ── Neutros ── */
+  --black:   #040608;
+  --white:   #ECF0F8;
+  --gray:    #303850;
+
+  /* ── Acento ── */
+  --accent:  #00E8D8;
+  --accent2: #4D8FFF;
+
+  /* ── Semánticos ── */
+  --ok:      #00F090;
+  --warn:    #F0C000;
+  --danger:  #F04050;
+
+  /* Scanlines */
+  --scanline-color: rgba(255,255,255,.025);
+}
+
+/* ══════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════ */
+.elixir *, .elixir *::before, .elixir *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.elixir {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+/* Scrollbar */
+.elixir ::-webkit-scrollbar { width: 4px; height: 4px; }
+.elixir ::-webkit-scrollbar-track { background: transparent; }
+.elixir ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
+.elixir { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+
+/* ══════════════════════════════════════════════════════
+   SCANLINES — permanentes en ambos modos
+══════════════════════════════════════════════════════ */
+.elixir::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    var(--scanline-color) 2px,
+    var(--scanline-color) 4px
+  );
+}
+
+/* ══════════════════════════════════════════════════════
+   FONDO DIAMANTES (clase .elixir-asanoha)
+   Triángulos isóceles en diamante · calibrado con sandbox
+══════════════════════════════════════════════════════ */
+.elixir.elixir-asanoha::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='41.57'%3E%3Cpolyline points='0,41.57 24,0 48,41.57' fill='none' stroke='%23777777' stroke-width='1.5'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='41.57'%3E%3Cpolyline points='0,0 24,41.57 48,0' fill='none' stroke='%23777777' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: 48px 41.57px, 48px 41.57px;
+  background-position: 0 0, 48px 20px;
+  opacity: .2;
+  pointer-events: none;
+  z-index: 0;
+}
+.elixir.elixir-asanoha > * { position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════════════════════
+   CANVAS GRAFO
+══════════════════════════════════════════════════════ */
+#elixir-graph {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .18;
+}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+══════════════════════════════════════════════════════ */
+.elixir h1 {
+  font-family: var(--mono);
+  font-size: clamp(20px, 4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.elixir h1 .accent { color: var(--accent); }
+
+.elixir h2 {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 38px 0 14px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.elixir h3 {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 22px 0 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.elixir h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+.elixir p { margin-bottom: 14px; line-height: 1.85; }
+.elixir p.muted   { color: var(--text2); font-size: 12px; }
+.elixir strong    { font-weight: 700; color: var(--text); }
+.elixir a         { color: var(--accent); text-decoration: none; }
+.elixir a:hover   { text-decoration: underline; }
+
+/* ══════════════════════════════════════════════════════
+   CÓDIGO
+══════════════════════════════════════════════════════ */
+.elixir code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: var(--radius);
+  color: var(--accent);
+}
+
+.elixir pre {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin: 14px 0;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--text);
+  position: relative;
+}
+.elixir pre::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 6px; right: 10px;
+  font-size: 9px;
+  color: var(--text2);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.elixir pre code { background: none; border: none; padding: 0; color: inherit; }
+
+/* Syntax */
+.elixir pre .kw  { color: var(--indigo);  }
+.elixir pre .fn  { color: var(--teal);    }
+.elixir pre .str { color: var(--pine);    }
+.elixir pre .num { color: var(--arctic);  }
+.elixir pre .cm  { color: var(--text2);   font-style: italic; }
+.elixir pre .tp  { color: var(--violet);  }
+.elixir pre .dec { color: var(--steel);   }
+
+/* ══════════════════════════════════════════════════════
+   CALLOUTS
+══════════════════════════════════════════════════════ */
+.elixir .callout {
+  border-left: 2px solid var(--accent);
+  background: var(--bg2);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.elixir .callout-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.elixir .callout p { margin-bottom: 0; font-size: 12px; }
+
+.elixir .callout.ok      { border-color: var(--ok);      }
+.elixir .callout.warn    { border-color: var(--warn);    }
+.elixir .callout.danger  { border-color: var(--danger);  }
+.elixir .callout.input   { border-color: var(--input);   }
+.elixir .callout.train   { border-color: var(--train);   }
+.elixir .callout.output  { border-color: var(--output);  }
+.elixir .callout.teal    { border-color: var(--teal);    }
+.elixir .callout.indigo  { border-color: var(--indigo);  }
+.elixir .callout.pine    { border-color: var(--pine);    }
+.elixir .callout.slate   { border-color: var(--slate);   }
+.elixir .callout.steel   { border-color: var(--steel);   }
+.elixir .callout.violet  { border-color: var(--violet);  }
+.elixir .callout.arctic  { border-color: var(--arctic);  }
+.elixir .callout.gray    { border-color: var(--gray);    }
+
+.elixir .callout.ok      .callout-title { color: var(--ok);      }
+.elixir .callout.warn    .callout-title { color: var(--warn);    }
+.elixir .callout.danger  .callout-title { color: var(--danger);  }
+.elixir .callout.input   .callout-title { color: var(--input);   }
+.elixir .callout.train   .callout-title { color: var(--train);   }
+.elixir .callout.output  .callout-title { color: var(--output);  }
+.elixir .callout.teal    .callout-title { color: var(--teal);    }
+.elixir .callout.indigo  .callout-title { color: var(--indigo);  }
+.elixir .callout.pine    .callout-title { color: var(--pine);    }
+.elixir .callout.slate   .callout-title { color: var(--slate);   }
+.elixir .callout.steel   .callout-title { color: var(--steel);   }
+.elixir .callout.violet  .callout-title { color: var(--violet);  }
+.elixir .callout.arctic  .callout-title { color: var(--arctic);  }
+.elixir .callout.gray    .callout-title { color: var(--gray);    }
+
+/* ══════════════════════════════════════════════════════
+   TABLAS
+══════════════════════════════════════════════════════ */
+.elixir table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 12px;
+}
+.elixir th {
+  background: var(--bg3);
+  padding: 7px 12px;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}
+.elixir td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.elixir tr:hover td { background: var(--bg3); }
+
+/* ══════════════════════════════════════════════════════
+   BOTONES
+══════════════════════════════════════════════════════ */
+.elixir .btn {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+  letter-spacing: .04em;
+}
+.elixir .btn:hover        { border-color: var(--accent); color: var(--accent); }
+.elixir .btn.primary      { border-color: var(--accent);  color: var(--accent);  background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.elixir .btn.ok           { border-color: var(--ok);      color: var(--ok);      }
+.elixir .btn.warn         { border-color: var(--warn);    color: var(--warn);    }
+.elixir .btn.danger       { border-color: var(--danger);  color: var(--danger);  }
+.elixir .btn.input        { border-color: var(--input);   color: var(--input);   }
+.elixir .btn.train        { border-color: var(--train);   color: var(--train);   }
+.elixir .btn.output       { border-color: var(--output);  color: var(--output);  }
+.elixir .btn.teal         { border-color: var(--teal);    color: var(--teal);    }
+.elixir .btn.indigo       { border-color: var(--indigo);  color: var(--indigo);  }
+.elixir .btn.pine         { border-color: var(--pine);    color: var(--pine);    }
+.elixir .btn.violet       { border-color: var(--violet);  color: var(--violet);  }
+.elixir .btn.arctic       { border-color: var(--arctic);  color: var(--arctic);  }
+
+/* ══════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════ */
+.elixir .badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.elixir .badge.accent  { border-color: var(--accent);  color: var(--accent);  }
+.elixir .badge.ok      { border-color: var(--ok);      color: var(--ok);      }
+.elixir .badge.warn    { border-color: var(--warn);    color: var(--warn);    }
+.elixir .badge.danger  { border-color: var(--danger);  color: var(--danger);  }
+.elixir .badge.input   { border-color: var(--input);   color: var(--input);   }
+.elixir .badge.train   { border-color: var(--train);   color: var(--train);   }
+.elixir .badge.output  { border-color: var(--output);  color: var(--output);  }
+.elixir .badge.teal    { border-color: var(--teal);    color: var(--teal);    }
+.elixir .badge.indigo  { border-color: var(--indigo);  color: var(--indigo);  }
+.elixir .badge.pine    { border-color: var(--pine);    color: var(--pine);    }
+.elixir .badge.slate   { border-color: var(--slate);   color: var(--slate);   }
+.elixir .badge.steel   { border-color: var(--steel);   color: var(--steel);   }
+.elixir .badge.violet  { border-color: var(--violet);  color: var(--violet);  }
+.elixir .badge.arctic  { border-color: var(--arctic);  color: var(--arctic);  }
+.elixir .badge.gray    { border-color: var(--gray);    color: var(--gray);    }
+
+/* ══════════════════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════════════════ */
+.elixir .card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  transition: border-color .15s;
+}
+.elixir .card:hover { border-color: var(--accent); }
+
+/* ══════════════════════════════════════════════════════
+   MÉTRICAS
+══════════════════════════════════════════════════════ */
+.elixir .metrics-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+.elixir .metric {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  flex: 1;
+  min-width: 100px;
+}
+.elixir .metric-val {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -1px;
+}
+.elixir .metric-lbl {
+  font-size: 10px;
+  color: var(--text2);
+  margin-top: 3px;
+  letter-spacing: .05em;
+}
+
+.elixir .metric-val.input  { color: var(--input);  }
+.elixir .metric-val.train  { color: var(--train);  }
+.elixir .metric-val.output { color: var(--output); }
+.elixir .metric-val.teal   { color: var(--teal);   }
+.elixir .metric-val.indigo { color: var(--indigo); }
+.elixir .metric-val.pine   { color: var(--pine);   }
+.elixir .metric-val.violet { color: var(--violet); }
+.elixir .metric-val.arctic { color: var(--arctic); }
+.elixir .metric-val.slate  { color: var(--slate);  }
+.elixir .metric-val.gray   { color: var(--gray);   }
+.elixir .metric-val.muted  { color: var(--text2);  }
+
+/* ══════════════════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════════════════ */
+.elixir .divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   RUN LOG (análogo al timeline)
+══════════════════════════════════════════════════════ */
+.elixir .run-log { margin: 14px 0; }
+.elixir .run-entry {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.elixir .run-entry:last-child { border-bottom: none; }
+.elixir .run-dot {
+  width: 26px; height: 26px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 2px;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  background: var(--bg3);
+  /* rombo — figura derivada del triángulo isóceles */
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.elixir .run-dot.done    { border-color: var(--ok);     color: var(--ok);     background: color-mix(in srgb, var(--ok)     12%, transparent); }
+.elixir .run-dot.running { border-color: var(--train);  color: var(--train);  background: color-mix(in srgb, var(--train)  12%, transparent); }
+.elixir .run-dot.pending { border-color: var(--border); color: var(--text2);  }
+.elixir .run-dot.failed  { border-color: var(--danger); color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, transparent); }
+
+/* ══════════════════════════════════════════════════════
+   PIPELINE (análogo a step-row)
+══════════════════════════════════════════════════════ */
+.elixir .pipeline-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin: 10px 0;
+  padding: 13px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  border-radius: var(--radius);
+}
+.elixir .pipeline-step {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 56px;
+  line-height: 1;
+  margin-top: 3px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════════════ */
+.elixir .theme-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s;
+  letter-spacing: .04em;
+}
+.elixir .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT HELPERS
+══════════════════════════════════════════════════════ */
+.elixir .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.elixir .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.elixir .full   { grid-column: 1 / -1; }
+
+@media (max-width: 600px) {
+  .elixir .grid-2,
+  .elixir .grid-3 { grid-template-columns: 1fr; }
+}

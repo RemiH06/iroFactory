@@ -4,51 +4,368 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>sherry_theme — Demo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="sherry_theme.css">
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700&display=swap" rel="stylesheet">
 <style>
-  html, body { height: 100%; }
-  body { padding: 40px; max-width: 860px; margin: 0 auto; }
-  .swatch-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
-  .swatch {
-    width: 88px; text-align: center;
-    font-family: var(--mono); font-size: 9px; color: var(--text2);
-    letter-spacing: .04em;
-  }
-  .swatch-box {
-    height: 48px; border-radius: var(--radius); margin-bottom: 6px;
-    border: 1px solid var(--border2);
-    position: relative;
-  }
-  .swatch-hex {
-    position: absolute;
-    bottom: 4px; left: 5px;
-    font-family: var(--mono); font-size: 9px;
-    color: rgba(255,255,255,.7);
-    mix-blend-mode: difference;
-    letter-spacing: -.3px;
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-  }
+/* ── TOKENS OSCURO (default) ── */
+body {
+  --bg:      #080808;
+  --bg2:     #0e0e0e;
+  --bg3:     #141414;
+  --text:    #f0f0f0;
+  --text2:   #808080;
+  --text3:   #404040;
+  --border:  #1e1e1e;
+  --border2: #2a2a2a;
+  --magenta:  #FF2D78;
+  --cyan:     #00F5FF;
+  --lime:     #AAFF00;
+  --violet:   #BF5FFF;
+  --electric: #FFE600;
+  --rose:     #FFB3DE;
+  --lavender: #D4AAFF;
+  --aqua:     #A8EFFF;
+  --peach:    #FFD4AA;
+  --mint:     #AAFFD4;
+  --accent:   #FF2D78;
+  --accent2:  #00F5FF;
+  --ok:       #AAFF00;
+  --warn:     #FFE600;
+  --danger:   #FF2D78;
+  --info:     #00F5FF;
+  --black:    #000000;
+  --white:    #ffffff;
+  --gray:     #555555;
+  --mono:     'JetBrains Mono', 'Fira Code', monospace;
+  --radius:   2px;
+  --glow-accent:  0 0 8px rgba(255,45,120,.5);
+  --glow-cyan:    0 0 8px rgba(0,245,255,.5);
+  --glow-lime:    0 0 8px rgba(170,255,0,.5);
+  --glow-violet:  0 0 8px rgba(191,95,255,.5);
+}
+
+/* ── TOKENS CLARO ── */
+body.light {
+  --bg:      #F5F2EC;
+  --bg2:     #EDEAD2;
+  --bg3:     #E0DCCA;
+  --text:    #0a0a0a;
+  --text2:   #4a4a4a;
+  --text3:   #9a9a9a;
+  --border:  #CCCAB8;
+  --border2: #B8B6A4;
+  --magenta:  #CC0055;
+  --cyan:     #007A80;
+  --lime:     #557700;
+  --violet:   #6622AA;
+  --electric: #887700;
+  --rose:     #CC5588;
+  --lavender: #7744AA;
+  --aqua:     #227788;
+  --peach:    #AA6633;
+  --mint:     #337755;
+  --accent:   #CC0055;
+  --accent2:  #007A80;
+  --ok:       #557700;
+  --warn:     #887700;
+  --danger:   #CC0055;
+  --info:     #007A80;
+  --black:    #000000;
+  --white:    #ffffff;
+  --gray:     #888880;
+  --glow-accent:  none;
+  --glow-cyan:    none;
+  --glow-lime:    none;
+  --glow-violet:  none;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  transition: background .25s, color .25s;
+}
+
+/* Cursor */
+@keyframes sherry-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.cursor::after {
+  content: '█'; display: inline-block;
+  animation: sherry-blink 1s step-end infinite;
+  color: var(--accent); margin-left: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 0; }
+
+/* CRT oscuro — líneas blancas */
+body.crt-on::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px
+  );
+}
+/* CRT claro — líneas negras */
+body.light.crt-on::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(0,0,0,.015) 2px, rgba(0,0,0,.015) 4px
+  );
+}
+
+/* Scanlines permanentes en claro */
+body.light::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9998;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(0,0,0,.018) 2px, rgba(0,0,0,.018) 4px
+  );
+}
+
+/* Fondo triangular */
+body.tri-on .tri-bg {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='83.14' overflow='visible'%3E%3Cline x1='0' y1='0' x2='48' y2='0' stroke='%23777777' stroke-width='1.5'/%3E%3Cline x1='0' y1='41.57' x2='48' y2='41.57' stroke='%23777777' stroke-width='1.5'/%3E%3Cline x1='0' y1='83.14' x2='48' y2='83.14' stroke='%23777777' stroke-width='1.5'/%3E%3Cpolyline points='0,0 24,41.57 48,0' fill='none' stroke='%23777777' stroke-width='1.5'/%3E%3Cpolyline points='0,83.14 24,41.57 48,83.14' fill='none' stroke='%23777777' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: 48px 83.14px;
+  background-position: 0 0;
+  opacity: .1;
+  pointer-events: none; z-index: 0;
+}
+body.tri-on .tri-bg ~ * { position: relative; z-index: 1; }
+
+/* Página */
+.page { padding: 40px; max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* ── TIPOGRAFÍA ── */
+h2 {
+  font-size: 13px; font-weight: 700;
+  color: var(--cyan); text-shadow: var(--glow-cyan);
+  margin: 36px 0 14px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border2);
+  letter-spacing: .05em; text-transform: uppercase;
+}
+h2::before { content: '// '; color: var(--text3); }
+h3 {
+  font-size: 12px; font-weight: 700;
+  color: var(--magenta); text-shadow: var(--glow-accent);
+  margin: 22px 0 10px; letter-spacing: .05em;
+}
+h3::before { content: '> '; color: var(--text3); }
+h4 { font-size: 12px; font-weight: 700; color: var(--lavender); margin-bottom: 6px; }
+p  { margin-bottom: 14px; line-height: 1.8; }
+p.muted { color: var(--text2); font-size: 12px; }
+
+/* Prompt */
+.prompt::before { content: '$ '; color: var(--lime); text-shadow: var(--glow-lime); }
+
+/* ── CÓDIGO ── */
+code {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  padding: 1px 5px; border-radius: var(--radius);
+  color: var(--cyan); text-shadow: var(--glow-cyan);
+}
+pre {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-left: 2px solid var(--accent); border-radius: var(--radius);
+  padding: 14px 18px; margin: 14px 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 12px; line-height: 1.7;
+  color: var(--text); position: relative;
+}
+pre::before {
+  content: attr(data-lang); position: absolute; top: 6px; right: 10px;
+  font-size: 9px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase;
+}
+pre code { background: none; border: none; padding: 0; color: inherit; text-shadow: none; }
+pre .kw   { color: var(--magenta);  text-shadow: var(--glow-accent); }
+pre .fn   { color: var(--cyan);     text-shadow: var(--glow-cyan);   }
+pre .str  { color: var(--lime);     text-shadow: var(--glow-lime);   }
+pre .num  { color: var(--electric); }
+pre .cm   { color: var(--text3);    font-style: italic; }
+pre .var  { color: var(--lavender); }
+pre .type { color: var(--peach);    }
+
+/* ── CALLOUTS ── */
+.callout {
+  border-left: 2px solid var(--accent); background: var(--bg2);
+  padding: 12px 16px; margin: 10px 0; border-radius: 0 var(--radius) var(--radius) 0;
+}
+.callout-title {
+  font-size: 9px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--accent);
+  text-shadow: var(--glow-accent); margin-bottom: 6px;
+}
+.callout-title::before { content: '■ '; }
+.callout p { margin-bottom: 0; font-size: 12px; }
+.callout.ok       { border-color: var(--ok);       } .callout.ok       .callout-title { color: var(--ok);       text-shadow: var(--glow-lime);   }
+.callout.warn     { border-color: var(--warn);     } .callout.warn     .callout-title { color: var(--warn);     text-shadow: none; }
+.callout.danger   { border-color: var(--danger);   } .callout.danger   .callout-title { color: var(--danger);   text-shadow: var(--glow-accent); }
+.callout.info     { border-color: var(--info);     } .callout.info     .callout-title { color: var(--info);     text-shadow: var(--glow-cyan);   }
+.callout.violet   { border-color: var(--violet);   } .callout.violet   .callout-title { color: var(--violet);   text-shadow: var(--glow-violet); }
+.callout.rose     { border-color: var(--rose);     } .callout.rose     .callout-title { color: var(--rose);     }
+.callout.lavender { border-color: var(--lavender); } .callout.lavender .callout-title { color: var(--lavender); }
+.callout.aqua     { border-color: var(--aqua);     } .callout.aqua     .callout-title { color: var(--aqua);     }
+.callout.peach    { border-color: var(--peach);    } .callout.peach    .callout-title { color: var(--peach);    }
+.callout.mint     { border-color: var(--mint);     } .callout.mint     .callout-title { color: var(--mint);     }
+.callout.lime     { border-color: var(--lime);     } .callout.lime     .callout-title { color: var(--lime);     text-shadow: var(--glow-lime);   }
+
+/* ── TABLA ── */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 12px; }
+th {
+  background: var(--bg3); padding: 7px 12px; text-align: left;
+  font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--cyan); text-shadow: var(--glow-cyan); border-bottom: 1px solid var(--border2);
+}
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+tr:hover td { background: var(--bg3); }
+
+/* ── BOTONES ── */
+.btn {
+  display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 700;
+  padding: 6px 14px; border: 1px solid var(--border2); border-radius: var(--radius);
+  background: var(--bg2); color: var(--text2); cursor: pointer;
+  transition: all .12s; letter-spacing: .05em;
+}
+.btn:hover        { border-color: var(--accent); color: var(--accent); text-shadow: var(--glow-accent); }
+.btn.primary      { border-color: var(--accent);   color: var(--accent);   text-shadow: var(--glow-accent);  }
+.btn.cyan         { border-color: var(--cyan);     color: var(--cyan);     text-shadow: var(--glow-cyan);    }
+.btn.lime         { border-color: var(--lime);     color: var(--lime);     text-shadow: var(--glow-lime);    }
+.btn.violet       { border-color: var(--violet);   color: var(--violet);   text-shadow: var(--glow-violet);  }
+.btn.rose         { border-color: var(--rose);     color: var(--rose);     }
+.btn.lavender     { border-color: var(--lavender); color: var(--lavender); }
+.btn.aqua         { border-color: var(--aqua);     color: var(--aqua);     }
+.btn.peach        { border-color: var(--peach);    color: var(--peach);    }
+.btn.mint         { border-color: var(--mint);     color: var(--mint);     }
+.btn.ok           { border-color: var(--ok);       color: var(--ok);       text-shadow: var(--glow-lime);    }
+.btn.warn         { border-color: var(--warn);     color: var(--warn);     }
+.btn.danger       { border-color: var(--danger);   color: var(--danger);   text-shadow: var(--glow-accent);  }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 700;
+  padding: 2px 7px; border: 1px solid var(--border2); border-radius: var(--radius);
+  color: var(--text2); letter-spacing: .08em; text-transform: uppercase;
+}
+.badge.accent   { border-color: var(--accent);   color: var(--accent);   text-shadow: var(--glow-accent);  }
+.badge.cyan     { border-color: var(--cyan);     color: var(--cyan);     text-shadow: var(--glow-cyan);    }
+.badge.lime     { border-color: var(--lime);     color: var(--lime);     text-shadow: var(--glow-lime);    }
+.badge.violet   { border-color: var(--violet);   color: var(--violet);   text-shadow: var(--glow-violet);  }
+.badge.electric { border-color: var(--electric); color: var(--electric); }
+.badge.rose     { border-color: var(--rose);     color: var(--rose);     }
+.badge.lavender { border-color: var(--lavender); color: var(--lavender); }
+.badge.aqua     { border-color: var(--aqua);     color: var(--aqua);     }
+.badge.peach    { border-color: var(--peach);    color: var(--peach);    }
+.badge.mint     { border-color: var(--mint);     color: var(--mint);     }
+.badge.ok       { border-color: var(--ok);       color: var(--ok);       text-shadow: var(--glow-lime);    }
+.badge.warn     { border-color: var(--warn);     color: var(--warn);     }
+.badge.danger   { border-color: var(--danger);   color: var(--danger);   text-shadow: var(--glow-accent);  }
+
+/* ── CARDS ── */
+.card {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 16px 18px; margin-bottom: 10px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.card:hover { border-color: var(--accent); box-shadow: var(--glow-accent); }
+
+/* ── MÉTRICAS ── */
+.metrics-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+.metric {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 12px 16px; flex: 1; min-width: 100px;
+}
+.metric-val { font-size: 22px; font-weight: 700; color: var(--accent); text-shadow: var(--glow-accent); }
+.metric-lbl { font-size: 10px; color: var(--text2); margin-top: 3px; letter-spacing: .05em; }
+.metric-val.cyan     { color: var(--cyan);     text-shadow: var(--glow-cyan);   }
+.metric-val.lime     { color: var(--lime);     text-shadow: var(--glow-lime);   }
+.metric-val.violet   { color: var(--violet);   text-shadow: var(--glow-violet); }
+.metric-val.rose     { color: var(--rose);     }
+.metric-val.lavender { color: var(--lavender); }
+.metric-val.electric { color: var(--electric); }
+
+/* ── DIVIDER ── */
+hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0; }
+
+/* ── TIMELINE ── */
+.timeline { margin: 14px 0; }
+.timeline-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.timeline-item:last-child { border-bottom: none; }
+.timeline-dot {
+  width: 26px; height: 26px; border-radius: var(--radius); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; margin-top: 2px;
+  border: 1px solid var(--border2); color: var(--text2); background: var(--bg3);
+}
+.timeline-dot.done    { border-color: var(--ok);     color: var(--ok);     text-shadow: var(--glow-lime);   }
+.timeline-dot.pending { border-color: var(--border2);color: var(--text3);  }
+.timeline-dot.warn    { border-color: var(--warn);   color: var(--warn);   }
+.timeline-dot.danger  { border-color: var(--danger); color: var(--danger); text-shadow: var(--glow-accent); }
+.timeline-dot.info    { border-color: var(--cyan);   color: var(--cyan);   text-shadow: var(--glow-cyan);   }
+
+/* ── STEP ROW ── */
+.step-row {
+  display: flex; gap: 14px; align-items: flex-start; margin: 12px 0; padding: 14px;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-left: 2px solid var(--accent); border-radius: var(--radius);
+}
+.step-num {
+  font-size: 18px; font-weight: 700; color: var(--accent);
+  text-shadow: var(--glow-accent); min-width: 28px; line-height: 1; margin-top: 2px;
+}
+
+/* ── TOGGLE ── */
+.theme-btn {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  padding: 5px 12px; background: none; border: 1px solid var(--border2);
+  border-radius: var(--radius); color: var(--text2); cursor: pointer;
+  transition: all .12s; letter-spacing: .05em;
+}
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); text-shadow: var(--glow-accent); }
+
+/* ── LAYOUT ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.swatch-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+.swatch { width: 88px; text-align: center; font-size: 9px; color: var(--text2); letter-spacing: .04em; }
+.swatch-box { height: 48px; border-radius: var(--radius); margin-bottom: 6px; border: 1px solid var(--border2); position: relative; }
+.swatch-hex {
+  position: absolute; bottom: 4px; left: 5px; font-size: 9px;
+  color: rgba(255,255,255,.7); mix-blend-mode: difference;
+  letter-spacing: -.3px; line-height: 1; pointer-events: none;
+}
 </style>
 </head>
-<body class="sherry sherry-tri">
+<body class="tri-on">
+
+<div class="tri-bg"></div>
+
+<div class="page">
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
-  <div style="font-family:var(--mono);font-size:24px;font-weight:700;letter-spacing:-1px">
-    sherry<span style="color:var(--accent);text-shadow:var(--glow-accent)">_theme</span><span class="cursor"></span>
+  <div style="font-size:24px;font-weight:700;letter-spacing:-1px">
+    sherry<span id="accent-span" style="color:var(--accent);text-shadow:var(--glow-accent)">_theme</span><span class="cursor"></span>
   </div>
   <div style="display:flex;gap:8px">
-    <button class="btn" onclick="sherry.toggleGrid()">tri</button>
-    <button class="btn" onclick="sherry.toggleCRT()">crt</button>
-    <button class="theme-btn" data-sherry-toggle onclick="sherry.toggleTheme()">⬜ light</button>
+    <button class="btn" onclick="toggleTri()">tri</button>
+    <button class="btn" onclick="toggleCRT()">crt</button>
+    <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">⬜ light</button>
   </div>
 </div>
 
-<!-- ── Paleta completa ── -->
+<!-- ── Paleta ── -->
 <h2>Paleta de colores</h2>
 <p class="muted">Tokens disponibles como variables CSS. Cambian automáticamente con el tema.</p>
 
@@ -96,7 +413,7 @@
 <div class="callout warn"><div class="callout-title">Warn · Electric</div><p>Componente inestable. Revisar antes de continuar.</p></div>
 <div class="callout danger"><div class="callout-title">Danger · Magenta</div><p>Fallo crítico en el núcleo. No encender sin reparar.</p></div>
 <div class="callout info"><div class="callout-title">Info · Cyan</div><p>Protocolo de red activo. Escuchando en el puerto 8080.</p></div>
-<div class="callout violet"><div class="callout-title">Violet</div><p>Experimental. Sherry no está segura de cómo funciona. Pero funciona.</p></div>
+<div class="callout violet"><div class="callout-title">Violet</div><p>Experimental. Comportamiento no documentado. Resultados consistentes.</p></div>
 <div class="callout rose"><div class="callout-title">Rose</div><p>Interfaz de usuario. Pastel suave.</p></div>
 <div class="callout lavender"><div class="callout-title">Lavender</div><p>Módulo de aprendizaje autónomo. Clasificación en progreso.</p></div>
 <div class="callout aqua"><div class="callout-title">Aqua</div><p>Stream de datos entrante. Buffer al 74%.</p></div>
@@ -162,7 +479,7 @@
 
 <!-- ── Código ── -->
 <h2>Código</h2>
-<p>Inline: <code>sherry.toggleCRT()</code> activa el efecto de scanlines.</p>
+<p>Inline: <code>toggleCRT()</code> activa el efecto de scanlines.</p>
 <pre data-lang="python"><span class="cm"># sherry construye desde basura</span>
 <span class="kw">class</span> <span class="type">Artefacto</span>:
     <span class="fn">def</span> <span class="kw">__init__</span>(<span class="var">self</span>, materiales):
@@ -185,10 +502,10 @@
   <tr><td><code>--lime</code></td><td>#AAFF00</td><td>#557700</td><td>OK · output · éxito neon</td></tr>
   <tr><td><code>--violet</code></td><td>#BF5FFF</td><td>#6622AA</td><td>Experimental · modelos · IA</td></tr>
   <tr><td><code>--electric</code></td><td>#FFE600</td><td>#887700</td><td>Advertencia · latencia · energía</td></tr>
-  <tr><td><code>--rose</code></td><td>#FFB3DE</td><td>#CC5588</td><td>UI · pastel cálido · interfaz</td></tr>
-  <tr><td><code>--lavender</code></td><td>#D4AAFF</td><td>#7744AA</td><td>ML · clasificación · pastel frío</td></tr>
-  <tr><td><code>--aqua</code></td><td>#A8EFFF</td><td>#227788</td><td>Streams · datos · pastel azul</td></tr>
-  <tr><td><code>--peach</code></td><td>#FFD4AA</td><td>#AA6633</td><td>Output legible · contenido · UX</td></tr>
+  <tr><td><code>--rose</code></td><td>#FFB3DE</td><td>#CC5588</td><td>UI · pastel cálido</td></tr>
+  <tr><td><code>--lavender</code></td><td>#D4AAFF</td><td>#7744AA</td><td>ML · clasificación</td></tr>
+  <tr><td><code>--aqua</code></td><td>#A8EFFF</td><td>#227788</td><td>Streams · datos</td></tr>
+  <tr><td><code>--peach</code></td><td>#FFD4AA</td><td>#AA6633</td><td>Output legible · UX</td></tr>
   <tr><td><code>--mint</code></td><td>#AAFFD4</td><td>#337755</td><td>Log limpio · éxito suave</td></tr>
 </table>
 
@@ -258,40 +575,51 @@
   sherry_theme · by RemiH06 · iroFactory · AGPL-3.0
 </p>
 
-<script src="sherry_theme.js"></script>
+</div><!-- .page -->
+
 <script>
+let isLight = false;
+let crtOn   = true;
+let triOn   = true;
+
+function toggleTheme() {
+  isLight = !isLight;
+  document.body.classList.toggle('light', isLight);
+  document.getElementById('toggle-btn').textContent = isLight ? '⬛ dark' : '⬜ light';
+  updateHexes();
+}
+
+function toggleCRT() {
+  crtOn = !crtOn;
+  document.body.classList.toggle('crt-on', crtOn);
+}
+
+function toggleTri() {
+  triOn = !triOn;
+  document.body.classList.toggle('tri-on', triOn);
+}
+
 function cssVar(name) {
   return getComputedStyle(document.body).getPropertyValue(name).trim();
 }
+
 function updateHexes() {
-  const tokens = {
-    'hex-magenta':  '--magenta',
-    'hex-cyan':     '--cyan',
-    'hex-lime':     '--lime',
-    'hex-violet':   '--violet',
-    'hex-electric': '--electric',
-    'hex-rose':     '--rose',
-    'hex-lavender': '--lavender',
-    'hex-aqua':     '--aqua',
-    'hex-peach':    '--peach',
-    'hex-mint':     '--mint',
-    'hex-black':    '--black',
-    'hex-gray':     '--gray',
-    'hex-white':    '--white',
-    'hex-accent':   '--accent',
-    'hex-accent2':  '--accent2',
-    'hex-ok':       '--ok',
-    'hex-warn':     '--warn',
-    'hex-danger':   '--danger',
-    'hex-info':     '--info',
+  const map = {
+    'hex-magenta':'--magenta','hex-cyan':'--cyan','hex-lime':'--lime',
+    'hex-violet':'--violet','hex-electric':'--electric','hex-rose':'--rose',
+    'hex-lavender':'--lavender','hex-aqua':'--aqua','hex-peach':'--peach',
+    'hex-mint':'--mint','hex-black':'--black','hex-gray':'--gray',
+    'hex-white':'--white','hex-accent':'--accent','hex-accent2':'--accent2',
+    'hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger','hex-info':'--info',
   };
-  Object.entries(tokens).forEach(([id, token]) => {
+  Object.entries(map).forEach(([id, token]) => {
     const el = document.getElementById(id);
     if (el) el.textContent = cssVar(token);
   });
 }
-document.addEventListener('DOMContentLoaded', updateHexes);
-sherry.onThemeChange(updateHexes);
+
+updateHexes();
+document.body.classList.add('crt-on');
 </script>
 </body>
 </html>
