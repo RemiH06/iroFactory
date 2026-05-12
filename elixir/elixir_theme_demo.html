@@ -617,7 +617,7 @@ function makeNode() {
     x: Math.random() * W, y: Math.random() * H,
     vx: (Math.random() - .5) * SPEED,
     vy: (Math.random() - .5) * SPEED,
-    r: 2 + Math.random() * 2.5,
+    r: 3.5 + Math.random() * 3,
     color: rnd(pal().nodes),
     pColor: null, pT: 0, pDur: 0,
   };
@@ -658,8 +658,8 @@ function draw(ts) {
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
         ctx.strokeStyle = p.edge;
-        ctx.globalAlpha = (1 - d/DIST) * .8;
-        ctx.lineWidth = .8;
+        ctx.globalAlpha = (1 - d/DIST) * 1.0;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
       }
     }
@@ -676,12 +676,12 @@ function draw(ts) {
       n.pT += dt;
       const t    = Math.min(n.pT / n.pDur, 1);
       const ease = t < .5 ? 2*t*t : -1 + (4 - 2*t)*t;
-      r          = n.r + ease * 5;
+      r          = n.r + ease * 6;
       color      = n.pColor;
-      ctx.globalAlpha = .3 + ease * .7;
-      if (n.pT >= n.pDur) { n.pColor = null; n.pDur = 0; }
+      ctx.globalAlpha = .5 + ease * .5;
+      if (n.pT >= n.pDur) { n.color = n.pColor; n.pColor = null; n.pDur = 0; }
     } else {
-      ctx.globalAlpha = .8;
+      ctx.globalAlpha = .92;
     }
 
     ctx.beginPath();
@@ -703,4 +703,4 @@ window.addEventListener('resize', resize);
 updateHexes();
 </script>
 </body>
-</html> 
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lambda_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,400i,700&family=fira-code:400,500&display=swap" rel="stylesheet">
+<style>
+body {
+  --bg:#1A2420;--bg2:#202C28;--bg3:#283830;
+  --text:#EEE8DC;--text2:#A09880;--border:#304038;
+  --theorem:#A8C8E8;--proof:#E8D880;--qed:#A8E8C0;
+  --chalk-blue:#A8C8E8;--chalk-yellow:#E8D880;--chalk-green:#A8E8C0;
+  --chalk-pink:#E8A8C0;--chalk-violet:#C8A8E8;--chalk-orange:#E8C0A8;
+  --chalk-red:#E8A8A8;--chalk-cyan:#A8E8E8;
+  --black:#101814;--white:#F0EAE0;--gray:#607068;
+  --accent:#A8C8E8;--accent2:#E8D880;
+  --ok:#A8E8C0;--warn:#E8D880;--danger:#E8A8A8;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --mono:'Fira Code',monospace;
+  --radius:4px;
+}
+body.light {
+  --bg:#F8F8F4;--bg2:#F0F0E8;--bg3:#E4E4D8;
+  --text:#141410;--text2:#585848;--border:#C8C8B8;
+  --theorem:#1A60C0;--proof:#C08010;--qed:#1A9050;
+  --chalk-blue:#1A60C0;--chalk-yellow:#C08010;--chalk-green:#1A9050;
+  --chalk-pink:#C01A60;--chalk-violet:#6010C0;--chalk-orange:#C04010;
+  --chalk-red:#C01A1A;--chalk-cyan:#1A90A0;
+  --black:#080808;--white:#FEFEFC;--gray:#909080;
+  --accent:#1A60C0;--accent2:#C08010;
+  --ok:#1A9050;--warn:#C08010;--danger:#C01A1A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:16px;line-height:1.8;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+#lambda-hex{position:fixed;inset:0;pointer-events:none;z-index:0}
+#lambda-bg{position:fixed;inset:0;pointer-events:none;z-index:1}
+.page{position:relative;z-index:2;padding:40px;max-width:860px;margin:0 auto}
+
+h2{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--text);margin:40px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:.02em}
+h3{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--accent);margin:24px 0 10px;letter-spacing:.08em;text-transform:uppercase}
+h4{font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px}
+p{margin-bottom:14px;line-height:1.85}
+p.muted{color:var(--text2);font-size:14px}
+.math{font-family:var(--mono);font-size:14px;color:var(--chalk-yellow);padding:0 3px}
+
+code{font-family:var(--mono);font-size:12px;background:var(--bg3);border:1px solid var(--border);padding:1px 6px;border-radius:var(--radius);color:var(--accent)}
+pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--radius);padding:14px 18px;margin:14px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.75;color:var(--text);position:relative}
+pre::before{content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw{color:var(--chalk-blue)}pre .fn{color:var(--chalk-cyan)}pre .str{color:var(--chalk-green)}
+pre .num{color:var(--chalk-yellow)}pre .cm{color:var(--text2);font-style:italic}
+pre .tp{color:var(--chalk-violet)}pre .op{color:var(--chalk-pink)}
+
+.theorem-box{border:1px solid var(--theorem);border-left:3px solid var(--theorem);background:color-mix(in srgb,var(--theorem) 6%,transparent);padding:16px 20px;margin:20px 0;border-radius:0 var(--radius) var(--radius) 0}
+.theorem-box .theorem-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--theorem);margin-bottom:8px}
+.theorem-box .theorem-body{font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.9;color:var(--text)}
+.theorem-box.proof{border-color:var(--proof);background:color-mix(in srgb,var(--proof) 6%,transparent)}.theorem-box.proof .theorem-label{color:var(--proof)}
+.theorem-box.qed{border-color:var(--qed);background:color-mix(in srgb,var(--qed) 6%,transparent)}.theorem-box.qed .theorem-label{color:var(--qed)}
+
+.callout{border-left:2px solid var(--accent);background:var(--bg2);padding:12px 16px;margin:10px 0;border-radius:0 var(--radius) var(--radius) 0}
+.callout-title{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.callout p{margin-bottom:0;font-size:14px}
+.callout.ok{border-color:var(--ok)}.callout.ok .callout-title{color:var(--ok)}
+.callout.warn{border-color:var(--warn)}.callout.warn .callout-title{color:var(--warn)}
+.callout.danger{border-color:var(--danger)}.callout.danger .callout-title{color:var(--danger)}
+.callout.theorem{border-color:var(--theorem)}.callout.theorem .callout-title{color:var(--theorem)}
+.callout.proof{border-color:var(--proof)}.callout.proof .callout-title{color:var(--proof)}
+.callout.qed{border-color:var(--qed)}.callout.qed .callout-title{color:var(--qed)}
+.callout.chalk-blue{border-color:var(--chalk-blue)}.callout.chalk-blue .callout-title{color:var(--chalk-blue)}
+.callout.chalk-yellow{border-color:var(--chalk-yellow)}.callout.chalk-yellow .callout-title{color:var(--chalk-yellow)}
+.callout.chalk-green{border-color:var(--chalk-green)}.callout.chalk-green .callout-title{color:var(--chalk-green)}
+.callout.chalk-pink{border-color:var(--chalk-pink)}.callout.chalk-pink .callout-title{color:var(--chalk-pink)}
+.callout.chalk-violet{border-color:var(--chalk-violet)}.callout.chalk-violet .callout-title{color:var(--chalk-violet)}
+.callout.chalk-orange{border-color:var(--chalk-orange)}.callout.chalk-orange .callout-title{color:var(--chalk-orange)}
+.callout.chalk-cyan{border-color:var(--chalk-cyan)}.callout.chalk-cyan .callout-title{color:var(--chalk-cyan)}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th{background:var(--bg3);padding:8px 14px;text-align:left;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);border-bottom:1px solid var(--border)}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg3)}
+
+.btn{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;padding:6px 16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all .15s;letter-spacing:.04em}
+.btn:hover,.btn.primary{border-color:var(--accent);color:var(--accent)}
+.btn.ok{border-color:var(--ok);color:var(--ok)}.btn.warn{border-color:var(--warn);color:var(--warn)}.btn.danger{border-color:var(--danger);color:var(--danger)}
+.btn.theorem{border-color:var(--theorem);color:var(--theorem)}.btn.proof{border-color:var(--proof);color:var(--proof)}
+.btn.chalk-blue{border-color:var(--chalk-blue);color:var(--chalk-blue)}.btn.chalk-yellow{border-color:var(--chalk-yellow);color:var(--chalk-yellow)}
+.btn.chalk-green{border-color:var(--chalk-green);color:var(--chalk-green)}.btn.chalk-pink{border-color:var(--chalk-pink);color:var(--chalk-pink)}
+.btn.chalk-violet{border-color:var(--chalk-violet);color:var(--chalk-violet)}.btn.chalk-cyan{border-color:var(--chalk-cyan);color:var(--chalk-cyan)}
+
+.badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);letter-spacing:.06em;text-transform:uppercase}
+.badge.accent{border-color:var(--accent);color:var(--accent)}.badge.ok{border-color:var(--ok);color:var(--ok)}.badge.warn{border-color:var(--warn);color:var(--warn)}.badge.danger{border-color:var(--danger);color:var(--danger)}
+.badge.theorem{border-color:var(--theorem);color:var(--theorem)}.badge.proof{border-color:var(--proof);color:var(--proof)}.badge.qed{border-color:var(--qed);color:var(--qed)}
+.badge.chalk-blue{border-color:var(--chalk-blue);color:var(--chalk-blue)}.badge.chalk-yellow{border-color:var(--chalk-yellow);color:var(--chalk-yellow)}
+.badge.chalk-green{border-color:var(--chalk-green);color:var(--chalk-green)}.badge.chalk-pink{border-color:var(--chalk-pink);color:var(--chalk-pink)}
+.badge.chalk-violet{border-color:var(--chalk-violet);color:var(--chalk-violet)}.badge.chalk-orange{border-color:var(--chalk-orange);color:var(--chalk-orange)}
+.badge.chalk-red{border-color:var(--chalk-red);color:var(--chalk-red)}.badge.chalk-cyan{border-color:var(--chalk-cyan);color:var(--chalk-cyan)}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px;transition:border-color .2s}
+.card:hover{border-color:var(--accent)}
+
+.metrics-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;flex:1;min-width:100px}
+.metric-val{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent);letter-spacing:-1px}
+.metric-lbl{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:3px;letter-spacing:.05em}
+.metric-val.theorem{color:var(--theorem)}.metric-val.proof{color:var(--proof)}.metric-val.qed{color:var(--qed)}
+.metric-val.chalk-violet{color:var(--chalk-violet)}.metric-val.chalk-pink{color:var(--chalk-pink)}.metric-val.chalk-cyan{color:var(--chalk-cyan)}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+.proof-step{display:flex;gap:16px;align-items:flex-start;margin:10px 0;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--radius)}
+.proof-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);min-width:36px;line-height:1;margin-top:3px;letter-spacing:.06em}
+
+.deriv-log{margin:14px 0}
+.deriv-entry{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.deriv-entry:last-child{border-bottom:none}
+.deriv-dot{width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;margin-top:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.deriv-dot.theorem{border-color:var(--theorem);color:var(--theorem);background:color-mix(in srgb,var(--theorem) 12%,transparent)}
+.deriv-dot.proof{border-color:var(--proof);color:var(--proof);background:color-mix(in srgb,var(--proof) 12%,transparent)}
+.deriv-dot.qed{border-color:var(--qed);color:var(--qed);background:color-mix(in srgb,var(--qed) 12%,transparent)}
+.deriv-dot.warn{border-color:var(--warn);color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.deriv-dot.danger{border-color:var(--danger);color:var(--danger);background:color-mix(in srgb,var(--danger) 12%,transparent)}
+
+.theme-btn{font-family:var(--mono);font-size:11px;font-weight:500;padding:5px 14px;background:none;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .15s;letter-spacing:.04em}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.swatch{width:88px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--text2)}
+.swatch-box{height:48px;border-radius:var(--radius);margin-bottom:6px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:5px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div id="lambda-hex"></div>
+<canvas id="lambda-bg"></canvas>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
+  <div style="font-family:var(--serif);font-size:42px;font-weight:700;letter-spacing:-.5px;line-height:1">
+    <span style="color:var(--accent)">λ lambda</span><span style="color:var(--text2)">_theme</span>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">◎ light</button>
+</div>
+
+<h2>Paleta de colores</h2>
+<p class="muted">Tizas sobre pizarrón en oscuro · Marcadores sobre pintarrón en claro.</p>
+<h3>Semántico matemático</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--theorem)"><span class="swatch-hex" id="hex-theorem"></span></div>--theorem</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--proof)"><span class="swatch-hex" id="hex-proof"></span></div>--proof</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--qed)"><span class="swatch-hex" id="hex-qed"></span></div>--qed</div>
+</div>
+<h3>Paleta tizas / marcadores</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--chalk-blue)"><span class="swatch-hex" id="hex-blue"></span></div>--ch-blue</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--chalk-yellow)"><span class="swatch-hex" id="hex-yellow"></span></div>--ch-yellow</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--chalk-green)"><span class="swatch-hex" id="hex-green"></span></div>--ch-green</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--chalk-pink)"><span class="swatch-hex" id="hex-pink"></span></div>--ch-pink</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--chalk-violet)"><span class="swatch-hex" id="hex-violet"></span></div>--ch-violet</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--chalk-orange)"><span class="swatch-hex" id="hex-orange"></span></div>--ch-orange</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--chalk-red)"><span class="swatch-hex" id="hex-red"></span></div>--ch-red</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--chalk-cyan)"><span class="swatch-hex" id="hex-cyan"></span></div>--ch-cyan</div>
+</div>
+<h3>Neutros y semánticos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<hr class="divider">
+<h2>Theorem Boxes</h2>
+<div class="theorem-box"><div class="theorem-label">Teorema</div><div class="theorem-body">Para todo conjunto infinito <span class="math">A</span>, existe una biyección entre <span class="math">A</span> y algún subconjunto propio de <span class="math">A</span>.</div></div>
+<div class="theorem-box proof"><div class="theorem-label">Demostración</div><div class="theorem-body">Sea <span class="math">f: A → A \ {a₀}</span> una función inyectiva. Por el axioma de elección, existe si y solo si <span class="math">|A| ≥ ℵ₀</span>. □</div></div>
+<div class="theorem-box qed"><div class="theorem-label">Corolario</div><div class="theorem-body">Todo conjunto infinito contiene un subconjunto numerable. Se sigue del teorema anterior por inducción transfinita.</div></div>
+
+<hr class="divider">
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento (default)</div><p>Notas generales, referencias bibliográficas y observaciones del margen.</p></div>
+<div class="callout ok"><div class="callout-title">OK</div><p>Resultado verificado. La demostración es correcta.</p></div>
+<div class="callout warn"><div class="callout-title">Warn</div><p>Caso especial no cubierto. Revisar hipótesis de regularidad.</p></div>
+<div class="callout danger"><div class="callout-title">Danger</div><p>Contraejemplo encontrado. La conjetura es falsa en general.</p></div>
+<div class="callout theorem"><div class="callout-title">Theorem</div><p>Enunciado formal pendiente de demostración.</p></div>
+<div class="callout proof"><div class="callout-title">Proof</div><p>Desarrollo de la demostración paso a paso.</p></div>
+<div class="callout qed"><div class="callout-title">QED</div><p>Demostración completada. Quod erat demonstrandum.</p></div>
+<div class="callout chalk-violet"><div class="callout-title">Violet</div><p>Resultado conjetural. Pendiente de verificación formal.</p></div>
+<div class="callout chalk-pink"><div class="callout-title">Pink</div><p>Caso degenerado o patológico. Tratar con cuidado.</p></div>
+<div class="callout chalk-cyan"><div class="callout-title">Cyan</div><p>Referencia cruzada con otro resultado o sección.</p></div>
+<div class="callout chalk-orange"><div class="callout-title">Orange</div><p>Complejidad computacional del algoritmo asociado.</p></div>
+
+<hr class="divider">
+<h2>Badges</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <span class="badge accent">accent</span><span class="badge theorem">theorem</span><span class="badge proof">proof</span><span class="badge qed">qed</span>
+  <span class="badge ok">ok</span><span class="badge warn">warn</span><span class="badge danger">danger</span>
+  <span class="badge chalk-blue">ch-blue</span><span class="badge chalk-yellow">ch-yellow</span><span class="badge chalk-green">ch-green</span>
+  <span class="badge chalk-pink">ch-pink</span><span class="badge chalk-violet">ch-violet</span><span class="badge chalk-orange">ch-orange</span>
+  <span class="badge chalk-cyan">ch-cyan</span><span class="badge">default</span>
+</div>
+
+<hr class="divider">
+<h2>Botones</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <button class="btn primary">primary</button><button class="btn">default</button>
+  <button class="btn theorem">theorem</button><button class="btn proof">proof</button>
+  <button class="btn ok">ok</button><button class="btn warn">warn</button><button class="btn danger">danger</button>
+  <button class="btn chalk-blue">ch-blue</button><button class="btn chalk-yellow">ch-yellow</button>
+  <button class="btn chalk-green">ch-green</button><button class="btn chalk-pink">ch-pink</button>
+  <button class="btn chalk-violet">ch-violet</button><button class="btn chalk-cyan">ch-cyan</button>
+</div>
+
+<hr class="divider">
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">ℵ₀</div><div class="metric-lbl">cardinalidad</div></div>
+  <div class="metric"><div class="metric-val theorem">P≠NP</div><div class="metric-lbl">conjetura</div></div>
+  <div class="metric"><div class="metric-val proof">O(n²)</div><div class="metric-lbl">complejidad</div></div>
+  <div class="metric"><div class="metric-val qed">∀x∈ℝ</div><div class="metric-lbl">cuantificador</div></div>
+  <div class="metric"><div class="metric-val chalk-violet">∫∞</div><div class="metric-lbl">integral</div></div>
+  <div class="metric"><div class="metric-val chalk-pink">∂f/∂x</div><div class="metric-lbl">derivada</div></div>
+</div>
+
+<hr class="divider">
+<h2>Código</h2>
+<pre data-lang="haskell"><span class="cm">-- Función de Ackermann</span>
+<span class="kw">ackermann</span> :: <span class="tp">Int</span> <span class="op">-></span> <span class="tp">Int</span> <span class="op">-></span> <span class="tp">Int</span>
+<span class="kw">ackermann</span> <span class="num">0</span> n = n <span class="op">+</span> <span class="num">1</span>
+<span class="kw">ackermann</span> m <span class="num">0</span> = <span class="fn">ackermann</span> (m <span class="op">-</span> <span class="num">1</span>) <span class="num">1</span>
+<span class="kw">ackermann</span> m n = <span class="fn">ackermann</span> (m <span class="op">-</span> <span class="num">1</span>) (<span class="fn">ackermann</span> m (n <span class="op">-</span> <span class="num">1</span>))</pre>
+
+<hr class="divider">
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Oscuro</th><th>Claro</th><th>Semántica</th></tr>
+  <tr><td><code>--theorem</code></td><td>#A8C8E8</td><td>#1A60C0</td><td>Enunciado · tiza/marcador azul</td></tr>
+  <tr><td><code>--proof</code></td><td>#E8D880</td><td>#C08010</td><td>Demostración · amarillo</td></tr>
+  <tr><td><code>--qed</code></td><td>#A8E8C0</td><td>#1A9050</td><td>Completado · verde</td></tr>
+  <tr><td><code>--chalk-violet</code></td><td>#C8A8E8</td><td>#6010C0</td><td>Conjeturas</td></tr>
+  <tr><td><code>--chalk-pink</code></td><td>#E8A8C0</td><td>#C01A60</td><td>Casos especiales</td></tr>
+  <tr><td><code>--chalk-cyan</code></td><td>#A8E8E8</td><td>#1A90A0</td><td>Referencias cruzadas</td></tr>
+</table>
+
+<hr class="divider">
+<h2>Derivation Log</h2>
+<div class="deriv-log">
+  <div class="deriv-entry"><div class="deriv-dot theorem">∀</div><div><h4>Hipótesis establecida</h4><p class="muted">Sea <span class="math">G = (V, E)</span> un grafo conexo no dirigido.</p></div></div>
+  <div class="deriv-entry"><div class="deriv-dot proof">⊢</div><div><h4>Paso inductivo</h4><p class="muted">Por inducción sobre <span class="math">n</span>. El caso base <span class="math">n = 1</span> es trivial.</p></div></div>
+  <div class="deriv-entry"><div class="deriv-dot qed">□</div><div><h4>Conclusión</h4><p class="muted">Por tanto <span class="math">|E| ≥ n - 1</span>. El árbol generador mínimo existe. □</p></div></div>
+  <div class="deriv-entry"><div class="deriv-dot warn">?</div><div><h4>Caso abierto</h4><p class="muted">La unicidad del árbol generador permanece sin demostrar.</p></div></div>
+</div>
+
+<hr class="divider">
+<h2>Pasos de demostración</h2>
+<div class="proof-step"><div class="proof-num">paso 1</div><div><h4>Definición de términos</h4><p class="muted">Establecer formalmente los objetos matemáticos involucrados.</p></div></div>
+<div class="proof-step" style="border-left-color:var(--proof)"><div class="proof-num" style="color:var(--proof)">paso 2</div><div><h4>Construcción auxiliar</h4><p class="muted">Introducir objetos intermedios para el argumento principal.</p></div></div>
+<div class="proof-step" style="border-left-color:var(--qed)"><div class="proof-num" style="color:var(--qed)">paso 3</div><div><h4>Argumento central</h4><p class="muted">Aplicar el lema principal para establecer la relación buscada. □</p></div></div>
+
+<hr class="divider">
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card"><strong>Teorema de Pitágoras</strong><span class="badge theorem" style="margin-left:8px">demostrado</span><p class="muted" style="margin-top:8px">En todo triángulo rectángulo, <span class="math">a² + b² = c²</span>.</p></div>
+  <div class="card"><strong>Hipótesis de Riemann</strong><span class="badge chalk-violet" style="margin-left:8px">abierto</span><p class="muted" style="margin-top:8px">Todos los ceros no triviales de <span class="math">ζ(s)</span> tienen parte real <span class="math">½</span>.</p></div>
+</div>
+
+<hr class="divider">
+<p class="muted" style="text-align:center;margin-top:32px;font-family:var(--mono);font-size:11px;letter-spacing:.04em">
+  lambda_theme · by RemiH06 · iroFactory · AGPL-3.0
+</p>
+</div>
+
+<script>
+let isLight = false;
+
+function toggleTheme() {
+  isLight = !isLight;
+  document.body.classList.toggle('light', isLight);
+  document.getElementById('toggle-btn').textContent = isLight ? '● dark' : '◎ light';
+  buildHexBg();
+  updateHexes();
+  if (window.redrawChalk) window.redrawChalk();
+}
+
+function cssVar(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+
+function updateHexes() {
+  const map = {
+    'hex-theorem':'--theorem','hex-proof':'--proof','hex-qed':'--qed',
+    'hex-blue':'--chalk-blue','hex-yellow':'--chalk-yellow','hex-green':'--chalk-green',
+    'hex-pink':'--chalk-pink','hex-violet':'--chalk-violet','hex-orange':'--chalk-orange',
+    'hex-red':'--chalk-red','hex-cyan':'--chalk-cyan',
+    'hex-black':'--black','hex-gray':'--gray','hex-white':'--white',
+    'hex-accent':'--accent','hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger',
+  };
+  Object.entries(map).forEach(([id,tok]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = cssVar(tok);
+  });
+}
+
+function buildHexBg() {
+  const s   = 48;
+  const col = isLight ? '%23C0C0B0' : '%23304038';
+  const W   = +(s * Math.sqrt(3)).toFixed(4);
+  const H   = +(s * 2).toFixed(4);
+  const cx  = W / 2, cy = H / 2;
+  const verts = Array.from({length:6}, (_,i) => {
+    const a = (Math.PI / 3) * i + Math.PI / 6;
+    return [cx + s * Math.cos(a), cy + s * Math.sin(a)];
+  });
+  const pts  = verts.map(([x,y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
+  const attr = `fill='none' stroke='${col}' stroke-width='0.8'`;
+  const svg  = `%3Csvg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' overflow='visible'%3E%3Cpolygon points='${pts}' ${attr}/%3E%3C/svg%3E`;
+  const url  = `url("data:image/svg+xml,${svg}")`;
+  const el   = document.getElementById('lambda-hex');
+  el.style.backgroundImage    = `${url}, ${url}`;
+  el.style.backgroundSize     = `${W}px ${H}px, ${W}px ${H}px`;
+  el.style.backgroundPosition = `0 0, ${(W/2).toFixed(2)}px ${(H/2).toFixed(2)}px`;
+  el.style.opacity            = isLight ? 0.35 : 0.5;
+}
+
+buildHexBg();
+updateHexes();
+
+// ── Objetos del pizarrón ──────────────────────────────
+(function() {
+  const canvas = document.getElementById('lambda-bg');
+  const ctx    = canvas.getContext('2d');
+  let W, H, elements = [];
+
+  const DARK_COLS  = ['#A8C8E8','#E8D880','#A8E8C0','#E8A8C0','#C8A8E8','#E8C0A8','#E8A8A8','#A8E8E8'];
+  const LIGHT_COLS = ['#1A60C0','#C08010','#1A9050','#C01A60','#6010C0','#C04010','#C01A1A','#1A90A0'];
+
+  const FORMULAS = [
+    'E = mc²','∇²φ = 0','F = ma',
+    'eiπ + 1 = 0','∂²u/∂t² = c²∇²u',
+    'P(A|B) = P(B|A)·P(A)/P(B)',
+    '∑(1/n²) = π²/6',
+    'det(AB) = det(A)·det(B)',
+    '∀ε>0 ∃δ>0',
+    'lim(1+1/n)ⁿ = e',
+    'Γ(n+1) = n!',
+    'f(x) = ∫f̂(ξ)e²πiξx dξ',
+  ];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function buildElements() {
+    elements = [];
+    const rng  = (a,b) => a + Math.random() * (b - a);
+    const COLS = 5, ROWS = 5;
+    const cw = W / COLS, ch = H / ROWS;
+    const types = ['formula','formula','formula','circle','arrow','sine','axes'];
+    let fi = 0;
+
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        const cx  = (col + 0.5) * cw + rng(-cw * .28, cw * .28);
+        const cy  = (row + 0.5) * ch + rng(-ch * .28, ch * .28);
+        const idx = row * COLS + col;
+        const type = types[idx % types.length];
+        const colorIdx = idx % 8;  // cada elemento un color diferente
+
+        if (type === 'formula') {
+          elements.push({ type:'formula', text:FORMULAS[fi++ % FORMULAS.length], x:cx, y:cy, size:rng(12,20), ci:colorIdx });
+        } else if (type === 'circle') {
+          elements.push({ type:'circle', x:cx, y:cy, r:rng(24,70), ci:colorIdx });
+        } else if (type === 'arrow') {
+          elements.push({ type:'arrow', x1:cx, y1:cy, x2:cx+rng(-90,90), y2:cy+rng(-70,70), ci:colorIdx });
+        } else if (type === 'sine') {
+          elements.push({ type:'sine', x:cx-rng(60,100), y:cy, w:rng(120,200), phase:rng(0,Math.PI*2), ci:colorIdx });
+        } else if (type === 'axes') {
+          elements.push({ type:'axes', x:cx, y:cy, size:rng(36,65), ci:colorIdx });
+        }
+      }
+    }
+  }
+
+  function drawAll(ox, oy, alpha) {
+    const cols = isLight ? LIGHT_COLS : DARK_COLS;
+    elements.forEach(el => {
+      const col = cols[el.ci];
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = col;
+      ctx.fillStyle   = col;
+      ctx.lineWidth   = 1;
+
+      if (el.type === 'formula') {
+        ctx.font = `italic ${el.size}px 'Cormorant Garamond', serif`;
+        ctx.fillText(el.text, el.x + ox, el.y + oy);
+
+      } else if (el.type === 'circle') {
+        ctx.beginPath();
+        ctx.arc(el.x + ox, el.y + oy, el.r, 0, Math.PI * 2);
+        ctx.stroke();
+
+      } else if (el.type === 'arrow') {
+        const x1=el.x1+ox, y1=el.y1+oy, x2=el.x2+ox, y2=el.y2+oy;
+        const a = Math.atan2(y2-y1, x2-x1);
+        ctx.beginPath();
+        ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+        ctx.lineTo(x2-8*Math.cos(a-.4), y2-8*Math.sin(a-.4));
+        ctx.moveTo(x2,y2);
+        ctx.lineTo(x2-8*Math.cos(a+.4), y2-8*Math.sin(a+.4));
+        ctx.stroke();
+
+      } else if (el.type === 'sine') {
+        ctx.beginPath();
+        for (let i=0; i<=el.w; i++) {
+          const py = el.y + oy + Math.sin((i/el.w)*Math.PI*4 + el.phase) * 18;
+          i===0 ? ctx.moveTo(el.x+ox+i, py) : ctx.lineTo(el.x+ox+i, py);
+        }
+        ctx.stroke();
+
+      } else if (el.type === 'axes') {
+        const x=el.x+ox, y=el.y+oy, s=el.size;
+        ctx.beginPath();
+        ctx.moveTo(x,y+s); ctx.lineTo(x,y-s);
+        ctx.moveTo(x-s,y); ctx.lineTo(x+s,y);
+        ctx.stroke();
+        ctx.beginPath();
+        for (let i=-s; i<=s; i+=2) {
+          const py = y - (i*i)/(s*1.5);
+          i===-s ? ctx.moveTo(x+i,py) : ctx.lineTo(x+i,py);
+        }
+        ctx.stroke();
+      }
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const alpha = isLight ? 0.18 : 0.22;
+    drawAll(0,   0,   alpha);
+    drawAll(1.5, 1.0, alpha * 0.35);  // doble trazo sutil
+  }
+
+  resize();
+  buildElements();
+  draw();
+  window.redrawChalk = () => { buildElements(); draw(); };
+  window.addEventListener('resize', () => { resize(); buildElements(); draw(); });
+})();
+</script>
+</body>
+</html>
