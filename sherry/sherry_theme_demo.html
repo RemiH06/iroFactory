@@ -136,16 +136,16 @@ body.light::before {
 }
 
 /* Fondo triangular */
-body.tri-on .tri-bg {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='83.14' overflow='visible'%3E%3Cline x1='0' y1='0' x2='48' y2='0' stroke='%23777777' stroke-width='1.5'/%3E%3Cline x1='0' y1='41.57' x2='48' y2='41.57' stroke='%23777777' stroke-width='1.5'/%3E%3Cline x1='0' y1='83.14' x2='48' y2='83.14' stroke='%23777777' stroke-width='1.5'/%3E%3Cpolyline points='0,0 24,41.57 48,0' fill='none' stroke='%23777777' stroke-width='1.5'/%3E%3Cpolyline points='0,83.14 24,41.57 48,83.14' fill='none' stroke='%23777777' stroke-width='1.5'/%3E%3C/svg%3E");
-  background-size: 48px 83.14px;
-  background-position: 0 0;
-  opacity: .1;
-  pointer-events: none; z-index: 0;
+body.tri-on #tri-canvas {
+  display: block;
+  opacity: 1;
 }
-body.tri-on .tri-bg ~ * { position: relative; z-index: 1; }
+#tri-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  display: none;
+}
+body.tri-on .page { position: relative; z-index: 1; }
 
 /* Página */
 .page { padding: 40px; max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
@@ -350,7 +350,7 @@ hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0;
 </head>
 <body class="tri-on">
 
-<div class="tri-bg"></div>
+<canvas id="tri-canvas"></canvas>
 
 <div class="page">
 
@@ -597,6 +597,9 @@ function toggleCRT() {
 function toggleTri() {
   triOn = !triOn;
   document.body.classList.toggle('tri-on', triOn);
+  if (window._sherryTri) {
+    triOn ? window._sherryTri.resume() : window._sherryTri.pause();
+  }
 }
 
 function cssVar(name) {
@@ -617,6 +620,144 @@ function updateHexes() {
     if (el) el.textContent = cssVar(token);
   });
 }
+
+// ── Canvas triangular con destellos neón ──────────────
+(function() {
+  const canvas = document.getElementById('tri-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, tris = [], raf;
+
+  // Colores neón de sherry — más brillantes
+  const NEONS = ['#FF2D78','#00F5FF','#AAFF00','#BF5FFF','#FFE600','#FFB3DE','#A8EFFF'];
+
+  function buildTris() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    tris = [];
+
+    const s  = 48;
+    const th = 41.57;
+    const cols = Math.ceil(W / s) + 3;
+    const rows = Math.ceil(H / (th * 2)) + 3;
+
+    for (let r = 0; r < rows; r++) {
+      // Filas alternas desplazadas s/2 en X — rompe el efecto sierra
+      const ox = (r % 2 === 1) ? s / 2 : 0;
+      for (let c = 0; c < cols; c++) {
+        const x  = c * s - s + ox;
+        const y0 = r * th * 2 - th * 2;
+        const y1 = y0 + th;
+        const y2 = y0 + th * 2;
+
+        // △ — base en y0, vértice en y1
+        tris.push({
+          pts: [[x, y0], [x+s, y0], [x+s/2, y1]],
+          flashColor: null, flashDur: 0, flashT: 0,
+        });
+        // ▽ — vértice en y1, base en y2
+        tris.push({
+          pts: [[x+s/2, y1], [x+s, y2], [x, y2]],
+          flashColor: null, flashDur: 0, flashT: 0,
+        });
+      }
+    }
+  }
+
+  // Programar destellos aleatorios
+  function scheduleFlash() {
+    const delay = 80 + Math.random() * 300;
+    setTimeout(() => {
+      // Elegir un triángulo aleatorio
+      if (tris.length) {
+        const t = tris[Math.floor(Math.random() * tris.length)];
+        if (!t.flashColor) { // no interrumpir uno que ya brilla
+          t.flashColor = NEONS[Math.floor(Math.random() * NEONS.length)];
+          t.flashDur   = 600 + Math.random() * 800;
+          t.flashT     = 0;
+        }
+      }
+      scheduleFlash();
+    }, delay);
+  }
+
+  function draw(ts) {
+    ctx.clearRect(0, 0, W, H);
+    const isLight = document.body.classList.contains('light');
+    const baseColor = '#777777';
+    const baseAlpha = 0.1;
+
+    const s  = 48;
+    const th = 41.57;
+    const numRows = Math.ceil(H / (th * 2)) + 4;
+
+    // ── Líneas horizontales — una sola vez por nivel ──
+    ctx.strokeStyle = baseColor;
+    ctx.lineWidth   = 1.5;
+    ctx.globalAlpha = baseAlpha;
+    for (let r = 0; r < numRows * 2 + 1; r++) {
+      const y = r * th - th;
+      ctx.beginPath();
+      ctx.moveTo(-s, y);
+      ctx.lineTo(W + s, y);
+      ctx.stroke();
+    }
+
+    // ── Triángulos — solo lados oblicuos + destellos ──
+    for (const t of tris) {
+      const [a, b, c2] = t.pts;
+      let color = baseColor;
+      let alpha = baseAlpha;
+
+      if (t.flashColor) {
+        t.flashT += 16;
+        const progress = Math.min(t.flashT / t.flashDur, 1);
+        const ease = progress < 0.3
+          ? progress / 0.3
+          : 1 - ((progress - 0.3) / 0.7);
+        alpha = baseAlpha + ease * (isLight ? 0.55 : 0.7);
+        color = t.flashColor;
+        ctx.shadowColor = t.flashColor;
+        ctx.shadowBlur  = ease * 10;
+        if (t.flashT >= t.flashDur) {
+          t.flashColor = null;
+          t.flashDur   = 0;
+          ctx.shadowBlur = 0;
+        }
+      } else {
+        ctx.shadowBlur = 0;
+      }
+
+      // Solo los dos lados oblicuos (la horizontal ya está dibujada)
+      ctx.beginPath();
+      ctx.moveTo(a[0], a[1]);
+      ctx.lineTo(b[0], b[1]);
+      ctx.lineTo(c2[0], c2[1]);
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth   = 1.5;
+      ctx.stroke();
+    }
+
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur  = 0;
+    raf = requestAnimationFrame(draw);
+  }
+
+  function init() {
+    buildTris();
+    scheduleFlash();
+    raf = requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', buildTris);
+  setTimeout(init, 50);
+
+  // Exponer para que toggleTri pueda parar/arrancar
+  window._sherryTri = {
+    pause() { cancelAnimationFrame(raf); },
+    resume() { raf = requestAnimationFrame(draw); },
+  };
+})();
 
 updateHexes();
 document.body.classList.add('crt-on');

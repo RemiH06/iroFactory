@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tarot_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=josefin-sans:300,400,600,700&family=cinzel:400,700&family=fira-code:400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   TOKENS — CLARO (default) · marfil y oro
+══════════════════════════════════════════════════════ */
+body {
+  --bg:        #F8F2E8;
+  --bg2:       #F0E8D8;
+  --bg3:       #E4D8C0;
+
+  --text:      #1A0A08;
+  --text2:     #6A4030;
+
+  --border:    #C8A870;
+
+  /* ── Paleta art deco ── */
+  --gold:      #C8921A;    /* dorado principal    */
+  --gold-lt:   #E8B830;    /* dorado claro        */
+  --gold-dk:   #8A6010;    /* dorado oscuro       */
+  --silver:    #8090A8;    /* plateado            */
+  --silver-lt: #B0C0D0;    /* plateado claro      */
+  --crimson:   #A81820;    /* rojo carmesí        */
+  --scarlet:   #D02820;    /* rojo escarlata      */
+  --wine:      #701018;    /* rojo vino           */
+  --ivory:     #F8F2E8;    /* marfil              */
+  --ebony:     #180808;    /* ébano               */
+
+  /* ── Palos de cartas ──
+     spades   → plateado · espadas
+     hearts   → carmesí  · corazones
+     diamonds → dorado   · diamantes
+     clubs    → verde musgo (neutral) · tréboles */
+  --spades:    #5060A0;
+  --hearts:    #A81820;
+  --diamonds:  #C8921A;
+  --clubs:     #385840;
+
+  /* ── Arcanos mayores ── */
+  --arcana:    #7030A0;    /* púrpura místico     */
+
+  /* ── Acento ── */
+  --accent:    #C8921A;    /* dorado              */
+  --accent2:   #A81820;    /* carmesí             */
+
+  /* ── Semánticos ── */
+  --ok:        #385840;
+  --warn:      #C8921A;
+  --danger:    #A81820;
+
+  /* ── Neutros ── */
+  --black:     #100408;
+  --white:     #FDF8F0;
+  --gray:      #907060;
+
+  /* Tipografía */
+  --display: 'Josefin Sans', sans-serif;
+  --serif:   'Cinzel', serif;
+  --mono:    'Fira Code', monospace;
+
+  --radius:    2px;
+  --radius-lg: 4px;
+
+  /* Dimensiones de carta (proporción póker estándar 2.5×3.5 in) */
+  --card-w: 120px;
+  --card-h: 168px;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — OSCURO · terciopelo y oro
+══════════════════════════════════════════════════════ */
+body.dark {
+  --bg:        #0E0608;
+  --bg2:       #180C0A;
+  --bg3:       #241410;
+
+  --text:      #F0E8D8;
+  --text2:     #C0907A;
+
+  --border:    #6A4820;
+
+  --gold:      #E8A820;
+  --gold-lt:   #F8D040;
+  --gold-dk:   #A87010;
+  --silver:    #90A8C0;
+  --silver-lt: #C0D0E0;
+  --crimson:   #D02030;
+  --scarlet:   #F03040;
+  --wine:      #901828;
+  --ivory:     #F0E8D8;
+  --ebony:     #080408;
+
+  --spades:    #7080C0;
+  --hearts:    #D02030;
+  --diamonds:  #E8A820;
+  --clubs:     #50805A;
+
+  --arcana:    #9040C0;
+
+  --accent:    #E8A820;
+  --accent2:   #D02030;
+
+  --ok:        #50805A;
+  --warn:      #E8A820;
+  --danger:    #D02030;
+
+  --black:     #040208;
+  --white:     #F8F0E8;
+  --gray:      #806050;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--display);
+  font-size:14px;
+  line-height:1.75;
+  transition:background .4s,color .4s;
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--gold-dk);border-radius:0}
+
+/* ══════════════════════════════════════════════════════
+   LIENZO ART DECO — canvas de fondo
+══════════════════════════════════════════════════════ */
+#tarot-deco{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:0;
+}
+
+/* ══════════════════════════════════════════════════════
+   CARTAS FLOTANTES
+══════════════════════════════════════════════════════ */
+#tarot-cards{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+  perspective:1200px;
+}
+.tarot-card{
+  position:absolute;
+  width:var(--card-w);
+  height:var(--card-h);
+  border-radius:8px;
+  transform-style:preserve-3d;
+  animation:card-float linear infinite;
+}
+.card-face,.card-back{
+  position:absolute;inset:0;
+  border-radius:8px;
+  backface-visibility:hidden;
+  border:1.5px solid var(--gold);
+  box-shadow:0 0 18px rgba(200,146,26,.35), 0 0 6px rgba(168,24,32,.25);
+}
+.card-back{
+  background:var(--wine, #701018);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;
+  transform:rotateY(180deg);
+}
+.card-face{
+  background:var(--ivory, #F8F2E8);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  font-family:var(--serif);
+  color:var(--crimson, #A81820);
+  font-size:11px;
+  letter-spacing:.1em;
+}
+.card-suit{font-size:32px;line-height:1}
+.card-name{font-size:8px;letter-spacing:.14em;text-transform:uppercase;margin-top:4px;color:var(--gold-dk,#8A6010)}
+
+@keyframes card-float{
+  0%   {transform:translateY(110vh) rotate(var(--rot-start)) rotateY(0deg)}
+  100% {transform:translateY(-30vh) rotate(var(--rot-end))   rotateY(360deg)}
+}
+
+/* ══════════════════════════════════════════════════════
+   PÁGINA
+══════════════════════════════════════════════════════ */
+.page{
+  position:relative;z-index:2;
+  padding:40px;max-width:880px;margin:0 auto;
+}
+
+/* ══════════════════════════════════════════════════════
+   SEPARADOR ORNAMENTAL
+══════════════════════════════════════════════════════ */
+.ornament{
+  text-align:center;
+  color:var(--gold);
+  font-size:18px;
+  letter-spacing:.3em;
+  margin:8px 0 16px;
+  opacity:.7;
+}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+══════════════════════════════════════════════════════ */
+h2{
+  font-family:var(--serif);font-size:15px;font-weight:400;
+  color:var(--gold);letter-spacing:.18em;text-transform:uppercase;
+  margin:40px 0 6px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+h2::before,h2::after{content:' ✦ ';color:var(--gold-lt);font-size:10px;vertical-align:middle}
+
+h3{
+  font-family:var(--display);font-size:11px;font-weight:600;
+  color:var(--accent2);letter-spacing:.14em;text-transform:uppercase;
+  margin:22px 0 10px;
+}
+
+h4{font-family:var(--serif);font-size:14px;font-weight:400;color:var(--text);margin-bottom:5px;letter-spacing:.08em}
+p{margin-bottom:14px;line-height:1.85;font-family:var(--display);font-weight:300}
+p.muted{color:var(--text2);font-size:13px}
+em{font-style:italic;color:var(--gold)}
+
+/* ══════════════════════════════════════════════════════
+   CÓDIGO
+══════════════════════════════════════════════════════ */
+code{
+  font-family:var(--mono);font-size:12px;
+  background:var(--bg3);border:1px solid var(--border);
+  padding:1px 6px;border-radius:var(--radius);
+  color:var(--gold);
+}
+pre{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:2px solid var(--gold);border-radius:var(--radius);
+  padding:14px 18px;margin:14px 0;overflow-x:auto;
+  font-family:var(--mono);font-size:12px;line-height:1.75;
+  color:var(--text);position:relative;
+}
+pre::before{content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;font-family:var(--display)}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw {color:var(--arcana)}
+pre .fn {color:var(--gold)}
+pre .str{color:var(--hearts)}
+pre .num{color:var(--diamonds)}
+pre .cm {color:var(--text2);font-style:italic}
+
+/* ══════════════════════════════════════════════════════
+   CALLOUTS
+══════════════════════════════════════════════════════ */
+.callout{
+  border-left:2px solid var(--gold);background:var(--bg2);
+  padding:12px 18px;margin:10px 0;
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.callout-title{
+  font-family:var(--display);font-size:9px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:5px;
+}
+.callout-title::before{content:'✦ '}
+.callout p{margin-bottom:0;font-size:13px}
+
+.callout.ok       {border-color:var(--ok)      }.callout.ok       .callout-title{color:var(--ok)      }
+.callout.warn     {border-color:var(--warn)    }.callout.warn     .callout-title{color:var(--warn)    }
+.callout.danger   {border-color:var(--danger)  }.callout.danger   .callout-title{color:var(--danger)  }
+.callout.hearts   {border-color:var(--hearts)  }.callout.hearts   .callout-title{color:var(--hearts)  }
+.callout.spades   {border-color:var(--spades)  }.callout.spades   .callout-title{color:var(--spades)  }
+.callout.diamonds {border-color:var(--diamonds)}.callout.diamonds .callout-title{color:var(--diamonds)}
+.callout.clubs    {border-color:var(--clubs)   }.callout.clubs    .callout-title{color:var(--clubs)   }
+.callout.arcana   {border-color:var(--arcana)  }.callout.arcana   .callout-title{color:var(--arcana)  }
+.callout.silver   {border-color:var(--silver)  }.callout.silver   .callout-title{color:var(--silver)  }
+.callout.wine     {border-color:var(--wine)    }.callout.wine     .callout-title{color:var(--wine)    }
+
+/* ══════════════════════════════════════════════════════
+   TABLA
+══════════════════════════════════════════════════════ */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+th{background:var(--bg3);padding:8px 14px;text-align:left;font-family:var(--display);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--border)}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;font-weight:300}
+tr:hover td{background:var(--bg3)}
+
+/* ══════════════════════════════════════════════════════
+   BOTONES
+══════════════════════════════════════════════════════ */
+.btn{
+  display:inline-block;font-family:var(--display);font-size:11px;font-weight:600;
+  padding:7px 20px;border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--bg2);color:var(--text2);cursor:pointer;
+  transition:all .2s;letter-spacing:.1em;text-transform:uppercase;
+}
+.btn:hover,.btn.primary{border-color:var(--gold);color:var(--gold)}
+.btn.ok      {border-color:var(--ok);      color:var(--ok)      }
+.btn.warn    {border-color:var(--warn);    color:var(--warn)    }
+.btn.danger  {border-color:var(--danger);  color:var(--danger)  }
+.btn.hearts  {border-color:var(--hearts);  color:var(--hearts)  }
+.btn.spades  {border-color:var(--spades);  color:var(--spades)  }
+.btn.diamonds{border-color:var(--diamonds);color:var(--diamonds)}
+.btn.clubs   {border-color:var(--clubs);   color:var(--clubs)   }
+.btn.arcana  {border-color:var(--arcana);  color:var(--arcana)  }
+.btn.silver  {border-color:var(--silver);  color:var(--silver)  }
+
+/* ══════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════ */
+.badge{
+  display:inline-block;font-family:var(--display);font-size:9px;font-weight:700;
+  padding:2px 9px;border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text2);letter-spacing:.1em;text-transform:uppercase;
+}
+.badge.gold    {border-color:var(--gold);    color:var(--gold)    }
+.badge.silver  {border-color:var(--silver);  color:var(--silver)  }
+.badge.crimson {border-color:var(--crimson); color:var(--crimson) }
+.badge.hearts  {border-color:var(--hearts);  color:var(--hearts)  }
+.badge.spades  {border-color:var(--spades);  color:var(--spades)  }
+.badge.diamonds{border-color:var(--diamonds);color:var(--diamonds)}
+.badge.clubs   {border-color:var(--clubs);   color:var(--clubs)   }
+.badge.arcana  {border-color:var(--arcana);  color:var(--arcana)  }
+.badge.ok      {border-color:var(--ok);      color:var(--ok)      }
+.badge.warn    {border-color:var(--warn);    color:var(--warn)    }
+.badge.danger  {border-color:var(--danger);  color:var(--danger)  }
+
+/* ══════════════════════════════════════════════════════
+   CARDS UI
+══════════════════════════════════════════════════════ */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 22px;margin-bottom:12px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.card:hover{border-color:var(--gold);box-shadow:0 0 16px rgba(200,146,26,.15)}
+
+/* ══════════════════════════════════════════════════════
+   MÉTRICAS
+══════════════════════════════════════════════════════ */
+.metrics-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.metric{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 16px;flex:1;min-width:100px;
+}
+.metric-val{font-family:var(--serif);font-size:22px;color:var(--gold);letter-spacing:.04em}
+.metric-lbl{font-family:var(--display);font-size:10px;color:var(--text2);margin-top:3px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.metric-val.hearts  {color:var(--hearts)  }
+.metric-val.spades  {color:var(--spades)  }
+.metric-val.diamonds{color:var(--diamonds)}
+.metric-val.clubs   {color:var(--clubs)   }
+.metric-val.silver  {color:var(--silver)  }
+.metric-val.arcana  {color:var(--arcana)  }
+
+/* ══════════════════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════════════════ */
+hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+/* ══════════════════════════════════════════════════════
+   READING LOG — análogo al timeline
+   Indicadores en forma de carta (rectángulo vertical)
+══════════════════════════════════════════════════════ */
+.reading-log{margin:14px 0}
+.reading-entry{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.reading-entry:last-child{border-bottom:none}
+.reading-card{
+  width:24px;height:34px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;margin-top:2px;
+  border:1px solid var(--gold);border-radius:2px;
+  background:var(--bg3);color:var(--gold);
+  box-shadow:0 0 6px rgba(200,146,26,.2);
+}
+.reading-card.hearts  {border-color:var(--hearts);  color:var(--hearts)  }
+.reading-card.spades  {border-color:var(--spades);  color:var(--spades)  }
+.reading-card.diamonds{border-color:var(--diamonds);color:var(--diamonds)}
+.reading-card.clubs   {border-color:var(--clubs);   color:var(--clubs)   }
+.reading-card.arcana  {border-color:var(--arcana);  color:var(--arcana)  }
+.reading-card.warn    {border-color:var(--warn);    color:var(--warn)    }
+
+/* ══════════════════════════════════════════════════════
+   DEAL STEPS — análogo a pipeline/stage
+══════════════════════════════════════════════════════ */
+.deal-row{
+  display:flex;gap:16px;align-items:flex-start;
+  margin:10px 0;padding:14px 18px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:2px solid var(--gold);border-radius:var(--radius);
+  transition:box-shadow .2s;
+}
+.deal-row:hover{box-shadow:0 0 12px rgba(200,146,26,.12)}
+.deal-num{
+  font-family:var(--serif);font-size:18px;
+  color:var(--gold);min-width:28px;line-height:1;margin-top:3px;
+  letter-spacing:.04em;
+}
+
+/* ══════════════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════════════ */
+.theme-btn{
+  font-family:var(--display);font-size:11px;font-weight:600;
+  padding:6px 18px;background:none;
+  border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text2);cursor:pointer;transition:all .2s;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:600px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.swatch{width:84px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--text2)}
+.swatch-box{height:48px;border-radius:var(--radius);margin-bottom:6px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:5px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}
+</style>
+</head>
+<body>
+
+<canvas id="tarot-deco"></canvas>
+<div id="tarot-cards"></div>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
+  <div>
+    <div style="font-family:var(--serif);font-size:36px;font-weight:400;letter-spacing:.12em;color:var(--gold)">
+      TAROT
+    </div>
+    <div style="font-family:var(--display);font-size:11px;font-weight:300;letter-spacing:.3em;color:var(--text2);text-transform:uppercase;margin-top:-4px">
+      _theme · iroFactory
+    </div>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">✦ oscuro</button>
+</div>
+
+<div class="ornament">✦ ◆ ✦ ◆ ✦</div>
+
+<!-- ── Paleta ── -->
+<h2>Paleta de colores</h2>
+<p class="muted">Oro, plata y carmesí · Cuatro palos · Arcanos mayores.</p>
+
+<h3>Metales</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gold-lt)"><span class="swatch-hex" id="hex-gold-lt"></span></div>--gold-lt</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gold-dk)"><span class="swatch-hex" id="hex-gold-dk"></span></div>--gold-dk</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--silver)"><span class="swatch-hex" id="hex-silver"></span></div>--silver</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--silver-lt)"><span class="swatch-hex" id="hex-silver-lt"></span></div>--silver-lt</div>
+</div>
+
+<h3>Rojos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--crimson)"><span class="swatch-hex" id="hex-crimson"></span></div>--crimson</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--scarlet)"><span class="swatch-hex" id="hex-scarlet"></span></div>--scarlet</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--wine)"><span class="swatch-hex" id="hex-wine"></span></div>--wine</div>
+</div>
+
+<h3>Palos de cartas</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--hearts)"><span class="swatch-hex" id="hex-hearts"></span></div>♥ hearts</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--diamonds)"><span class="swatch-hex" id="hex-diamonds"></span></div>♦ diamonds</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--spades)"><span class="swatch-hex" id="hex-spades"></span></div>♠ spades</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--clubs)"><span class="swatch-hex" id="hex-clubs"></span></div>♣ clubs</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--arcana)"><span class="swatch-hex" id="hex-arcana"></span></div>★ arcana</div>
+</div>
+
+<h3>Neutros y semánticos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--ebony)"><span class="swatch-hex" id="hex-ebony"></span></div>--ebony</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ivory)"><span class="swatch-hex" id="hex-ivory"></span></div>--ivory</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<div class="ornament">◆ ✦ ◆</div>
+<hr class="divider">
+
+<!-- ── Callouts ── -->
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento · Dorado</div><p>Notas generales, observaciones de la partida y referencias de juego.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Verde</div><p>Mano ganadora. El jugador captura el bote.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Dorado</div><p>Bluff en riesgo. La apuesta supera el valor de la mano.</p></div>
+<div class="callout danger"><div class="callout-title">Danger · Carmesí</div><p>Mano perdedora. Retirarse antes del showdown.</p></div>
+<div class="callout hearts"><div class="callout-title">♥ Corazones</div><p>Palo de corazones. Asociado a emociones y relaciones.</p></div>
+<div class="callout diamonds"><div class="callout-title">♦ Diamantes</div><p>Palo de oros. Prosperidad, riqueza, recursos materiales.</p></div>
+<div class="callout spades"><div class="callout-title">♠ Espadas</div><p>Palo de espadas. Conflicto, decisión, pensamiento crítico.</p></div>
+<div class="callout clubs"><div class="callout-title">♣ Tréboles</div><p>Palo de bastos. Trabajo, esfuerzo, crecimiento.</p></div>
+<div class="callout arcana"><div class="callout-title">★ Arcanos Mayores</div><p>Cartas de destino. El Loco, La Torre, La Rueda de la Fortuna.</p></div>
+<div class="callout silver"><div class="callout-title">◈ Plateado</div><p>Intuición, misterio, la cara oculta de la carta.</p></div>
+<div class="callout wine"><div class="callout-title">✦ Vino</div><p>Pasión, riesgo, la apuesta más alta de la noche.</p></div>
+
+<hr class="divider">
+
+<!-- ── Badges ── -->
+<h2>Badges</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <span class="badge gold">dorado</span>
+  <span class="badge silver">plateado</span>
+  <span class="badge crimson">carmesí</span>
+  <span class="badge hearts">♥ hearts</span>
+  <span class="badge diamonds">♦ diamonds</span>
+  <span class="badge spades">♠ spades</span>
+  <span class="badge clubs">♣ clubs</span>
+  <span class="badge arcana">★ arcana</span>
+  <span class="badge ok">ok</span>
+  <span class="badge warn">warn</span>
+  <span class="badge danger">danger</span>
+  <span class="badge">default</span>
+</div>
+
+<hr class="divider">
+
+<!-- ── Botones ── -->
+<h2>Botones</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <button class="btn primary">primary</button>
+  <button class="btn">default</button>
+  <button class="btn hearts">♥ hearts</button>
+  <button class="btn diamonds">♦ diamonds</button>
+  <button class="btn spades">♠ spades</button>
+  <button class="btn clubs">♣ clubs</button>
+  <button class="btn arcana">★ arcana</button>
+  <button class="btn silver">silver</button>
+  <button class="btn ok">ok</button>
+  <button class="btn warn">warn</button>
+  <button class="btn danger">danger</button>
+</div>
+
+<hr class="divider">
+
+<!-- ── Métricas ── -->
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">A♠</div><div class="metric-lbl">mano (gold)</div></div>
+  <div class="metric"><div class="metric-val hearts">♥ K</div><div class="metric-lbl">corazones</div></div>
+  <div class="metric"><div class="metric-val diamonds">♦ Q</div><div class="metric-lbl">diamantes</div></div>
+  <div class="metric"><div class="metric-val spades">♠ J</div><div class="metric-lbl">espadas</div></div>
+  <div class="metric"><div class="metric-val arcana">★ XV</div><div class="metric-lbl">arcano</div></div>
+  <div class="metric"><div class="metric-val silver">$4,200</div><div class="metric-lbl">bote</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Código ── -->
+<h2>Código</h2>
+<p class="muted">Inline: <code>toggleTheme()</code> alterna entre claro y oscuro.</p>
+<pre data-lang="python"><span class="cm"># Evaluación de mano de póker</span>
+<span class="kw">from</span> enum <span class="kw">import</span> IntEnum
+
+<span class="kw">class</span> <span class="fn">Mano</span>(IntEnum):
+    HIGH_CARD      = <span class="num">1</span>
+    ONE_PAIR       = <span class="num">2</span>
+    TWO_PAIR       = <span class="num">3</span>
+    THREE_OF_A_KIND= <span class="num">4</span>
+    STRAIGHT       = <span class="num">5</span>
+    FLUSH          = <span class="num">6</span>
+    FULL_HOUSE     = <span class="num">7</span>
+    FOUR_OF_A_KIND = <span class="num">8</span>
+    STRAIGHT_FLUSH = <span class="num">9</span>
+    ROYAL_FLUSH    = <span class="num">10</span>  <span class="cm"># ♠ A K Q J T</span>
+
+<span class="fn">def</span> es_flush(cartas):
+    <span class="kw">return</span> len({c.palo <span class="kw">for</span> c <span class="kw">in</span> cartas}) == <span class="num">1</span></pre>
+
+<hr class="divider">
+
+<!-- ── Tabla ── -->
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Significado</th></tr>
+  <tr><td><code>--gold</code></td><td>#C8921A</td><td>#E8A820</td><td>Dorado principal · riqueza · triunfo</td></tr>
+  <tr><td><code>--crimson</code></td><td>#A81820</td><td>#D02030</td><td>Carmesí · pasión · riesgo</td></tr>
+  <tr><td><code>--silver</code></td><td>#8090A8</td><td>#9090C0</td><td>Plateado · intuición · misterio</td></tr>
+  <tr><td><code>--hearts</code></td><td>#A81820</td><td>#D02030</td><td>♥ Corazones · emociones</td></tr>
+  <tr><td><code>--diamonds</code></td><td>#C8921A</td><td>#E8A820</td><td>♦ Diamantes · prosperidad</td></tr>
+  <tr><td><code>--spades</code></td><td>#5060A0</td><td>#7080C0</td><td>♠ Espadas · conflicto</td></tr>
+  <tr><td><code>--clubs</code></td><td>#385840</td><td>#50805A</td><td>♣ Tréboles · crecimiento</td></tr>
+  <tr><td><code>--arcana</code></td><td>#7030A0</td><td>#9040C0</td><td>★ Arcanos · destino</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ── Reading Log (timeline) ── -->
+<h2>Reading Log</h2>
+<div class="reading-log">
+  <div class="reading-entry">
+    <div class="reading-card arcana">★</div>
+    <div><h4>El Loco · Arcano 0</h4><p class="muted">Inicio de un nuevo viaje. Energía sin filtrar. Potencial puro.</p></div>
+  </div>
+  <div class="reading-entry">
+    <div class="reading-card hearts">♥</div>
+    <div><h4>As de Corazones</h4><p class="muted">Nuevo comienzo emocional. La carta de amor más poderosa del mazo.</p></div>
+  </div>
+  <div class="reading-entry">
+    <div class="reading-card diamonds">♦</div>
+    <div><h4>Rey de Diamantes</h4><p class="muted">Dominio sobre los recursos materiales. Liderazgo financiero.</p></div>
+  </div>
+  <div class="reading-entry">
+    <div class="reading-card warn">!</div>
+    <div><h4>La Torre · Arcano XVI</h4><p class="muted">Ruptura repentina. Estructuras que se derrumban para dar paso a lo nuevo.</p></div>
+  </div>
+  <div class="reading-entry">
+    <div class="reading-card spades">♠</div>
+    <div><h4>Sota de Espadas</h4><p class="muted">Pensamiento vigilante. Un mensajero con noticias importantes.</p></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Deal steps (pipeline) ── -->
+<h2>La Mano</h2>
+<div class="deal-row">
+  <div class="deal-num">I</div>
+  <div><h4>Blind y ante</h4><p class="muted">Los jugadores colocan sus apuestas ciegas antes de ver las cartas.</p></div>
+</div>
+<div class="deal-row" style="border-left-color:var(--hearts)">
+  <div class="deal-num" style="color:var(--hearts)">II</div>
+  <div><h4>Reparto inicial</h4><p class="muted">Cada jugador recibe dos cartas boca abajo. El dealer distribuye en sentido horario.</p></div>
+</div>
+<div class="deal-row" style="border-left-color:var(--diamonds)">
+  <div class="deal-num" style="color:var(--diamonds)">III</div>
+  <div><h4>El Flop</h4><p class="muted">Tres cartas comunitarias reveladas. Primera ronda de apuestas post-flop.</p></div>
+</div>
+<div class="deal-row" style="border-left-color:var(--arcana)">
+  <div class="deal-num" style="color:var(--arcana)">IV</div>
+  <div><h4>Showdown</h4><p class="muted">Los jugadores activos revelan sus manos. La mejor combinación gana el bote.</p></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Cards UI ── -->
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card">
+    <strong style="font-family:var(--serif);letter-spacing:.08em">Royal Flush</strong>
+    <span class="badge hearts" style="margin-left:8px">♥ mejor mano</span>
+    <p class="muted" style="margin-top:8px">A♠ K♠ Q♠ J♠ 10♠ — la mano perfecta. Probabilidad: 1 en 649,740.</p>
+  </div>
+  <div class="card">
+    <strong style="font-family:var(--serif);letter-spacing:.08em">El Ermitaño · IX</strong>
+    <span class="badge arcana" style="margin-left:8px">★ arcano mayor</span>
+    <p class="muted" style="margin-top:8px">Introspección y búsqueda interior. El conocimiento viene del silencio.</p>
+  </div>
+</div>
+
+<div class="ornament" style="margin-top:32px">✦ ◆ ✦ ◆ ✦</div>
+<p class="muted" style="text-align:center;margin-top:12px;font-family:var(--display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:300">
+  tarot_theme · by RemiH06 · iroFactory · AGPL-3.0
+</p>
+
+</div><!-- .page -->
+
+<script>
+// ── Toggle ─────────────────────────────────────────────
+let isDark = false;
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('toggle-btn').textContent = isDark ? '✦ claro' : '✦ oscuro';
+  updateHexes();
+  buildDeco();
+  drawDeco();
+}
+
+// ── Hexes ──────────────────────────────────────────────
+function cssVar(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+function updateHexes() {
+  const map = {
+    'hex-gold':'--gold','hex-gold-lt':'--gold-lt','hex-gold-dk':'--gold-dk',
+    'hex-silver':'--silver','hex-silver-lt':'--silver-lt',
+    'hex-crimson':'--crimson','hex-scarlet':'--scarlet','hex-wine':'--wine',
+    'hex-hearts':'--hearts','hex-diamonds':'--diamonds',
+    'hex-spades':'--spades','hex-clubs':'--clubs','hex-arcana':'--arcana',
+    'hex-ebony':'--ebony','hex-gray':'--gray','hex-ivory':'--ivory',
+    'hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger',
+  };
+  Object.entries(map).forEach(([id,tok]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = cssVar(tok);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// LIENZO ART DECO — canvas animado con brillo dorado
+// ══════════════════════════════════════════════════════
+const decoCanvas = document.getElementById('tarot-deco');
+const dCtx = decoCanvas.getContext('2d');
+let decoW, decoH, decoRaf;
+let shimmerAngle = 0;
+
+function buildDeco() {
+  decoW = decoCanvas.width  = window.innerWidth;
+  decoH = decoCanvas.height = window.innerHeight;
+}
+
+function getDecoColors() {
+  return {
+    bg:      isDark ? '#0E0608' : '#F8F2E8',
+    gold:    isDark ? '#E8A820' : '#C8921A',
+    goldLt:  isDark ? '#F8D040' : '#E8B830',
+    goldDk:  isDark ? '#A87010' : '#8A6010',
+    crimson: isDark ? '#D02030' : '#A81820',
+    silver:  isDark ? '#9090C0' : '#8090A8',
+    arcana:  isDark ? '#9040C0' : '#7030A0',
+  };
+}
+
+// ── Primitivas de dibujo art deco ──────────────────────
+
+function decoArcs(ctx, cx, cy, r, count, startAngle, endAngle, col, a) {
+  ctx.strokeStyle = col; ctx.globalAlpha = a;
+  for (let i = 1; i <= count; i++) {
+    ctx.lineWidth = i === 1 ? 1.2 : 0.6;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * i / count, startAngle, endAngle);
+    ctx.stroke();
+  }
+}
+
+function decoFan(ctx, cx, cy, r, lines, startA, endA, col, a) {
+  ctx.strokeStyle = col; ctx.globalAlpha = a; ctx.lineWidth = 0.7;
+  for (let i = 0; i <= lines; i++) {
+    const angle = startA + (endA - startA) * i / lines;
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+    ctx.stroke();
+  }
+  decoArcs(ctx, cx, cy, r, 3, startA, endA, col, a * 0.8);
+}
+
+function decoChevrons(ctx, cx, cy, w, count, col, a) {
+  ctx.strokeStyle = col; ctx.globalAlpha = a; ctx.lineWidth = 0.9;
+  for (let i = 0; i < count; i++) {
+    const oy = i * 9 - (count * 9) / 2;
+    ctx.beginPath();
+    ctx.moveTo(cx - w, cy + oy + 5);
+    ctx.lineTo(cx,     cy + oy);
+    ctx.lineTo(cx + w, cy + oy + 5);
+    ctx.stroke();
+  }
+}
+
+function decoZigzag(ctx, x1, y, x2, amp, freq, col, a) {
+  ctx.strokeStyle = col; ctx.globalAlpha = a; ctx.lineWidth = 0.7;
+  ctx.beginPath();
+  const steps = Math.round((x2 - x1) / freq);
+  for (let i = 0; i <= steps; i++) {
+    const px = x1 + i * freq;
+    const py = y + (i % 2 === 0 ? -amp : amp);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+}
+
+function decoSunburst(ctx, cx, cy, r1, r2, rays, col, a) {
+  ctx.strokeStyle = col; ctx.globalAlpha = a; ctx.lineWidth = 0.8;
+  for (let i = 0; i < rays; i++) {
+    const angle = (Math.PI * 2 * i) / rays;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(angle) * r1, cy + Math.sin(angle) * r1);
+    ctx.lineTo(cx + Math.cos(angle) * r2, cy + Math.sin(angle) * r2);
+    ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(cx, cy, r1, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx, cy, r2, 0, Math.PI * 2); ctx.stroke();
+}
+
+function decoArchPortal(ctx, cx, cy, w, h, col, a) {
+  ctx.strokeStyle = col; ctx.globalAlpha = a;
+  // Arco principal
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, w / 2, Math.PI, 0);
+  ctx.lineTo(cx + w / 2, cy + h);
+  ctx.lineTo(cx - w / 2, cy + h);
+  ctx.closePath(); ctx.stroke();
+  // Arcos internos
+  for (let i = 1; i <= 4; i++) {
+    ctx.lineWidth = 0.5;
+    ctx.globalAlpha = a * (1 - i * 0.18);
+    const ri = (w / 2) * (1 - i * 0.17);
+    if (ri <= 4) break;
+    ctx.beginPath(); ctx.arc(cx, cy, ri, Math.PI, 0); ctx.stroke();
+  }
+  ctx.globalAlpha = a;
+}
+
+function decoRect(ctx, x, y, w, h, col, a, lw = 0.8) {
+  ctx.strokeStyle = col; ctx.globalAlpha = a; ctx.lineWidth = lw;
+  ctx.strokeRect(x, y, w, h);
+}
+
+function decoDots(ctx, cx, cy, r, count, col, a) {
+  ctx.fillStyle = col; ctx.globalAlpha = a;
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count;
+    ctx.beginPath();
+    ctx.arc(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+// ── 7 tipos de módulo ──────────────────────────────────
+
+function drawModule(ctx, type, x, y, w, h, c, a, phase) {
+  const cx = x + w / 2, cy = y + h / 2;
+
+  // Marco doble
+  decoRect(ctx, x + 5, y + 5, w - 10, h - 10, c.gold, a, 1);
+  decoRect(ctx, x + 9, y + 9, w - 18, h - 18, c.gold, a * 0.5, 0.4);
+
+  if (type === 0) {
+    // Portal con abanicos arriba y abajo
+    decoFan(ctx, cx, y + 14, w * 0.32, 10, Math.PI, 0, c.gold, a);
+    decoArchPortal(ctx, cx, cy, w * 0.45, h * 0.35, c.gold, a);
+    decoFan(ctx, cx, y + h - 14, w * 0.32, 10, 0, Math.PI, c.gold, a);
+    decoChevrons(ctx, cx, cy + h * 0.18, w * 0.14, 4, c.crimson, a * 0.9);
+
+  } else if (type === 1) {
+    // Sunburst central con zigzags
+    decoSunburst(ctx, cx, cy, w * 0.12, w * 0.32, 16, c.gold, a);
+    decoDots(ctx, cx, cy, w * 0.4, 12, c.gold, a * 0.8);
+    decoZigzag(ctx, x + 12, cy - h * 0.28, x + w - 12, 5, 8, c.crimson, a * 0.8);
+    decoZigzag(ctx, x + 12, cy + h * 0.28, x + w - 12, 5, 8, c.crimson, a * 0.8);
+
+  } else if (type === 2) {
+    // Arcos concéntricos laterales
+    decoArcs(ctx, x + 12, cy, h * 0.38, 5, -Math.PI / 2, Math.PI / 2, c.gold, a);
+    decoArcs(ctx, x + w - 12, cy, h * 0.38, 5, Math.PI / 2, Math.PI * 1.5, c.gold, a);
+    decoChevrons(ctx, cx, cy, w * 0.16, 5, c.gold, a * 0.8);
+    decoDots(ctx, cx, cy, h * 0.12, 8, c.crimson, a);
+
+  } else if (type === 3) {
+    // Cruz central con fans en 4 puntas
+    decoFan(ctx, cx, y + 16, w * 0.28, 8, Math.PI, 0, c.gold, a * 0.9);
+    decoFan(ctx, cx, y + h - 16, w * 0.28, 8, 0, Math.PI, c.gold, a * 0.9);
+    decoFan(ctx, x + 16, cy, h * 0.28, 8, -Math.PI / 2, Math.PI / 2, c.gold, a * 0.9);
+    decoFan(ctx, x + w - 16, cy, h * 0.28, 8, Math.PI / 2, Math.PI * 1.5, c.gold, a * 0.9);
+    decoRect(ctx, cx - 8, cy - 8, 16, 16, c.crimson, a, 0.8);
+
+  } else if (type === 4) {
+    // Columnas de líneas con arco en cima
+    const cols = 5;
+    for (let i = 0; i < cols; i++) {
+      const lx = x + 18 + i * ((w - 36) / (cols - 1));
+      ctx.strokeStyle = c.gold; ctx.globalAlpha = a * 0.7; ctx.lineWidth = 0.6;
+      ctx.beginPath(); ctx.moveTo(lx, cy); ctx.lineTo(lx, y + h - 16); ctx.stroke();
+      // Arco en cima de cada columna
+      ctx.globalAlpha = a * 0.5;
+      ctx.beginPath(); ctx.arc(lx, cy, (w - 36) / (cols - 1) / 2.2, Math.PI, 0); ctx.stroke();
+    }
+    decoZigzag(ctx, x + 14, y + h * 0.72, x + w - 14, 4, 7, c.crimson, a * 0.8);
+    decoArcs(ctx, cx, y + h - 14, w * 0.3, 3, 0, Math.PI, c.gold, a);
+
+  } else if (type === 5) {
+    // Diamante central con radiación
+    const dw = w * 0.28, dh = h * 0.32;
+    ctx.strokeStyle = c.gold; ctx.globalAlpha = a; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - dh); ctx.lineTo(cx + dw, cy);
+    ctx.lineTo(cx, cy + dh); ctx.lineTo(cx - dw, cy);
+    ctx.closePath(); ctx.stroke();
+    decoSunburst(ctx, cx, cy, dw * 1.2, dw * 1.8, 12, c.gold, a * 0.7);
+    decoDots(ctx, cx, cy, dh * 1.5, 8, c.arcana, a * 0.9);
+    decoChevrons(ctx, cx, y + 20, w * 0.12, 3, c.crimson, a * 0.7);
+    decoChevrons(ctx, cx, y + h - 20, w * 0.12, 3, c.crimson, a * 0.7);
+
+  } else {
+    // type === 6: Espejo con semicírculos escalonados
+    for (let i = 0; i < 4; i++) {
+      const ri = (w * 0.38) * (1 - i * 0.2);
+      decoArcs(ctx, cx, y + 14, ri, 1, Math.PI, 0, c.gold, a * (1 - i * 0.15));
+      decoArcs(ctx, cx, y + h - 14, ri, 1, 0, Math.PI, c.gold, a * (1 - i * 0.15));
+    }
+    // Líneas verticales escalonadas
+    for (let i = -2; i <= 2; i++) {
+      const lx = cx + i * (w * 0.1);
+      const ly1 = y + 14 + Math.abs(i) * 8;
+      const ly2 = y + h - 14 - Math.abs(i) * 8;
+      ctx.strokeStyle = c.gold; ctx.globalAlpha = a * 0.6; ctx.lineWidth = 0.6;
+      ctx.beginPath(); ctx.moveTo(lx, ly1); ctx.lineTo(lx, ly2); ctx.stroke();
+    }
+    decoDots(ctx, cx, cy, w * 0.22, 6, c.crimson, a);
+  }
+}
+
+function drawDeco() {
+  const c = getDecoColors();
+  dCtx.clearRect(0, 0, decoW, decoH);
+
+  const alpha = isDark ? 0.70 : 0.45;
+
+  // Trama base
+  dCtx.globalAlpha = alpha * 0.18;
+  dCtx.strokeStyle = c.gold;
+  dCtx.lineWidth   = 0.3;
+  const step = 24;
+  for (let x = 0; x < decoW; x += step) {
+    dCtx.beginPath(); dCtx.moveTo(x, 0); dCtx.lineTo(x, decoH); dCtx.stroke();
+  }
+  for (let y = 0; y < decoH; y += step) {
+    dCtx.beginPath(); dCtx.moveTo(0, y); dCtx.lineTo(decoW, y); dCtx.stroke();
+  }
+
+  // Módulos
+  const modW = 180, modH = 220;
+  const cols = Math.ceil(decoW / modW) + 1;
+  const rows = Math.ceil(decoH / modH) + 1;
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const mx = col * modW - 20, my = row * modH - 20;
+      const type = (row * 3 + col * 2 + row * col) % 7;
+      drawModule(dCtx, type, mx, my, modW, modH, c, alpha, 0);
+    }
+  }
+  dCtx.globalAlpha = 1;
+}
+
+window.addEventListener('resize', buildDeco);
+buildDeco();
+drawDeco();
+
+// ══════════════════════════════════════════════════════
+// CARTAS FLOTANTES — suben, giran, brillan en rojo
+// ══════════════════════════════════════════════════════
+const cardsContainer = document.getElementById('tarot-cards');
+const SUITS = ['♠','♥','♦','♣'];
+const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+const ARCANA_NAMES = ['The Fool','The Magician','The High Priestess','The Empress','The Emperor','The Hierophant','The Lovers','The Chariot','Strength','The Hermit','Wheel of Fortune','Justice','The Hanged Man','Death','Temperance','The Devil','The Tower','The Star','The Moon','The Sun','Judgement','The World'];
+
+function randomCard() {
+  if (Math.random() < 0.25) {
+    return { suit:'★', rank: ARCANA_NAMES[Math.floor(Math.random() * ARCANA_NAMES.length)], arcana: true };
+  }
+  const suit = SUITS[Math.floor(Math.random() * SUITS.length)];
+  const rank = RANKS[Math.floor(Math.random() * RANKS.length)];
+  return { suit, rank, arcana: false };
+}
+
+function suitColor(suit) {
+  if (suit === '♥' || suit === '♦') return cssVar('--hearts');
+  if (suit === '♠') return cssVar('--spades');
+  if (suit === '♣') return cssVar('--clubs');
+  if (suit === '★') return cssVar('--arcana');
+  return cssVar('--gold');
+}
+
+function createFloatingCard() {
+  const card = document.createElement('div');
+  card.className = 'tarot-card';
+
+  const data   = randomCard();
+  const color  = suitColor(data.suit);
+  const rotStart = (Math.random() - .5) * 30;
+  const rotEnd   = rotStart + (Math.random() - .5) * 40;
+  const dur = 14 + Math.random() * 12;
+  const left     = Math.random() * 90 + 5;
+
+  card.style.setProperty('--rot-start', rotStart + 'deg');
+  card.style.setProperty('--rot-end',   rotEnd   + 'deg');
+  card.style.left           = left + 'vw';
+  card.style.animationDuration = dur + 's';
+
+  // Dorso
+  const back = document.createElement('div');
+  back.className = 'card-back';
+  back.style.background = isDark ? '#1A0608' : '#701018';
+  back.style.borderColor = cssVar('--gold');
+  back.innerHTML = `<span style="color:${cssVar('--gold')};font-size:24px;opacity:.7">✦</span>`;
+
+  // Frente
+  const face = document.createElement('div');
+  face.className = 'card-face';
+  face.style.background = cssVar('--ivory');
+  face.style.borderColor = cssVar('--gold');
+  face.innerHTML = `
+    <div class="card-suit" style="color:${color}">${data.suit}</div>
+    <div class="card-name" style="color:${cssVar('--gold-dk')}">${data.arcana ? data.rank : data.rank + ' ' + data.suit}</div>
+  `;
+
+  card.appendChild(back);
+  card.appendChild(face);
+  cardsContainer.appendChild(card);
+
+  setTimeout(() => card.remove(), dur * 1000);
+}
+
+setInterval(createFloatingCard, 2000);
+
+updateHexes();
+</script>
+</body>
+</html>
