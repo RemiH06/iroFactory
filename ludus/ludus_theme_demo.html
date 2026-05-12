@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ludus_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=righteous:400&family=fira-code:400,500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   TOKENS — OSCURO (default)
+══════════════════════════════════════════════════════ */
+body {
+  --bg:      #0A080F;
+  --bg2:     #120F1A;
+  --bg3:     #1C1828;
+
+  --text:    #F0EAF8;
+  --text2:   #9080B0;
+
+  --border:  #2A2040;
+
+  /* ── Tetrominos — colores de feria neón oscuro ── */
+  --piece-i:  #00F0F0;   /* cian neón    · I */
+  --piece-o:  #F0D000;   /* amarillo neón· O */
+  --piece-t:  #C040F0;   /* púrpura neón · T */
+  --piece-s:  #40F040;   /* verde neón   · S */
+  --piece-z:  #F04040;   /* rojo neón    · Z */
+  --piece-j:  #4080F0;   /* azul neón    · J */
+  --piece-l:  #F08000;   /* naranja neón · L */
+
+  /* ── Semántico lúdico ──
+     play  → en juego     · verde
+     pause → pausado      · amarillo
+     game-over → perdiste · rojo   */
+  --play:     #40F040;
+  --pause:    #F0D000;
+  --gameover: #F04040;
+
+  /* ── Acento ── */
+  --accent:  #C040F0;
+  --accent2: #F08000;
+
+  /* ── Semánticos ── */
+  --ok:      #40F040;
+  --warn:    #F0D000;
+  --danger:  #F04040;
+
+  /* ── Neutros ── */
+  --black:   #04020A;
+  --white:   #F8F4FF;
+  --gray:    #504060;
+
+  /* Tipografía */
+  --display: 'Righteous', system-ui, sans-serif;
+  --mono:    'Fira Code', monospace;
+
+  --radius:    6px;
+  --radius-lg: 12px;
+
+  /* Glows */
+  --glow-accent:  0 0 10px rgba(192,64,240,.6);
+  --glow-cyan:    0 0 10px rgba(0,240,240,.6);
+  --glow-green:   0 0 10px rgba(64,240,64,.6);
+  --glow-yellow:  0 0 10px rgba(240,208,0,.6);
+  --glow-orange:  0 0 10px rgba(240,128,0,.6);
+  --glow-red:     0 0 10px rgba(240,64,64,.6);
+  --glow-blue:    0 0 10px rgba(64,128,240,.6);
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — CLARO · feria de día
+══════════════════════════════════════════════════════ */
+body.light {
+  --bg:      #FFF8F0;
+  --bg2:     #FFF0E4;
+  --bg3:     #FFE4CC;
+
+  --text:    #180808;
+  --text2:   #705040;
+
+  --border:  #E0C0A0;
+
+  /* Tetrominos pastel de feria */
+  --piece-i:  #40C8D8;
+  --piece-o:  #E8C000;
+  --piece-t:  #A030D0;
+  --piece-s:  #30B030;
+  --piece-z:  #D03030;
+  --piece-j:  #2060D0;
+  --piece-l:  #E07000;
+
+  --play:     #30B030;
+  --pause:    #E8C000;
+  --gameover: #D03030;
+
+  --accent:  #A030D0;
+  --accent2: #E07000;
+
+  --ok:      #30B030;
+  --warn:    #E8C000;
+  --danger:  #D03030;
+
+  --black:   #100808;
+  --white:   #FFFCF8;
+  --gray:    #A08060;
+
+  --glow-accent:  none;
+  --glow-cyan:    none;
+  --glow-green:   none;
+  --glow-yellow:  none;
+  --glow-orange:  none;
+  --glow-red:     none;
+  --glow-blue:    none;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--display);
+  font-size:15px;
+  line-height:1.7;
+  transition:background .3s,color .3s;
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ══════════════════════════════════════════════════════
+   FONDO TETRIS — canvas
+══════════════════════════════════════════════════════ */
+#ludus-tetris{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:0;
+}
+
+/* ══════════════════════════════════════════════════════
+   CUBOS FLOTANTES — scene CSS
+══════════════════════════════════════════════════════ */
+#ludus-cubes{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+  perspective:1500px;
+}
+
+.cube{
+  width:40px;height:40px;
+  position:absolute;
+  transform-style:preserve-3d;
+  animation:cube-spin 5s infinite linear, cube-move 10s linear forwards;
+}
+.cube div{
+  position:absolute;
+  width:40px;height:40px;
+  box-sizing:border-box;
+  opacity:.55;
+}
+.cube div:nth-child(1){transform:rotateY(  0deg) translateZ(20px)}
+.cube div:nth-child(2){transform:rotateY( 90deg) translateZ(20px)}
+.cube div:nth-child(3){transform:rotateY(180deg) translateZ(20px)}
+.cube div:nth-child(4){transform:rotateY(-90deg) translateZ(20px)}
+.cube div:nth-child(5){transform:rotateX( 90deg) translateZ(20px)}
+.cube div:nth-child(6){transform:rotateX(-90deg) translateZ(20px)}
+
+.inner-cube{
+  width:24px;height:24px;
+  transform-style:preserve-3d;
+  position:absolute;top:8px;left:8px;
+  animation:cube-spin-inner 3s infinite linear reverse;
+}
+.inner-cube div{
+  position:absolute;
+  width:24px;height:24px;
+  box-sizing:border-box;
+}
+.inner-cube div:nth-child(1){transform:rotateY(  0deg) translateZ(12px)}
+.inner-cube div:nth-child(2){transform:rotateY( 90deg) translateZ(12px)}
+.inner-cube div:nth-child(3){transform:rotateY(180deg) translateZ(12px)}
+.inner-cube div:nth-child(4){transform:rotateY(-90deg) translateZ(12px)}
+.inner-cube div:nth-child(5){transform:rotateX( 90deg) translateZ(12px)}
+.inner-cube div:nth-child(6){transform:rotateX(-90deg) translateZ(12px)}
+
+@keyframes cube-spin{
+  from{transform:rotateX(0deg) rotateY(0deg)}
+  to{transform:rotateX(360deg) rotateY(360deg)}
+}
+@keyframes cube-spin-inner{
+  from{transform:rotateX(0deg) rotateY(0deg)}
+  to{transform:rotateX(360deg) rotateY(360deg)}
+}
+@keyframes cube-move{
+  from{transform:translate(0,0) rotateX(45deg) rotateY(45deg)}
+  to{transform:translate(calc(100vw * var(--x-dir)),calc(100vh * var(--y-dir))) rotateX(405deg) rotateY(405deg)}
+}
+@keyframes cube-explode{
+  to{transform:scale(0);opacity:0}
+}
+.cube-particle{
+  position:fixed;
+  width:8px;height:8px;
+  border-radius:1px;
+  opacity:.9;
+}
+@keyframes cube-particle-fly{
+  to{transform:translate(var(--dx),var(--dy)) scale(.1);opacity:0}
+}
+
+/* ══════════════════════════════════════════════════════
+   PÁGINA
+══════════════════════════════════════════════════════ */
+.page{
+  position:relative;z-index:2;
+  padding:40px;max-width:880px;margin:0 auto;
+}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+══════════════════════════════════════════════════════ */
+h2{
+  font-family:var(--display);font-size:18px;font-weight:400;
+  color:var(--accent);text-shadow:var(--glow-accent);
+  margin:40px 0 16px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+  letter-spacing:.04em;text-transform:uppercase;
+}
+h3{
+  font-family:var(--display);font-size:13px;
+  color:var(--piece-o);text-shadow:var(--glow-yellow);
+  margin:22px 0 10px;letter-spacing:.08em;text-transform:uppercase;
+}
+h4{font-family:var(--display);font-size:14px;color:var(--text);margin-bottom:5px}
+p{margin-bottom:14px;line-height:1.8;font-family:var(--display)}
+p.muted{color:var(--text2);font-size:13px}
+
+/* ══════════════════════════════════════════════════════
+   CÓDIGO
+══════════════════════════════════════════════════════ */
+code{
+  font-family:var(--mono);font-size:12px;
+  background:var(--bg3);border:1px solid var(--border);
+  padding:1px 6px;border-radius:var(--radius);
+  color:var(--piece-i);text-shadow:var(--glow-cyan);
+}
+pre{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:3px solid var(--accent);border-radius:var(--radius);
+  padding:14px 18px;margin:14px 0;overflow-x:auto;
+  font-family:var(--mono);font-size:12px;line-height:1.75;
+  color:var(--text);position:relative;
+}
+pre::before{content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
+pre code{background:none;border:none;padding:0;color:inherit;text-shadow:none}
+pre .kw {color:var(--piece-t)}
+pre .fn {color:var(--piece-i);text-shadow:var(--glow-cyan)}
+pre .str{color:var(--piece-s);text-shadow:var(--glow-green)}
+pre .num{color:var(--piece-o)}
+pre .cm {color:var(--text2);font-style:italic}
+
+/* ══════════════════════════════════════════════════════
+   CALLOUTS
+══════════════════════════════════════════════════════ */
+.callout{
+  border-left:3px solid var(--accent);background:var(--bg2);
+  padding:12px 16px;margin:10px 0;
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.callout-title{
+  font-family:var(--display);font-size:10px;font-weight:400;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);text-shadow:var(--glow-accent);margin-bottom:5px;
+}
+.callout p{margin-bottom:0;font-size:13px}
+.callout.ok      {border-color:var(--ok)     }.callout.ok       .callout-title{color:var(--ok);     text-shadow:var(--glow-green) }
+.callout.warn    {border-color:var(--warn)   }.callout.warn     .callout-title{color:var(--warn);   text-shadow:var(--glow-yellow)}
+.callout.danger  {border-color:var(--danger) }.callout.danger   .callout-title{color:var(--danger); text-shadow:var(--glow-red)   }
+.callout.play    {border-color:var(--play)   }.callout.play     .callout-title{color:var(--play);   text-shadow:var(--glow-green) }
+.callout.pause   {border-color:var(--pause)  }.callout.pause    .callout-title{color:var(--pause);  text-shadow:var(--glow-yellow)}
+.callout.gameover{border-color:var(--gameover)}.callout.gameover .callout-title{color:var(--gameover);text-shadow:var(--glow-red)}
+.callout.piece-i {border-color:var(--piece-i)}.callout.piece-i  .callout-title{color:var(--piece-i);text-shadow:var(--glow-cyan)  }
+.callout.piece-o {border-color:var(--piece-o)}.callout.piece-o  .callout-title{color:var(--piece-o);text-shadow:var(--glow-yellow)}
+.callout.piece-t {border-color:var(--piece-t)}.callout.piece-t  .callout-title{color:var(--piece-t);text-shadow:var(--glow-accent)}
+.callout.piece-s {border-color:var(--piece-s)}.callout.piece-s  .callout-title{color:var(--piece-s);text-shadow:var(--glow-green) }
+.callout.piece-z {border-color:var(--piece-z)}.callout.piece-z  .callout-title{color:var(--piece-z);text-shadow:var(--glow-red)   }
+.callout.piece-j {border-color:var(--piece-j)}.callout.piece-j  .callout-title{color:var(--piece-j);text-shadow:var(--glow-blue)  }
+.callout.piece-l {border-color:var(--piece-l)}.callout.piece-l  .callout-title{color:var(--piece-l);text-shadow:var(--glow-orange)}
+
+/* ══════════════════════════════════════════════════════
+   TABLA
+══════════════════════════════════════════════════════ */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+th{background:var(--bg3);padding:8px 14px;text-align:left;font-family:var(--display);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);border-bottom:1px solid var(--border)}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg3)}
+
+/* ══════════════════════════════════════════════════════
+   BOTONES
+══════════════════════════════════════════════════════ */
+.btn{
+  display:inline-block;font-family:var(--display);font-size:12px;
+  padding:7px 18px;border:1.5px solid var(--border);border-radius:var(--radius);
+  background:var(--bg2);color:var(--text2);cursor:pointer;
+  transition:all .15s;letter-spacing:.06em;text-transform:uppercase;
+}
+.btn:hover,.btn.primary{border-color:var(--accent);color:var(--accent);text-shadow:var(--glow-accent)}
+.btn.ok      {border-color:var(--ok);     color:var(--ok);     text-shadow:var(--glow-green) }
+.btn.warn    {border-color:var(--warn);   color:var(--warn);   text-shadow:var(--glow-yellow)}
+.btn.danger  {border-color:var(--danger); color:var(--danger); text-shadow:var(--glow-red)   }
+.btn.play    {border-color:var(--play);   color:var(--play);   text-shadow:var(--glow-green) }
+.btn.pause   {border-color:var(--pause);  color:var(--pause);  text-shadow:var(--glow-yellow)}
+.btn.piece-i {border-color:var(--piece-i);color:var(--piece-i);text-shadow:var(--glow-cyan)  }
+.btn.piece-t {border-color:var(--piece-t);color:var(--piece-t);text-shadow:var(--glow-accent)}
+.btn.piece-s {border-color:var(--piece-s);color:var(--piece-s);text-shadow:var(--glow-green) }
+.btn.piece-l {border-color:var(--piece-l);color:var(--piece-l);text-shadow:var(--glow-orange)}
+
+/* ══════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════ */
+.badge{
+  display:inline-block;font-family:var(--display);font-size:9px;
+  padding:2px 9px;border:1.5px solid var(--border);border-radius:var(--radius);
+  color:var(--text2);letter-spacing:.08em;text-transform:uppercase;
+}
+.badge.accent  {border-color:var(--accent);  color:var(--accent);  text-shadow:var(--glow-accent)}
+.badge.ok      {border-color:var(--ok);      color:var(--ok);      text-shadow:var(--glow-green) }
+.badge.warn    {border-color:var(--warn);     color:var(--warn);    text-shadow:var(--glow-yellow)}
+.badge.danger  {border-color:var(--danger);   color:var(--danger);  text-shadow:var(--glow-red)   }
+.badge.play    {border-color:var(--play);     color:var(--play);    text-shadow:var(--glow-green) }
+.badge.pause   {border-color:var(--pause);    color:var(--pause);   text-shadow:var(--glow-yellow)}
+.badge.gameover{border-color:var(--gameover); color:var(--gameover);text-shadow:var(--glow-red)   }
+.badge.piece-i {border-color:var(--piece-i);  color:var(--piece-i); text-shadow:var(--glow-cyan)  }
+.badge.piece-o {border-color:var(--piece-o);  color:var(--piece-o); text-shadow:var(--glow-yellow)}
+.badge.piece-t {border-color:var(--piece-t);  color:var(--piece-t); text-shadow:var(--glow-accent)}
+.badge.piece-s {border-color:var(--piece-s);  color:var(--piece-s); text-shadow:var(--glow-green) }
+.badge.piece-z {border-color:var(--piece-z);  color:var(--piece-z); text-shadow:var(--glow-red)   }
+.badge.piece-j {border-color:var(--piece-j);  color:var(--piece-j); text-shadow:var(--glow-blue)  }
+.badge.piece-l {border-color:var(--piece-l);  color:var(--piece-l); text-shadow:var(--glow-orange)}
+
+/* ══════════════════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════════════════ */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:12px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.card:hover{border-color:var(--accent);box-shadow:var(--glow-accent)}
+
+/* ══════════════════════════════════════════════════════
+   MÉTRICAS
+══════════════════════════════════════════════════════ */
+.metrics-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.metric{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 16px;flex:1;min-width:100px;
+  transition:box-shadow .2s;
+}
+.metric:hover{box-shadow:var(--glow-accent)}
+.metric-val{font-family:var(--display);font-size:24px;color:var(--accent);text-shadow:var(--glow-accent)}
+.metric-lbl{font-family:var(--display);font-size:10px;color:var(--text2);margin-top:3px;letter-spacing:.06em;text-transform:uppercase}
+.metric-val.piece-i{color:var(--piece-i);text-shadow:var(--glow-cyan)  }
+.metric-val.piece-o{color:var(--piece-o);text-shadow:var(--glow-yellow)}
+.metric-val.piece-t{color:var(--piece-t);text-shadow:var(--glow-accent)}
+.metric-val.piece-s{color:var(--piece-s);text-shadow:var(--glow-green) }
+.metric-val.piece-l{color:var(--piece-l);text-shadow:var(--glow-orange)}
+.metric-val.ok     {color:var(--ok);     text-shadow:var(--glow-green) }
+.metric-val.danger {color:var(--danger); text-shadow:var(--glow-red)   }
+
+/* ══════════════════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════════════════ */
+hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+/* ══════════════════════════════════════════════════════
+   LEVEL LOG — análogo al timeline
+   Indicadores en forma de bloque L (tetromino)
+══════════════════════════════════════════════════════ */
+.level-log{margin:14px 0}
+.level-entry{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.level-entry:last-child{border-bottom:none}
+.level-dot{
+  width:28px;height:28px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:11px;margin-top:2px;
+  border:1.5px solid var(--border);color:var(--text2);background:var(--bg3);
+  border-radius:var(--radius);
+  /* forma de bloque L */
+  clip-path:polygon(0% 0%,60% 0%,60% 40%,100% 40%,100% 100%,0% 100%);
+}
+.level-dot.play    {border-color:var(--play);    color:var(--play);    background:color-mix(in srgb,var(--play)     12%,transparent);text-shadow:var(--glow-green) }
+.level-dot.pause   {border-color:var(--pause);   color:var(--pause);   background:color-mix(in srgb,var(--pause)    12%,transparent);text-shadow:var(--glow-yellow)}
+.level-dot.gameover{border-color:var(--gameover);color:var(--gameover);background:color-mix(in srgb,var(--gameover) 12%,transparent);text-shadow:var(--glow-red)   }
+.level-dot.warn    {border-color:var(--warn);    color:var(--warn);    background:color-mix(in srgb,var(--warn)     12%,transparent);text-shadow:var(--glow-yellow)}
+
+/* ══════════════════════════════════════════════════════
+   STAGE STEPS — análogo a pipeline/step-row
+══════════════════════════════════════════════════════ */
+.stage-row{
+  display:flex;gap:16px;align-items:flex-start;
+  margin:10px 0;padding:14px 16px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:3px solid var(--accent);border-radius:var(--radius);
+  transition:box-shadow .15s;
+}
+.stage-row:hover{box-shadow:var(--glow-accent)}
+.stage-num{
+  font-family:var(--display);font-size:20px;
+  color:var(--accent);text-shadow:var(--glow-accent);
+  min-width:32px;line-height:1;margin-top:2px;
+}
+
+/* ══════════════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════════════ */
+.theme-btn{
+  font-family:var(--display);font-size:11px;
+  padding:6px 16px;background:none;
+  border:1.5px solid var(--border);border-radius:var(--radius);
+  color:var(--text2);cursor:pointer;transition:all .15s;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);text-shadow:var(--glow-accent)}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:600px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.swatch{width:84px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--text2)}
+.swatch-box{height:48px;border-radius:var(--radius);margin-bottom:6px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:5px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}
+</style>
+</head>
+<body>
+
+<canvas id="ludus-tetris"></canvas>
+<div id="ludus-cubes"></div>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
+  <div style="font-family:var(--display);font-size:38px;letter-spacing:-.5px;line-height:1">
+    <span style="color:var(--piece-t);text-shadow:var(--glow-accent)">lu</span><span style="color:var(--piece-i);text-shadow:var(--glow-cyan)">du</span><span style="color:var(--piece-s);text-shadow:var(--glow-green)">s</span><span style="color:var(--text2)">_theme</span>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">☀ light</button>
+</div>
+
+<!-- ── Paleta ── -->
+<h2>Paleta de colores</h2>
+<p class="muted">Tetrominos de feria — neón en oscuro, pastel en claro.</p>
+
+<h3>Tetrominos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-i)"><span class="swatch-hex" id="hex-i"></span></div>--piece-i</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-o)"><span class="swatch-hex" id="hex-o"></span></div>--piece-o</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-t)"><span class="swatch-hex" id="hex-t"></span></div>--piece-t</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-s)"><span class="swatch-hex" id="hex-s"></span></div>--piece-s</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-z)"><span class="swatch-hex" id="hex-z"></span></div>--piece-z</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-j)"><span class="swatch-hex" id="hex-j"></span></div>--piece-j</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-l)"><span class="swatch-hex" id="hex-l"></span></div>--piece-l</div>
+</div>
+
+<h3>Estado de juego</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--play)"><span class="swatch-hex" id="hex-play"></span></div>--play</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--pause)"><span class="swatch-hex" id="hex-pause"></span></div>--pause</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gameover)"><span class="swatch-hex" id="hex-go"></span></div>--gameover</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
+</div>
+
+<h3>Neutros y semánticos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Callouts ── -->
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento (default)</div><p>Notas generales del juego, mecánicas y referencias de diseño.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Verde</div><p>Nivel completado. Récord personal superado.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Amarillo</div><p>Tiempo límite próximo. Revisar estrategia.</p></div>
+<div class="callout danger"><div class="callout-title">Danger · Rojo</div><p>Vida perdida. El tablero está a punto de llenarse.</p></div>
+<div class="callout play"><div class="callout-title">Play</div><p>Partida en curso. El jugador está activo.</p></div>
+<div class="callout pause"><div class="callout-title">Pause</div><p>Juego pausado. Esperando reanudación.</p></div>
+<div class="callout gameover"><div class="callout-title">Game Over</div><p>Partida terminada. Insertar moneda para continuar.</p></div>
+<div class="callout piece-i"><div class="callout-title">Piece I</div><p>Tetromino recto. Limpia hasta 4 líneas de una vez.</p></div>
+<div class="callout piece-t"><div class="callout-title">Piece T</div><p>Tetromino T. Versátil, el favorito de los speedrunners.</p></div>
+<div class="callout piece-s"><div class="callout-title">Piece S</div><p>Tetromino S. Difícil de colocar, útil en esquinas.</p></div>
+<div class="callout piece-z"><div class="callout-title">Piece Z</div><p>Tetromino Z. Espejo de la S, igual de problemático.</p></div>
+<div class="callout piece-l"><div class="callout-title">Piece L</div><p>Tetromino L. Excelente para rellenar huecos laterales.</p></div>
+
+<hr class="divider">
+
+<!-- ── Badges ── -->
+<h2>Badges</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <span class="badge accent">accent</span>
+  <span class="badge ok">ok</span>
+  <span class="badge warn">warn</span>
+  <span class="badge danger">danger</span>
+  <span class="badge play">play</span>
+  <span class="badge pause">pause</span>
+  <span class="badge gameover">game over</span>
+  <span class="badge piece-i">piece I</span>
+  <span class="badge piece-o">piece O</span>
+  <span class="badge piece-t">piece T</span>
+  <span class="badge piece-s">piece S</span>
+  <span class="badge piece-z">piece Z</span>
+  <span class="badge piece-j">piece J</span>
+  <span class="badge piece-l">piece L</span>
+  <span class="badge">default</span>
+</div>
+
+<hr class="divider">
+
+<!-- ── Botones ── -->
+<h2>Botones</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <button class="btn primary">primary</button>
+  <button class="btn">default</button>
+  <button class="btn play">play</button>
+  <button class="btn pause">pause</button>
+  <button class="btn ok">ok</button>
+  <button class="btn warn">warn</button>
+  <button class="btn danger">danger</button>
+  <button class="btn piece-i">piece I</button>
+  <button class="btn piece-t">piece T</button>
+  <button class="btn piece-s">piece S</button>
+  <button class="btn piece-l">piece L</button>
+</div>
+
+<hr class="divider">
+
+<!-- ── Métricas ── -->
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">94,200</div><div class="metric-lbl">puntuación (accent)</div></div>
+  <div class="metric"><div class="metric-val piece-i">18</div><div class="metric-lbl">nivel (piece-i)</div></div>
+  <div class="metric"><div class="metric-val piece-o">7</div><div class="metric-lbl">líneas (piece-o)</div></div>
+  <div class="metric"><div class="metric-val ok">3</div><div class="metric-lbl">vidas (ok)</div></div>
+  <div class="metric"><div class="metric-val danger">0</div><div class="metric-lbl">continues (danger)</div></div>
+  <div class="metric"><div class="metric-val piece-l">4×</div><div class="metric-lbl">combo (piece-l)</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Código ── -->
+<h2>Código</h2>
+<p class="muted">Inline: <code>toggleTheme()</code> alterna entre modo oscuro y claro.</p>
+<pre data-lang="lua"><span class="cm">-- Lógica de puntuación de Tetris</span>
+<span class="kw">local</span> SCORES = { <span class="num">100</span>, <span class="num">300</span>, <span class="num">500</span>, <span class="num">800</span> }
+
+<span class="kw">function</span> <span class="fn">calcularPuntos</span>(lineas, nivel)
+  <span class="kw">local</span> base = SCORES[lineas] <span class="kw">or</span> <span class="num">0</span>
+  <span class="kw">return</span> base * (nivel + <span class="num">1</span>)
+<span class="kw">end</span>
+
+<span class="cm">-- Tetris (4 líneas) en nivel 18 = 800 * 19 = 15,200</span>
+<span class="fn">print</span>(<span class="fn">calcularPuntos</span>(<span class="num">4</span>, <span class="num">18</span>))</pre>
+
+<hr class="divider">
+
+<!-- ── Tabla ── -->
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Oscuro</th><th>Claro</th><th>Pieza</th></tr>
+  <tr><td><code>--piece-i</code></td><td>#00F0F0</td><td>#40C8D8</td><td>I · línea recta · cian neón</td></tr>
+  <tr><td><code>--piece-o</code></td><td>#F0D000</td><td>#E8C000</td><td>O · cuadrado · amarillo</td></tr>
+  <tr><td><code>--piece-t</code></td><td>#C040F0</td><td>#A030D0</td><td>T · forma T · púrpura</td></tr>
+  <tr><td><code>--piece-s</code></td><td>#40F040</td><td>#30B030</td><td>S · forma S · verde</td></tr>
+  <tr><td><code>--piece-z</code></td><td>#F04040</td><td>#D03030</td><td>Z · forma Z · rojo</td></tr>
+  <tr><td><code>--piece-j</code></td><td>#4080F0</td><td>#2060D0</td><td>J · forma J · azul</td></tr>
+  <tr><td><code>--piece-l</code></td><td>#F08000</td><td>#E07000</td><td>L · forma L · naranja</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ── Level Log (timeline) ── -->
+<h2>Level Log</h2>
+<div class="level-log">
+  <div class="level-entry">
+    <div class="level-dot play">▶</div>
+    <div><h4>Nivel 1 completado</h4><p class="muted">Puntuación: 4,200. Tiempo: 2:34. Tres Tetris consecutivos.</p></div>
+  </div>
+  <div class="level-entry">
+    <div class="level-dot play">▶</div>
+    <div><h4>Nivel 5 completado</h4><p class="muted">Combo de 4 líneas. Bonus de velocidad activado.</p></div>
+  </div>
+  <div class="level-entry">
+    <div class="level-dot warn">!</div>
+    <div><h4>Nivel 10 — advertencia</h4><p class="muted">El tablero llegó al 80% de altura. Velocidad crítica.</p></div>
+  </div>
+  <div class="level-entry">
+    <div class="level-dot pause">⏸</div>
+    <div><h4>Juego pausado</h4><p class="muted">El jugador solicitó pausa. Temporizador detenido.</p></div>
+  </div>
+  <div class="level-entry">
+    <div class="level-dot gameover">✕</div>
+    <div><h4>Game Over — Nivel 18</h4><p class="muted">Puntuación final: 94,200. Récord personal.</p></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Stage steps (pipeline) ── -->
+<h2>Stages</h2>
+<div class="stage-row">
+  <div class="stage-num">1</div>
+  <div><h4>Tutorial</h4><p class="muted">Introducción a los controles y mecánicas básicas del juego.</p></div>
+</div>
+<div class="stage-row" style="border-left-color:var(--piece-o)">
+  <div class="stage-num" style="color:var(--piece-o);text-shadow:var(--glow-yellow)">2</div>
+  <div><h4>Modo clásico</h4><p class="muted">Velocidad incrementa cada 10 líneas. Sin límite de tiempo.</p></div>
+</div>
+<div class="stage-row" style="border-left-color:var(--piece-i)">
+  <div class="stage-num" style="color:var(--piece-i);text-shadow:var(--glow-cyan)">3</div>
+  <div><h4>Sprint</h4><p class="muted">Completar 40 líneas lo más rápido posible. Récord mundial: 17.2s.</p></div>
+</div>
+<div class="stage-row" style="border-left-color:var(--piece-s)">
+  <div class="stage-num" style="color:var(--piece-s);text-shadow:var(--glow-green)">4</div>
+  <div><h4>Ultra</h4><p class="muted">Máxima puntuación en 2 minutos. Requiere dominio de T-spins.</p></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Cards ── -->
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card">
+    <strong>Tetris clásico</strong>
+    <span class="badge piece-i" style="margin-left:8px">NES · 1989</span>
+    <p class="muted" style="margin-top:8px">El original. Diseñado por Alexey Pajitnov. Vendió más de 35 millones de copias.</p>
+  </div>
+  <div class="card">
+    <strong>Tetris Effect</strong>
+    <span class="badge play" style="margin-left:8px">activo</span>
+    <p class="muted" style="margin-top:8px">Versión moderna con música reactiva y efectos visuales sincronizados.</p>
+  </div>
+</div>
+
+<hr class="divider">
+<p class="muted" style="text-align:center;margin-top:32px;font-family:var(--display);font-size:11px;letter-spacing:.06em;text-transform:uppercase">
+  ludus_theme · by RemiH06 · iroFactory · AGPL-3.0
+</p>
+
+</div><!-- .page -->
+
+<script>
+// ── Toggle ─────────────────────────────────────────────
+let isLight = false;
+function toggleTheme() {
+  isLight = !isLight;
+  document.body.classList.toggle('light', isLight);
+  document.getElementById('toggle-btn').textContent = isLight ? '🌙 dark' : '☀ light';
+  updateHexes();
+  buildTetris();
+}
+
+// ── Hexes ──────────────────────────────────────────────
+function cssVar(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+function updateHexes() {
+  const map = {
+    'hex-i':'--piece-i','hex-o':'--piece-o','hex-t':'--piece-t',
+    'hex-s':'--piece-s','hex-z':'--piece-z','hex-j':'--piece-j','hex-l':'--piece-l',
+    'hex-play':'--play','hex-pause':'--pause','hex-go':'--gameover','hex-accent':'--accent',
+    'hex-black':'--black','hex-gray':'--gray','hex-white':'--white',
+    'hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger',
+  };
+  Object.entries(map).forEach(([id,tok]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = cssVar(tok);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// FONDO TETRIS — tablero lleno con piezas reales
+// ══════════════════════════════════════════════════════
+const tetrisCanvas = document.getElementById('ludus-tetris');
+const tCtx = tetrisCanvas.getContext('2d');
+
+// Definición de tetrominos (rotación 0)
+const TETROMINOS = {
+  I: [[1,1,1,1]],
+  O: [[1,1],[1,1]],
+  T: [[0,1,0],[1,1,1]],
+  S: [[0,1,1],[1,1,0]],
+  Z: [[1,1,0],[0,1,1]],
+  J: [[1,0,0],[1,1,1]],
+  L: [[0,0,1],[1,1,1]],
+};
+
+function getPieceColor(type) {
+  const map = {I:'--piece-i',O:'--piece-o',T:'--piece-t',S:'--piece-s',Z:'--piece-z',J:'--piece-j',L:'--piece-l'};
+  return cssVar(map[type]);
+}
+
+function buildTetris() {
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  tetrisCanvas.width  = W;
+  tetrisCanvas.height = H;
+
+  const CELL = 22;
+  const COLS = Math.ceil(W / CELL) + 2;
+  const ROWS = Math.ceil(H / CELL) + 2;
+
+  // Crear un tablero lleno con piezas aleatorias
+  // Usamos una grilla y colocamos piezas hasta llenarla
+  const board   = Array.from({length:ROWS}, () => Array(COLS).fill(null));
+  const types   = Object.keys(TETROMINOS);
+
+  // Llenar por filas de arriba a abajo
+  for (let r = 0; r < ROWS; r++) {
+    let c = 0;
+    while (c < COLS) {
+      const type  = types[Math.floor(Math.random() * types.length)];
+      const shape = TETROMINOS[type];
+      const sw    = shape[0].length;
+      const sh    = shape.length;
+
+      // Intentar colocar la pieza
+      let fits = true;
+      for (let dr = 0; dr < sh && fits; dr++)
+        for (let dc = 0; dc < sw && fits; dc++)
+          if (shape[dr][dc] && (r+dr >= ROWS || c+dc >= COLS || board[r+dr][c+dc]))
+            fits = false;
+
+      if (fits) {
+        for (let dr = 0; dr < sh; dr++)
+          for (let dc = 0; dc < sw; dc++)
+            if (shape[dr][dc]) board[r+dr][c+dc] = type;
+        c += sw;
+      } else {
+        // Forzar un cuadrado 1×1 para no dejar huecos
+        if (!board[r][c]) board[r][c] = types[Math.floor(Math.random() * types.length)];
+        c++;
+      }
+    }
+  }
+
+  // Dibujar
+  tCtx.clearRect(0, 0, W, H);
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const type = board[r][c];
+      if (!type) continue;
+      const color = getPieceColor(type);
+      const x = c * CELL, y = r * CELL;
+
+      // Relleno con transparencia
+      tCtx.globalAlpha = isLight ? 0.18 : 0.22;
+      tCtx.fillStyle   = color;
+      tCtx.fillRect(x+1, y+1, CELL-2, CELL-2);
+
+      // Borde del bloque
+      tCtx.globalAlpha = isLight ? 0.35 : 0.45;
+      tCtx.strokeStyle = color;
+      tCtx.lineWidth   = 0.8;
+      tCtx.strokeRect(x+1, y+1, CELL-2, CELL-2);
+    }
+  }
+  tCtx.globalAlpha = 1;
+}
+
+window.addEventListener('resize', buildTetris);
+buildTetris();
+
+// ══════════════════════════════════════════════════════
+// CUBOS FLOTANTES — paleta de ludus
+// ══════════════════════════════════════════════════════
+const cubeScene = document.getElementById('ludus-cubes');
+const LUDUS_COLORS = [
+  '--piece-i','--piece-o','--piece-t','--piece-s',
+  '--piece-z','--piece-j','--piece-l',
+];
+
+function getLudusColor() {
+  const tok = LUDUS_COLORS[Math.floor(Math.random() * LUDUS_COLORS.length)];
+  return cssVar(tok);
+}
+
+function createParticles(cube, color) {
+  const rect = cube.getBoundingClientRect();
+  const particles = [];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'cube-particle';
+    p.style.left  = rect.left + rect.width  / 2 + 'px';
+    p.style.top   = rect.top  + rect.height / 2 + 'px';
+    p.style.backgroundColor = color;
+    p.style.setProperty('--dx', (Math.random() - .5) * 100 + 'px');
+    p.style.setProperty('--dy', (Math.random() - .5) * 100 + 'px');
+    p.style.animation = 'cube-particle-fly .5s forwards';
+    document.body.appendChild(p);
+    particles.push(p);
+  }
+  setTimeout(() => particles.forEach(p => p.remove()), 500);
+}
+
+function createCube() {
+  const cube  = document.createElement('div');
+  cube.className = 'cube';
+  const color = getLudusColor();
+  const innerColor = getLudusColor();
+
+  for (let i = 0; i < 6; i++) {
+    const face = document.createElement('div');
+    face.style.background = color;
+    face.style.border = `2px solid ${color}`;
+    cube.appendChild(face);
+  }
+
+  const inner = document.createElement('div');
+  inner.className = 'inner-cube';
+  for (let i = 0; i < 6; i++) {
+    const face = document.createElement('div');
+    face.style.background = innerColor;
+    face.style.border = `2px solid ${innerColor}`;
+    inner.appendChild(face);
+  }
+  cube.appendChild(inner);
+
+  const xDir = Math.random() * 2 - 1;
+  const yDir = Math.random() * 2 - 1;
+  cube.style.setProperty('--x-dir', xDir);
+  cube.style.setProperty('--y-dir', yDir);
+  cube.style.left = Math.random() * 100 + 'vw';
+  cube.style.top  = Math.random() * 100 + 'vh';
+
+  const spinDur = (Math.random() * 3 + 2).toFixed(1) + 's';
+  const moveDur = (Math.random() * 5 + 7).toFixed(1) + 's';
+  cube.style.animationDuration = `${spinDur}, ${moveDur}`;
+
+  cubeScene.appendChild(cube);
+
+  setTimeout(() => {
+    cube.style.animation = 'cube-explode .5s forwards';
+    setTimeout(() => {
+      createParticles(cube, color);
+      cube.remove();
+    }, 500);
+  }, parseFloat(moveDur) * 1000);
+}
+
+setInterval(createCube, 200);
+
+updateHexes();
+</script>
+</body>
+</html>
