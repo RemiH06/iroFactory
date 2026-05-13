@@ -457,19 +457,17 @@ function buildWood() {
   const H = window.innerHeight;
 
   const woodColor = isDark ? 'rgba(9,15,6,1.0)' : 'rgba(215,205,185,1.0)';
-  const nh = 20, rmin = 100, rmax = 100, ecc = 1;
+  const nh = 20;
+  const r  = 100;
 
-  function sr(seed){ const x=Math.sin(seed)*10000; return x-Math.floor(x); }
-
-  const holes = Array.from({length:nh}, (_,i) => ({
-    cx: sr(i*2.3+2) * W,
-    cy: sr(i*1.9+3) * H,
-    rx: rmin + sr(i*4.1+4) * (rmax-rmin),
-    ry: (rmin + sr(i*3.7+5) * (rmax-rmin)) * ecc,
+  const holes = Array.from({length:nh}, () => ({
+    cx: r + Math.random() * (W - r*2),
+    cy: r + Math.random() * (H - r*2),
+    r,
   }));
 
-  const ellipses = holes.map(({cx,cy,rx,ry}) =>
-    `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="black"/>`
+  const ellipses = holes.map(({cx,cy,r}) =>
+    `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${r}" ry="${r}" fill="black"/>`
   ).join('');
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>apolo_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=cinzel:400,700&family=fira-code:400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   TOKENS — CLARO (default) · día griego
+══════════════════════════════════════════════════════ */
+body {
+  --bg:       #F5F0E8;
+  --bg2:      #EDE8DC;
+  --bg3:      #E0D8C8;
+  --text:     #1A1408;
+  --text2:    #6A5840;
+  --border:   #C8B888;
+  --marble:   #F8F4EC;
+  --gold:     #C8900A;
+  --gold-lt:  #E8B030;
+  --aegean:   #2050A0;
+  --aegean-lt:#4080D0;
+  --olive:    #607830;
+  --rose:     #E87080;
+  --petal:    #F0A0B0;
+  --yellow:   #F0C840;
+  --sky:      #6090D0;
+  --sea:      #3070B0;
+  --cliff:    #507040;
+  --accent:   #C8900A;
+  --accent2:  #2050A0;
+  --ok:       #507040;
+  --warn:     #C8900A;
+  --danger:   #C03030;
+  --black:    #100C04;
+  --white:    #FEFAF4;
+  --gray:     #907860;
+  --display:  'Cinzel', serif;
+  --mono:     'Fira Code', monospace;
+  --radius:   3px;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — OSCURO · atardecer griego
+══════════════════════════════════════════════════════ */
+body.dark {
+  --bg:       #0E0A14;
+  --bg2:      #160E1C;
+  --bg3:      #201428;
+  --text:     #F0E8D8;
+  --text2:    #C0A870;
+  --border:   #503820;
+  --marble:   #E8D8B8;
+  --gold:     #E8A820;
+  --gold-lt:  #F8C840;
+  --aegean:   #C05020;
+  --aegean-lt:#E07040;
+  --olive:    #405820;
+  --rose:     #D06070;
+  --petal:    #E08090;
+  --yellow:   #E0A820;
+  --sky:      #804060;
+  --sea:      #201840;
+  --cliff:    #304020;
+  --accent:   #E8A820;
+  --accent2:  #C05020;
+  --ok:       #405820;
+  --warn:     #E8A820;
+  --danger:   #C03030;
+  --black:    #060408;
+  --white:    #F8F0E0;
+  --gray:     #806040;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--display);font-size:14px;line-height:1.8;transition:background .5s,color .5s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
+
+/* ══════════════════════════════════════════════════════
+   ESCENA DE FONDO — capas fijas
+══════════════════════════════════════════════════════ */
+#ap-sky      {position:fixed;inset:0;z-index:0;pointer-events:none}
+#ap-scene    {position:fixed;inset:0;z-index:1;pointer-events:none} /* mar + risco + hierba */
+#ap-petals   {position:fixed;inset:0;z-index:2;pointer-events:none} /* pétalos */
+#ap-walls    {position:fixed;inset:0;z-index:3;pointer-events:none} /* paredes + columnas */
+
+.page{position:relative;z-index:10;padding:40px 36% 40px 36%;max-width:100%;margin:0}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+══════════════════════════════════════════════════════ */
+h2{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold);margin:36px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:.12em;text-transform:uppercase}
+h3{font-family:var(--display);font-size:12px;font-weight:400;color:var(--aegean);margin:20px 0 10px;letter-spacing:.16em;text-transform:uppercase}
+h4{font-family:var(--display);font-size:13px;color:var(--text);margin-bottom:5px;letter-spacing:.06em}
+p{margin-bottom:12px;line-height:1.85;font-family:var(--display);font-weight:400;font-size:13px}
+p.muted{color:var(--text2);font-size:12px}
+
+/* ══════════════════════════════════════════════════════
+   CÓDIGO
+══════════════════════════════════════════════════════ */
+code{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border);padding:1px 5px;border-radius:var(--radius);color:var(--gold)}
+pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:var(--radius);padding:12px 16px;margin:12px 0;overflow-x:auto;font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--text);position:relative}
+pre::before{content:attr(data-lang);position:absolute;top:5px;right:8px;font-size:8px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;font-family:var(--display)}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw{color:var(--gold)}pre .fn{color:var(--aegean-lt)}pre .str{color:var(--rose)}
+pre .num{color:var(--yellow)}pre .cm{color:var(--text2);font-style:italic}
+
+/* ══════════════════════════════════════════════════════
+   CALLOUTS
+══════════════════════════════════════════════════════ */
+.callout{border-left:2px solid var(--accent);background:var(--bg2);padding:10px 14px;margin:8px 0;border-radius:0 var(--radius) var(--radius) 0}
+.callout-title{font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.callout p{margin-bottom:0;font-size:12px}
+.callout.ok      {border-color:var(--ok)     }.callout.ok      .callout-title{color:var(--ok)     }
+.callout.warn    {border-color:var(--warn)   }.callout.warn    .callout-title{color:var(--warn)   }
+.callout.danger  {border-color:var(--danger) }.callout.danger  .callout-title{color:var(--danger) }
+.callout.aegean  {border-color:var(--aegean) }.callout.aegean  .callout-title{color:var(--aegean) }
+.callout.olive   {border-color:var(--olive)  }.callout.olive   .callout-title{color:var(--olive)  }
+.callout.rose    {border-color:var(--rose)   }.callout.rose    .callout-title{color:var(--rose)   }
+.callout.marble  {border-color:var(--border) }.callout.marble  .callout-title{color:var(--text2)  }
+
+/* ══════════════════════════════════════════════════════
+   TABLA
+══════════════════════════════════════════════════════ */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+th{background:var(--bg3);padding:7px 12px;text-align:left;font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--border)}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg3)}
+
+/* ══════════════════════════════════════════════════════
+   BOTONES
+══════════════════════════════════════════════════════ */
+.btn{display:inline-block;font-family:var(--display);font-size:10px;font-weight:700;padding:5px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.1em;text-transform:uppercase}
+.btn:hover,.btn.primary{border-color:var(--gold);color:var(--gold)}
+.btn.ok     {border-color:var(--ok);    color:var(--ok)    }
+.btn.warn   {border-color:var(--warn);  color:var(--warn)  }
+.btn.danger {border-color:var(--danger);color:var(--danger)}
+.btn.aegean {border-color:var(--aegean);color:var(--aegean)}
+.btn.rose   {border-color:var(--rose);  color:var(--rose)  }
+.btn.olive  {border-color:var(--olive); color:var(--olive) }
+
+/* ══════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════ */
+.badge{display:inline-block;font-family:var(--display);font-size:8px;font-weight:700;padding:2px 7px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
+.badge.gold   {border-color:var(--gold);   color:var(--gold)  }
+.badge.aegean {border-color:var(--aegean); color:var(--aegean)}
+.badge.olive  {border-color:var(--olive);  color:var(--olive) }
+.badge.rose   {border-color:var(--rose);   color:var(--rose)  }
+.badge.yellow {border-color:var(--yellow); color:var(--yellow)}
+.badge.ok     {border-color:var(--ok);     color:var(--ok)    }
+.badge.warn   {border-color:var(--warn);   color:var(--warn)  }
+.badge.danger {border-color:var(--danger); color:var(--danger)}
+
+/* ══════════════════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════════════════ */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--gold);box-shadow:0 2px 14px rgba(200,144,10,.12)}
+
+/* ══════════════════════════════════════════════════════
+   MÉTRICAS
+══════════════════════════════════════════════════════ */
+.metrics-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;flex:1;min-width:80px}
+.metric-val{font-family:var(--display);font-size:20px;font-weight:700;color:var(--gold);letter-spacing:-.5px}
+.metric-lbl{font-family:var(--mono);font-size:9px;color:var(--text2);margin-top:2px;letter-spacing:.06em;text-transform:uppercase}
+.metric-val.aegean{color:var(--aegean)}.metric-val.olive{color:var(--olive)}
+.metric-val.rose{color:var(--rose)}.metric-val.sky{color:var(--sky)}
+
+/* ══════════════════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════════════════ */
+hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+.ornament{text-align:center;color:var(--gold);font-size:16px;letter-spacing:.3em;margin:6px 0;opacity:.6}
+
+/* ══════════════════════════════════════════════════════
+   ODE LOG — timeline con estética griega
+══════════════════════════════════════════════════════ */
+.ode-log{margin:12px 0}
+.ode-entry{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.ode-entry:last-child{border-bottom:none}
+.ode-dot{width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px;border:1px solid var(--border);border-radius:50%;background:var(--bg3);color:var(--text2);font-family:var(--display)}
+.ode-dot.gold  {border-color:var(--gold);  color:var(--gold)  }
+.ode-dot.aegean{border-color:var(--aegean);color:var(--aegean)}
+.ode-dot.olive {border-color:var(--olive); color:var(--olive) }
+.ode-dot.rose  {border-color:var(--rose);  color:var(--rose)  }
+
+/* ══════════════════════════════════════════════════════
+   STROPHE STEPS — pipeline griego
+══════════════════════════════════════════════════════ */
+.strophe{display:flex;gap:14px;align-items:flex-start;margin:8px 0;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:var(--radius);transition:box-shadow .2s}
+.strophe:hover{box-shadow:0 2px 10px rgba(200,144,10,.1)}
+.strophe-num{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold);min-width:28px;line-height:1;margin-top:2px;letter-spacing:.04em}
+
+/* ══════════════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════════════ */
+.theme-btn{font-family:var(--display);font-size:10px;font-weight:700;padding:5px 14px;background:none;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.1em;text-transform:uppercase}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:900px){.page{padding:40px 10px}.grid-2{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.swatch{width:76px;text-align:center;font-family:var(--mono);font-size:8px;color:var(--text2)}
+.swatch-box{height:42px;border-radius:var(--radius);margin-bottom:5px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:3px;left:4px;font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}
+</style>
+</head>
+<body>
+
+<!-- Capas de escena -->
+<canvas id="ap-sky"></canvas>
+<canvas id="ap-scene"></canvas>
+<canvas id="ap-petals"></canvas>
+<div id="ap-walls"></div>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:40px">
+  <div>
+    <div style="font-family:var(--display);font-size:30px;font-weight:700;color:var(--gold);letter-spacing:.08em">APOLO</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:.18em;text-transform:uppercase;margin-top:-2px">_theme · iroFactory</div>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">☽ Atardecer</button>
+</div>
+
+<div class="ornament">✦ ◆ ✦</div>
+
+<!-- ── Paleta ── -->
+<h2>Paleta de colores</h2>
+<p class="muted">Mármol, oro y azul Egeo · El Mediterráneo en dos luces.</p>
+
+<h3>Cielo y mar</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--aegean)"><span class="swatch-hex" id="hex-aegean"></span></div>--aegean</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--aegean-lt)"><span class="swatch-hex" id="hex-aegean-lt"></span></div>--aegean-lt</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--sky)"><span class="swatch-hex" id="hex-sky"></span></div>--sky</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--sea)"><span class="swatch-hex" id="hex-sea"></span></div>--sea</div>
+</div>
+
+<h3>Mármol y oro</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--marble)"><span class="swatch-hex" id="hex-marble"></span></div>--marble</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gold-lt)"><span class="swatch-hex" id="hex-gold-lt"></span></div>--gold-lt</div>
+</div>
+
+<h3>Flora</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--olive)"><span class="swatch-hex" id="hex-olive"></span></div>--olive</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--cliff)"><span class="swatch-hex" id="hex-cliff"></span></div>--cliff</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--rose)"><span class="swatch-hex" id="hex-rose"></span></div>--rose</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--petal)"><span class="swatch-hex" id="hex-petal"></span></div>--petal</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--yellow)"><span class="swatch-hex" id="hex-yellow"></span></div>--yellow</div>
+</div>
+
+<h3>Semánticos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<div class="ornament">◆ ✦ ◆</div>
+<hr class="divider">
+
+<!-- ── Callouts ── -->
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento · Oro</div><p>Inscripciones del oráculo. La verdad llega en versos.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Olivo</div><p>La ofrenda fue aceptada. Los dioses sonríen.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Oro</div><p>El sol desciende. Queda poco tiempo antes del ocaso.</p></div>
+<div class="callout danger"><div class="callout-title">Danger</div><p>La ira de Apolo no conoce límites. Retirarse.</p></div>
+<div class="callout aegean"><div class="callout-title">Aegean</div><p>El mar habla. Sus olas traen noticias de tierras lejanas.</p></div>
+<div class="callout olive"><div class="callout-title">Olive</div><p>Atenea bendice el olivo. Sabiduría que da sombra.</p></div>
+<div class="callout rose"><div class="callout-title">Rose</div><p>Afrodita pasa. Los pétalos caen a su paso.</p></div>
+<div class="callout marble"><div class="callout-title">Marble</div><p>Mármol de Paros. La piedra más blanca del mundo conocido.</p></div>
+
+<hr class="divider">
+
+<!-- ── Badges ── -->
+<h2>Badges</h2>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+  <span class="badge gold">oro</span>
+  <span class="badge aegean">egeo</span>
+  <span class="badge olive">olivo</span>
+  <span class="badge rose">rosa</span>
+  <span class="badge yellow">amarillo</span>
+  <span class="badge ok">ok</span>
+  <span class="badge warn">warn</span>
+  <span class="badge danger">danger</span>
+  <span class="badge">default</span>
+</div>
+
+<hr class="divider">
+
+<!-- ── Botones ── -->
+<h2>Botones</h2>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+  <button class="btn primary">primary</button>
+  <button class="btn">default</button>
+  <button class="btn aegean">egeo</button>
+  <button class="btn olive">olivo</button>
+  <button class="btn rose">rosa</button>
+  <button class="btn ok">ok</button>
+  <button class="btn warn">warn</button>
+  <button class="btn danger">danger</button>
+</div>
+
+<hr class="divider">
+
+<!-- ── Métricas ── -->
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">XII</div><div class="metric-lbl">dioses (oro)</div></div>
+  <div class="metric"><div class="metric-val aegean">∞</div><div class="metric-lbl">mares (egeo)</div></div>
+  <div class="metric"><div class="metric-val olive">9</div><div class="metric-lbl">musas (olivo)</div></div>
+  <div class="metric"><div class="metric-val rose">☼</div><div class="metric-lbl">soles (rosa)</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Código ── -->
+<h2>Código</h2>
+<pre data-lang="python"><span class="cm"># El oráculo de Delfos</span>
+<span class="kw">class</span> Oraculo:
+    <span class="fn">def</span> <span class="kw">__init__</span>(self, dios):
+        self.dios    = dios
+        self.activo  = <span class="kw">True</span>
+
+    <span class="fn">def</span> <span class="kw">consultar</span>(self, pregunta):
+        <span class="kw">return</span> <span class="str">f"Apolo habla: {pregunta[::-1]}"</span>
+
+apolo = <span class="fn">Oraculo</span>(<span class="str">"Apolo"</span>)
+<span class="fn">print</span>(apolo.<span class="fn">consultar</span>(<span class="str">"¿Cuál es mi destino?"</span>))</pre>
+
+<hr class="divider">
+
+<!-- ── Tabla ── -->
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Día</th><th>Atardecer</th><th>Evocación</th></tr>
+  <tr><td><code>--gold</code></td><td>#C8900A</td><td>#E8A820</td><td>Oro · el sol · Apolo</td></tr>
+  <tr><td><code>--aegean</code></td><td>#2050A0</td><td>#C05020</td><td>Egeo · el mar · Poseidón</td></tr>
+  <tr><td><code>--marble</code></td><td>#F8F4EC</td><td>#E8D8B8</td><td>Mármol · los templos</td></tr>
+  <tr><td><code>--olive</code></td><td>#607830</td><td>#405820</td><td>Olivo · Atenea</td></tr>
+  <tr><td><code>--rose</code></td><td>#E87080</td><td>#D06070</td><td>Rosa · Afrodita · pétalos</td></tr>
+  <tr><td><code>--yellow</code></td><td>#F0C840</td><td>#E0A820</td><td>Amarillo · flores del campo</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ── Ode Log ── -->
+<h2>Ode Log</h2>
+<div class="ode-log">
+  <div class="ode-entry"><div class="ode-dot gold">I</div><div><h4>Invocación</h4><p class="muted">Canta, oh musa, la cólera del pélida Aquiles. El poema comienza.</p></div></div>
+  <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>El mar de vino oscuro</h4><p class="muted">Odiseo navega. El Egeo lo devuelve, el Egeo lo aleja.</p></div></div>
+  <div class="ode-entry"><div class="ode-dot rose">III</div><div><h4>Afrodita pasa</h4><p class="muted">Pétalos de rosa caen sobre el ágora. La diosa no mira atrás.</p></div></div>
+  <div class="ode-entry"><div class="ode-dot olive">IV</div><div><h4>La sabiduría</h4><p class="muted">Atenea planta el olivo. La ciudad tendrá nombre eterno.</p></div></div>
+  <div class="ode-entry"><div class="ode-dot gold">V</div><div><h4>El sol desciende</h4><p class="muted">Apolo conduce su carro al horizonte. Mañana volverá.</p></div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Strophes ── -->
+<h2>Estrofas</h2>
+<div class="strophe"><div class="strophe-num">I</div><div><h4>Estrofa</h4><p class="muted">El coro avanza desde la derecha. Los pétalos caen.</p></div></div>
+<div class="strophe" style="border-left-color:var(--aegean)"><div class="strophe-num" style="color:var(--aegean)">II</div><div><h4>Antistrofa</h4><p class="muted">El coro retrocede. El eco del mar llena el teatro.</p></div></div>
+<div class="strophe" style="border-left-color:var(--olive)"><div class="strophe-num" style="color:var(--olive)">III</div><div><h4>Épodo</h4><p class="muted">El coro se detiene. El oráculo ha hablado.</p></div></div>
+
+<hr class="divider">
+
+<!-- ── Cards ── -->
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card"><strong>La Ilíada</strong><span class="badge gold" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">La cólera de Aquiles · Troya · El precio de la gloria.</p></div>
+  <div class="card"><strong>La Odisea</strong><span class="badge aegean" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">Diez años de regreso · El mar oscuro · Ítaca espera.</p></div>
+</div>
+
+<div class="ornament" style="margin-top:28px">✦ ◆ ✦ ◆ ✦</div>
+<p class="muted" style="text-align:center;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase">
+  apolo_theme · by RemiH06 · iroFactory · AGPL-3.0
+</p>
+</div>
+
+<script>
+// ── Toggle ─────────────────────────────────────────────
+let isDark = false;
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('toggle-btn').textContent = isDark ? '☀ Amanecer' : '☽ Atardecer';
+  updateHexes();
+  buildSky();
+  buildScene();
+  buildWalls();
+}
+
+function cssVar(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+function updateHexes() {
+  const map = {
+    'hex-aegean':'--aegean','hex-aegean-lt':'--aegean-lt','hex-sky':'--sky','hex-sea':'--sea',
+    'hex-marble':'--marble','hex-gold':'--gold','hex-gold-lt':'--gold-lt',
+    'hex-olive':'--olive','hex-cliff':'--cliff','hex-rose':'--rose','hex-petal':'--petal','hex-yellow':'--yellow',
+    'hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger',
+  };
+  Object.entries(map).forEach(([id,tok]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = cssVar(tok);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 1 — Cielo (gradiente)
+// ══════════════════════════════════════════════════════
+const skyCanvas = document.getElementById('ap-sky');
+const sCtx = skyCanvas.getContext('2d');
+
+function buildSky() {
+  const W = skyCanvas.width  = window.innerWidth;
+  const H = skyCanvas.height = window.innerHeight;
+  sCtx.clearRect(0, 0, W, H);
+
+  const grad = sCtx.createLinearGradient(0, 0, 0, H);
+  if (isDark) {
+    // Atardecer — naranja púrpura
+    grad.addColorStop(0,    '#1A0828');
+    grad.addColorStop(0.35, '#601828');
+    grad.addColorStop(0.6,  '#C04820');
+    grad.addColorStop(0.78, '#E08030');
+    grad.addColorStop(1,    '#201840');
+  } else {
+    // Día — azul Egeo
+    grad.addColorStop(0,    '#A8C8F0');
+    grad.addColorStop(0.5,  '#6090D0');
+    grad.addColorStop(0.75, '#4878C0');
+    grad.addColorStop(1,    '#3060A8');
+  }
+  sCtx.fillStyle = grad;
+  sCtx.fillRect(0, 0, W, H);
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 2 — Mar, risco e hierba animada
+// ══════════════════════════════════════════════════════
+const sceneCanvas = document.getElementById('ap-scene');
+const cCtx = sceneCanvas.getContext('2d');
+let sceneW, sceneH, grassBlades = [], grassT = 0;
+
+function buildScene() {
+  sceneW = sceneCanvas.width  = window.innerWidth;
+  sceneH = sceneCanvas.height = window.innerHeight;
+  grassBlades = [];
+}
+
+function drawScene(ts) {
+  cCtx.clearRect(0, 0, sceneW, sceneH);
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 3 — Pétalos y hierba volando
+// ══════════════════════════════════════════════════════
+const petalCanvas = document.getElementById('ap-petals');
+const pCtx = petalCanvas.getContext('2d');
+let petalW, petalH, petals = [];
+
+function makePetal() {
+  const col = Math.random() < 0.6
+    ? (isDark ? '#D06070' : '#F0A0B0')
+    : (isDark ? '#E0A820' : '#F0C840');
+  return {
+    type: 'petal',
+    x: -30 - Math.random() * 100,
+    y: Math.random() * petalH * 0.85,
+    vx: 0.8 + Math.random() * 1.2,
+    vy: 0.1 + Math.random() * 0.3,
+    angle: Math.random() * Math.PI * 2,
+    vAngle: (Math.random() - 0.5) * 0.04,
+    w: 6 + Math.random() * 8,
+    h: 4 + Math.random() * 5,
+    col,
+    alpha: 0.6 + Math.random() * 0.3,
+  };
+}
+
+function resizePetals() {
+  petalW = petalCanvas.width  = window.innerWidth;
+  petalH = petalCanvas.height = window.innerHeight;
+}
+
+function drawPetals() {
+  pCtx.clearRect(0, 0, petalW, petalH);
+
+  // Generar nuevos
+  if (Math.random() < 0.06) petals.push(makePetal());
+
+  petals = petals.filter(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.angle += p.vAngle;
+    pCtx.save();
+    pCtx.translate(p.x, p.y);
+    pCtx.rotate(p.angle);
+    pCtx.globalAlpha = p.alpha;
+    pCtx.fillStyle   = p.col;
+    pCtx.beginPath();
+    pCtx.ellipse(0, 0, p.w, p.h, 0, 0, Math.PI * 2);
+    pCtx.fill();
+    pCtx.restore();
+    return p.x < petalW + 50;
+  });
+  pCtx.globalAlpha = 1;
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 4 — Paredes con columnas jónicas y rosetas (SVG)
+// ══════════════════════════════════════════════════════
+function buildWalls() {
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const wallW = Math.round(W * 0.30);
+  const marbleBase   = isDark ? '#C8B890' : '#F0EAD8';
+  const marbleDark   = isDark ? '#A89870' : '#D8D0B8';
+  const marbleShadow = isDark ? '#806848' : '#C0B898';
+  const goldCol      = isDark ? '#E8A820' : '#C8900A';
+
+  // ── Columna jónica — va desde yTop hasta yBot ──
+  function ionicColumn(cx, yTop, yBot) {
+    const totalH  = yBot - yTop;
+    const shaftW  = 44;
+    const baseH   = 22;
+    const capH    = 32;
+    const sy      = yTop + capH;
+    const ey      = yBot - baseH;
+    let out = '';
+
+    // Estilobato
+    out += `<rect x="${cx-shaftW*.85}" y="${yBot-baseH}" width="${shaftW*1.7}" height="${baseH*.4}" fill="${marbleDark}" rx="1"/>`;
+    out += `<rect x="${cx-shaftW*.75}" y="${yBot-baseH*.6}" width="${shaftW*1.5}" height="${baseH*.6}" fill="${marbleBase}" rx="1"/>`;
+
+    // Fuste con éntasis
+    out += `<path d="M${cx-shaftW/2} ${sy} Q${cx-shaftW*.58} ${(sy+ey)/2} ${cx-shaftW*.44} ${ey} L${cx+shaftW*.44} ${ey} Q${cx+shaftW*.58} ${(sy+ey)/2} ${cx+shaftW/2} ${sy} Z" fill="${marbleBase}"/>`;
+
+    // Estrías
+    const nf = 10;
+    for (let i = 0; i <= nf; i++) {
+      const fx  = cx - shaftW/2 + shaftW*i/nf;
+      const tfx = cx - shaftW*.44 + shaftW*.88*i/nf;
+      out += `<line x1="${tfx.toFixed(1)}" y1="${sy}" x2="${fx.toFixed(1)}" y2="${ey}" stroke="${marbleShadow}" stroke-width="0.6" opacity="0.45"/>`;
+    }
+
+    // Capitel — volutas jónicas
+    const vy = yTop + 18;
+    const vx1 = cx - shaftW*.62, vx2 = cx + shaftW*.62;
+    // Voluta izquierda
+    out += `<path d="M${vx1+14} ${vy+9} C${vx1+14} ${vy} ${vx1-5} ${vy-5} ${vx1-2} ${vy+9} C${vx1} ${vy+16} ${vx1+10} ${vy+14} ${vx1+10} ${vy+9}" fill="none" stroke="${goldCol}" stroke-width="1.4"/>`;
+    out += `<circle cx="${vx1+5}" cy="${vy+9}" r="3.5" fill="${marbleBase}" stroke="${goldCol}" stroke-width="0.9"/>`;
+    // Voluta derecha
+    out += `<path d="M${vx2-14} ${vy+9} C${vx2-14} ${vy} ${vx2+5} ${vy-5} ${vx2+2} ${vy+9} C${vx2} ${vy+16} ${vx2-10} ${vy+14} ${vx2-10} ${vy+9}" fill="none" stroke="${goldCol}" stroke-width="1.4"/>`;
+    out += `<circle cx="${vx2-5}" cy="${vy+9}" r="3.5" fill="${marbleBase}" stroke="${goldCol}" stroke-width="0.9"/>`;
+    // Banda entre volutas
+    out += `<rect x="${vx1+14}" y="${vy+5}" width="${vx2-14-(vx1+14)}" height="8" fill="${marbleBase}"/>`;
+    // Ábaco
+    out += `<rect x="${cx-shaftW*.75}" y="${yTop+5}" width="${shaftW*1.5}" height="7" fill="${marbleBase}" rx="1"/>`;
+    // Friso
+    out += `<rect x="${cx-shaftW*.75}" y="${yTop}" width="${shaftW*1.5}" height="6" fill="${marbleDark}" rx="0"/>`;
+
+    return out;
+  }
+
+  // ── Roseta circular ──
+  function rosette(cx, cy, r) {
+    let out = '';
+    out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${goldCol}" stroke-width="1.2"/>`;
+    out += `<circle cx="${cx}" cy="${cy}" r="${r*.4}" fill="none" stroke="${goldCol}" stroke-width="0.9"/>`;
+    for (let i = 0; i < 8; i++) {
+      const a  = (Math.PI*2*i)/8;
+      const pr = r * 0.68;
+      const px = cx + Math.cos(a)*pr, py = cy + Math.sin(a)*pr;
+      out += `<ellipse cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" rx="${(r*.3).toFixed(1)}" ry="${(r*.17).toFixed(1)}" transform="rotate(${(a*180/Math.PI).toFixed(1)} ${px.toFixed(1)} ${py.toFixed(1)})" fill="none" stroke="${goldCol}" stroke-width="0.9" opacity="0.85"/>`;
+    }
+    out += `<circle cx="${cx}" cy="${cy}" r="${r*.14}" fill="${goldCol}" opacity="0.8"/>`;
+    return out;
+  }
+
+  // ── Entablamento superior (corre por toda la pared) ──
+  function entablature(x, wW) {
+    let out = '';
+    out += `<rect x="${x}" y="0" width="${wW}" height="10" fill="${marbleDark}" opacity="0.7"/>`;
+    out += `<rect x="${x}" y="10" width="${wW}" height="16" fill="${marbleBase}" opacity="0.9"/>`;
+    out += `<rect x="${x}" y="26" width="${wW}" height="8" fill="${marbleDark}" opacity="0.5"/>`;
+    return out;
+  }
+
+  // ── Pared izquierda ──
+  function leftWall() {
+    const wW = wallW;
+    let out = `<g>`;
+    // Fondo de pared
+    out += `<rect x="0" y="0" width="${wW}" height="${H}" fill="${marbleBase}" opacity="0.93"/>`;
+    // Vetas horizontales sutiles
+    for (let i = 1; i < 8; i++) {
+      out += `<line x1="0" y1="${H*i/8}" x2="${wW}" y2="${H*i/8}" stroke="${marbleShadow}" stroke-width="0.3" opacity="0.25"/>`;
+    }
+    // Borde derecho — moldura
+    out += `<rect x="${wW-14}" y="0" width="14" height="${H}" fill="${marbleDark}" opacity="0.45"/>`;
+    out += `<line x1="${wW-14}" y1="0" x2="${wW-14}" y2="${H}" stroke="${marbleShadow}" stroke-width="1.2" opacity="0.5"/>`;
+
+    // Entablamento
+    out += entablature(0, wW);
+
+    // Columnas distribuidas — de izquierda a derecha
+    // La más a la derecha es la que "da al cielo"
+    const numCols = 4;
+    const colPositions = [];
+    for (let i = 0; i < numCols; i++) {
+      const cx = Math.round(wW * (i + 0.5) / numCols);
+      colPositions.push(cx);
+      out += ionicColumn(cx, 34, H);
+    }
+
+    // Rosetas — una entre cada par de columnas, centrada verticalmente
+    for (let i = 0; i < colPositions.length - 1; i++) {
+      const rx = (colPositions[i] + colPositions[i+1]) / 2;
+      // Una roseta a 1/3 de altura, otra a 2/3
+      out += rosette(rx, H * 0.30, 20);
+      out += rosette(rx, H * 0.62, 20);
+    }
+
+    out += `</g>`;
+    return out;
+  }
+
+  // ── Pared derecha ──
+  function rightWall() {
+    const wW = wallW;
+    const x0 = W - wW;
+    let out = `<g>`;
+    out += `<rect x="${x0}" y="0" width="${wW}" height="${H}" fill="${marbleBase}" opacity="0.93"/>`;
+    for (let i = 1; i < 8; i++) {
+      out += `<line x1="${x0}" y1="${H*i/8}" x2="${W}" y2="${H*i/8}" stroke="${marbleShadow}" stroke-width="0.3" opacity="0.25"/>`;
+    }
+    // Borde izquierdo — moldura
+    out += `<rect x="${x0}" y="0" width="14" height="${H}" fill="${marbleDark}" opacity="0.45"/>`;
+    out += `<line x1="${x0+14}" y1="0" x2="${x0+14}" y2="${H}" stroke="${marbleShadow}" stroke-width="1.2" opacity="0.5"/>`;
+
+    out += entablature(x0, wW);
+
+    const numCols = 4;
+    const colPositions = [];
+    for (let i = 0; i < numCols; i++) {
+      const cx = Math.round(x0 + wW * (i + 0.5) / numCols);
+      colPositions.push(cx);
+      out += ionicColumn(cx, 34, H);
+    }
+
+    for (let i = 0; i < colPositions.length - 1; i++) {
+      const rx = (colPositions[i] + colPositions[i+1]) / 2;
+      out += rosette(rx, H * 0.30, 20);
+      out += rosette(rx, H * 0.62, 20);
+    }
+
+    out += `</g>`;
+    return out;
+  }
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+    ${leftWall()}
+    ${rightWall()}
+  </svg>`;
+
+  const el = document.getElementById('ap-walls');
+  el.style.backgroundImage  = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  el.style.backgroundSize   = `${W}px ${H}px`;
+  el.style.backgroundRepeat = 'no-repeat';
+}
+
+// ── Loop de animación ───────────────────────────────────
+let lastScene = 0;
+function animLoop(ts) {
+  drawScene(ts);
+  drawPetals();
+  requestAnimationFrame(animLoop);
+}
+
+// ── Init ───────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  buildSky(); buildScene(); resizePetals(); buildWalls();
+});
+buildSky();
+buildScene();
+resizePetals();
+buildWalls();
+updateHexes();
+requestAnimationFrame(animLoop);
+</script>
+</body>
+</html>
