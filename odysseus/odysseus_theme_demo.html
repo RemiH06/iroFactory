@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>odysseus_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=im-fell-english:400,400i&family=fira-code:400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   TOKENS — CLARO (default) · mapa de día
+══════════════════════════════════════════════════════ */
+body {
+  --bg:        #F2E8D0;
+  --bg2:       #EAE0C4;
+  --bg3:       #DED4B4;
+  --text:      #1C1008;
+  --text2:     #6A4E28;
+  --border:    #C8A868;
+
+  /* ── Mapa ── */
+  --parchment: #F2E8D0;
+  --land:      #D8C898;
+  --land-dk:   #C0A870;
+  --sea:       #B8D0E8;
+  --sea-dk:    #90B0D0;
+  --ink:       #3A2808;
+  --rust:      #A05828;
+  --stain:     #C89040;
+
+  /* ── Semántico viajero ── */
+  --route:     #A82018;   /* rutas trazadas           */
+  --must:      #C83020;   /* lugares imprescindibles  */
+  --wonder:    #603890;   /* lugares extraordinarios  */
+  --fey:       #D070A0;   /* lugares feéricos         */
+  --visited:   #507040;   /* visitado                 */
+  --unvisited: #8A6840;   /* por visitar              */
+  --compass:   #C89030;   /* dorado brújula           */
+
+  /* ── Acento ── */
+  --accent:    #A82018;
+  --accent2:   #603890;
+
+  /* ── Semánticos ── */
+  --ok:        #507040;
+  --warn:      #C89030;
+  --danger:    #A82018;
+
+  /* ── Neutros ── */
+  --black:     #100804;
+  --white:     #FDF8F0;
+  --gray:      #907858;
+
+  --display: 'IM Fell English', serif;
+  --mono:    'Fira Code', monospace;
+  --radius:  2px;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — OSCURO · mapa nocturno / náutico
+══════════════════════════════════════════════════════ */
+body.dark {
+  --bg:        #0E0C18;
+  --bg2:       #161424;
+  --bg3:       #201C30;
+  --text:      #E8D8B8;
+  --text2:     #A08860;
+  --border:    #3A2C18;
+
+  --parchment: #1A1428;
+  --land:      #2A2018;
+  --land-dk:   '#1A1410';
+  --sea:       '#101828';
+  --sea-dk:    '#080C18';
+  --ink:       '#D8C898';
+  --rust:      '#804020';
+  --stain:     '#604818';
+
+  --route:     #D04030;
+  --must:      #E05040;
+  --wonder:    #8050C0;
+  --fey:       #E090C0;
+  --visited:   #608050;
+  --unvisited: #A08050;
+  --compass:   #E0A830;
+
+  --accent:    #D04030;
+  --accent2:   #8050C0;
+
+  --ok:        #608050;
+  --warn:      #E0A830;
+  --danger:    #D04030;
+
+  --black:     #060408;
+  --white:     #F0E8D0;
+  --gray:      #706050;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--display);font-size:15px;line-height:1.8;transition:background .4s,color .4s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
+
+/* Capas */
+#od-desk   {position:fixed;inset:0;z-index:0;pointer-events:none}
+#od-map    {position:fixed;inset:0;z-index:1;pointer-events:none}
+#od-water  {position:fixed;inset:0;z-index:2;pointer-events:none}
+#od-objects{position:fixed;inset:0;z-index:3;pointer-events:none}
+#od-compass{position:fixed;inset:0;z-index:4;pointer-events:none}
+.page{position:relative;z-index:10;padding:40px;max-width:860px;margin:0 auto}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+══════════════════════════════════════════════════════ */
+h2{
+  font-family:var(--display);font-size:18px;font-weight:400;font-style:italic;
+  color:var(--ink);margin:36px 0 14px;padding-bottom:6px;
+  border-bottom:1px solid var(--border);letter-spacing:.04em;
+}
+body.dark h2{color:var(--text)}
+h3{font-family:var(--display);font-size:14px;font-weight:400;color:var(--rust);margin:20px 0 10px;letter-spacing:.06em}
+body.dark h3{color:var(--stain)}
+h4{font-family:var(--display);font-size:14px;color:var(--text);margin-bottom:5px}
+p{margin-bottom:12px;line-height:1.9;font-size:14px}
+p.muted{color:var(--text2);font-size:13px;font-style:italic}
+em{font-style:italic;color:var(--rust)}
+strong{font-weight:400;color:var(--ink);text-decoration:underline;text-decoration-color:var(--stain);text-underline-offset:3px}
+body.dark strong{color:var(--text)}
+
+/* ══════════════════════════════════════════════════════
+   CÓDIGO
+══════════════════════════════════════════════════════ */
+code{font-family:var(--mono);font-size:12px;background:var(--bg3);border:1px solid var(--border);padding:1px 5px;border-radius:var(--radius);color:var(--rust)}
+pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--rust);border-radius:var(--radius);padding:12px 16px;margin:12px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.75;color:var(--text);position:relative}
+pre::before{content:attr(data-lang);position:absolute;top:5px;right:8px;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw{color:var(--route)}pre .fn{color:var(--wonder)}pre .str{color:var(--visited)}
+pre .num{color:var(--compass)}pre .cm{color:var(--text2);font-style:italic}
+
+/* ══════════════════════════════════════════════════════
+   CALLOUTS
+══════════════════════════════════════════════════════ */
+.callout{border-left:2px solid var(--accent);background:var(--bg2);padding:11px 16px;margin:8px 0;border-radius:0 var(--radius) var(--radius) 0}
+.callout-title{font-family:var(--display);font-size:9px;font-style:italic;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.callout p{margin-bottom:0;font-size:13px}
+.callout.ok       {border-color:var(--ok)      }.callout.ok       .callout-title{color:var(--ok)      }
+.callout.warn     {border-color:var(--warn)    }.callout.warn     .callout-title{color:var(--warn)    }
+.callout.danger   {border-color:var(--danger)  }.callout.danger   .callout-title{color:var(--danger)  }
+.callout.route    {border-color:var(--route)   }.callout.route    .callout-title{color:var(--route)   }
+.callout.must     {border-color:var(--must)    }.callout.must     .callout-title{color:var(--must)    }
+.callout.wonder   {border-color:var(--wonder)  }.callout.wonder   .callout-title{color:var(--wonder)  }
+.callout.fey      {border-color:var(--fey)     }.callout.fey      .callout-title{color:var(--fey)     }
+.callout.visited  {border-color:var(--visited) }.callout.visited  .callout-title{color:var(--visited) }
+.callout.unvisited{border-color:var(--unvisited)}.callout.unvisited .callout-title{color:var(--unvisited)}
+.callout.compass  {border-color:var(--compass) }.callout.compass  .callout-title{color:var(--compass) }
+
+/* ══════════════════════════════════════════════════════
+   TABLA
+══════════════════════════════════════════════════════ */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th{background:var(--bg3);padding:7px 12px;text-align:left;font-family:var(--display);font-size:9px;font-style:italic;letter-spacing:.1em;text-transform:uppercase;color:var(--rust);border-bottom:1px solid var(--border)}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg3)}
+
+/* ══════════════════════════════════════════════════════
+   BOTONES
+══════════════════════════════════════════════════════ */
+.btn{display:inline-block;font-family:var(--display);font-size:12px;font-style:italic;padding:5px 16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.04em}
+.btn:hover,.btn.primary{border-color:var(--route);color:var(--route)}
+.btn.ok       {border-color:var(--ok);      color:var(--ok)      }
+.btn.warn     {border-color:var(--warn);    color:var(--warn)    }
+.btn.danger   {border-color:var(--danger);  color:var(--danger)  }
+.btn.route    {border-color:var(--route);   color:var(--route)   }
+.btn.wonder   {border-color:var(--wonder);  color:var(--wonder)  }
+.btn.fey      {border-color:var(--fey);     color:var(--fey)     }
+.btn.visited  {border-color:var(--visited); color:var(--visited) }
+.btn.compass  {border-color:var(--compass); color:var(--compass) }
+
+/* ══════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════ */
+.badge{display:inline-block;font-family:var(--display);font-size:9px;font-style:italic;padding:2px 7px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);letter-spacing:.08em}
+.badge.route    {border-color:var(--route);    color:var(--route)   }
+.badge.must     {border-color:var(--must);     color:var(--must)    }
+.badge.wonder   {border-color:var(--wonder);   color:var(--wonder)  }
+.badge.fey      {border-color:var(--fey);      color:var(--fey)     }
+.badge.visited  {border-color:var(--visited);  color:var(--visited) }
+.badge.unvisited{border-color:var(--unvisited);color:var(--unvisited)}
+.badge.compass  {border-color:var(--compass);  color:var(--compass) }
+.badge.ok       {border-color:var(--ok);       color:var(--ok)      }
+.badge.warn     {border-color:var(--warn);     color:var(--warn)    }
+.badge.danger   {border-color:var(--danger);   color:var(--danger)  }
+
+/* ══════════════════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════════════════ */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--route);box-shadow:0 2px 12px rgba(168,32,24,.1)}
+
+/* ══════════════════════════════════════════════════════
+   MÉTRICAS
+══════════════════════════════════════════════════════ */
+.metrics-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;flex:1;min-width:90px}
+.metric-val{font-family:var(--display);font-size:22px;font-style:italic;color:var(--route);letter-spacing:-.5px}
+.metric-lbl{font-family:var(--mono);font-size:9px;color:var(--text2);margin-top:2px;letter-spacing:.06em;text-transform:uppercase}
+.metric-val.wonder  {color:var(--wonder) }
+.metric-val.fey     {color:var(--fey)    }
+.metric-val.visited {color:var(--visited)}
+.metric-val.compass {color:var(--compass)}
+
+/* ══════════════════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════════════════ */
+hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+.ornament{text-align:center;color:var(--compass);font-family:var(--display);font-size:18px;letter-spacing:.3em;margin:6px 0;opacity:.6}
+
+/* ══════════════════════════════════════════════════════
+   JOURNEY LOG — timeline
+══════════════════════════════════════════════════════ */
+.journey-log{margin:12px 0}
+.journey-entry{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.journey-entry:last-child{border-bottom:none}
+.journey-pin{width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:1px;border:1px solid var(--border);border-radius:50%;background:var(--bg3);color:var(--text2);font-family:var(--display)}
+.journey-pin.route  {border-color:var(--route);  color:var(--route)  }
+.journey-pin.wonder {border-color:var(--wonder); color:var(--wonder) }
+.journey-pin.fey    {border-color:var(--fey);    color:var(--fey)    }
+.journey-pin.visited{border-color:var(--visited);color:var(--visited)}
+.journey-pin.must   {border-color:var(--must);   color:var(--must)   }
+
+/* ══════════════════════════════════════════════════════
+   LEG STEPS — pipeline de etapas de viaje
+══════════════════════════════════════════════════════ */
+.leg{display:flex;gap:14px;align-items:flex-start;margin:8px 0;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--route);border-radius:var(--radius);transition:box-shadow .2s}
+.leg:hover{box-shadow:0 2px 10px rgba(168,32,24,.08)}
+.leg-num{font-family:var(--display);font-size:18px;font-style:italic;color:var(--route);min-width:28px;line-height:1;margin-top:2px}
+
+/* ══════════════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════════════ */
+.theme-btn{font-family:var(--display);font-size:12px;font-style:italic;padding:5px 14px;background:none;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .2s}
+.theme-btn:hover{border-color:var(--route);color:var(--route)}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.swatch{width:80px;text-align:center;font-family:var(--mono);font-size:8px;color:var(--text2)}
+.swatch-box{height:42px;border-radius:var(--radius);margin-bottom:5px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:3px;left:4px;font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}
+</style>
+</head>
+<body>
+
+<canvas id="od-desk"></canvas>
+<canvas id="od-map"></canvas>
+<canvas id="od-water"></canvas>
+<canvas id="od-objects"></canvas>
+<canvas id="od-compass"></canvas>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:40px">
+  <div>
+    <div style="font-family:var(--display);font-size:32px;font-style:italic;color:var(--ink);letter-spacing:.04em">odysseus</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:.16em;text-transform:uppercase;margin-top:-2px">_theme · iroFactory</div>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">☽ nocturno</button>
+</div>
+
+<div class="ornament">✦ ◈ ✦</div>
+
+<!-- ── Paleta ── -->
+<h2>Paleta de colores</h2>
+<p class="muted">Pergamino, tinta y oro · El mapa del viajero.</p>
+
+<h3>El mapa</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--land)"><span class="swatch-hex" id="hex-land"></span></div>--land</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--land-dk)"><span class="swatch-hex" id="hex-land-dk"></span></div>--land-dk</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--sea)"><span class="swatch-hex" id="hex-sea"></span></div>--sea</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--sea-dk)"><span class="swatch-hex" id="hex-sea-dk"></span></div>--sea-dk</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ink)"><span class="swatch-hex" id="hex-ink"></span></div>--ink</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--rust)"><span class="swatch-hex" id="hex-rust"></span></div>--rust</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--stain)"><span class="swatch-hex" id="hex-stain"></span></div>--stain</div>
+</div>
+
+<h3>Marcadores de viaje</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--route)"><span class="swatch-hex" id="hex-route"></span></div>--route</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--must)"><span class="swatch-hex" id="hex-must"></span></div>--must</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--wonder)"><span class="swatch-hex" id="hex-wonder"></span></div>--wonder</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--fey)"><span class="swatch-hex" id="hex-fey"></span></div>--fey</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--visited)"><span class="swatch-hex" id="hex-visited"></span></div>--visited</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--unvisited)"><span class="swatch-hex" id="hex-unvisited"></span></div>--unvisited</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--compass)"><span class="swatch-hex" id="hex-compass"></span></div>--compass</div>
+</div>
+
+<h3>Semánticos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<div class="ornament">◈ ✦ ◈</div>
+<hr class="divider">
+
+<!-- ── Callouts ── -->
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento · Ruta</div><p>Notas de bitácora. El viajero anota lo que ve.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Visitado</div><p>Destino alcanzado. El sello en el pasaporte es prueba suficiente.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Brújula</div><p>La ruta cambia. El norte magnético no siempre coincide con el norte verdadero.</p></div>
+<div class="callout danger"><div class="callout-title">Danger · Ruta</div><p>Aquí hay dragones. El mapa dice que no hay camino.</p></div>
+<div class="callout route"><div class="callout-title">Route</div><p>Trayecto marcado en rojo. De un puerto al siguiente, sin desviarse.</p></div>
+<div class="callout must"><div class="callout-title">Must · Imprescindible</div><p>No puedes pasar por Nápoles sin comer una pizza marinara frente al mar.</p></div>
+<div class="callout wonder"><div class="callout-title">Wonder · Extraordinario</div><p>La primera vez que ves el Partenón desde la Acrópolis no se olvida.</p></div>
+<div class="callout fey"><div class="callout-title">Fey · Feérico</div><p>El Bosque de los Druidas en Bretaña. La niebla habla.</p></div>
+<div class="callout visited"><div class="callout-title">Visited</div><p>Estuve aquí. El lugar me cambió de alguna manera que aún no entiendo.</p></div>
+<div class="callout unvisited"><div class="callout-title">Unvisited</div><p>Pendiente. La lista crece más rápido de lo que viajo.</p></div>
+<div class="callout compass"><div class="callout-title">Compass</div><p>La brújula titubea. El norte verdadero es el que tú eliges.</p></div>
+
+<hr class="divider">
+
+<!-- ── Badges ── -->
+<h2>Badges</h2>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+  <span class="badge route">ruta</span>
+  <span class="badge must">imprescindible</span>
+  <span class="badge wonder">extraordinario</span>
+  <span class="badge fey">feérico</span>
+  <span class="badge visited">visitado</span>
+  <span class="badge unvisited">pendiente</span>
+  <span class="badge compass">brújula</span>
+  <span class="badge ok">ok</span>
+  <span class="badge warn">warn</span>
+  <span class="badge danger">danger</span>
+  <span class="badge">default</span>
+</div>
+
+<hr class="divider">
+
+<!-- ── Botones ── -->
+<h2>Botones</h2>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+  <button class="btn primary">primary</button>
+  <button class="btn">default</button>
+  <button class="btn route">ruta</button>
+  <button class="btn wonder">extraordinario</button>
+  <button class="btn fey">feérico</button>
+  <button class="btn visited">visitado</button>
+  <button class="btn compass">brújula</button>
+  <button class="btn ok">ok</button>
+  <button class="btn warn">warn</button>
+  <button class="btn danger">danger</button>
+</div>
+
+<hr class="divider">
+
+<!-- ── Métricas ── -->
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">47</div><div class="metric-lbl">países</div></div>
+  <div class="metric"><div class="metric-val wonder">12</div><div class="metric-lbl">maravillas</div></div>
+  <div class="metric"><div class="metric-val fey">3</div><div class="metric-lbl">feéricos</div></div>
+  <div class="metric"><div class="metric-val visited">∞</div><div class="metric-lbl">recuerdos</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Código ── -->
+<h2>Código</h2>
+<pre data-lang="python"><span class="cm"># Bitácora del viajero</span>
+<span class="kw">class</span> Destino:
+    <span class="fn">def</span> <span class="kw">__init__</span>(self, nombre, lat, lon):
+        self.nombre   = nombre
+        self.coords   = (lat, lon)
+        self.visitado = <span class="kw">False</span>
+        self.notas    = []
+
+    <span class="fn">def</span> <span class="kw">marcar</span>(self, nota=<span class="num">None</span>):
+        self.visitado = <span class="kw">True</span>
+        <span class="kw">if</span> nota: self.notas.append(nota)
+        <span class="kw">return</span> <span class="str">f"✓ {self.nombre} — registrado"</span>
+
+ruta = [
+    <span class="fn">Destino</span>(<span class="str">"Atenas"</span>,   <span class="num">37.97</span>, <span class="num">23.72</span>),
+    <span class="fn">Destino</span>(<span class="str">"Alejandría"</span>, <span class="num">31.20</span>, <span class="num">29.91</span>),
+]</pre>
+
+<hr class="divider">
+
+<!-- ── Tabla ── -->
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Significado</th></tr>
+  <tr><td><code>--route</code></td><td>#A82018</td><td>#D04030</td><td>Ruta trazada · camino obligado</td></tr>
+  <tr><td><code>--must</code></td><td>#C83020</td><td>#E05040</td><td>Imprescindible · no te lo pierdas</td></tr>
+  <tr><td><code>--wonder</code></td><td>#603890</td><td>#8050C0</td><td>Extraordinario · cambia vidas</td></tr>
+  <tr><td><code>--fey</code></td><td>#D070A0</td><td>#E090C0</td><td>Feérico · fuera de lo ordinario</td></tr>
+  <tr><td><code>--visited</code></td><td>#507040</td><td>#608050</td><td>Visitado · sello en el pasaporte</td></tr>
+  <tr><td><code>--unvisited</code></td><td>#8A6840</td><td>#A08050</td><td>Pendiente · en la lista</td></tr>
+  <tr><td><code>--compass</code></td><td>#C89030</td><td>#E0A830</td><td>Brújula · el norte del viajero</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ── Journey Log ── -->
+<h2>Journey Log</h2>
+<div class="journey-log">
+  <div class="journey-entry"><div class="journey-pin visited">✓</div><div><h4>Estambul, Turquía</h4><p class="muted">Donde Europa se convierte en Asia. El Bósforo al amanecer vale el vuelo.</p></div></div>
+  <div class="journey-entry"><div class="journey-pin must">★</div><div><h4>Nápoles, Italia</h4><p class="muted">La pizza, el caos y el Vesubio. No hay ciudad más viva en el mundo.</p></div></div>
+  <div class="journey-entry"><div class="journey-pin wonder">◆</div><div><h4>Petra, Jordania</h4><p class="muted">La ciudad rosa tallada en roca. El Tesoro al salir del Siq es inenarrable.</p></div></div>
+  <div class="journey-entry"><div class="journey-pin fey">✦</div><div><h4>Bosque de Brocelandia, Bretaña</h4><p class="muted">El bosque de Merlín. La niebla de noviembre hace creer en la magia.</p></div></div>
+  <div class="journey-entry"><div class="journey-pin route">→</div><div><h4>En ruta · Porto → Lisboa</h4><p class="muted">La N2, la carretera más larga de Portugal. El fado suena en cada aldea.</p></div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Leg steps ── -->
+<h2>Etapas</h2>
+<div class="leg"><div class="leg-num">I</div><div><h4>Salida</h4><p class="muted">El aeropuerto a las 4am. El café de máquina. La anticipación.</p></div></div>
+<div class="leg" style="border-left-color:var(--wonder)"><div class="leg-num" style="color:var(--wonder)">II</div><div><h4>El primer asombro</h4><p class="muted">Siempre hay un momento en que entiendes por qué viniste.</p></div></div>
+<div class="leg" style="border-left-color:var(--fey)"><div class="leg-num" style="color:var(--fey)">III</div><div><h4>Lo inesperado</h4><p class="muted">El pueblo sin nombre en el mapa. La familia que te invita a cenar.</p></div></div>
+<div class="leg" style="border-left-color:var(--visited)"><div class="leg-num" style="color:var(--visited)">IV</div><div><h4>El regreso</h4><p class="muted">Vuelves siendo otro. El lugar de origen se ve diferente desde afuera.</p></div></div>
+
+<hr class="divider">
+
+<!-- ── Cards ── -->
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card"><strong>Cappadocia, Turquía</strong><span class="badge wonder" style="margin-left:8px">extraordinario</span><p class="muted" style="margin-top:6px">Globos al amanecer sobre las chimeneas de hadas. Reservar con meses de antelación.</p></div>
+  <div class="card"><strong>Faroe Islands</strong><span class="badge fey" style="margin-left:8px">feérico</span><p class="muted" style="margin-top:6px">Acantilados sobre el Atlántico Norte. Las ovejas superan a los habitantes en 3 a 1.</p></div>
+</div>
+
+<div class="ornament" style="margin-top:28px">✦ ◈ ✦ ◈ ✦</div>
+<p class="muted" style="text-align:center;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase">
+  odysseus_theme · by RemiH06 · iroFactory · AGPL-3.0
+</p>
+</div>
+
+<script>
+// ── Toggle ─────────────────────────────────────────────
+let isDark = false;
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('toggle-btn').textContent = isDark ? '☀ diurno' : '☽ nocturno';
+  updateHexes(); drawDesk(); drawMap(); drawObjects();
+}
+function cssVar(n){ return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+function updateHexes() {
+  const m = {
+    'hex-land':'--land','hex-land-dk':'--land-dk','hex-sea':'--sea','hex-sea-dk':'--sea-dk',
+    'hex-ink':'--ink','hex-rust':'--rust','hex-stain':'--stain',
+    'hex-route':'--route','hex-must':'--must','hex-wonder':'--wonder','hex-fey':'--fey',
+    'hex-visited':'--visited','hex-unvisited':'--unvisited','hex-compass':'--compass',
+    'hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger',
+  };
+  Object.entries(m).forEach(([id,tok])=>{ const el=document.getElementById(id); if(el) el.textContent=cssVar(tok); });
+}
+
+// ── Constantes de sesión ───────────────────────────────
+const MAP_ROT   = (Math.random()*14 - 7) * Math.PI/180;  // -7 a 7 grados
+const MAP_SCALE = 0.82;
+
+// Posiciones aleatorias sin superposición — cuadrantes separados
+const POS_COMPASS = { x: 0.08 + Math.random()*0.16, y: 0.55 + Math.random()*0.28 };
+const POS_INK     = { x: 0.72 + Math.random()*0.16, y: 0.55 + Math.random()*0.28 };
+const POS_QUILL   = { x: 0.58 + Math.random()*0.20, y: 0.68 + Math.random()*0.18 };
+const QUILL_ANGLE = -0.5 + Math.random()*1.0;
+
+// ══════════════════════════════════════════════════════
+// CAPA 0 — Mesa de madera
+// ══════════════════════════════════════════════════════
+const deskCanvas = document.getElementById('od-desk');
+const dCtx = deskCanvas.getContext('2d');
+
+function drawDesk() {
+  const W = deskCanvas.width  = window.innerWidth;
+  const H = deskCanvas.height = window.innerHeight;
+  dCtx.clearRect(0,0,W,H);
+
+  // Base de madera
+  const woodBase  = isDark ? '#1E150A' : '#B8864A';
+  const woodDark  = isDark ? '#150E06' : '#9A6E38';
+  const woodLight = isDark ? '#2A1C0E' : '#D09A5E';
+
+  dCtx.fillStyle = woodBase;
+  dCtx.fillRect(0,0,W,H);
+
+  // Vetas de madera — bezier suaves
+  for (let i = 0; i < 32; i++) {
+    const y   = (i/32)*H + (Math.random()-0.5)*20;
+    const col = Math.random()<0.5 ? woodDark : woodLight;
+    dCtx.beginPath();
+    dCtx.moveTo(0, y);
+    dCtx.bezierCurveTo(
+      W*0.25, y+(Math.random()-0.5)*22,
+      W*0.65, y+(Math.random()-0.5)*22,
+      W,      y+(Math.random()-0.5)*14
+    );
+    dCtx.strokeStyle = col;
+    dCtx.lineWidth   = 0.5 + Math.random()*1.4;
+    dCtx.globalAlpha = 0.14 + Math.random()*0.16;
+    dCtx.stroke();
+  }
+  dCtx.globalAlpha = 1;
+
+  // Luces ambientales difusas
+  const lights = isDark ? [
+    // Farolas — ámbar cálido sobre nogal oscuro
+    {x:.22, y:.08, r:.52, rgb:'255,200,90',  a:.28},
+    {x:.76, y:.12, r:.44, rgb:'255,185,70',  a:.22},
+    {x:.50, y:.88, r:.40, rgb:'220,160,60',  a:.16},
+    {x:.04, y:.55, r:.32, rgb:'255,190,80',  a:.18},
+  ] : [
+    // Luz de día — rayos solares desde esquina superior izquierda
+    {x:-.05, y:-.05, r:.70, rgb:'255,245,210', a:.45},
+    {x:.15,  y:.00,  r:.55, rgb:'255,238,195', a:.30},
+    {x:.85,  y:.05,  r:.48, rgb:'255,230,180', a:.20},
+    {x:.50,  y:.40,  r:.65, rgb:'255,225,170', a:.12},
+    {x:.05,  y:.95,  r:.38, rgb:'240,210,155', a:.10},
+  ];
+  lights.forEach(({x,y,r,rgb,a})=>{
+    const cx=x*W, cy=y*H, rad=r*Math.max(W,H);
+    const g=dCtx.createRadialGradient(cx,cy,0,cx,cy,rad);
+    g.addColorStop(0,  `rgba(${rgb},${a})`);
+    g.addColorStop(.5, `rgba(${rgb},${(a*.35).toFixed(3)})`);
+    g.addColorStop(1,  `rgba(${rgb},0)`);
+    dCtx.fillStyle=g; dCtx.fillRect(0,0,W,H);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 1 — Mapa inclinado
+// ══════════════════════════════════════════════════════
+const mapCanvas = document.getElementById('od-map');
+const mCtx = mapCanvas.getContext('2d');
+
+const CONTINENTS = {
+  namerica:[[-168,72],[-140,70],[-95,75],[-75,83],[-65,83],[-25,70],[-14,62],[-52,47],[-66,45],[-67,44],[-70,42],[-75,35],[-80,25],[-87,16],[-83,10],[-77,8],[-75,11],[-83,18],[-85,22],[-87,16],[-90,16],[-92,18],[-97,19],[-105,20],[-110,23],[-118,30],[-117,32],[-122,37],[-124,46],[-130,55],[-145,60],[-155,60],[-165,62],[-168,66],[-168,72]],
+  samerica:[[-78,11],[-62,11],[-60,7],[-50,5],[-34,-5],[-35,-8],[-38,-13],[-40,-20],[-43,-23],[-48,-28],[-53,-33],[-58,-38],[-62,-38],[-65,-42],[-66,-50],[-68,-53],[-70,-55],[-75,-50],[-75,-45],[-73,-38],[-70,-30],[-70,-20],[-76,-10],[-80,-3],[-78,3],[-78,11]],
+  europe:[[-10,36],[-9,39],[-9,44],[-2,44],[-2,47],[3,47],[5,48],[8,48],[10,55],[12,56],[15,58],[18,60],[25,65],[28,70],[30,70],[28,65],[24,58],[22,54],[18,54],[14,54],[10,54],[8,56],[5,54],[2,51],[2,48],[3,46],[7,44],[10,44],[15,38],[16,38],[18,40],[21,40],[24,38],[26,40],[28,38],[26,36],[22,36],[18,38],[15,38],[13,37],[10,37],[2,37],[-2,36],[-6,36],[-8,36],[-10,36]],
+  africa:[[-6,36],[-2,36],[2,37],[10,37],[13,37],[15,38],[18,38],[22,36],[26,36],[32,30],[35,22],[40,12],[44,12],[50,12],[52,10],[44,12],[40,8],[38,4],[34,-2],[36,-10],[38,-18],[36,-22],[32,-28],[28,-34],[18,-34],[14,-30],[10,-28],[8,-20],[4,-10],[2,-4],[0,4],[-4,4],[-8,5],[-14,10],[-16,12],[-16,14],[-14,16],[-16,20],[-14,24],[-10,28],[-6,30],[-6,32],[-6,36]],
+  asia:[[26,70],[35,72],[50,72],[60,70],[70,72],[80,72],[100,72],[110,72],[120,70],[130,68],[140,70],[145,60],[140,54],[135,48],[135,42],[130,36],[128,34],[122,30],[120,24],[110,20],[105,10],[100,5],[104,1],[110,-4],[116,-8],[120,-10],[108,-7],[105,-5],[100,2],[98,5],[95,10],[88,22],[80,28],[72,22],[68,24],[62,22],[58,22],[56,24],[50,28],[44,28],[38,22],[36,15],[42,12],[44,12],[50,12],[52,10],[58,8],[54,16],[50,22],[44,28],[38,36],[36,36],[36,40],[36,46],[40,42],[44,42],[50,42],[56,44],[60,44],[65,46],[70,52],[74,52],[80,50],[86,50],[90,52],[100,52],[110,54],[120,54],[128,52],[135,48],[140,46],[145,48],[148,44],[142,46],[136,54],[132,60],[130,68],[120,70],[110,72],[100,72],[80,72],[70,72],[60,70],[50,72],[35,72],[26,70]],
+  oceania:[[114,-22],[118,-20],[122,-18],[128,-14],[132,-12],[136,-12],[140,-14],[144,-18],[148,-20],[152,-24],[154,-28],[152,-32],[148,-36],[144,-38],[140,-36],[136,-34],[130,-32],[124,-28],[120,-26],[116,-22],[114,-22]],
+  nzeeland:[[166,-46],[168,-46],[170,-44],[172,-42],[174,-40],[176,-38],[178,-38],[178,-40],[176,-42],[174,-44],[170,-46],[168,-46],[166,-46]],
+};
+
+function proj(lon,lat,W,H){ return [((lon+180)/360)*W, ((90-lat)/180)*H]; }
+
+function mapTransform(ctx, W, H) {
+  const mW = W*MAP_SCALE, mH = H*MAP_SCALE;
+  ctx.translate(W/2, H/2);
+  ctx.rotate(MAP_ROT);
+  ctx.translate(-mW/2, -mH/2);
+  return {mW, mH};
+}
+
+function drawMap() {
+  const W = mapCanvas.width  = window.innerWidth;
+  const H = mapCanvas.height = window.innerHeight;
+  mCtx.clearRect(0,0,W,H);
+
+  mCtx.save();
+  const {mW,mH} = mapTransform(mCtx, W, H);
+
+  // Sombra del mapa sobre la mesa
+  mCtx.shadowColor    = isDark ? 'rgba(0,0,0,.75)' : 'rgba(60,30,0,.45)';
+  mCtx.shadowBlur     = 30;
+  mCtx.shadowOffsetX  = 7;
+  mCtx.shadowOffsetY  = 9;
+
+  // Pergamino
+  const pg = mCtx.createLinearGradient(0,0,mW,mH);
+  pg.addColorStop(0,  isDark?'#2C2214':'#FAF0D8');
+  pg.addColorStop(.45,isDark?'#261C10':'#F4E8CC');
+  pg.addColorStop(1,  isDark?'#1E1608':'#ECD8B8');
+  mCtx.fillStyle = pg;
+  mCtx.fillRect(0,0,mW,mH);
+  mCtx.shadowColor='transparent'; mCtx.shadowBlur=0; mCtx.shadowOffsetX=0; mCtx.shadowOffsetY=0;
+
+  const seaC  = isDark?'#18202E':'#B8D0E8';
+  const gridC = isDark?'#222C3C':'#90B8D8';
+  const inkC  = isDark?'#A09070':'#2A1808';
+  const landC = isDark?'#2A2018':'#D8C898';
+  const stC   = isDark?'#3A2810':'#C89040';
+
+  // Mar
+  mCtx.fillStyle=seaC; mCtx.fillRect(0,0,mW,mH);
+
+  // Graticule
+  mCtx.strokeStyle=gridC; mCtx.lineWidth=0.4; mCtx.globalAlpha=0.5;
+  for(let lon=-180;lon<=180;lon+=30){const[x]=proj(lon,0,mW,mH);mCtx.beginPath();mCtx.moveTo(x,0);mCtx.lineTo(x,mH);mCtx.stroke();}
+  for(let lat=-90;lat<=90;lat+=30){const[,y]=proj(0,lat,mW,mH);mCtx.beginPath();mCtx.moveTo(0,y);mCtx.lineTo(mW,y);mCtx.stroke();}
+  mCtx.lineWidth=0.7; mCtx.globalAlpha=0.65;
+  [0,23.5,-23.5,66.5,-66.5].forEach(lat=>{const[,y]=proj(0,lat,mW,mH);mCtx.beginPath();mCtx.moveTo(0,y);mCtx.lineTo(mW,y);mCtx.stroke();});
+  mCtx.globalAlpha=1;
+
+  // Continentes
+  Object.values(CONTINENTS).forEach(coords=>{
+    mCtx.beginPath();
+    coords.forEach(([lon,lat],i)=>{const[x,y]=proj(lon,lat,mW,mH);i===0?mCtx.moveTo(x,y):mCtx.lineTo(x,y);});
+    mCtx.closePath();
+    mCtx.fillStyle=landC; mCtx.fill();
+    mCtx.strokeStyle=inkC; mCtx.lineWidth=0.8; mCtx.globalAlpha=0.7; mCtx.stroke(); mCtx.globalAlpha=1;
+  });
+
+  // Manchas de óxido
+  [{x:.08,y:.18,r:.10,a:.09},{x:.72,y:.08,r:.12,a:.07},{x:.45,y:.72,r:.15,a:.08},
+   {x:.88,y:.55,r:.08,a:.10},{x:.20,y:.65,r:.11,a:.08},{x:.60,y:.40,r:.09,a:.06}]
+  .forEach(({x,y,r,a})=>{
+    const cx=x*mW,cy=y*mH,rad=r*Math.min(mW,mH);
+    const g=mCtx.createRadialGradient(cx,cy,0,cx,cy,rad);
+    g.addColorStop(0,`rgba(168,80,20,${a})`); g.addColorStop(.5,`rgba(140,60,10,${a*.5})`); g.addColorStop(1,'rgba(140,60,10,0)');
+    mCtx.fillStyle=g; mCtx.fillRect(0,0,mW,mH);
+  });
+
+  // Nombres de océanos
+  mCtx.fillStyle=inkC; mCtx.globalAlpha=isDark?.18:.22;
+  mCtx.font=`italic 11px 'IM Fell English',serif`; mCtx.textAlign='center';
+  [{text:'OCEANUS PACIFICUS',lon:-150,lat:0},{text:'MARE ATLANTICUM',lon:-30,lat:15},
+   {text:'MARE INDICUM',lon:75,lat:-15},{text:'MARE ARCTICUM',lon:0,lat:78}]
+  .forEach(({text,lon,lat})=>{const[x,y]=proj(lon,lat,mW,mH);mCtx.fillText(text,x,y);});
+  mCtx.globalAlpha=1; mCtx.textAlign='left';
+
+  // Luz ambiental sobre el pergamino
+  if (isDark) {
+    // Farola desde arriba — cono cálido sobre el mapa
+    const lampG = mCtx.createRadialGradient(mW*.5, -mH*.1, 0, mW*.5, mH*.3, mH*.8);
+    lampG.addColorStop(0,   'rgba(255,210,120,0.18)');
+    lampG.addColorStop(0.4, 'rgba(255,190,80,0.10)');
+    lampG.addColorStop(1,   'rgba(255,170,60,0)');
+    mCtx.fillStyle = lampG; mCtx.fillRect(0,0,mW,mH);
+  } else {
+    // Sol desde esquina superior izquierda
+    const sunG = mCtx.createRadialGradient(-mW*.05, -mH*.05, 0, mW*.3, mH*.3, mH*.9);
+    sunG.addColorStop(0,   'rgba(255,248,220,0.22)');
+    sunG.addColorStop(0.45,'rgba(255,235,190,0.12)');
+    sunG.addColorStop(1,   'rgba(255,220,160,0)');
+    mCtx.fillStyle = sunG; mCtx.fillRect(0,0,mW,mH);
+  }
+  mCtx.strokeRect(6,6,mW-12,mH-12); mCtx.lineWidth=0.4; mCtx.strokeRect(10,10,mW-20,mH-20);
+  mCtx.globalAlpha=1;
+
+  mCtx.restore();
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 2 — Agua animada (ondas + shimmer)
+// ══════════════════════════════════════════════════════
+const waterCanvas = document.getElementById('od-water');
+const wCtx = waterCanvas.getContext('2d');
+
+function drawWater(ts) {
+  const W = waterCanvas.width  = window.innerWidth;
+  const H = waterCanvas.height = window.innerHeight;
+  wCtx.clearRect(0,0,W,H);
+  const t = ts*0.0008;
+  const mW = W*MAP_SCALE, mH = H*MAP_SCALE;
+
+  wCtx.save();
+  wCtx.translate(W/2,H/2); wCtx.rotate(MAP_ROT); wCtx.translate(-mW/2,-mH/2);
+  wCtx.beginPath(); wCtx.rect(0,0,mW,mH); wCtx.clip();
+
+  // Ondas sutiles
+  const wc = isDark?'rgba(100,140,200,':'rgba(60,100,160,';
+  for(let i=0;i<20;i++){
+    const yB=(i/20)*mH, ph=t+i*0.65, amp=1.2+Math.sin(i*1.4)*0.9;
+    wCtx.beginPath();
+    for(let x=0;x<=mW;x+=5){
+      const y=yB+Math.sin(x*.014+ph)*amp+Math.sin(x*.007+ph*.6)*amp*.4;
+      x===0?wCtx.moveTo(x,y):wCtx.lineTo(x,y);
+    }
+    wCtx.strokeStyle=wc+(0.03+Math.abs(Math.sin(i*.5+t))*.025)+')';
+    wCtx.lineWidth=0.5; wCtx.stroke();
+  }
+
+  // Shimmer — destellos de luz en el mar
+  const sc = isDark?[150,180,255]:[255,255,220];
+  const na = isDark?6:10;
+  for(let i=0;i<na;i++){
+    const sx=((i*137.5+t*28)%mW), sy=((i*83.7+t*14)%mH);
+    const sa=0.03+Math.abs(Math.sin(t*1.1+i*0.7))*(isDark?.04:.08);
+    const sw=14+Math.sin(t+i)*8;
+    wCtx.fillStyle=`rgba(${sc},${sa})`; wCtx.fillRect(sx,sy,sw,1.2);
+  }
+
+  wCtx.restore();
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 3 — Tintero + Pluma (en espacio del mapa)
+// ══════════════════════════════════════════════════════
+const objCanvas = document.getElementById('od-objects');
+const oCtx = objCanvas.getContext('2d');
+
+function drawInkwell(ctx, cx, cy, r) {
+  ctx.save();
+  ctx.shadowColor='rgba(0,0,0,.55)'; ctx.shadowBlur=14; ctx.shadowOffsetX=5; ctx.shadowOffsetY=6;
+
+  // Base plana
+  const baseG=ctx.createLinearGradient(cx-r,cy+r*.3,cx+r,cy+r*.3);
+  baseG.addColorStop(0,isDark?'#3A2A18':'#C0A060'); baseG.addColorStop(.5,isDark?'#504030':'#D8B870'); baseG.addColorStop(1,isDark?'#2A1C10':'#A88040');
+  ctx.beginPath(); ctx.ellipse(cx,cy+r*.35,r*.95,r*.32,0,0,Math.PI*2); ctx.fillStyle=baseG; ctx.fill();
+
+  // Cuerpo esférico
+  const bodyG=ctx.createRadialGradient(cx-r*.25,cy-r*.2,r*.05,cx,cy,r*.85);
+  bodyG.addColorStop(0,isDark?'#2A2838':'#303848'); bodyG.addColorStop(.6,isDark?'#14101E':'#1A1C28'); bodyG.addColorStop(1,isDark?'#0A0810':'#0E0C14');
+  ctx.beginPath(); ctx.ellipse(cx,cy,r*.82,r*.82,0,0,Math.PI*2); ctx.fillStyle=bodyG; ctx.fill();
+
+  // Tinta visible (interior más oscuro)
+  ctx.beginPath(); ctx.ellipse(cx,cy+r*.08,r*.6,r*.56,0,0,Math.PI*2);
+  ctx.fillStyle=isDark?'#060408':'#080610'; ctx.fill();
+
+  // Reflejo vítreo
+  const shimG=ctx.createRadialGradient(cx-r*.28,cy-r*.28,0,cx-r*.28,cy-r*.28,r*.4);
+  shimG.addColorStop(0,'rgba(180,180,255,0.45)'); shimG.addColorStop(1,'rgba(180,180,255,0)');
+  ctx.beginPath(); ctx.ellipse(cx-r*.22,cy-r*.24,r*.2,r*.13,-0.4,0,Math.PI*2); ctx.fillStyle=shimG; ctx.fill();
+
+  // Tapón dorado
+  const tapG=ctx.createLinearGradient(cx-r*.3,cy-r*.72,cx+r*.3,cy-r*.72);
+  tapG.addColorStop(0,isDark?'#806040':'#C0A050'); tapG.addColorStop(.5,isDark?'#A07848':'#E0C060'); tapG.addColorStop(1,isDark?'#604830':'#A08030');
+  ctx.beginPath(); ctx.ellipse(cx,cy-r*.74,r*.28,r*.11,0,0,Math.PI*2); ctx.fillStyle=tapG; ctx.fill();
+  ctx.restore();
+}
+
+function drawQuill(ctx, cx, cy, len) {
+  ctx.save();
+  ctx.translate(cx,cy); ctx.rotate(QUILL_ANGLE);
+  ctx.shadowColor='rgba(0,0,0,.4)'; ctx.shadowBlur=8; ctx.shadowOffsetX=3; ctx.shadowOffsetY=4;
+
+  // Punta metálica
+  ctx.beginPath();
+  ctx.moveTo(0,0); ctx.lineTo(-3.5,-11); ctx.lineTo(0,-7); ctx.lineTo(3.5,-11); ctx.closePath();
+  ctx.fillStyle=isDark?'#7878A0':'#909070'; ctx.fill();
+
+  // Cañón
+  const cG=ctx.createLinearGradient(-4,0,4,0);
+  cG.addColorStop(0,isDark?'#C0A058':'#D0B060'); cG.addColorStop(.5,isDark?'#E0C070':'#F0D080'); cG.addColorStop(1,isDark?'#A08040':'#B89050');
+  ctx.beginPath();
+  ctx.moveTo(-3,-9); ctx.quadraticCurveTo(-5,len*.35,-1.5,len*.82); ctx.quadraticCurveTo(0,len*.9,1.5,len*.82); ctx.quadraticCurveTo(5,len*.35,3,-9); ctx.closePath();
+  ctx.fillStyle=cG; ctx.fill();
+
+  // Barbas — izquierda
+  const qc=isDark?'#EEE0A8':'#F8F0B8';
+  ctx.beginPath(); ctx.moveTo(-2,len*.08);
+  for(let t=0;t<=1;t+=0.07){ ctx.lineTo(-8-Math.sin(t*Math.PI)*20, len*(0.08+t*0.72)); }
+  ctx.lineTo(-2,len*.8); ctx.fillStyle=qc; ctx.globalAlpha=0.88; ctx.fill();
+
+  // Barbas — derecha
+  ctx.beginPath(); ctx.moveTo(2,len*.08);
+  for(let t=0;t<=1;t+=0.07){ ctx.lineTo(8+Math.sin(t*Math.PI)*20, len*(0.08+t*0.72)); }
+  ctx.lineTo(2,len*.8); ctx.globalAlpha=0.82; ctx.fill();
+  ctx.globalAlpha=1;
+  ctx.restore();
+}
+
+function drawObjects() {
+  const W = objCanvas.width  = window.innerWidth;
+  const H = objCanvas.height = window.innerHeight;
+  oCtx.clearRect(0,0,W,H);
+
+  const mW=W*MAP_SCALE, mH=H*MAP_SCALE;
+  oCtx.save();
+  oCtx.translate(W/2,H/2); oCtx.rotate(MAP_ROT); oCtx.translate(-mW/2,-mH/2);
+
+  drawInkwell(oCtx, POS_INK.x*mW,   POS_INK.y*mH,   22);
+  drawQuill  (oCtx, POS_QUILL.x*mW, POS_QUILL.y*mH, 72);
+
+  oCtx.restore();
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 4 — Brújula (grande, en espacio del mapa)
+// ══════════════════════════════════════════════════════
+const compassCanvas = document.getElementById('od-compass');
+const cCtx = compassCanvas.getContext('2d');
+let compassAngle=0, compassTarget=0;
+
+function updateCompassTarget() {
+  compassTarget = (Math.random()-0.5)*0.18;
+  setTimeout(updateCompassTarget, 1200+Math.random()*1600);
+}
+
+function drawCompass(ts) {
+  const W=compassCanvas.width=window.innerWidth;
+  const H=compassCanvas.height=window.innerHeight;
+  cCtx.clearRect(0,0,W,H);
+  compassAngle += (compassTarget-compassAngle)*0.03;
+
+  const mW=W*MAP_SCALE, mH=H*MAP_SCALE;
+  cCtx.save();
+  cCtx.translate(W/2,H/2); cCtx.rotate(MAP_ROT); cCtx.translate(-mW/2,-mH/2);
+
+  const cx=POS_COMPASS.x*mW, cy=POS_COMPASS.y*mH;
+  const r=Math.min(mW,mH)*0.10;
+  const goldC=isDark?'#E0A830':'#C89030';
+  const inkC2=isDark?'#A09070':'#2A1808';
+  const redC =isDark?'#D04030':'#A82018';
+
+  cCtx.save();
+  cCtx.shadowColor=isDark?'rgba(0,0,0,.65)':'rgba(60,30,0,.35)';
+  cCtx.shadowBlur=22; cCtx.shadowOffsetX=5; cCtx.shadowOffsetY=6;
+
+  // Fondo
+  const bg=cCtx.createRadialGradient(cx-r*.2,cy-r*.2,0,cx,cy,r);
+  bg.addColorStop(0,isDark?'#2A2038':'#FDF8F0'); bg.addColorStop(1,isDark?'#120E20':'#E8DCC8');
+  cCtx.beginPath(); cCtx.arc(cx,cy,r,0,Math.PI*2); cCtx.fillStyle=bg; cCtx.fill();
+
+  // Bordes dorados
+  cCtx.beginPath(); cCtx.arc(cx,cy,r,0,Math.PI*2); cCtx.strokeStyle=goldC; cCtx.lineWidth=r*.055; cCtx.stroke();
+  cCtx.beginPath(); cCtx.arc(cx,cy,r*.88,0,Math.PI*2); cCtx.strokeStyle=goldC; cCtx.lineWidth=r*.018; cCtx.globalAlpha=.5; cCtx.stroke(); cCtx.globalAlpha=1;
+
+  // Rosa de los vientos
+  ['N','NE','E','SE','S','SO','O','NO'].forEach((d,i)=>{
+    const a=(Math.PI*2*i/8)-Math.PI/2, maj=i%2===0;
+    cCtx.beginPath();
+    cCtx.moveTo(cx+Math.cos(a)*r*(maj?.72:.78),cy+Math.sin(a)*r*(maj?.72:.78));
+    cCtx.lineTo(cx+Math.cos(a)*r*.86,cy+Math.sin(a)*r*.86);
+    cCtx.strokeStyle=goldC; cCtx.lineWidth=maj?r*.025:r*.012; cCtx.globalAlpha=maj?.9:.5; cCtx.stroke(); cCtx.globalAlpha=1;
+    if(maj){
+      cCtx.fillStyle=d==='N'?redC:inkC2;
+      cCtx.font=`${d==='N'?'bold ':''} ${r*.20}px 'IM Fell English',serif`;
+      cCtx.textAlign='center'; cCtx.textBaseline='middle';
+      cCtx.fillText(d, cx+Math.cos(a)*r*.60, cy+Math.sin(a)*r*.60);
+    }
+  });
+
+  // Graduaciones menores
+  for(let deg=0;deg<360;deg+=10){
+    if(deg%45===0)continue;
+    const a=(deg*Math.PI/180)-Math.PI/2;
+    cCtx.beginPath(); cCtx.moveTo(cx+Math.cos(a)*r*.82,cy+Math.sin(a)*r*.82); cCtx.lineTo(cx+Math.cos(a)*r*.86,cy+Math.sin(a)*r*.86);
+    cCtx.strokeStyle=goldC; cCtx.lineWidth=r*.008; cCtx.globalAlpha=.3; cCtx.stroke(); cCtx.globalAlpha=1;
+  }
+
+  // Aguja
+  cCtx.save(); cCtx.translate(cx,cy); cCtx.rotate(compassAngle);
+  cCtx.beginPath(); cCtx.moveTo(0,-r*.62); cCtx.lineTo(-r*.065,0); cCtx.lineTo(0,r*.13); cCtx.lineTo(r*.065,0); cCtx.closePath(); cCtx.fillStyle=redC; cCtx.fill();
+  cCtx.beginPath(); cCtx.moveTo(0,r*.56); cCtx.lineTo(-r*.055,0); cCtx.lineTo(0,-r*.13); cCtx.lineTo(r*.055,0); cCtx.closePath(); cCtx.fillStyle=goldC; cCtx.globalAlpha=.75; cCtx.fill(); cCtx.globalAlpha=1;
+  cCtx.beginPath(); cCtx.arc(0,0,r*.065,0,Math.PI*2); cCtx.fillStyle=goldC; cCtx.fill();
+  cCtx.beginPath(); cCtx.arc(0,0,r*.032,0,Math.PI*2); cCtx.fillStyle=isDark?'#1A1428':'#F2E8D0'; cCtx.fill();
+  cCtx.restore();
+  cCtx.restore();
+
+  requestAnimationFrame(drawCompass);
+}
+
+// ── Loops ──────────────────────────────────────────────
+function waterLoop(ts){ drawWater(ts); requestAnimationFrame(waterLoop); }
+
+// ── Init ───────────────────────────────────────────────
+function rebuildAll(){ drawDesk(); drawMap(); drawObjects(); }
+window.addEventListener('resize', rebuildAll);
+rebuildAll();
+updateHexes();
+updateCompassTarget();
+requestAnimationFrame(drawCompass);
+requestAnimationFrame(waterLoop);
+</script>
+</body>
+</html>
