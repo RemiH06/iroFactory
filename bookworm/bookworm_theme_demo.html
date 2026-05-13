@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>bookworm_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=libre-baskerville:400,400i,700&family=fira-code:400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   TOKENS — CLARO (default) · claro del bosque
+══════════════════════════════════════════════════════ */
+body {
+  --bg:       #E8E0D0;
+  --bg2:      #DDD5C0;
+  --bg3:      #CEC4AC;
+  --text:     #1C160C;
+  --text2:    #5A4E38;
+  --border:   #B8A888;
+  --moss:     #4A6040;
+  --fern:     #6A8050;
+  --canopy:   #385030;
+  --bark:     #6A4828;
+  --earth:    #8A6040;
+  --ochre:    #B08030;
+  --amber:    #C89040;
+  --dew:      #789878;
+  --stone:    #788070;
+  --lichen:   #8A9870;
+  --chapter:  #4A6040;
+  --note:     #B08030;
+  --bookmark: #6A4828;
+  --ok:       #4A6040;
+  --warn:     #B08030;
+  --danger:   #8A3020;
+  --accent:   #4A6040;
+  --accent2:  #B08030;
+  --black:    #100C04;
+  --white:    #F8F4EC;
+  --gray:     #907868;
+  --serif:    'Libre Baskerville', Georgia, serif;
+  --mono:     'Fira Code', monospace;
+  --radius:   3px;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — OSCURO · bosque nocturno
+══════════════════════════════════════════════════════ */
+body.dark {
+  --bg:       #0C100A;
+  --bg2:      #121810;
+  --bg3:      #1A2016;
+  --text:     #D8E0C8;
+  --text2:    #8A9878;
+  --border:   #2A3824;
+  --moss:     #5A7850;
+  --fern:     #7A9060;
+  --canopy:   #283820;
+  --bark:     #5A3818;
+  --earth:    #6A4830;
+  --ochre:    #988040;
+  --amber:    #A87830;
+  --dew:      #688868;
+  --stone:    #607060;
+  --lichen:   #708060;
+  --chapter:  #5A7850;
+  --note:     #988040;
+  --bookmark: #5A3818;
+  --ok:       #5A7850;
+  --warn:     #988040;
+  --danger:   #983020;
+  --accent:   #5A7850;
+  --accent2:  #988040;
+  --black:    #040804;
+  --white:    #E8F0D8;
+  --gray:     #506050;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:15px;line-height:1.85;transition:background .4s,color .4s}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
+
+/* Capas */
+#bw-tri,#bw-light,#bw-particles{position:fixed;inset:0;pointer-events:none}
+#bw-tri      {z-index:0}
+#bw-light    {z-index:1}
+#bw-wood     {position:fixed;inset:0;pointer-events:none;z-index:2}
+#bw-particles{z-index:3}
+.page{position:relative;z-index:10;padding:40px;max-width:880px;margin:0 auto}
+
+h2{font-family:var(--serif);font-size:17px;font-weight:700;font-style:italic;color:var(--moss);margin:40px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:.02em}
+h3{font-family:var(--serif);font-size:14px;font-weight:700;color:var(--bark);margin:22px 0 10px;letter-spacing:.04em}
+h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px}
+p{margin-bottom:14px;line-height:1.9}
+p.muted{color:var(--text2);font-size:13px}
+em{font-style:italic;color:var(--ochre)}
+strong{font-weight:700;color:var(--bark)}
+
+code{font-family:var(--mono);font-size:12px;background:var(--bg3);border:1px solid var(--border);padding:1px 6px;border-radius:var(--radius);color:var(--moss)}
+pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--moss);border-radius:var(--radius);padding:14px 18px;margin:14px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.75;color:var(--text);position:relative}
+pre::before{content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw{color:var(--moss)}pre .fn{color:var(--fern)}pre .str{color:var(--ochre)}
+pre .num{color:var(--amber)}pre .cm{color:var(--text2);font-style:italic}pre .tp{color:var(--bark)}
+
+.callout{border-left:2px solid var(--accent);background:var(--bg2);padding:12px 18px;margin:10px 0;border-radius:0 var(--radius) var(--radius) 0}
+.callout-title{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.callout p{margin-bottom:0;font-size:13px}
+.callout.ok      {border-color:var(--ok)      }.callout.ok       .callout-title{color:var(--ok)      }
+.callout.warn    {border-color:var(--warn)    }.callout.warn     .callout-title{color:var(--warn)    }
+.callout.danger  {border-color:var(--danger)  }.callout.danger   .callout-title{color:var(--danger)  }
+.callout.chapter {border-color:var(--chapter) }.callout.chapter  .callout-title{color:var(--chapter) }
+.callout.note    {border-color:var(--note)    }.callout.note     .callout-title{color:var(--note)    }
+.callout.bookmark{border-color:var(--bookmark)}.callout.bookmark .callout-title{color:var(--bookmark)}
+.callout.moss    {border-color:var(--moss)    }.callout.moss     .callout-title{color:var(--moss)    }
+.callout.fern    {border-color:var(--fern)    }.callout.fern     .callout-title{color:var(--fern)    }
+.callout.bark    {border-color:var(--bark)    }.callout.bark     .callout-title{color:var(--bark)    }
+.callout.ochre   {border-color:var(--ochre)   }.callout.ochre    .callout-title{color:var(--ochre)   }
+.callout.amber   {border-color:var(--amber)   }.callout.amber    .callout-title{color:var(--amber)   }
+.callout.dew     {border-color:var(--dew)     }.callout.dew      .callout-title{color:var(--dew)     }
+.callout.stone   {border-color:var(--stone)   }.callout.stone    .callout-title{color:var(--stone)   }
+.callout.lichen  {border-color:var(--lichen)  }.callout.lichen   .callout-title{color:var(--lichen)  }
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+th{background:var(--bg3);padding:8px 14px;text-align:left;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--moss);border-bottom:1px solid var(--border)}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg3)}
+
+.btn{display:inline-block;font-family:var(--serif);font-size:13px;font-style:italic;padding:6px 18px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.02em}
+.btn:hover,.btn.primary{border-color:var(--moss);color:var(--moss)}
+.btn.ok      {border-color:var(--ok);     color:var(--ok)     }
+.btn.warn    {border-color:var(--warn);   color:var(--warn)   }
+.btn.danger  {border-color:var(--danger); color:var(--danger) }
+.btn.chapter {border-color:var(--chapter);color:var(--chapter)}
+.btn.note    {border-color:var(--note);   color:var(--note)   }
+.btn.bark    {border-color:var(--bark);   color:var(--bark)   }
+.btn.ochre   {border-color:var(--ochre);  color:var(--ochre)  }
+.btn.fern    {border-color:var(--fern);   color:var(--fern)   }
+.btn.dew     {border-color:var(--dew);    color:var(--dew)    }
+
+.badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);letter-spacing:.08em;text-transform:uppercase}
+.badge.moss    {border-color:var(--moss);    color:var(--moss)   }
+.badge.fern    {border-color:var(--fern);    color:var(--fern)   }
+.badge.bark    {border-color:var(--bark);    color:var(--bark)   }
+.badge.earth   {border-color:var(--earth);   color:var(--earth)  }
+.badge.ochre   {border-color:var(--ochre);   color:var(--ochre)  }
+.badge.amber   {border-color:var(--amber);   color:var(--amber)  }
+.badge.dew     {border-color:var(--dew);     color:var(--dew)    }
+.badge.stone   {border-color:var(--stone);   color:var(--stone)  }
+.badge.lichen  {border-color:var(--lichen);  color:var(--lichen) }
+.badge.chapter {border-color:var(--chapter); color:var(--chapter)}
+.badge.note    {border-color:var(--note);    color:var(--note)   }
+.badge.bookmark{border-color:var(--bookmark);color:var(--bookmark)}
+.badge.ok      {border-color:var(--ok);      color:var(--ok)     }
+.badge.warn    {border-color:var(--warn);    color:var(--warn)   }
+.badge.danger  {border-color:var(--danger);  color:var(--danger) }
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin-bottom:12px;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--moss);box-shadow:0 2px 16px rgba(74,96,64,.12)}
+
+.metrics-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;flex:1;min-width:100px}
+.metric-val{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--moss);letter-spacing:-.5px}
+.metric-lbl{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:3px;letter-spacing:.06em;text-transform:uppercase}
+.metric-val.ochre{color:var(--ochre)}.metric-val.bark{color:var(--bark)}.metric-val.fern{color:var(--fern)}
+.metric-val.amber{color:var(--amber)}.metric-val.dew{color:var(--dew)}.metric-val.lichen{color:var(--lichen)}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+.reading-log{margin:14px 0}
+.reading-entry{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.reading-entry:last-child{border-bottom:none}
+.reading-dot{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:2px;border:1px solid var(--border);border-radius:50%;background:var(--bg3);color:var(--text2)}
+.reading-dot.chapter {border-color:var(--chapter); color:var(--chapter)}
+.reading-dot.note    {border-color:var(--note);    color:var(--note)   }
+.reading-dot.bookmark{border-color:var(--bookmark);color:var(--bookmark)}
+.reading-dot.ok      {border-color:var(--ok);      color:var(--ok)     }
+.reading-dot.warn    {border-color:var(--warn);     color:var(--warn)   }
+
+.chapter-row{display:flex;gap:16px;align-items:flex-start;margin:10px 0;padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--moss);border-radius:var(--radius);transition:box-shadow .2s}
+.chapter-row:hover{box-shadow:0 2px 12px rgba(74,96,64,.1)}
+.chapter-num{font-family:var(--serif);font-size:18px;font-weight:700;font-style:italic;color:var(--moss);min-width:32px;line-height:1;margin-top:3px}
+
+.theme-btn{font-family:var(--serif);font-size:13px;font-style:italic;padding:5px 16px;background:none;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .2s}
+.theme-btn:hover{border-color:var(--moss);color:var(--moss)}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.swatch{width:84px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--text2)}
+.swatch-box{height:48px;border-radius:var(--radius);margin-bottom:6px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:5px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}
+</style>
+</head>
+<body>
+
+<canvas id="bw-tri"></canvas>
+<canvas id="bw-light"></canvas>
+<div id="bw-wood"></div>
+<canvas id="bw-particles"></canvas>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
+  <div>
+    <div style="font-family:var(--serif);font-size:34px;font-weight:700;font-style:italic;color:var(--moss);letter-spacing:-.5px">bookworm</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:.12em;text-transform:uppercase;margin-top:-4px">_theme · iroFactory</div>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">☽ noche</button>
+</div>
+
+<h2>Paleta de colores</h2>
+<p class="muted">Verde musgo, corteza y ocre · El bosque en dos luces.</p>
+
+<h3>Bosque</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--canopy)"><span class="swatch-hex" id="hex-canopy"></span></div>--canopy</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--moss)"><span class="swatch-hex" id="hex-moss"></span></div>--moss</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--fern)"><span class="swatch-hex" id="hex-fern"></span></div>--fern</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--dew)"><span class="swatch-hex" id="hex-dew"></span></div>--dew</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--lichen)"><span class="swatch-hex" id="hex-lichen"></span></div>--lichen</div>
+</div>
+
+<h3>Tierra y corteza</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--bark)"><span class="swatch-hex" id="hex-bark"></span></div>--bark</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--earth)"><span class="swatch-hex" id="hex-earth"></span></div>--earth</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ochre)"><span class="swatch-hex" id="hex-ochre"></span></div>--ochre</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--amber)"><span class="swatch-hex" id="hex-amber"></span></div>--amber</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--stone)"><span class="swatch-hex" id="hex-stone"></span></div>--stone</div>
+</div>
+
+<h3>Semántico libresco</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--chapter)"><span class="swatch-hex" id="hex-chapter"></span></div>--chapter</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--note)"><span class="swatch-hex" id="hex-note"></span></div>--note</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--bookmark)"><span class="swatch-hex" id="hex-bookmark"></span></div>--bookmark</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<hr class="divider">
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento · Musgo</div><p>Notas generales del lector. Observaciones al margen de la página.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Musgo</div><p>Capítulo completado. El lector avanza sin obstáculos.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Ocre</div><p>Pasaje confuso. Releer antes de continuar.</p></div>
+<div class="callout danger"><div class="callout-title">Danger</div><p>Spoiler adelante. Proceder con cautela.</p></div>
+<div class="callout chapter"><div class="callout-title">Chapter</div><p>Inicio de capítulo. El bosque se abre ante nosotros.</p></div>
+<div class="callout note"><div class="callout-title">Note · Ocre</div><p>Anotación del autor. Contexto histórico relevante.</p></div>
+<div class="callout bookmark"><div class="callout-title">Bookmark · Corteza</div><p>Página marcada. El lector regresará aquí.</p></div>
+<div class="callout moss"><div class="callout-title">Moss</div><p>El musgo crece donde la luz no llega. Persistencia silenciosa.</p></div>
+<div class="callout fern"><div class="callout-title">Fern</div><p>Helecho antiquísimo. Más viejo que los dinosaurios.</p></div>
+<div class="callout bark"><div class="callout-title">Bark</div><p>La corteza guarda la memoria del árbol en sus anillos.</p></div>
+<div class="callout ochre"><div class="callout-title">Ochre</div><p>La luz de la tarde tiñe el bosque de amarillo.</p></div>
+<div class="callout dew"><div class="callout-title">Dew</div><p>Rocío de la mañana. La primera luz del día.</p></div>
+<div class="callout stone"><div class="callout-title">Stone</div><p>Piedra cubierta de musgo. Quietud milenaria.</p></div>
+<div class="callout lichen"><div class="callout-title">Lichen</div><p>Liquen — simbiosis de hongo y alga. Dos vidas en una.</p></div>
+
+<hr class="divider">
+<h2>Badges</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <span class="badge moss">moss</span><span class="badge fern">fern</span>
+  <span class="badge bark">bark</span><span class="badge earth">earth</span>
+  <span class="badge ochre">ochre</span><span class="badge amber">amber</span>
+  <span class="badge dew">dew</span><span class="badge stone">stone</span>
+  <span class="badge lichen">lichen</span><span class="badge chapter">chapter</span>
+  <span class="badge note">note</span><span class="badge bookmark">bookmark</span>
+  <span class="badge ok">ok</span><span class="badge warn">warn</span>
+  <span class="badge danger">danger</span><span class="badge">default</span>
+</div>
+
+<hr class="divider">
+<h2>Botones</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <button class="btn primary">primary</button><button class="btn">default</button>
+  <button class="btn chapter">chapter</button><button class="btn note">note</button>
+  <button class="btn bark">bark</button><button class="btn ochre">ochre</button>
+  <button class="btn fern">fern</button><button class="btn dew">dew</button>
+  <button class="btn ok">ok</button><button class="btn warn">warn</button>
+  <button class="btn danger">danger</button>
+</div>
+
+<hr class="divider">
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">312</div><div class="metric-lbl">páginas</div></div>
+  <div class="metric"><div class="metric-val ochre">7</div><div class="metric-lbl">capítulos</div></div>
+  <div class="metric"><div class="metric-val bark">3h</div><div class="metric-lbl">lectura</div></div>
+  <div class="metric"><div class="metric-val fern">84%</div><div class="metric-lbl">progreso</div></div>
+  <div class="metric"><div class="metric-val amber">12</div><div class="metric-lbl">anotaciones</div></div>
+  <div class="metric"><div class="metric-val lichen">∞</div><div class="metric-lbl">relecturas</div></div>
+</div>
+
+<hr class="divider">
+<h2>Código</h2>
+<pre data-lang="python"><span class="cm"># Índice de un bosque de libros</span>
+<span class="kw">class</span> <span class="tp">Libro</span>:
+    <span class="fn">def</span> <span class="kw">__init__</span>(self, titulo, autor, paginas):
+        self.titulo  = titulo
+        self.autor   = autor
+        self.paginas = paginas
+        self.leido   = <span class="kw">False</span>
+
+    <span class="fn">def</span> <span class="kw">leer</span>(self):
+        self.leido = <span class="kw">True</span>
+        <span class="kw">return</span> <span class="str">f"'{self.titulo}' — terminado"</span></pre>
+
+<hr class="divider">
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Evocación</th></tr>
+  <tr><td><code>--moss</code></td><td>#4A6040</td><td>#5A7850</td><td>Musgo · verde profundo del suelo</td></tr>
+  <tr><td><code>--fern</code></td><td>#6A8050</td><td>#7A9060</td><td>Helecho · verde medio luminoso</td></tr>
+  <tr><td><code>--bark</code></td><td>#6A4828</td><td>#5A3818</td><td>Corteza · marrón cálido</td></tr>
+  <tr><td><code>--ochre</code></td><td>#B08030</td><td>#988040</td><td>Ocre · luz de tarde entre hojas</td></tr>
+  <tr><td><code>--amber</code></td><td>#C89040</td><td>#A87830</td><td>Ámbar · resina solidificada</td></tr>
+  <tr><td><code>--dew</code></td><td>#789878</td><td>#688868</td><td>Rocío · verde suave de amanecer</td></tr>
+  <tr><td><code>--lichen</code></td><td>#8A9870</td><td>#708060</td><td>Liquen · gris verdoso de roca</td></tr>
+</table>
+
+<hr class="divider">
+<h2>Reading Log</h2>
+<div class="reading-log">
+  <div class="reading-entry"><div class="reading-dot chapter">I</div><div><h4>El sendero que desaparece</h4><p class="muted">La protagonista entra al bosque por primera vez. La luz entre los árboles es casi sólida.</p></div></div>
+  <div class="reading-entry"><div class="reading-dot note">✎</div><div><h4>Nota del autor</h4><p class="muted">El bosque de este libro está basado en el Bosque de Irati, en los Pirineos navarros.</p></div></div>
+  <div class="reading-entry"><div class="reading-dot chapter">II</div><div><h4>La cabaña de musgo</h4><p class="muted">Nadie la había habitado en años. El musgo había reclamado las paredes como suyas.</p></div></div>
+  <div class="reading-entry"><div class="reading-dot bookmark">♦</div><div><h4>Página marcada — p. 187</h4><p class="muted">El momento en que el bosque habla. Volver aquí.</p></div></div>
+  <div class="reading-entry"><div class="reading-dot ok">✓</div><div><h4>Terminado</h4><p class="muted">Tres horas y doce anotaciones después. El bosque sigue ahí.</p></div></div>
+</div>
+
+<hr class="divider">
+<h2>Capítulos</h2>
+<div class="chapter-row"><div class="chapter-num">I</div><div><h4>El sendero</h4><p class="muted">Todo bosque tiene un camino que desaparece si lo miras fijamente.</p></div></div>
+<div class="chapter-row" style="border-left-color:var(--ochre)"><div class="chapter-num" style="color:var(--ochre)">II</div><div><h4>La luz</h4><p class="muted">El komorebi — la luz que cae entre las hojas — no tiene traducción exacta al castellano.</p></div></div>
+<div class="chapter-row" style="border-left-color:var(--bark)"><div class="chapter-num" style="color:var(--bark)">III</div><div><h4>La corteza</h4><p class="muted">Los anillos del árbol son su memoria. Cada uno, un año de vida.</p></div></div>
+<div class="chapter-row" style="border-left-color:var(--fern)"><div class="chapter-num" style="color:var(--fern)">IV</div><div><h4>El regreso</h4><p class="muted">El que entra al bosque siempre regresa siendo otro.</p></div></div>
+
+<hr class="divider">
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card"><strong>El nombre del viento</strong><span class="badge chapter" style="margin-left:8px">cap. 1</span><p class="muted" style="margin-top:8px">Patrick Rothfuss · 662 páginas · Un posadero que fue el mago más temido del mundo.</p></div>
+  <div class="card"><strong>Cien años de soledad</strong><span class="badge ok" style="margin-left:8px">terminado</span><p class="muted" style="margin-top:8px">García Márquez · 432 páginas · El árbol genealógico más frondoso de la literatura.</p></div>
+</div>
+
+<hr class="divider">
+<p class="muted" style="text-align:center;margin-top:32px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase">
+  bookworm_theme · by RemiH06 · iroFactory · AGPL-3.0
+</p>
+</div>
+
+<script>
+let isDark = false;
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('toggle-btn').textContent = isDark ? '☀ día' : '☽ noche';
+  updateHexes();
+  buildTri();
+  buildLight();
+  buildWood();
+}
+
+function cssVar(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+function updateHexes() {
+  const map = {
+    'hex-canopy':'--canopy','hex-moss':'--moss','hex-fern':'--fern',
+    'hex-dew':'--dew','hex-lichen':'--lichen','hex-bark':'--bark',
+    'hex-earth':'--earth','hex-ochre':'--ochre','hex-amber':'--amber',
+    'hex-stone':'--stone','hex-chapter':'--chapter','hex-note':'--note',
+    'hex-bookmark':'--bookmark','hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger',
+  };
+  Object.entries(map).forEach(([id,tok]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = cssVar(tok);
+  });
+}
+
+// ── CAPA 1: Triángulos isométricos ─────────────────────
+// Usa la configuración perfecta del sherry original:
+// s=48, h=83.14, 3 líneas horizontales por tile + △ ▽ oblicuos
+const triCanvas = document.getElementById('bw-tri');
+const tCtx      = triCanvas.getContext('2d');
+
+function buildTri() {
+  const W = triCanvas.width  = window.innerWidth;
+  const H = triCanvas.height = window.innerHeight;
+  tCtx.clearRect(0, 0, W, H);
+
+  const s     = 48;
+  const h     = 83.14;
+  const hHalf = 41.57;
+  const cols  = Math.ceil(W / s) + 2;
+  const rows  = Math.ceil(H / h) + 2;
+  const col   = isDark ? '#2A3824' : '#8A7858';
+  const alpha = isDark ? 0.3 : 0.2;
+
+  tCtx.strokeStyle = col;
+  tCtx.lineWidth   = 1.5;
+  tCtx.globalAlpha = alpha;
+
+  for (let r = 0; r < rows; r++) {
+    const y = r * h - h;
+    // 3 líneas horizontales por tile
+    [y, y + hHalf, y + h].forEach(ly => {
+      tCtx.beginPath(); tCtx.moveTo(-s, ly); tCtx.lineTo(W + s, ly); tCtx.stroke();
+    });
+    // Lados oblicuos
+    for (let c = 0; c < cols; c++) {
+      const x = c * s - s;
+      // △ — vértice abajo (base en y, vértice en y+hHalf)
+      tCtx.beginPath(); tCtx.moveTo(x, y); tCtx.lineTo(x + s/2, y + hHalf); tCtx.lineTo(x + s, y); tCtx.stroke();
+      // ▽ — vértice arriba (base en y+h, vértice en y+hHalf)
+      tCtx.beginPath(); tCtx.moveTo(x, y + h); tCtx.lineTo(x + s/2, y + hHalf); tCtx.lineTo(x + s, y + h); tCtx.stroke();
+    }
+  }
+  tCtx.globalAlpha = 1;
+}
+
+// ── CAPA 2: Luz komorebi estática ──────────────────────
+const lightCanvas = document.getElementById('bw-light');
+const lCtx        = lightCanvas.getContext('2d');
+
+function buildLight() {
+  const W = lightCanvas.width  = window.innerWidth;
+  const H = lightCanvas.height = window.innerHeight;
+  lCtx.clearRect(0, 0, W, H);
+
+  const lights = isDark ? [
+    {x:.30, y:.15, r:.40, a:0.50, rgb:'180,210,255'},
+    {x:.75, y:.40, r:.32, a:0.40, rgb:'160,190,240'},
+    {x:.50, y:.72, r:.36, a:0.35, rgb:'180,210,255'},
+  ] : [
+    {x:.12, y:.08, r:.42, a:0.50, rgb:'255,220,100'},
+    {x:.68, y:.06, r:.32, a:0.45, rgb:'255,210,80' },
+    {x:.38, y:.42, r:.48, a:0.48, rgb:'255,225,110'},
+    {x:.82, y:.62, r:.30, a:0.40, rgb:'240,200,80' },
+    {x:.22, y:.78, r:.35, a:0.42, rgb:'255,215,90' },
+    {x:.55, y:.25, r:.25, a:0.38, rgb:'255,230,120'},
+  ];
+
+  lights.forEach(({x, y, r, a, rgb}) => {
+    const cx = x * W, cy = y * H, rad = r * Math.min(W, H);
+    const g = lCtx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+    g.addColorStop(0,   `rgba(${rgb},${a})`);
+    g.addColorStop(0.5, `rgba(${rgb},${(a*0.3).toFixed(3)})`);
+    g.addColorStop(1,   `rgba(${rgb},0)`);
+    lCtx.fillStyle = g;
+    lCtx.fillRect(0, 0, W, H);
+  });
+}
+
+// ── CAPA 3: Lienzo de madera con agujeros (stencil) ────
+function buildWood() {
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+
+  const woodColor = isDark ? 'rgba(9,15,6,1.0)' : 'rgba(215,205,185,1.0)';
+  const nh = 20, rmin = 100, rmax = 100, ecc = 1;
+
+  function sr(seed){ const x=Math.sin(seed)*10000; return x-Math.floor(x); }
+
+  const holes = Array.from({length:nh}, (_,i) => ({
+    cx: sr(i*2.3+2) * W,
+    cy: sr(i*1.9+3) * H,
+    rx: rmin + sr(i*4.1+4) * (rmax-rmin),
+    ry: (rmin + sr(i*3.7+5) * (rmax-rmin)) * ecc,
+  }));
+
+  const ellipses = holes.map(({cx,cy,rx,ry}) =>
+    `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="black"/>`
+  ).join('');
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+  <defs>
+    <mask id="m">
+      <rect width="${W}" height="${H}" fill="white"/>
+      ${ellipses}
+    </mask>
+  </defs>
+  <rect width="${W}" height="${H}" fill="${woodColor}" mask="url(#m)"/>
+</svg>`;
+
+  const el = document.getElementById('bw-wood');
+  el.style.backgroundImage  = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  el.style.backgroundSize   = `${W}px ${H}px`;
+  el.style.backgroundRepeat = 'no-repeat';
+}
+
+// ── CAPA 4: Partículas ─────────────────────────────────
+(function() {
+  const canvas = document.getElementById('bw-particles');
+  const ctx    = canvas.getContext('2d');
+  let W, H, parts = [];
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+
+  function makeLeaf() {
+    return {
+      type:'leaf', x:Math.random()*W, y:-20,
+      vx:(Math.random()-.5)*.8, vy:.4+Math.random()*.6,
+      angle:Math.random()*Math.PI*2, vAngle:(Math.random()-.5)*.04,
+      size:5+Math.random()*8, sway:Math.random()*Math.PI*2,
+      swaySpeed:.01+Math.random()*.02,
+      color:['#6A8050','#8A6040','#B08030','#C89040','#4A6040'][Math.floor(Math.random()*5)],
+      alpha:.4+Math.random()*.4,
+    };
+  }
+
+  function makeRain() {
+    return {
+      type:'rain', x:Math.random()*W, y:-10,
+      vy:7+Math.random()*5, vx:-.8+Math.random()*.4,
+      len:10+Math.random()*14, alpha:.06+Math.random()*.12,
+    };
+  }
+
+  function loop() {
+    const dark = document.body.classList.contains('dark');
+    if (dark) { if (Math.random()<.55) parts.push(makeRain()); }
+    else       { if (Math.random()<.04) parts.push(makeLeaf()); }
+
+    ctx.clearRect(0, 0, W, H);
+    parts = parts.filter(p => {
+      if (p.type === 'leaf') {
+        p.sway += p.swaySpeed; p.x += p.vx + Math.sin(p.sway)*.5;
+        p.y += p.vy; p.angle += p.vAngle;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.angle);
+        ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
+        ctx.beginPath(); ctx.ellipse(0,0,p.size,p.size*.5,0,0,Math.PI*2); ctx.fill();
+        ctx.restore();
+        return p.y < H + 20;
+      } else {
+        p.x += p.vx; p.y += p.vy;
+        ctx.save(); ctx.strokeStyle='#8AB0C8'; ctx.globalAlpha=p.alpha;
+        ctx.lineWidth=.8; ctx.beginPath();
+        ctx.moveTo(p.x,p.y); ctx.lineTo(p.x+p.vx*2,p.y+p.len); ctx.stroke();
+        ctx.restore();
+        return p.y < H + 20;
+      }
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(loop);
+})();
+
+// ── Init ───────────────────────────────────────────────
+window.addEventListener('resize', () => { buildTri(); buildLight(); buildWood(); });
+buildTri();
+buildLight();
+buildWood();
+updateHexes();
+</script>
+</body>
+</html>
