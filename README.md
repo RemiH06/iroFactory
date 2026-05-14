@@ -1,5 +1,4 @@
 ![Made with HTML](https://forthebadge.com/images/badges/built-with-love.svg)
-![Built by Developers](http://ForTheBadge.com/images/badges/built-by-developers.svg)
 
 ```ascii
 ██╗██████╗  ██████╗ ███████╗ █████╗  ██████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
