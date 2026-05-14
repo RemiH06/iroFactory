@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>forge_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=azeret-mono:400,700&family=fira-code:400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   TOKENS — OSCURO (default) · forja activa
+══════════════════════════════════════════════════════ */
+body {
+  --bg:        #0E0A06;
+  --bg2:       #161008;
+  --bg3:       #201608;
+  --text:      #F0D8B0;
+  --text2:     #907050;
+  --border:    #382010;
+
+  /* ── Paleta forja ── */
+  --iron:      #1A1410;   /* hierro oscuro           */
+  --coal:      #282018;   /* carbón                  */
+  --ash:       #504030;   /* ceniza                  */
+  --ember:     #C84010;   /* brasa                   */
+  --lava:      #E86010;   /* lava                    */
+  --slag:      #F0A020;   /* escoria dorada          */
+  --heat:      #FF6820;   /* calor intenso           */
+  --smoke:     #302820;   /* humo                    */
+
+  /* ── Semántico embebido ── */
+  --voltage:   #FF6820;   /* tensión · peligro eléc  */
+  --signal:    #F0A020;   /* señal analógica         */
+  --current:   #E86010;   /* corriente               */
+  --core:      #C84010;   /* núcleo del procesador   */
+  --interrupt: #FF4010;   /* interrupción            */
+  --flux:      #D06030;   /* flujo magnético         */
+  --ground:    #504030;   /* tierra / ground         */
+
+  /* ── Semánticos ── */
+  --ok:        #80B040;
+  --warn:      #F0A020;
+  --danger:    #FF4010;
+  --accent:    #E86010;
+  --accent2:   #F0A020;
+
+  /* ── Neutros ── */
+  --black:     #080604;
+  --white:     #F8E8D0;
+  --gray:      #604830;
+
+  --mono:   'Azeret Mono', monospace;
+  --radius: 2px;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — CLARO · taller frío, arco eléctrico
+══════════════════════════════════════════════════════ */
+body.light {
+  --bg:        #1A1E22;
+  --bg2:       #222830;
+  --bg3:       #2C3440;
+  --text:      #D0E8F0;
+  --text2:     #5080A0;
+  --border:    #304050;
+
+  --iron:      #303840;
+  --coal:      #202830;
+  --ash:       #485860;
+  --ember:     #204880;
+  --lava:      #2060A0;
+  --slag:      #00FF80;   /* verde osciloscopio      */
+  --heat:      #4090FF;   /* arco eléctrico          */
+  --smoke:     #182028;
+
+  --voltage:   #4090FF;
+  --signal:    #00FF80;
+  --current:   #2080D0;
+  --core:      #4090FF;
+  --interrupt: #FF4080;
+  --flux:      #00C8A0;
+  --ground:    #405060;
+
+  --ok:        #00FF80;
+  --warn:      #FFD040;
+  --danger:    #FF4080;
+  --accent:    #4090FF;
+  --accent2:   #00FF80;
+
+  --black:     #0C1018;
+  --white:     #D0E8F8;
+  --gray:      #405870;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--mono);font-size:13px;line-height:1.8;
+  transition:background .4s,color .4s;
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
+
+/* Capas */
+#fg-bg      {position:fixed;inset:0;z-index:0;pointer-events:none}
+#fg-lava    {position:fixed;inset:0;z-index:1;pointer-events:none}
+#fg-particles{position:fixed;inset:0;z-index:2;pointer-events:none}
+.page{position:relative;z-index:10;padding:40px;max-width:880px;margin:0 auto}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+══════════════════════════════════════════════════════ */
+h2{
+  font-family:var(--mono);font-size:14px;font-weight:700;
+  color:var(--slag);margin:36px 0 14px;padding-bottom:6px;
+  border-bottom:1px solid var(--border);letter-spacing:.1em;text-transform:uppercase;
+}
+body:not(.light) h2{text-shadow:0 0 10px rgba(240,160,32,.4)}
+body.light h2{color:var(--signal);text-shadow:0 0 8px rgba(0,255,128,.3)}
+
+h3{
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  color:var(--ember);margin:20px 0 10px;letter-spacing:.08em;
+}
+body.light h3{color:var(--voltage);text-shadow:0 0 6px rgba(64,144,255,.4)}
+
+h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px}
+p{margin-bottom:12px;line-height:1.85;font-size:13px}
+p.muted{color:var(--text2);font-size:12px}
+
+/* ══════════════════════════════════════════════════════
+   CÓDIGO
+══════════════════════════════════════════════════════ */
+code{font-family:var(--mono);font-size:12px;background:var(--bg3);border:1px solid var(--border);padding:1px 5px;border-radius:var(--radius);color:var(--slag)}
+pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--radius);padding:12px 16px;margin:12px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.75;color:var(--text);position:relative}
+pre::before{content:attr(data-lang);position:absolute;top:5px;right:8px;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw {color:var(--voltage)}
+pre .fn {color:var(--signal)}
+pre .str{color:var(--ok)}
+pre .num{color:var(--slag)}
+pre .cm {color:var(--text2);font-style:italic}
+pre .tp {color:var(--flux)}
+
+/* ══════════════════════════════════════════════════════
+   CALLOUTS
+══════════════════════════════════════════════════════ */
+.callout{border-left:2px solid var(--accent);background:var(--bg2);padding:11px 16px;margin:8px 0;border-radius:0 var(--radius) var(--radius) 0}
+.callout-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.callout p{margin-bottom:0;font-size:12px}
+.callout.ok       {border-color:var(--ok)       }.callout.ok        .callout-title{color:var(--ok)      }
+.callout.warn     {border-color:var(--warn)     }.callout.warn      .callout-title{color:var(--warn)    }
+.callout.danger   {border-color:var(--danger)   }.callout.danger    .callout-title{color:var(--danger)  }
+.callout.voltage  {border-color:var(--voltage)  }.callout.voltage   .callout-title{color:var(--voltage) }
+.callout.signal   {border-color:var(--signal)   }.callout.signal    .callout-title{color:var(--signal)  }
+.callout.current  {border-color:var(--current)  }.callout.current   .callout-title{color:var(--current) }
+.callout.core     {border-color:var(--core)     }.callout.core      .callout-title{color:var(--core)    }
+.callout.interrupt{border-color:var(--interrupt)}.callout.interrupt .callout-title{color:var(--interrupt)}
+.callout.flux     {border-color:var(--flux)     }.callout.flux      .callout-title{color:var(--flux)    }
+.callout.ground   {border-color:var(--ground)   }.callout.ground    .callout-title{color:var(--ground)  }
+.callout.slag     {border-color:var(--slag)     }.callout.slag      .callout-title{color:var(--slag)    }
+
+/* ══════════════════════════════════════════════════════
+   TABLA
+══════════════════════════════════════════════════════ */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+th{background:var(--bg3);padding:7px 12px;text-align:left;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slag);border-bottom:1px solid var(--border)}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg3)}
+
+/* ══════════════════════════════════════════════════════
+   BOTONES
+══════════════════════════════════════════════════════ */
+.btn{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;padding:5px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.06em;text-transform:uppercase}
+.btn:hover,.btn.primary{border-color:var(--accent);color:var(--accent)}
+.btn.ok       {border-color:var(--ok);       color:var(--ok)      }
+.btn.warn     {border-color:var(--warn);     color:var(--warn)    }
+.btn.danger   {border-color:var(--danger);   color:var(--danger)  }
+.btn.voltage  {border-color:var(--voltage);  color:var(--voltage) }
+.btn.signal   {border-color:var(--signal);   color:var(--signal)  }
+.btn.current  {border-color:var(--current);  color:var(--current) }
+.btn.core     {border-color:var(--core);     color:var(--core)    }
+.btn.interrupt{border-color:var(--interrupt);color:var(--interrupt)}
+.btn.flux     {border-color:var(--flux);     color:var(--flux)    }
+
+/* ══════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════ */
+.badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);letter-spacing:.08em;text-transform:uppercase}
+.badge.voltage  {border-color:var(--voltage);  color:var(--voltage) }
+.badge.signal   {border-color:var(--signal);   color:var(--signal)  }
+.badge.current  {border-color:var(--current);  color:var(--current) }
+.badge.core     {border-color:var(--core);     color:var(--core)    }
+.badge.interrupt{border-color:var(--interrupt);color:var(--interrupt)}
+.badge.flux     {border-color:var(--flux);     color:var(--flux)    }
+.badge.ground   {border-color:var(--ground);   color:var(--ground)  }
+.badge.slag     {border-color:var(--slag);     color:var(--slag)    }
+.badge.ok       {border-color:var(--ok);       color:var(--ok)      }
+.badge.warn     {border-color:var(--warn);     color:var(--warn)    }
+.badge.danger   {border-color:var(--danger);   color:var(--danger)  }
+
+/* ══════════════════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════════════════ */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--accent);box-shadow:0 0 14px rgba(232,96,16,.15)}
+body.light .card:hover{box-shadow:0 0 14px rgba(64,144,255,.15)}
+
+/* ══════════════════════════════════════════════════════
+   MÉTRICAS
+══════════════════════════════════════════════════════ */
+.metrics-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;flex:1;min-width:90px}
+.metric-val{font-size:22px;font-weight:700;color:var(--accent);letter-spacing:-.5px}
+.metric-lbl{font-size:9px;color:var(--text2);margin-top:2px;letter-spacing:.06em;text-transform:uppercase}
+.metric-val.signal   {color:var(--signal)   }
+.metric-val.voltage  {color:var(--voltage)  }
+.metric-val.core     {color:var(--core)     }
+.metric-val.interrupt{color:var(--interrupt)}
+.metric-val.flux     {color:var(--flux)     }
+
+/* ══════════════════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════════════════ */
+hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+/* ══════════════════════════════════════════════════════
+   REGISTER — timeline estilo registro de hardware
+══════════════════════════════════════════════════════ */
+.reg-log{margin:12px 0}
+.reg-entry{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.reg-entry:last-child{border-bottom:none}
+.reg-dot{width:26px;height:14px;flex-shrink:0;margin-top:4px;border:1px solid var(--border);border-radius:1px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--text2);letter-spacing:.04em}
+.reg-dot.voltage  {border-color:var(--voltage);  color:var(--voltage)  }
+.reg-dot.signal   {border-color:var(--signal);   color:var(--signal)   }
+.reg-dot.ok       {border-color:var(--ok);       color:var(--ok)       }
+.reg-dot.warn     {border-color:var(--warn);     color:var(--warn)     }
+.reg-dot.danger   {border-color:var(--danger);   color:var(--danger)   }
+.reg-dot.interrupt{border-color:var(--interrupt);color:var(--interrupt)}
+
+/* ══════════════════════════════════════════════════════
+   PIPELINE — secuencia de firmware
+══════════════════════════════════════════════════════ */
+.fw-step{display:flex;gap:14px;align-items:flex-start;margin:8px 0;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--radius);transition:box-shadow .2s}
+.fw-step:hover{box-shadow:0 0 10px rgba(232,96,16,.12)}
+body.light .fw-step:hover{box-shadow:0 0 10px rgba(64,144,255,.12)}
+.fw-num{font-size:14px;font-weight:700;color:var(--accent);min-width:36px;line-height:1;margin-top:2px;letter-spacing:.04em}
+
+/* ══════════════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════════════ */
+.theme-btn{font-family:var(--mono);font-size:11px;font-weight:700;padding:5px 12px;background:none;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.06em;text-transform:uppercase}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.swatch{width:80px;text-align:center;font-size:8px;color:var(--text2)}
+.swatch-box{height:42px;border-radius:var(--radius);margin-bottom:5px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:3px;left:4px;font-size:8px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}
+</style>
+</head>
+<body>
+
+<canvas id="fg-bg"></canvas>
+<canvas id="fg-lava"></canvas>
+<canvas id="fg-particles"></canvas>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:40px">
+  <div>
+    <div style="font-size:28px;font-weight:700;color:var(--slag);letter-spacing:.04em">forge</div>
+    <div style="font-size:10px;color:var(--ember);letter-spacing:.18em;text-transform:uppercase;margin-top:-2px">_theme · iroFactory</div>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">◎ taller</button>
+</div>
+
+<!-- ── Paleta ── -->
+<h2>Paleta de colores</h2>
+<p class="muted">Hierro, brasa y lava · La forja en dos estados.</p>
+
+<h3>// Forja</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--iron)"><span class="swatch-hex" id="hex-iron"></span></div>--iron</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--coal)"><span class="swatch-hex" id="hex-coal"></span></div>--coal</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ash)"><span class="swatch-hex" id="hex-ash"></span></div>--ash</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ember)"><span class="swatch-hex" id="hex-ember"></span></div>--ember</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--lava)"><span class="swatch-hex" id="hex-lava"></span></div>--lava</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--slag)"><span class="swatch-hex" id="hex-slag"></span></div>--slag</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--heat)"><span class="swatch-hex" id="hex-heat"></span></div>--heat</div>
+</div>
+
+<h3>// Embebido</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--voltage)"><span class="swatch-hex" id="hex-voltage"></span></div>--voltage</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--signal)"><span class="swatch-hex" id="hex-signal"></span></div>--signal</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--current)"><span class="swatch-hex" id="hex-current"></span></div>--current</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--core)"><span class="swatch-hex" id="hex-core"></span></div>--core</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--interrupt)"><span class="swatch-hex" id="hex-interrupt"></span></div>--interrupt</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--flux)"><span class="swatch-hex" id="hex-flux"></span></div>--flux</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ground)"><span class="swatch-hex" id="hex-ground"></span></div>--ground</div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Callouts ── -->
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento · Lava</div><p>Notas de arquitectura. El sistema corre sobre metal desnudo.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Verde</div><p>Firmware flasheado correctamente. El MCU responde al ping.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Escoria</div><p>Temperatura del core al 87%. Activar ventilador secundario.</p></div>
+<div class="callout danger"><div class="callout-title">Danger · Interrupción</div><p>Stack overflow en IRQ_Handler. El sistema se reinició.</p></div>
+<div class="callout voltage"><div class="callout-title">Voltage</div><p>3.3V rail · 12V rail · ambos dentro de tolerancia ±5%.</p></div>
+<div class="callout signal"><div class="callout-title">Signal</div><p>PWM a 50kHz. Duty cycle 72%. Osciloscopio confirmado.</p></div>
+<div class="callout current"><div class="callout-title">Current</div><p>Consumo en idle 180mA. En carga máxima 2.4A.</p></div>
+<div class="callout core"><div class="callout-title">Core</div><p>ARM Cortex-M4 @ 168MHz. FPU habilitada. Cache L1 activa.</p></div>
+<div class="callout interrupt"><div class="callout-title">Interrupt</div><p>IRQ prioridad 0. Non-maskable. El handler debe ser breve.</p></div>
+<div class="callout flux"><div class="callout-title">Flux</div><p>Campo magnético del motor paso a paso. 42 pasos por revolución.</p></div>
+<div class="callout ground"><div class="callout-title">Ground</div><p>GND común a todos los módulos. Nunca flotante.</p></div>
+<div class="callout slag"><div class="callout-title">Slag · Escoria</div><p>Metadata del proceso. Lo que queda después de la compilación.</p></div>
+
+<hr class="divider">
+
+<!-- ── Badges ── -->
+<h2>Badges</h2>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+  <span class="badge voltage">voltage</span>
+  <span class="badge signal">signal</span>
+  <span class="badge current">current</span>
+  <span class="badge core">core</span>
+  <span class="badge interrupt">interrupt</span>
+  <span class="badge flux">flux</span>
+  <span class="badge ground">ground</span>
+  <span class="badge slag">slag</span>
+  <span class="badge ok">ok</span>
+  <span class="badge warn">warn</span>
+  <span class="badge danger">danger</span>
+  <span class="badge">default</span>
+</div>
+
+<hr class="divider">
+
+<!-- ── Botones ── -->
+<h2>Botones</h2>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+  <button class="btn primary">primary</button>
+  <button class="btn">default</button>
+  <button class="btn voltage">voltage</button>
+  <button class="btn signal">signal</button>
+  <button class="btn core">core</button>
+  <button class="btn interrupt">interrupt</button>
+  <button class="btn flux">flux</button>
+  <button class="btn ok">ok</button>
+  <button class="btn warn">warn</button>
+  <button class="btn danger">danger</button>
+</div>
+
+<hr class="divider">
+
+<!-- ── Métricas ── -->
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">168</div><div class="metric-lbl">MHz</div></div>
+  <div class="metric"><div class="metric-val signal">3.3V</div><div class="metric-lbl">rail</div></div>
+  <div class="metric"><div class="metric-val voltage">87°C</div><div class="metric-lbl">temp core</div></div>
+  <div class="metric"><div class="metric-val interrupt">IRQ</div><div class="metric-lbl">pendiente</div></div>
+  <div class="metric"><div class="metric-val flux">42</div><div class="metric-lbl">pasos/rev</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Código ── -->
+<h2>Código</h2>
+<pre data-lang="c"><span class="cm">// ISR del temporizador principal</span>
+<span class="tp">void</span> <span class="fn">TIM2_IRQHandler</span>(<span class="tp">void</span>) {
+  <span class="kw">if</span> (TIM2->SR & TIM_SR_UIF) {
+    TIM2->SR &= ~TIM_SR_UIF;  <span class="cm">// clear flag</span>
+    pwm_duty = <span class="fn">pid_update</span>(
+      setpoint, <span class="fn">adc_read</span>(<span class="num">0</span>)
+    );
+    <span class="fn">set_pwm</span>(pwm_duty);
+  }
+}
+
+<span class="tp">uint16_t</span> <span class="fn">adc_read</span>(<span class="tp">uint8_t</span> ch) {
+  ADC1->SQR3 = ch;
+  ADC1->CR2 |= ADC_CR2_SWSTART;
+  <span class="kw">while</span> (!(ADC1->SR & ADC_SR_EOC));
+  <span class="kw">return</span> ADC1->DR;
+}</pre>
+
+<hr class="divider">
+
+<!-- ── Tabla ── -->
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Forja</th><th>Taller</th><th>Semántica</th></tr>
+  <tr><td><code>--voltage</code></td><td>#FF6820</td><td>#4090FF</td><td>Tensión · peligro eléctrico</td></tr>
+  <tr><td><code>--signal</code></td><td>#F0A020</td><td>#00FF80</td><td>Señal analógica · osciloscopio</td></tr>
+  <tr><td><code>--current</code></td><td>#E86010</td><td>#2080D0</td><td>Corriente eléctrica</td></tr>
+  <tr><td><code>--core</code></td><td>#C84010</td><td>#4090FF</td><td>Núcleo del procesador</td></tr>
+  <tr><td><code>--interrupt</code></td><td>#FF4010</td><td>#FF4080</td><td>Interrupción · IRQ</td></tr>
+  <tr><td><code>--flux</code></td><td>#D06030</td><td>#00C8A0</td><td>Flujo magnético</td></tr>
+  <tr><td><code>--ground</code></td><td>#504030</td><td>#405060</td><td>Tierra / GND</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ── Register log ── -->
+<h2>Register Log</h2>
+<div class="reg-log">
+  <div class="reg-entry"><div class="reg-dot ok">OK</div><div><h4>Boot sequence completa</h4><p class="muted">Bootloader 0x08000000 → App 0x08004000 · checksum válido</p></div></div>
+  <div class="reg-entry"><div class="reg-dot voltage">HI</div><div><h4>GPIO PA5 → HIGH</h4><p class="muted">LED_STATUS encendido · sistema operativo</p></div></div>
+  <div class="reg-entry"><div class="reg-dot signal">PWM</div><div><h4>TIM2 configurado</h4><p class="muted">ARR=1679 · PSC=0 · 50kHz · DMA canal 1</p></div></div>
+  <div class="reg-entry"><div class="reg-dot warn">HOT</div><div><h4>Temperatura elevada</h4><p class="muted">Core 87°C · límite 105°C · throttling no activo</p></div></div>
+  <div class="reg-entry"><div class="reg-dot interrupt">IRQ</div><div><h4>Hard Fault</h4><p class="muted">PC=0x08002A44 · LR=0xFFFFFFF9 · revisando stack</p></div></div>
+  <div class="reg-entry"><div class="reg-dot danger">ERR</div><div><h4>Watchdog reset</h4><p class="muted">IWDG expiró · loop principal bloqueado · reboot</p></div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Firmware steps ── -->
+<h2>Firmware Pipeline</h2>
+<div class="fw-step"><div class="fw-num">0x00</div><div><h4>Reset handler</h4><p class="muted">Inicializar stack pointer. Copiar .data de Flash a RAM. Limpiar .bss.</p></div></div>
+<div class="fw-step" style="border-left-color:var(--signal)"><div class="fw-num" style="color:var(--signal)">0x01</div><div><h4>HAL Init</h4><p class="muted">Configurar PLL a 168MHz. Habilitar clocks de periféricos. Flash latency 5.</p></div></div>
+<div class="fw-step" style="border-left-color:var(--core)"><div class="fw-num" style="color:var(--core)">0x02</div><div><h4>Periféricos</h4><p class="muted">UART2 @115200. ADC1 continuo. TIM2 PWM. I2C1 para sensores.</p></div></div>
+<div class="fw-step" style="border-left-color:var(--interrupt)"><div class="fw-num" style="color:var(--interrupt)">0x03</div><div><h4>Main loop</h4><p class="muted">while(1) — procesar cola de eventos. WFI si idle. Watchdog feed cada 500ms.</p></div></div>
+
+<hr class="divider">
+
+<!-- ── Cards ── -->
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card">
+    <strong style="color:var(--slag)">STM32F407</strong>
+    <span class="badge core" style="margin-left:8px">Cortex-M4</span>
+    <p class="muted" style="margin-top:6px">168MHz · 1MB Flash · 192KB RAM · FPU · Ethernet</p>
+  </div>
+  <div class="card">
+    <strong style="color:var(--signal)">ROS2 Humble</strong>
+    <span class="badge flux" style="margin-left:8px">robótica</span>
+    <p class="muted" style="margin-top:6px">DDS middleware · topics · services · real-time capable</p>
+  </div>
+</div>
+
+<hr class="divider">
+<p style="text-align:center;margin-top:28px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember)">
+  forge_theme · by RemiH06 · iroFactory · AGPL-3.0
+</p>
+</div>
+
+<script>
+// ── Toggle ─────────────────────────────────────────────
+let isLight = false;
+function toggleTheme() {
+  isLight = !isLight;
+  document.body.classList.toggle('light', isLight);
+  document.getElementById('toggle-btn').textContent = isLight ? '🔥 forja' : '◎ taller';
+  updateHexes();
+  drawBg();
+}
+function cssVar(n){ return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+function updateHexes() {
+  const m = {
+    'hex-iron':'--iron','hex-coal':'--coal','hex-ash':'--ash',
+    'hex-ember':'--ember','hex-lava':'--lava','hex-slag':'--slag','hex-heat':'--heat',
+    'hex-voltage':'--voltage','hex-signal':'--signal','hex-current':'--current',
+    'hex-core':'--core','hex-interrupt':'--interrupt','hex-flux':'--flux','hex-ground':'--ground',
+  };
+  Object.entries(m).forEach(([id,tok])=>{ const el=document.getElementById(id); if(el) el.textContent=cssVar(tok); });
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 0 — Fondo
+// ══════════════════════════════════════════════════════
+const bgCanvas = document.getElementById('fg-bg');
+const bgCtx    = bgCanvas.getContext('2d');
+
+function drawBg() {
+  const W = bgCanvas.width  = window.innerWidth;
+  const H = bgCanvas.height = window.innerHeight;
+  bgCtx.clearRect(0,0,W,H);
+
+  const grad = bgCtx.createLinearGradient(0,0,0,H);
+  if (!isLight) {
+    // Forja activa — negro rojizo con brillo en el centro inferior
+    grad.addColorStop(0,   '#080604');
+    grad.addColorStop(0.5, '#0E0A06');
+    grad.addColorStop(1,   '#140C06');
+  } else {
+    // Taller frío — acero azulado oscuro
+    grad.addColorStop(0,   '#0C1018');
+    grad.addColorStop(0.5, '#141C24');
+    grad.addColorStop(1,   '#1A2030');
+  }
+  bgCtx.fillStyle = grad;
+  bgCtx.fillRect(0,0,W,H);
+
+  // Resplandor inferior (forja) o luz de arco (taller)
+  if (!isLight) {
+    const glow = bgCtx.createRadialGradient(W*.5,H*1.1,0,W*.5,H*1.1,H*.9);
+    glow.addColorStop(0,   'rgba(232,96,16,0.18)');
+    glow.addColorStop(0.4, 'rgba(200,64,16,0.08)');
+    glow.addColorStop(1,   'rgba(200,64,16,0)');
+    bgCtx.fillStyle=glow; bgCtx.fillRect(0,0,W,H);
+  } else {
+    // Luz de arco desde arriba centro
+    const arc = bgCtx.createRadialGradient(W*.5,0,0,W*.5,0,H*.7);
+    arc.addColorStop(0,   'rgba(64,144,255,0.12)');
+    arc.addColorStop(0.4, 'rgba(40,100,200,0.06)');
+    arc.addColorStop(1,   'rgba(40,100,200,0)');
+    bgCtx.fillStyle=arc; bgCtx.fillRect(0,0,W,H);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 1 — Lava fluyendo por los costados
+// ══════════════════════════════════════════════════════
+const lavaCanvas = document.getElementById('fg-lava');
+const lCtx       = lavaCanvas.getContext('2d');
+
+// Puntos de control de la lava — generados una vez por sesión
+const LAVA_POINTS_L = Array.from({length:12}, (_,i) => ({
+  x: 0.05 + Math.random()*0.18,
+  phase: Math.random()*Math.PI*2,
+  speed: 0.3 + Math.random()*0.4,
+}));
+const LAVA_POINTS_R = Array.from({length:12}, (_,i) => ({
+  x: 0.77 + Math.random()*0.18,
+  phase: Math.random()*Math.PI*2,
+  speed: 0.3 + Math.random()*0.4,
+}));
+
+// Arco eléctrico — puntos del rayo
+let arcPoints = [];
+let arcTimer  = 0;
+let arcActive = false;
+let arcCooldown = 0;
+
+function generateArc(W, H) {
+  const pts = [];
+  const x0 = W * (0.3 + Math.random() * 0.4);
+  const y0 = 0;
+  const x1 = W * (0.3 + Math.random() * 0.4);
+  const y1 = H * (0.15 + Math.random() * 0.3);
+  const steps = 12;
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    pts.push({
+      x: x0 + (x1-x0)*t + (Math.random()-0.5)*W*0.04,
+      y: y0 + (y1-y0)*t,
+    });
+  }
+  return pts;
+}
+
+function drawLava(ts) {
+  const W = lavaCanvas.width  = window.innerWidth;
+  const H = lavaCanvas.height = window.innerHeight;
+  lCtx.clearRect(0,0,W,H);
+  const t = ts * 0.0004;
+
+  if (!isLight) {
+    // ── Lava fluyendo por costados ──
+    // Ambos lados usan la misma lógica — derecha es espejo de izquierda
+    [
+      {side: 'left'},
+      {side: 'right'},
+    ].forEach(({side}) => {
+      const numSeg = 20;
+      const lavaW  = W * 0.22;
+
+      for (let seg = 0; seg < numSeg; seg++) {
+        const y0 = (seg / numSeg) * H;
+        const y1 = ((seg+1) / numSeg) * H;
+        const progress = seg / numSeg;
+        const baseW = lavaW * (1 - progress * 0.3);
+        const sway  = Math.sin(t * 1.2 + progress * 3) * W * 0.015;
+
+        const hot = Math.max(0, 1 - progress * 0.7);
+        const r1  = Math.round(255 * (0.7 + hot * 0.3));
+        const g1  = Math.round(80  * (0.4 + hot * 0.6));
+        const r2  = Math.round(180 * (0.5 + hot * 0.4));
+        const g2  = Math.round(40  * hot);
+        const a   = 0.7 + Math.sin(t * 2 + progress) * 0.1;
+
+        // Gradiente siempre de borde externo (opaco) → interior (transparente)
+        let gx0, gx1, x0l, x0r, x1l, x1r;
+        if (side === 'left') {
+          gx0 = 0; gx1 = baseW;
+          x0l = 0; x0r = baseW + sway;
+          x1l = 0; x1r = baseW * 0.95 + sway;
+        } else {
+          gx0 = W; gx1 = W - baseW;
+          x0l = W - baseW + sway; x0r = W;
+          x1l = W - baseW * 0.95 + sway; x1r = W;
+        }
+
+        const yMid = (y0 + y1) / 2;
+        const grad = lCtx.createLinearGradient(gx0, yMid, gx1, yMid);
+        // Misma dirección para ambos: borde opaco → interior transparente
+        grad.addColorStop(0,   `rgba(${r1},${g1},0,${a})`);
+        grad.addColorStop(0.45,`rgba(${r2},${g2},0,${a*0.8})`);
+        grad.addColorStop(1,   `rgba(${r2*0.4},0,0,0)`);
+
+        lCtx.beginPath();
+        lCtx.moveTo(x0l, y0); lCtx.lineTo(x0r, y0);
+        lCtx.lineTo(x1r, y1); lCtx.lineTo(x1l, y1);
+        lCtx.closePath();
+        lCtx.fillStyle = grad;
+        lCtx.fill();
+      }
+
+      // Borde brillante (filo caliente)
+      const edgeX = side === 'left'
+        ? W * 0.22 * 0.7 + Math.sin(t * 1.5) * W * 0.012
+        : W - W * 0.22 * 0.7 + Math.sin(t * 1.5) * W * 0.012;
+
+      const edgeGrad = lCtx.createLinearGradient(0,0,0,H);
+      edgeGrad.addColorStop(0,   'rgba(255,200,60,0.9)');
+      edgeGrad.addColorStop(0.3, 'rgba(255,140,20,0.7)');
+      edgeGrad.addColorStop(0.7, 'rgba(220,80,10,0.4)');
+      edgeGrad.addColorStop(1,   'rgba(180,40,0,0.1)');
+
+      lCtx.beginPath();
+      for (let y = 0; y <= H; y += 8) {
+        const ex = edgeX + Math.sin(y * 0.02 + t * 2) * W * 0.008;
+        y === 0 ? lCtx.moveTo(ex, y) : lCtx.lineTo(ex, y);
+      }
+      lCtx.strokeStyle = edgeGrad;
+      lCtx.lineWidth   = 2;
+      lCtx.globalAlpha = 0.8;
+      lCtx.stroke();
+      lCtx.globalAlpha = 1;
+    });
+
+  } else {
+    // ── Arco eléctrico ocasional (más grande) ──
+    arcCooldown -= 16;
+    if (!arcActive && arcCooldown <= 0) {
+      if (Math.random() < 0.015) {
+        arcPoints   = generateArc(W, H);
+        arcActive   = true;
+        arcTimer    = 80 + Math.random() * 120;
+        arcCooldown = 2000 + Math.random() * 4000;
+      }
+    }
+    if (arcActive) {
+      arcTimer -= 16;
+      if (arcTimer <= 0) arcActive = false;
+      const alpha = Math.min(1, arcTimer / 40);
+
+      lCtx.save();
+      // Halo exterior amplio
+      lCtx.shadowColor = 'rgba(64,144,255,0.9)';
+      lCtx.shadowBlur  = 40;
+      lCtx.strokeStyle = `rgba(140,200,255,${alpha * 0.5})`;
+      lCtx.lineWidth   = 8;
+      lCtx.globalAlpha = alpha * 0.35;
+      lCtx.beginPath();
+      arcPoints.forEach((p,i)=> i===0?lCtx.moveTo(p.x,p.y):lCtx.lineTo(p.x,p.y));
+      lCtx.stroke();
+      // Halo medio
+      lCtx.shadowBlur  = 18;
+      lCtx.strokeStyle = `rgba(180,220,255,${alpha * 0.7})`;
+      lCtx.lineWidth   = 3.5;
+      lCtx.globalAlpha = alpha * 0.6;
+      lCtx.beginPath();
+      arcPoints.forEach((p,i)=> i===0?lCtx.moveTo(p.x,p.y):lCtx.lineTo(p.x,p.y));
+      lCtx.stroke();
+      // Núcleo
+      lCtx.strokeStyle = `rgba(255,255,255,${alpha})`;
+      lCtx.lineWidth   = 1.5;
+      lCtx.globalAlpha = alpha;
+      lCtx.beginPath();
+      arcPoints.forEach((p,i)=> i===0?lCtx.moveTo(p.x,p.y):lCtx.lineTo(p.x,p.y));
+      lCtx.stroke();
+      lCtx.restore();
+
+      lCtx.fillStyle = `rgba(64,144,255,${alpha * 0.06})`;
+      lCtx.fillRect(0,0,W,H);
+    }
+
+    // ── 3 osciloscopios apilados ──
+    const oscs = [
+      { col: '#00FF80', glow: 'rgba(0,255,128,0.5)',  freq: 6,   amp: 16, offset: 0   },  // signal
+      { col: '#C84010', glow: 'rgba(200,64,16,0.5)',  freq: 9.5, amp: 12, offset: 1.8 },  // core
+      { col: '#FF4010', glow: 'rgba(255,64,16,0.5)',  freq: 4,   amp: 20, offset: 3.5 },  // interrupt
+    ];
+    const oscW  = W * 0.55;
+    const oscX0 = W * 0.225;
+    const oscH  = 90;
+    const gapY  = 24;
+    const startY = H * 0.50 - oscH / 2;
+
+    oscs.forEach((osc, i) => {
+      const cy = startY + i * (oscH + gapY) + oscH / 2;
+
+      lCtx.save();
+      // Marco
+      lCtx.strokeStyle = osc.col.replace(')', '').replace('rgb', 'rgba') + ',0.18)';
+      lCtx.strokeStyle = `rgba(${parseInt(osc.col.slice(1,3),16)},${parseInt(osc.col.slice(3,5),16)},${parseInt(osc.col.slice(5,7),16)},0.2)`;
+      lCtx.lineWidth   = 0.7;
+      lCtx.strokeRect(oscX0 - 12, cy - oscH/2 - 4, oscW + 24, oscH + 8);
+      // Grid interior sutil
+      lCtx.globalAlpha = 0.08;
+      for (let gx = oscX0; gx < oscX0+oscW; gx += oscW/6) {
+        lCtx.beginPath(); lCtx.moveTo(gx, cy-oscH/2); lCtx.lineTo(gx, cy+oscH/2); lCtx.stroke();
+      }
+      lCtx.globalAlpha = 1;
+
+      // Señal
+      lCtx.shadowColor = osc.glow;
+      lCtx.shadowBlur  = 8;
+      lCtx.strokeStyle = osc.col;
+      lCtx.lineWidth   = 1.5;
+      lCtx.globalAlpha = 0.85;
+      lCtx.beginPath();
+      for (let x = 0; x <= oscW; x += 2) {
+        const phase = (x / oscW) * Math.PI * osc.freq + t * 4 + osc.offset;
+        const y = cy + Math.sin(phase) * osc.amp + Math.sin(phase*2.1+osc.offset)*osc.amp*0.25;
+        x === 0 ? lCtx.moveTo(oscX0+x, y) : lCtx.lineTo(oscX0+x, y);
+      }
+      lCtx.stroke();
+      lCtx.restore();
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 2 — Partículas (cenizas / chispas)
+// ══════════════════════════════════════════════════════
+const partCanvas = document.getElementById('fg-particles');
+const pCtx       = partCanvas.getContext('2d');
+let particles    = [];
+
+function makeAsh() {
+  const W = partCanvas.width, H = partCanvas.height;
+  return {
+    type: 'ash',
+    x: Math.random() * W,
+    y: Math.random() * H * 0.4,
+    vx: 0.4 + Math.random() * 0.8,   // deriva derecha
+    vy: 0.1 + Math.random() * 0.3,   // cae lento
+    r:  1.5 + Math.random() * 2.5,
+    alpha: 0.2 + Math.random() * 0.3,
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: 0.01 + Math.random() * 0.02,
+    col: ['#604838','#504030','#382818','#685040'][Math.floor(Math.random()*4)],
+  };
+}
+
+function makeSpark() {
+  const W = partCanvas.width, H = partCanvas.height;
+  return {
+    type: 'spark',
+    x: Math.random() * W,
+    y: H * 0.75 + Math.random() * H * 0.25,
+    vx: (Math.random() - 0.5) * 2.5,
+    vy: -(2.5 + Math.random() * 3.5),
+    gravity: 0,
+    r:  0.8 + Math.random() * 1.4,
+    alpha: 0.9 + Math.random() * 0.1,
+    life: 1.0,
+    decay: 0.018 + Math.random() * 0.025,
+    col: ['#FF8020','#FFB020','#FF6010','#FFC030'][Math.floor(Math.random()*4)],
+  };
+}
+
+function drawParticles() {
+  const W = partCanvas.width  = window.innerWidth;
+  const H = partCanvas.height = window.innerHeight;
+  pCtx.clearRect(0,0,W,H);
+
+  if (!isLight) {
+    // Generar cenizas
+    if (Math.random() < 0.12) particles.push(makeAsh());
+    // Generar chispas de lava
+    if (Math.random() < 0.30) particles.push(makeSpark());
+  } else {
+    // Generar chispas de taller (más rápidas, azules/blancas)
+    if (Math.random() < 0.08) {
+      const W2=W, H2=H;
+      particles.push({
+        type:'spark_light',
+        x: W2*0.2 + Math.random()*W2*0.6,
+        y: H2*0.1 + Math.random()*H2*0.5,
+        vx: (Math.random()-0.5)*4,
+        vy: -1.5 - Math.random()*2.5,
+        gravity: 0.06,
+        r:  0.5 + Math.random()*1,
+        alpha: 0.9,
+        life: 1.0,
+        decay: 0.03 + Math.random()*0.04,
+        col: Math.random()<0.6 ? '#80C0FF' : '#FFFFFF',
+      });
+    }
+  }
+
+  particles = particles.filter(p => {
+    if (p.type === 'ash') {
+      p.wobble += p.wobbleSpeed;
+      p.x += p.vx + Math.sin(p.wobble) * 0.3;
+      p.y += p.vy;
+      pCtx.beginPath();
+      pCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      pCtx.fillStyle = p.col;
+      pCtx.globalAlpha = p.alpha;
+      pCtx.fill();
+      pCtx.globalAlpha = 1;
+      return p.x < W+10 && p.y < H+10;
+
+    } else if (p.type === 'spark' || p.type === 'spark_light') {
+      p.vx *= 0.98;
+      p.vy += p.gravity;
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.life -= p.decay;
+
+      // Rastro
+      pCtx.save();
+      pCtx.shadowColor = p.col;
+      pCtx.shadowBlur  = p.type==='spark_light' ? 4 : 6;
+      pCtx.beginPath();
+      pCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      pCtx.fillStyle = p.col;
+      pCtx.globalAlpha = p.life * p.alpha;
+      pCtx.fill();
+      pCtx.restore();
+      return p.life > 0;
+    }
+    return false;
+  });
+  pCtx.globalAlpha = 1;
+}
+
+// ── Loop ───────────────────────────────────────────────
+function loop(ts) {
+  drawBg();
+  drawLava(ts);
+  drawParticles();
+  requestAnimationFrame(loop);
+}
+
+// ── Init ───────────────────────────────────────────────
+window.addEventListener('resize', drawBg);
+updateHexes();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
