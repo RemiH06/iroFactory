@@ -8,48 +8,45 @@
 <link href="https://fonts.bunny.net/css?family=righteous:400&family=fira-code:400,500&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════
-   TOKENS — OSCURO (default)
+   TOKENS — OSCURO (default) · carpa de circo
 ══════════════════════════════════════════════════════ */
 body {
-  --bg:      #0A080F;
-  --bg2:     #120F1A;
-  --bg3:     #1C1828;
+  --bg:      #0C0608;
+  --bg2:     #140A0C;
+  --bg3:     #1E1014;
 
-  --text:    #F0EAF8;
-  --text2:   #9080B0;
+  --text:    #F0DEC8;
+  --text2:   #907060;
 
-  --border:  #2A2040;
+  --border:  #3A1C20;
 
-  /* ── Tetrominos — colores de feria neón oscuro ── */
-  --piece-i:  #00F0F0;   /* cian neón    · I */
-  --piece-o:  #F0D000;   /* amarillo neón· O */
-  --piece-t:  #C040F0;   /* púrpura neón · T */
-  --piece-s:  #40F040;   /* verde neón   · S */
-  --piece-z:  #F04040;   /* rojo neón    · Z */
-  --piece-j:  #4080F0;   /* azul neón    · J */
-  --piece-l:  #F08000;   /* naranja neón · L */
+  /* ── Colores de carpa — bicromáticos rojo/dorado ── */
+  --piece-i:  #C8901A;   /* dorado envejecido  */
+  --piece-o:  #E8A820;   /* oro brillante      */
+  --piece-t:  #901828;   /* rojo carmesí       */
+  --piece-s:  #B82030;   /* rojo medio         */
+  --piece-z:  #D04838;   /* rojo coral oscuro  */
+  --piece-j:  #784010;   /* marrón cálido      */
+  --piece-l:  #A86018;   /* ámbar oscuro       */
 
-  /* ── Semántico lúdico ──
-     play  → en juego     · verde
-     pause → pausado      · amarillo
-     game-over → perdiste · rojo   */
-  --play:     #40F040;
-  --pause:    #F0D000;
-  --gameover: #F04040;
+  /* ── Semántico lúdico ── */
+  --play:     #C8901A;   /* en escena  · dorado   */
+  --pause:    #784010;   /* intermedio · marrón   */
+  --gameover: #901828;   /* telón      · carmesí  */
 
   /* ── Acento ── */
-  --accent:  #C040F0;
-  --accent2: #F08000;
+  --accent:  #C8901A;
+  --accent2: #901828;
 
   /* ── Semánticos ── */
-  --ok:      #40F040;
-  --warn:    #F0D000;
-  --danger:  #F04040;
+  --ok:      #C8901A;
+  --warn:    #E8A820;
+  --danger:  #901828;
 
   /* ── Neutros ── */
-  --black:   #04020A;
-  --white:   #F8F4FF;
-  --gray:    #504060;
+  --black:   #080204;
+  --white:   #F8EED8;
+  --gray:    #604840;
 
   /* Tipografía */
   --display: 'Righteous', system-ui, sans-serif;
@@ -58,14 +55,14 @@ body {
   --radius:    6px;
   --radius-lg: 12px;
 
-  /* Glows */
-  --glow-accent:  0 0 10px rgba(192,64,240,.6);
-  --glow-cyan:    0 0 10px rgba(0,240,240,.6);
-  --glow-green:   0 0 10px rgba(64,240,64,.6);
-  --glow-yellow:  0 0 10px rgba(240,208,0,.6);
-  --glow-orange:  0 0 10px rgba(240,128,0,.6);
-  --glow-red:     0 0 10px rgba(240,64,64,.6);
-  --glow-blue:    0 0 10px rgba(64,128,240,.6);
+  /* Glows — cálidos */
+  --glow-accent:  0 0 10px rgba(200,144,26,.5);
+  --glow-cyan:    0 0 10px rgba(200,144,26,.4);
+  --glow-green:   0 0 10px rgba(200,144,26,.5);
+  --glow-yellow:  0 0 10px rgba(232,168,32,.5);
+  --glow-orange:  0 0 10px rgba(168,96,24,.5);
+  --glow-red:     0 0 10px rgba(144,24,40,.6);
+  --glow-blue:    0 0 10px rgba(200,144,26,.4);
 }
 
 /* ══════════════════════════════════════════════════════
@@ -214,7 +211,8 @@ body{
 ══════════════════════════════════════════════════════ */
 .page{
   position:relative;z-index:2;
-  padding:40px;max-width:880px;margin:0 auto;
+  padding:40px 34% 40px 34%;
+  max-width:100%;margin:0;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -452,9 +450,9 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
 
 <!-- ── Paleta ── -->
 <h2>Paleta de colores</h2>
-<p class="muted">Tetrominos de feria — neón en oscuro, pastel en claro.</p>
+<p class="muted">Colores de carpa — rojo carmesí y dorado en oscuro, pasteles de feria en claro.</p>
 
-<h3>Tetrominos</h3>
+<h3>Colores</h3>
 <div class="swatch-row">
   <div class="swatch"><div class="swatch-box" style="background:var(--piece-i)"><span class="swatch-hex" id="hex-i"></span></div>--piece-i</div>
   <div class="swatch"><div class="swatch-box" style="background:var(--piece-o)"><span class="swatch-hex" id="hex-o"></span></div>--piece-o</div>
@@ -488,17 +486,17 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
 <!-- ── Callouts ── -->
 <h2>Callouts</h2>
 <div class="callout"><div class="callout-title">Acento (default)</div><p>Notas generales del juego, mecánicas y referencias de diseño.</p></div>
-<div class="callout ok"><div class="callout-title">OK · Verde</div><p>Nivel completado. Récord personal superado.</p></div>
-<div class="callout warn"><div class="callout-title">Warn · Amarillo</div><p>Tiempo límite próximo. Revisar estrategia.</p></div>
-<div class="callout danger"><div class="callout-title">Danger · Rojo</div><p>Vida perdida. El tablero está a punto de llenarse.</p></div>
-<div class="callout play"><div class="callout-title">Play</div><p>Partida en curso. El jugador está activo.</p></div>
-<div class="callout pause"><div class="callout-title">Pause</div><p>Juego pausado. Esperando reanudación.</p></div>
-<div class="callout gameover"><div class="callout-title">Game Over</div><p>Partida terminada. Insertar moneda para continuar.</p></div>
-<div class="callout piece-i"><div class="callout-title">Piece I</div><p>Tetromino recto. Limpia hasta 4 líneas de una vez.</p></div>
-<div class="callout piece-t"><div class="callout-title">Piece T</div><p>Tetromino T. Versátil, el favorito de los speedrunners.</p></div>
-<div class="callout piece-s"><div class="callout-title">Piece S</div><p>Tetromino S. Difícil de colocar, útil en esquinas.</p></div>
-<div class="callout piece-z"><div class="callout-title">Piece Z</div><p>Tetromino Z. Espejo de la S, igual de problemático.</p></div>
-<div class="callout piece-l"><div class="callout-title">Piece L</div><p>Tetromino L. Excelente para rellenar huecos laterales.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Dorado</div><p>Número completado. El público aplaude desde las gradas.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Ámbar</div><p>El equilibrista titubea. La red de seguridad está lista.</p></div>
+<div class="callout danger"><div class="callout-title">Danger · Carmesí</div><p>El cañón humano falló la trayectoria. Evacuar la pista.</p></div>
+<div class="callout play"><div class="callout-title">Play · En escena</div><p>El acto está en curso. Las luces sobre la pista central.</p></div>
+<div class="callout pause"><div class="callout-title">Pause · Intermedio</div><p>Descanso entre actos. El público compra palomitas.</p></div>
+<div class="callout gameover"><div class="callout-title">Telón · Fin de función</div><p>La carpa se cierra. Nos vemos en la próxima parada.</p></div>
+<div class="callout piece-i"><div class="callout-title">Dorado · Spotlight</div><p>La luz del foco. Recae sobre quien merece ser visto.</p></div>
+<div class="callout piece-t"><div class="callout-title">Carmesí · Terciopelo</div><p>Las cortinas de la carpa. Rojo profundo, misterio total.</p></div>
+<div class="callout piece-s"><div class="callout-title">Rojo medio · Pista</div><p>El suelo de la pista central. Alfombra de actos imposibles.</p></div>
+<div class="callout piece-z"><div class="callout-title">Coral · Fuego</div><p>Las antorchas del acto de fuego. Calor y peligro controlado.</p></div>
+<div class="callout piece-l"><div class="callout-title">Ámbar · Resina</div><p>El olor del serrín y la resina. El suelo del circo de toda la vida.</p></div>
 
 <hr class="divider">
 
@@ -509,16 +507,16 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
   <span class="badge ok">ok</span>
   <span class="badge warn">warn</span>
   <span class="badge danger">danger</span>
-  <span class="badge play">play</span>
-  <span class="badge pause">pause</span>
-  <span class="badge gameover">game over</span>
-  <span class="badge piece-i">piece I</span>
-  <span class="badge piece-o">piece O</span>
-  <span class="badge piece-t">piece T</span>
-  <span class="badge piece-s">piece S</span>
-  <span class="badge piece-z">piece Z</span>
-  <span class="badge piece-j">piece J</span>
-  <span class="badge piece-l">piece L</span>
+  <span class="badge play">en escena</span>
+  <span class="badge pause">intermedio</span>
+  <span class="badge gameover">telón</span>
+  <span class="badge piece-i">dorado</span>
+  <span class="badge piece-o">oro</span>
+  <span class="badge piece-t">carmesí</span>
+  <span class="badge piece-s">pista</span>
+  <span class="badge piece-z">fuego</span>
+  <span class="badge piece-j">marrón</span>
+  <span class="badge piece-l">ámbar</span>
   <span class="badge">default</span>
 </div>
 
@@ -529,15 +527,15 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
   <button class="btn primary">primary</button>
   <button class="btn">default</button>
-  <button class="btn play">play</button>
-  <button class="btn pause">pause</button>
+  <button class="btn play">en escena</button>
+  <button class="btn pause">intermedio</button>
   <button class="btn ok">ok</button>
   <button class="btn warn">warn</button>
   <button class="btn danger">danger</button>
-  <button class="btn piece-i">piece I</button>
-  <button class="btn piece-t">piece T</button>
-  <button class="btn piece-s">piece S</button>
-  <button class="btn piece-l">piece L</button>
+  <button class="btn piece-i">spotlight</button>
+  <button class="btn piece-t">carmesí</button>
+  <button class="btn piece-s">pista</button>
+  <button class="btn piece-l">ámbar</button>
 </div>
 
 <hr class="divider">
@@ -545,91 +543,92 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
 <!-- ── Métricas ── -->
 <h2>Métricas</h2>
 <div class="metrics-row">
-  <div class="metric"><div class="metric-val">94,200</div><div class="metric-lbl">puntuación (accent)</div></div>
-  <div class="metric"><div class="metric-val piece-i">18</div><div class="metric-lbl">nivel (piece-i)</div></div>
-  <div class="metric"><div class="metric-val piece-o">7</div><div class="metric-lbl">líneas (piece-o)</div></div>
-  <div class="metric"><div class="metric-val ok">3</div><div class="metric-lbl">vidas (ok)</div></div>
-  <div class="metric"><div class="metric-val danger">0</div><div class="metric-lbl">continues (danger)</div></div>
-  <div class="metric"><div class="metric-val piece-l">4×</div><div class="metric-lbl">combo (piece-l)</div></div>
+  <div class="metric"><div class="metric-val">3,200</div><div class="metric-lbl">espectadores</div></div>
+  <div class="metric"><div class="metric-val piece-i">12</div><div class="metric-lbl">actos (dorado)</div></div>
+  <div class="metric"><div class="metric-val piece-o">7</div><div class="metric-lbl">números (oro)</div></div>
+  <div class="metric"><div class="metric-val ok">4</div><div class="metric-lbl">noches (ok)</div></div>
+  <div class="metric"><div class="metric-val danger">0</div><div class="metric-lbl">accidentes</div></div>
+  <div class="metric"><div class="metric-val piece-l">∞</div><div class="metric-lbl">asombro</div></div>
 </div>
 
 <hr class="divider">
 
 <!-- ── Código ── -->
 <h2>Código</h2>
-<p class="muted">Inline: <code>toggleTheme()</code> alterna entre modo oscuro y claro.</p>
-<pre data-lang="lua"><span class="cm">-- Lógica de puntuación de Tetris</span>
-<span class="kw">local</span> SCORES = { <span class="num">100</span>, <span class="num">300</span>, <span class="num">500</span>, <span class="num">800</span> }
+<p class="muted">Inline: <code>toggleTheme()</code> alterna entre carpa y feria de día.</p>
+<pre data-lang="lua"><span class="cm">-- Programación de actos de la noche</span>
+<span class="kw">local</span> ACTOS = { <span class="str">"malabaristas"</span>, <span class="str">"equilibristas"</span>, <span class="str">"cañón humano"</span> }
 
-<span class="kw">function</span> <span class="fn">calcularPuntos</span>(lineas, nivel)
-  <span class="kw">local</span> base = SCORES[lineas] <span class="kw">or</span> <span class="num">0</span>
-  <span class="kw">return</span> base * (nivel + <span class="num">1</span>)
+<span class="kw">function</span> <span class="fn">programarNoche</span>(actos, pista)
+  <span class="kw">for</span> i, acto <span class="kw">in</span> <span class="fn">ipairs</span>(actos) <span class="kw">do</span>
+    <span class="fn">print</span>(<span class="str">"Pista "</span> .. pista .. <span class="str">": "</span> .. acto)
+  <span class="kw">end</span>
 <span class="kw">end</span>
 
-<span class="cm">-- Tetris (4 líneas) en nivel 18 = 800 * 19 = 15,200</span>
-<span class="fn">print</span>(<span class="fn">calcularPuntos</span>(<span class="num">4</span>, <span class="num">18</span>))</pre>
+<span class="cm">-- La carpa principal tiene 3 pistas simultáneas</span>
+<span class="fn">programarNoche</span>(ACTOS, <span class="num">1</span>)</pre>
 
 <hr class="divider">
 
 <!-- ── Tabla ── -->
 <h2>Tabla</h2>
 <table>
-  <tr><th>Token</th><th>Oscuro</th><th>Claro</th><th>Pieza</th></tr>
-  <tr><td><code>--piece-i</code></td><td>#00F0F0</td><td>#40C8D8</td><td>I · línea recta · cian neón</td></tr>
-  <tr><td><code>--piece-o</code></td><td>#F0D000</td><td>#E8C000</td><td>O · cuadrado · amarillo</td></tr>
-  <tr><td><code>--piece-t</code></td><td>#C040F0</td><td>#A030D0</td><td>T · forma T · púrpura</td></tr>
-  <tr><td><code>--piece-s</code></td><td>#40F040</td><td>#30B030</td><td>S · forma S · verde</td></tr>
-  <tr><td><code>--piece-z</code></td><td>#F04040</td><td>#D03030</td><td>Z · forma Z · rojo</td></tr>
-  <tr><td><code>--piece-j</code></td><td>#4080F0</td><td>#2060D0</td><td>J · forma J · azul</td></tr>
-  <tr><td><code>--piece-l</code></td><td>#F08000</td><td>#E07000</td><td>L · forma L · naranja</td></tr>
+  <tr><th>Token</th><th>Carpa</th><th>Feria</th><th>Evocación</th></tr>
+  <tr><td><code>--piece-i</code></td><td>#C8901A</td><td>#40C8D8</td><td>Dorado · spotlight · luz de foco</td></tr>
+  <tr><td><code>--piece-o</code></td><td>#E8A820</td><td>#E8C000</td><td>Oro · escoria brillante</td></tr>
+  <tr><td><code>--piece-t</code></td><td>#901828</td><td>#A030D0</td><td>Carmesí · terciopelo de carpa</td></tr>
+  <tr><td><code>--piece-s</code></td><td>#B82030</td><td>#30B030</td><td>Rojo medio · pista central</td></tr>
+  <tr><td><code>--piece-z</code></td><td>#D04838</td><td>#D03030</td><td>Coral · fuego · antorchas</td></tr>
+  <tr><td><code>--piece-j</code></td><td>#784010</td><td>#2060D0</td><td>Marrón · serrín · suelo de circo</td></tr>
+  <tr><td><code>--piece-l</code></td><td>#A86018</td><td>#E07000</td><td>Ámbar · resina · luz cálida</td></tr>
 </table>
 
 <hr class="divider">
 
 <!-- ── Level Log (timeline) ── -->
-<h2>Level Log</h2>
+<h2>Registro de la noche</h2>
 <div class="level-log">
   <div class="level-entry">
     <div class="level-dot play">▶</div>
-    <div><h4>Nivel 1 completado</h4><p class="muted">Puntuación: 4,200. Tiempo: 2:34. Tres Tetris consecutivos.</p></div>
+    <div><h4>Primer acto iniciado</h4><p class="muted">Los malabaristas abren la noche. Siete antorchas en el aire.</p></div>
   </div>
   <div class="level-entry">
     <div class="level-dot play">▶</div>
-    <div><h4>Nivel 5 completado</h4><p class="muted">Combo de 4 líneas. Bonus de velocidad activado.</p></div>
+    <div><h4>Segundo acto — equilibristas</h4><p class="muted">La barra a 12 metros de altura. El público contiene la respiración.</p></div>
   </div>
   <div class="level-entry">
     <div class="level-dot warn">!</div>
-    <div><h4>Nivel 10 — advertencia</h4><p class="muted">El tablero llegó al 80% de altura. Velocidad crítica.</p></div>
+    <div><h4>Intermedio — advertencia</h4><p class="muted">Viento cruzado en la carpa. El acto de trapecio se pospone.</p></div>
   </div>
   <div class="level-entry">
     <div class="level-dot pause">⏸</div>
-    <div><h4>Juego pausado</h4><p class="muted">El jugador solicitó pausa. Temporizador detenido.</p></div>
+    <div><h4>Intermedio</div><p class="muted">Descanso de 15 minutos. El payaso entretiene al público.</p></div>
   </div>
   <div class="level-entry">
     <div class="level-dot gameover">✕</div>
-    <div><h4>Game Over — Nivel 18</h4><p class="muted">Puntuación final: 94,200. Récord personal.</p></div>
+    <div><h4>Telón — fin de función</h4><p class="muted">3,200 espectadores. Doce actos. Una noche que no se olvida.</p></div>
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- ── Stage steps (pipeline) ── -->
-<h2>Stages</h2>
+<!-- ── Stage steps ── -->
+<h2>Actos de la noche</h2>
 <div class="stage-row">
   <div class="stage-num">1</div>
-  <div><h4>Tutorial</h4><p class="muted">Introducción a los controles y mecánicas básicas del juego.</p></div>
+  <div><h4>Apertura</h4><p class="muted">El maestro de ceremonias da la bienvenida. Las luces bajan. La magia comienza.</p></div>
 </div>
 <div class="stage-row" style="border-left-color:var(--piece-o)">
   <div class="stage-num" style="color:var(--piece-o);text-shadow:var(--glow-yellow)">2</div>
-  <div><h4>Modo clásico</h4><p class="muted">Velocidad incrementa cada 10 líneas. Sin límite de tiempo.</p></div>
+  <div><h4>Malabaristas</h4><p class="muted">Siete objetos en el aire. Fuego, cuchillos y humor en igual medida.</p></div>
 </div>
 <div class="stage-row" style="border-left-color:var(--piece-i)">
   <div class="stage-num" style="color:var(--piece-i);text-shadow:var(--glow-cyan)">3</div>
-  <div><h4>Sprint</h4><p class="muted">Completar 40 líneas lo más rápido posible. Récord mundial: 17.2s.</p></div>
+  <div><h4>Trapecio</h4><p class="muted">A doce metros. Sin red. El silencio es parte del acto.</p></div>
 </div>
 <div class="stage-row" style="border-left-color:var(--piece-s)">
   <div class="stage-num" style="color:var(--piece-s);text-shadow:var(--glow-green)">4</div>
-  <div><h4>Ultra</h4><p class="muted">Máxima puntuación en 2 minutos. Requiere dominio de T-spins.</p></div>
+  <div><h4>Cañón humano</h4><p class="muted">El clímax de la noche. Cuarenta metros de vuelo. El público de pie.</p></div>
 </div>
 
 <hr class="divider">
@@ -638,14 +637,14 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
 <h2>Cards</h2>
 <div class="grid-2">
   <div class="card">
-    <strong>Tetris clásico</strong>
-    <span class="badge piece-i" style="margin-left:8px">NES · 1989</span>
-    <p class="muted" style="margin-top:8px">El original. Diseñado por Alexey Pajitnov. Vendió más de 35 millones de copias.</p>
+    <strong>Circo de la Noche</strong>
+    <span class="badge piece-i" style="margin-left:8px">carpa central</span>
+    <p class="muted" style="margin-top:8px">Fundado en 1887. Doce actos. Una sola noche. Sin repetición.</p>
   </div>
   <div class="card">
-    <strong>Tetris Effect</strong>
-    <span class="badge play" style="margin-left:8px">activo</span>
-    <p class="muted" style="margin-top:8px">Versión moderna con música reactiva y efectos visuales sincronizados.</p>
+    <strong>El Gran Payaso</strong>
+    <span class="badge play" style="margin-left:8px">en escena</span>
+    <p class="muted" style="margin-top:8px">Nunca habla. Solo actúa. Nadie sabe su nombre real.</p>
   </div>
 </div>
 
@@ -749,32 +748,162 @@ function buildTetris() {
     }
   }
 
-  // Dibujar
+  // Dibujar — bicromático en oscuro (solo rojo y dorado), multicolor en claro
   tCtx.clearRect(0, 0, W, H);
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
       const type = board[r][c];
       if (!type) continue;
-      const color = getPieceColor(type);
+      const color = isLight ? getPieceColor(type) :
+        ((r + c) % 2 === 0 ? '#901828' : '#C8901A'); // bicromático carpa
       const x = c * CELL, y = r * CELL;
-
-      // Relleno con transparencia
-      tCtx.globalAlpha = isLight ? 0.18 : 0.22;
+      tCtx.globalAlpha = isLight ? 0.18 : 0.14;
       tCtx.fillStyle   = color;
       tCtx.fillRect(x+1, y+1, CELL-2, CELL-2);
-
-      // Borde del bloque
-      tCtx.globalAlpha = isLight ? 0.35 : 0.45;
+      tCtx.globalAlpha = isLight ? 0.35 : 0.28;
       tCtx.strokeStyle = color;
       tCtx.lineWidth   = 0.8;
       tCtx.strokeRect(x+1, y+1, CELL-2, CELL-2);
     }
   }
   tCtx.globalAlpha = 1;
+
+  // ── Spotlight estático (solo oscuro) ──
+  if (!isLight) {
+    const sx = W * (0.25 + Math.random() * 0.5); // posición aleatoria fija al cargar
+    const sg = tCtx.createRadialGradient(sx, -H*0.1, 0, sx, H*0.5, H*0.85);
+    sg.addColorStop(0,   'rgba(240,200,80,0.09)');
+    sg.addColorStop(0.35,'rgba(220,160,40,0.05)');
+    sg.addColorStop(1,   'rgba(200,120,20,0)');
+    tCtx.fillStyle = sg;
+    tCtx.fillRect(0, 0, W, H);
+
+    const curtainW = W * 0.335;
+    const curtainH = H;
+    const stripes  = 12;
+    const stripeW  = curtainW / stripes;
+    const crimson  = '#901828';
+    const cream    = '#F0E8D8';
+
+    function drawCurtain(ctx, cW, cH, flipX) {
+      const sW = cW / stripes;
+      ctx.save();
+      if (flipX) { ctx.scale(-1, 1); ctx.translate(-cW, 0); }
+
+      const cx = cW * 1.00;
+
+      // Galón
+      for (let i = 0; i < stripes; i++) {
+        ctx.beginPath(); ctx.rect(i*sW, 0, sW, cH*0.05);
+        ctx.fillStyle = i%2===0 ? crimson : cream;
+        ctx.globalAlpha = 0.97; ctx.fill();
+      }
+      for (let i = 0; i < stripes; i++) {
+        ctx.beginPath();
+        ctx.arc(i*sW+sW/2, cH*0.05, sW*0.55, 0, Math.PI);
+        ctx.fillStyle = i%2===0 ? cream : crimson;
+        ctx.globalAlpha = 0.94; ctx.fill();
+      }
+
+      // Superior convergente
+      for (let i = 0; i < stripes; i++) {
+        const topX0=i*sW, topX1=(i+1)*sW;
+        const botX0=cx+(topX0-cx)*0.1, botX1=cx+(topX1-cx)*0.1;
+        const midH=cH*0.50;
+        ctx.beginPath();
+        ctx.moveTo(topX0,cH*0.05); ctx.lineTo(topX1,cH*0.05);
+        ctx.bezierCurveTo(topX1,cH*0.2,botX1+6,midH*0.82,botX1,midH);
+        ctx.lineTo(botX0,midH);
+        ctx.bezierCurveTo(botX0-6,midH*0.82,topX0,cH*0.2,topX0,cH*0.05);
+        ctx.closePath();
+        ctx.fillStyle = i%2===0 ? crimson : cream;
+        ctx.globalAlpha = 0.90; ctx.fill();
+      }
+
+      // Inferior divergente
+      for (let i = 0; i < stripes; i++) {
+        const topX0=cx+(i*sW-cx)*0.1, topX1=cx+((i+1)*sW-cx)*0.1;
+        const botX0=i*sW, botX1=(i+1)*sW;
+        const topH=cH*0.50;
+        ctx.beginPath();
+        ctx.moveTo(topX0,topH); ctx.lineTo(topX1,topH);
+        ctx.bezierCurveTo(topX1-4,topH+cH*0.18,botX1,cH*0.88,botX1,cH);
+        ctx.lineTo(botX0,cH);
+        ctx.bezierCurveTo(botX0,cH*0.88,topX0+4,topH+cH*0.18,topX0,topH);
+        ctx.closePath();
+        ctx.fillStyle = i%2===0 ? crimson : cream;
+        ctx.globalAlpha = 0.90; ctx.fill();
+      }
+
+      ctx.globalAlpha = 1; ctx.restore();
+    }
+
+    const offsetX = W * 0.010;
+
+    // Derecha
+    tCtx.save();
+    tCtx.translate(W - curtainW + offsetX, 0);
+    drawCurtain(tCtx, curtainW, curtainH, false);
+    tCtx.restore();
+
+    // Izquierda (mirror)
+    tCtx.save();
+    tCtx.translate(-offsetX, 0);
+    drawCurtain(tCtx, curtainW, curtainH, true);
+    tCtx.restore();
+  }
 }
 
 window.addEventListener('resize', buildTetris);
 buildTetris();
+
+// ── Polvo dorado (modo oscuro) ──────────────────────
+const dustCanvas = document.createElement('canvas');
+dustCanvas.style.cssText = 'position:fixed;inset:0;z-index:1;pointer-events:none';
+document.body.insertBefore(dustCanvas, document.querySelector('.page'));
+const dCtx = dustCanvas.getContext('2d');
+let dustParticles = [];
+
+function makeDust() {
+  return {
+    x:     Math.random() * window.innerWidth,
+    y:     Math.random() * window.innerHeight,
+    vx:    (Math.random() - 0.5) * 0.3,
+    vy:   -(0.1 + Math.random() * 0.25),
+    r:     0.5 + Math.random() * 1.2,
+    alpha: 0.2 + Math.random() * 0.5,
+    flicker: Math.random() * Math.PI * 2,
+    flickerSpeed: 0.02 + Math.random() * 0.04,
+    col: Math.random() < 0.6 ? '#E8A820' : '#C8901A',
+  };
+}
+
+function drawDust() {
+  const W = dustCanvas.width  = window.innerWidth;
+  const H = dustCanvas.height = window.innerHeight;
+  dCtx.clearRect(0,0,W,H);
+
+  if (isLight) { requestAnimationFrame(drawDust); return; }
+
+  if (dustParticles.length < 80) dustParticles.push(makeDust());
+
+  dustParticles = dustParticles.filter(p => {
+    p.x += p.vx; p.y += p.vy;
+    p.flicker += p.flickerSpeed;
+    const fa = p.alpha * (0.6 + Math.sin(p.flicker) * 0.4);
+    dCtx.save();
+    dCtx.shadowColor = p.col;
+    dCtx.shadowBlur  = 4;
+    dCtx.beginPath(); dCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    dCtx.fillStyle = p.col; dCtx.globalAlpha = fa; dCtx.fill();
+    dCtx.restore();
+    if (p.y < -5) { Object.assign(p, makeDust(), {y: H+5}); }
+    return true;
+  });
+
+  requestAnimationFrame(drawDust);
+}
+requestAnimationFrame(drawDust);
 
 // ══════════════════════════════════════════════════════
 // CUBOS FLOTANTES — paleta de ludus

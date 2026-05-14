@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iroFactory · Theme Gallery</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=dm-sans:300,400,500,600&family=space-mono:400,700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   ROOT · ENVIRONMENT TOKENS (change per theme)
+══════════════════════════════════════════════════════ */
+:root {
+  --env-bg:      #E8F4FF;
+  --env-bg2:     #D0E8F8;
+  --env-text:    #0A1A2A;
+  --env-text2:   #4A6888;
+  --env-accent:  #2060D0;
+  --env-border:  #A0C0E0;
+  --env-pill-bg: #D0E8F8;
+  --env-font:    'DM Sans', sans-serif;
+  --transition:  .45s cubic-bezier(.4,0,.2,1);
+}
+
+/* ══════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  background:var(--env-bg);
+  color:var(--env-text);
+  font-family:var(--env-font);
+  font-size:14px;
+  line-height:1.7;
+  transition:background var(--transition), color var(--transition);
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════ */
+#app{
+  display:flex;
+  height:100vh;
+  width:100vw;
+  overflow:hidden;
+}
+
+/* ── Sidebar ── */
+#sidebar{
+  width:260px;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  background:var(--env-bg2);
+  border-right:1px solid var(--env-border);
+  transition:width var(--transition), background var(--transition), border-color var(--transition);
+  overflow:hidden;
+  z-index:10;
+}
+#sidebar.collapsed{width:48px}
+
+/* Sidebar header */
+#sidebar-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 14px;
+  border-bottom:1px solid var(--env-border);
+  flex-shrink:0;
+  transition:border-color var(--transition);
+  min-height:56px;
+}
+#sidebar-title{
+  font-family:'Space Mono',monospace;
+  font-size:13px;
+  font-weight:700;
+  color:var(--env-accent);
+  letter-spacing:.04em;
+  white-space:nowrap;
+  overflow:hidden;
+  opacity:1;
+  transition:opacity var(--transition), color var(--transition);
+}
+#sidebar.collapsed #sidebar-title{opacity:0;width:0}
+
+#collapse-btn{
+  width:28px;height:28px;
+  border:none;background:none;cursor:pointer;
+  color:var(--env-text2);
+  font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:6px;
+  transition:color var(--transition),background .15s;
+  flex-shrink:0;
+}
+#collapse-btn:hover{background:var(--env-border);color:var(--env-accent)}
+
+/* Theme list */
+#theme-list{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:12px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+#theme-list::-webkit-scrollbar{width:3px}
+#theme-list::-webkit-scrollbar-thumb{background:var(--env-border);border-radius:2px}
+
+/* Theme pill button */
+.theme-pill{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:999px;
+  border:1.5px solid transparent;
+  cursor:pointer;
+  transition:
+    transform .18s cubic-bezier(.34,1.56,.64,1),
+    background .2s, border-color .2s, box-shadow .2s;
+  white-space:nowrap;
+  overflow:hidden;
+  flex-shrink:0;
+  position:relative;
+}
+.theme-pill:hover{
+  transform:scale(1.04);
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+}
+.theme-pill.active{
+  transform:scale(1.02);
+  box-shadow:0 2px 12px rgba(0,0,0,.15);
+}
+#sidebar.collapsed .theme-pill{
+  padding:10px;
+  justify-content:center;
+  border-radius:12px;
+}
+.pill-icon{
+  font-size:16px;
+  flex-shrink:0;
+  transition:transform .2s;
+}
+.theme-pill:hover .pill-icon{transform:scale(1.15)}
+.pill-label{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.06em;
+  white-space:nowrap;
+  overflow:hidden;
+  opacity:1;
+  transition:opacity var(--transition);
+}
+#sidebar.collapsed .pill-label{opacity:0;width:0;overflow:hidden}
+
+/* GitHub link at bottom */
+#sidebar-footer{
+  padding:12px 14px;
+  border-top:1px solid var(--env-border);
+  flex-shrink:0;
+  transition:border-color var(--transition);
+}
+#github-link{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--env-text2);
+  text-decoration:none;
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+  letter-spacing:.04em;
+  transition:color .2s;
+  overflow:hidden;
+  white-space:nowrap;
+}
+#github-link:hover{color:var(--env-accent)}
+#github-link svg{flex-shrink:0}
+.gh-label{transition:opacity var(--transition)}
+#sidebar.collapsed .gh-label{opacity:0;width:0;overflow:hidden}
+
+/* ── Main content ── */
+#main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  transition:background var(--transition);
+}
+
+/* Top bar */
+#topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  height:56px;
+  border-bottom:1px solid var(--env-border);
+  flex-shrink:0;
+  transition:border-color var(--transition), background var(--transition);
+  background:var(--env-bg2);
+  gap:16px;
+}
+#theme-name{
+  font-family:'Space Mono',monospace;
+  font-size:18px;
+  font-weight:700;
+  color:var(--env-accent);
+  letter-spacing:.04em;
+  transition:color var(--transition);
+  white-space:nowrap;
+}
+#theme-tagline{
+  font-size:12px;
+  color:var(--env-text2);
+  letter-spacing:.03em;
+  flex:1;
+  transition:color var(--transition);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#open-link{
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  font-weight:700;
+  color:var(--env-accent);
+  text-decoration:none;
+  border:1.5px solid var(--env-accent);
+  padding:5px 14px;
+  border-radius:999px;
+  letter-spacing:.08em;
+  transition:background .2s,color .2s,border-color var(--transition);
+  white-space:nowrap;
+  flex-shrink:0;
+}
+#open-link:hover{
+  background:var(--env-accent);
+  color:var(--env-bg);
+}
+
+/* Content area · split: iframe + info panel */
+#content{
+  flex:1;
+  display:flex;
+  overflow:hidden;
+}
+
+/* iframe */
+#iframe-wrap{
+  flex:1;
+  position:relative;
+  overflow:hidden;
+}
+#theme-iframe{
+  width:100%;height:100%;
+  border:none;
+  display:block;
+  transition:opacity .3s;
+}
+#iframe-loading{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--env-bg);
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  color:var(--env-text2);
+  letter-spacing:.1em;
+  transition:opacity .3s;
+  pointer-events:none;
+}
+#iframe-loading.hidden{opacity:0}
+
+/* Info panel */
+#info-panel{
+  width:320px;
+  flex-shrink:0;
+  border-left:1px solid var(--env-border);
+  overflow-y:auto;
+  padding:28px 24px;
+  background:var(--env-bg2);
+  transition:background var(--transition),border-color var(--transition);
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+#info-panel::-webkit-scrollbar{width:3px}
+#info-panel::-webkit-scrollbar-thumb{background:var(--env-border);border-radius:2px}
+
+.info-section{}
+.info-label{
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--env-accent);
+  margin-bottom:8px;
+  transition:color var(--transition);
+}
+.info-text{
+  font-size:13px;
+  line-height:1.75;
+  color:var(--env-text);
+  transition:color var(--transition);
+}
+.info-text.secondary{color:var(--env-text2);font-size:12px}
+
+/* Palette swatches */
+#palette-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.palette-swatch{
+  width:28px;height:28px;
+  border-radius:6px;
+  border:1.5px solid rgba(0,0,0,.08);
+  transition:transform .15s;
+  cursor:default;
+}
+.palette-swatch:hover{transform:scale(1.2)}
+
+/* Typography specimen */
+#typo-specimen{
+  font-size:22px;
+  font-weight:700;
+  color:var(--env-accent);
+  letter-spacing:.02em;
+  line-height:1.2;
+  transition:color var(--transition);
+}
+#typo-sub{
+  font-size:11px;
+  color:var(--env-text2);
+  margin-top:4px;
+  font-family:'Space Mono',monospace;
+  letter-spacing:.06em;
+  transition:color var(--transition);
+}
+
+/* Tags */
+#tags-row{display:flex;flex-wrap:wrap;gap:5px}
+.tag{
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.08em;
+  padding:3px 9px;
+  border-radius:999px;
+  border:1px solid var(--env-accent);
+  color:var(--env-accent);
+  transition:border-color var(--transition),color var(--transition);
+}
+
+/* Divider */
+.info-divider{
+  border:none;
+  border-top:1px solid var(--env-border);
+  transition:border-color var(--transition);
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── SIDEBAR ── -->
+  <aside id="sidebar">
+    <div id="sidebar-header">
+      <span id="sidebar-title">iroFactory</span>
+      <button id="collapse-btn" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+    </div>
+
+    <div id="theme-list">
+      <!-- Pills generated by JS -->
+    </div>
+
+    <div id="sidebar-footer">
+      <a id="github-link" href="https://github.com/RemiH06/iroFactory" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        <span class="gh-label">RemiH06/iroFactory</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div id="main">
+
+    <div id="topbar">
+      <span id="theme-name">disco</span>
+      <span id="theme-tagline">App / UX · frontend · design systems</span>
+      <a id="open-link" href="#" target="_blank" rel="noopener">↗ open theme</a>
+    </div>
+
+    <div id="content">
+      <div id="iframe-wrap">
+        <iframe id="theme-iframe" src="" title="Theme preview" sandbox="allow-scripts allow-same-origin"></iframe>
+        <div id="iframe-loading">loading theme...</div>
+      </div>
+
+      <div id="info-panel">
+
+        <div class="info-section">
+          <div class="info-label">About</div>
+          <div class="info-text" id="info-about">—</div>
+        </div>
+
+        <hr class="info-divider">
+
+        <div class="info-section">
+          <div class="info-label">Origin &amp; Intent</div>
+          <div class="info-text secondary" id="info-origin">—</div>
+        </div>
+
+        <hr class="info-divider">
+
+        <div class="info-section">
+          <div class="info-label">Development Notes</div>
+          <div class="info-text secondary" id="info-notes">—</div>
+        </div>
+
+        <hr class="info-divider">
+
+        <div class="info-section">
+          <div class="info-label">Palette</div>
+          <div id="palette-row"></div>
+        </div>
+
+        <hr class="info-divider">
+
+        <div class="info-section">
+          <div class="info-label">Typography</div>
+          <div id="typo-specimen">Aa</div>
+          <div id="typo-sub">—</div>
+        </div>
+
+        <hr class="info-divider">
+
+        <div class="info-section">
+          <div class="info-label">Use Cases</div>
+          <div id="tags-row"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// THEME DATA
+// ══════════════════════════════════════════════════════
+const BASE = 'https://remih06.github.io/iroFactory';
+
+const THEMES = [
+  {
+    id: 'disco',
+    label: 'disco',
+    icon: '♫',
+    tagline: 'App / UX · frontend · design systems',
+    file: 'disco/disco_theme_demo.html',
+    about: 'disco is a vibrant, app-first design system built around a semantic color palette drawn from product UI conventions · tomato red, indigo, mint, mustard, lilac, peach, and sky. It was conceived as the go-to theme for frontend projects, design systems, and UX documentation where clarity and hierarchy matter more than atmosphere.',
+    origin: 'Inspired by the polished world of modern SaaS dashboards and component libraries. The asanoha background · a traditional Japanese hemp-leaf geometric pattern · gives it an unexpected textural depth that contrasts the clean, functional palette. Personal use: frontend work, UI component documentation, and design system references.',
+    notes: 'The asanoha pattern required a dedicated sandbox to calibrate the SVG tile seamlessly. Two floating disco-light canvases with multiply/screen blend modes create the ambient glow without interfering with content legibility. Semantic tokens like --new, --active, --done map directly to product state.',
+    palette: ['#F03830','#4050C8','#28B878','#D09820','#9060D0','#E09070','#3890C8','#D04880'],
+    typo: 'Plus Jakarta Sans',
+    typoPair: 'Display + Fira Code',
+    tags: ['frontend','design systems','UI/UX','components','dashboards'],
+    env: {
+      bg:'#F8F2FF', bg2:'#EDE6FF', text:'#1A0A2E', text2:'#6050A0',
+      accent:'#4050C8', border:'#C8B8F0', pillBg:'#EDE6FF',
+    },
+  },
+  {
+    id: 'metro',
+    label: 'metro',
+    icon: '◼',
+    tagline: 'Algorithms · data structures · code tools',
+    file: 'metro/metro_theme_demo.html',
+    about: 'metro is a structured, document-first design system built for technical writing, algorithm documentation, and developer tooling. Its traffic-light semantic trio · red, yellow, green · maps directly to error, warning, and success states, while the extended palette covers every documentation callout imaginable.',
+    origin: 'Born from a real project (tanGo docs) where a clean, readable, and highly functional theme was needed for algorithmic research notes. The node-graph animated background · squares in red, yellow, and green · echoes the graph structures that underpin most of the work this theme accompanies. Personal use: algorithm notebooks, data structure references, code tool documentation.',
+    notes: 'metro was the first theme built and originally shipped as three separate files (CSS + JS + HTML). The background animation was added later to bring it visually in line with the rest of the collection. The node-graph uses only the three semantic colors by design · no decoration for decoration\'s sake.',
+    palette: ['#8B1A1A','#C4691A','#2A6B3A','#1A3A6B','#4A1A6B','#A84510','#8B1A4A','#5C3317'],
+    typo: 'Space Mono',
+    typoPair: 'Mono + DM Sans',
+    tags: ['algorithms','data structures','technical docs','developer tools'],
+    env: {
+      bg:'#F5F0E8', bg2:'#EDE8DC', text:'#1A1410', text2:'#6B5E50',
+      accent:'#6B1A2A', border:'#C8BFB0', pillBg:'#EDE8DC',
+    },
+  },
+  {
+    id: 'sherry',
+    label: 'sherry',
+    icon: '⬡',
+    tagline: 'Algorithms · code tools · developer utilities',
+    file: 'sherry/sherry_theme_demo.html',
+    about: 'sherry is a full-neon vaporwave theme for technical work that lives at the intersection of code artistry and scrapyard ingenuity. Its protagonist · a builder who salvages components and wires them into artefacts · gives the theme its flavor: raw, creative, slightly dangerous, unmistakably functional.',
+    origin: 'Emerged from the desire to have a theme that felt like coding at 3am in a cluttered workshop with neon lights. The organic triangle tessellation background · a happy accident from imperfect equilateral geometry · became a defining visual signature. Personal use: algorithm implementations, coding utilities, scripts, and general-purpose developer tools.',
+    notes: 'The triangular background started as an attempt at a perfect isometric grid and became more interesting when it failed. Individual triangles can flash in any of seven neon colors independently with eased fade-in/out. The CRT scanline effect is optional and toggleable. Sherry has the most color tokens of any theme in the collection.',
+    palette: ['#FF2D78','#00F5FF','#AAFF00','#BF5FFF','#FFE600','#FFB3DE','#A8EFFF'],
+    typo: 'JetBrains Mono',
+    typoPair: 'Mono only',
+    tags: ['algorithms','code tools','developer utilities','scripting'],
+    env: {
+      bg:'#080808', bg2:'#0e0e0e', text:'#f0f0f0', text2:'#808080',
+      accent:'#FF2D78', border:'#2a2a2a', pillBg:'#0e0e0e',
+    },
+  },
+  {
+    id: 'elixir',
+    label: 'elixir',
+    icon: '◈',
+    tagline: 'Data science · ML · statistical modeling',
+    file: 'elixir/elixir_theme_demo.html',
+    about: 'elixir is a cold, precise, analytical theme for machine learning and data science work. Its palette · teal, indigo, violet · evokes the clinical clarity of a well-tuned model: no warmth, no decoration, only signal. The neural graph background makes the theme\'s subject matter literal.',
+    origin: 'Designed for environments where the data speaks and the interface should not. The diamond motif and the neural network animation were chosen to represent both the structure of ML models and the crystalline clarity required to reason about them. Personal use: ML experiments, statistical notebooks, model documentation, and data science pipelines.',
+    notes: 'Elixir\'s neural graph animation features nodes that permanently change color when a signal pulse reaches them · a deliberate design choice to show state accumulation over time, mirroring how weights update in a neural network. The nodes are larger than typical graph nodes to remain visible against the dark background.',
+    palette: ['#00D4C8','#5060E8','#9050D0','#20A090','#4040C0','#7040B0'],
+    typo: 'Iosevka',
+    typoPair: 'Mono only',
+    tags: ['data science','machine learning','statistical modeling','ML pipelines'],
+    env: {
+      bg:'#040C14', bg2:'#081420', text:'#C0E8F0', text2:'#406880',
+      accent:'#00D4C8', border:'#0C2840', pillBg:'#081420',
+    },
+  },
+  {
+    id: 'lambda',
+    label: 'lambda',
+    icon: 'λ',
+    tagline: 'Mathematics · proofs · academic writing',
+    file: 'lambda/lambda_theme_demo.html',
+    about: 'lambda is a chalkboard theme for mathematical writing and academic documentation. Light mode is a white chalkboard, dark mode is the classic green slate. Mathematical formulas, diagrams, and geometric constructions are distributed across the background as static objects drawn in the double-stroke style of chalk.',
+    origin: 'The idea was to make a theme that felt like standing in front of a good blackboard · where the medium itself is part of the aesthetic. Lambda and theorem notation are used as semantic tokens. Personal use: mathematical proofs, academic papers, lecture notes, and formal documentation.',
+    notes: 'The background objects are drawn programmatically using Canvas bezier curves in a 5×5 grid with jitter · no SVGs, no images. The double-stroke technique (thin white over slightly offset main stroke) simulates the translucency of chalk. The theme auto-toggles to dark mode on load as a design statement.',
+    palette: ['#608870','#A0C890','#C8A060','#D08840','#809870','#608870'],
+    typo: 'Cormorant Garamond',
+    typoPair: 'Serif + Fira Code',
+    tags: ['mathematics','proofs','academic writing','formal documentation'],
+    env: {
+      bg:'#F4F2EC', bg2:'#ECEAE0', text:'#1C1A10', text2:'#606050',
+      accent:'#507040', border:'#C0C0A8', pillBg:'#ECEAE0',
+    },
+  },
+  {
+    id: 'ludus',
+    label: 'ludus',
+    icon: '▦',
+    tagline: 'Game dev · creative projects · experimental',
+    file: 'ludus/ludus_theme_demo.html',
+    about: 'ludus is a carnival theme with two faces: daylight brings the bright, slightly chaotic palette of a traveling fair · pastel-neon, clown-adjacent, unabashedly colorful. Nighttime reveals a circus tent interior: deep crimson, aged gold, candlelight. Floating 3D cubes, gold dust, and damask curtains complete the picture.',
+    origin: 'Started as a Tetris-inspired game theme and evolved into something richer when the geometric blocks were reframed as carnival elements. The circus tent rework of the dark mode was entirely driven by aesthetic dissatisfaction · the neon palette felt too generic at night. Personal use: game development logs, creative project documentation, experimental interfaces.',
+    notes: 'The dark mode curtains went through several iterations · four corners, two sides, various rotations · before landing on two full-height panels with a mirror flip. The bichomatic checkerboard background alternates between crimson and gold, a direct reference to classic circus tent fabric. The spotlight position is randomized on each page load.',
+    palette: ['#C84028','#E89820','#904888','#28B050','#3888D8','#E87030','#9048C0'],
+    typo: 'Righteous',
+    typoPair: 'Display + Fira Code',
+    tags: ['game development','creative projects','experimental','interactive'],
+    env: {
+      bg:'#FFF5E0', bg2:'#FFE8C0', text:'#1A0808', text2:'#906040',
+      accent:'#C84028', border:'#E8C080', pillBg:'#FFE8C0',
+    },
+  },
+  {
+    id: 'tarot',
+    label: 'tarot',
+    icon: '✦',
+    tagline: 'Personal projects · creative writing · journaling',
+    file: 'tarot/tarot_theme_demo.html',
+    about: 'tarot is an art deco theme built around gold, crimson, and the four suits of a playing card deck. Seven modules of repeating geometric ornament · portals, sunbursts, diamonds, fans, columns, mirrors · tile the background. Tarot cards float upward through the scene, turning as they rise.',
+    origin: 'Conceived as a theme for personal writing, journaling, and creative projects where the aesthetic should feel precious and intentional. The four suit colors map to semantic roles: hearts for emotion, diamonds for value, spades for conflict, clubs for growth. Personal use: personal project logs, creative writing drafts, and journaling.',
+    notes: 'The art deco background went through extensive calibration · seven module types, each with its own geometric vocabulary, distributed deterministically across the grid so every viewport shows a different but coherent composition. The gold shimmer effect was explored via a stencil/mask approach that was ultimately set aside as too heavy.',
+    palette: ['#C8921A','#E8B830','#A81820','#5060A0','#385840','#7030A0','#8090A8'],
+    typo: 'Cinzel + Josefin Sans',
+    typoPair: 'Serif display + weight 300',
+    tags: ['personal projects','creative writing','journaling','planning'],
+    env: {
+      bg:'#F8F2E8', bg2:'#F0E8D8', text:'#1A0A08', text2:'#6A4030',
+      accent:'#C8921A', border:'#C8A870', pillBg:'#F0E8D8',
+    },
+  },
+  {
+    id: 'bookworm',
+    label: 'bookworm',
+    icon: '◫',
+    tagline: 'Reading logs · book notes · literary projects',
+    file: 'bookworm/bookworm_theme_demo.html',
+    about: 'bookworm is a forest theme built in four atmospheric layers: an isometric triangle grid in earth tones, static komorebi light sources, an SVG wood-panel stencil with circular cutouts that reveal the light beneath, and falling leaves or rain depending on the time of day. The result feels like reading in a forest clearing.',
+    origin: 'Designed for reading logs, book annotation, and literary documentation. The Japanese concept of komorebi · light filtering through leaves · became the central design metaphor. Libre Baskerville was chosen for its classical book-typography feel. Personal use: reading journals, book notes, literary project documentation.',
+    notes: 'The wood stencil effect · a solid panel with circular holes that let komorebi light through · was attempted with layered SVG text as a third element but ultimately simplified. The holes are randomized on every page load. Rain in dark mode and leaves in light mode share the same particle system with different spawning and physics parameters.',
+    palette: ['#4A6040','#6A8050','#385030','#6A4828','#8A6040','#B08030','#789878'],
+    typo: 'Libre Baskerville',
+    typoPair: 'Serif + Fira Code',
+    tags: ['reading logs','book notes','literary projects','personal writing'],
+    env: {
+      bg:'#E8E0D0', bg2:'#DDD5C0', text:'#1C160C', text2:'#5A4E38',
+      accent:'#4A6040', border:'#B8A888', pillBg:'#DDD5C0',
+    },
+  },
+  {
+    id: 'apolo',
+    label: 'apolo',
+    icon: '☼',
+    tagline: 'Poetry · music · creative arts',
+    file: 'apolo/apolo_theme_demo.html',
+    about: 'apolo is a Grecian theme framed by two walls of Ionic columns with carved rosettes. Between them, a sky of Aegean blue or Attic sunset. Rose and yellow petals drift left to right through the scene, passing behind the marble walls. The columns span the full height of the screen, each adorned with volutes in gold.',
+    origin: 'Named for the god of poetry, music, and light. Designed for creative writing, music documentation, and anything that benefits from a sense of classical beauty and contemplative space. The palette · gold, Aegean blue, rose, olive · reflects the Mediterranean light that inspired so much of Western art. Personal use: music notes, poetry drafts, creative arts documentation.',
+    notes: 'The Ionic columns are drawn entirely in SVG · shaft entasis (slight curvature), fluting, volute spirals with central dots, abacus, and frieze · all generated programmatically. Four columns per wall, distributed evenly. The petal particle system generates both oval petals and thin grass blades, with the blades removed in the final version at request.',
+    palette: ['#C8900A','#E8B030','#2050A0','#4080D0','#607830','#E87080','#F0A0B0'],
+    typo: 'Cinzel',
+    typoPair: 'Serif display + Fira Code',
+    tags: ['poetry','music','creative arts','cultural projects'],
+    env: {
+      bg:'#F5F0E8', bg2:'#EDE8DC', text:'#1A1408', text2:'#6A5840',
+      accent:'#C8900A', border:'#C8B888', pillBg:'#EDE8DC',
+    },
+  },
+  {
+    id: 'odysseus',
+    label: 'odysseus',
+    icon: '➣',
+    file: 'odysseus/odysseus_theme_demo.html',
+    about: 'odysseus is a cartographic theme built around a physical map on a wooden desk. The world map · continents in sepia and ochre, seas in pale blue · sits inclined at a random angle on a walnut or oak surface. A compass with a trembling needle, an inkwell, and a quill are positioned at random locations on the map each time the page loads.',
+    origin: 'Designed for travel logs, photography journals, and geographic documentation. The semantic tokens · route, must, wonder, fey, visited, unvisited · create a vocabulary for annotating journeys. IM Fell English was chosen for its irregular, manuscript-like serifs. Personal use: travel documentation, photography projects, and geographic notes.',
+    notes: 'The map uses equirectangular projection with hand-simplified continent outlines. Rust stain overlays and a vignette gold-edge effect give the parchment its aged quality. The compass needle oscillates with a target angle that shifts every 1.2–2.8 seconds, easing toward each target · simulating a real compass finding north. The quill angle is also randomized per session.',
+    palette: ['#A82018','#C83020','#603890','#D070A0','#507040','#8A6840','#C89030'],
+    typo: 'IM Fell English',
+    typoPair: 'Serif italic + Fira Code',
+    tags: ['travel','photography','personal journals','geographic projects'],
+    env: {
+      bg:'#F2E8D0', bg2:'#EAE0C4', text:'#1C1008', text2:'#6A4E28',
+      accent:'#A82018', border:'#C8A868', pillBg:'#EAE0C4',
+    },
+  },
+  {
+    id: 'shui',
+    label: 'shui',
+    icon: '〰',
+    tagline: 'Data · databases · scrapers · storage',
+    file: 'shui/shui_theme_demo.html',
+    about: 'shui is a water theme in two zones. The pelagic mode · light · shows Caribbean turquoise with a single wide beam of sunlight entering from the upper left, bubbles rising gently, and horizontal wave undulations across the screen. The abyssal mode · dark · is nearly black, punctuated only by bioluminescent particles rising slowly in violet, rose, cyan, and green.',
+    origin: 'Designed for data engineering, database documentation, and scraping projects · domains where information flows like water, accumulates in deep stores, and occasionally surfaces in unexpected bursts. The Recursive font with CASL=1 (cursive axis fully activated) was chosen for its unusual technical-yet-organic character. Personal use: database schemas, scraper logs, data pipeline documentation.',
+    notes: 'The single-beam approach replaced a multi-ray system after finding that one large blurred cone felt more natural than multiple narrow shafts. The bubble system gives each bubble its own wobble phase and a small internal specular highlight. Bioluminescent particles flicker individually using per-particle phase offsets · no two blink in sync.',
+    palette: ['#20D0C0','#40E0E0','#1878A0','#C8F0F8','#20A080','#F08050','#C040FF'],
+    typo: 'Recursive (CASL 1)',
+    typoPair: 'Variable mono · cursive axis',
+    tags: ['databases','data pipelines','scrapers','data storage','ETL'],
+    env: {
+      bg:'#0A2A3A', bg2:'#0E3448', text:'#E8F8F8', text2:'#88C8D8',
+      accent:'#20D0C0', border:'#1E5068', pillBg:'#0E3448',
+    },
+  },
+  {
+    id: 'forge',
+    label: 'forge',
+    icon: '⚙',
+    tagline: 'Embedded systems · robotics · networking',
+    file: 'forge/forge_theme_demo.html',
+    about: 'forge is an industrial theme that exists in two states: an active foundry with lava descending from both sides, sparks rising from the floor, and ash drifting rightward; or a cold workshop lit by electric arc flashes and three oscilloscope traces in green, crimson, and interrupt-red. The palette maps hardware concepts directly to color tokens.',
+    origin: 'Built for low-level systems work · embedded firmware, robotics, network engineering · where the aesthetic should feel as close to the metal as the code. Tokens like --voltage, --signal, --current, --core, and --interrupt give the palette a hardware-register vocabulary. Azeret Mono was chosen for its dense, utilitarian character. Personal use: embedded firmware documentation, robotics project logs, network engineering notes.',
+    notes: 'The lava rendering uses per-segment gradient rectangles with temperature-based color interpolation · hotter near the top, cooling as it descends. The three oscilloscopes each have different frequencies and amplitudes, with grid lines and colored frames matching their signal token. Sparks in the forge mode spawn from the lower portion of the screen and fade without gravity, after an earlier version with gravity was found less satisfying.',
+    palette: ['#FF6820','#F0A020','#E86010','#C84010','#FF4010','#D06030','#504030'],
+    typo: 'Azeret Mono',
+    typoPair: 'Mono only',
+    tags: ['embedded systems','robotics','networking','firmware','low-level'],
+    env: {
+      bg:'#0E0A06', bg2:'#161008', text:'#F0D8B0', text2:'#907050',
+      accent:'#E86010', border:'#382010', pillBg:'#161008',
+    },
+  },
+];
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let activeId   = 'disco';
+let hoverId    = null;
+let sidebarOpen = true;
+
+// ══════════════════════════════════════════════════════
+// ENV · apply environment tokens
+// ══════════════════════════════════════════════════════
+function applyEnv(env, instant = false) {
+  const root = document.documentElement;
+  if (instant) root.style.setProperty('--transition', '0s');
+  root.style.setProperty('--env-bg',      env.bg);
+  root.style.setProperty('--env-bg2',     env.bg2);
+  root.style.setProperty('--env-text',    env.text);
+  root.style.setProperty('--env-text2',   env.text2);
+  root.style.setProperty('--env-accent',  env.accent);
+  root.style.setProperty('--env-border',  env.border);
+  root.style.setProperty('--env-pill-bg', env.pillBg);
+  if (instant) setTimeout(() => root.style.setProperty('--transition', '.45s cubic-bezier(.4,0,.2,1)'), 20);
+}
+
+// ══════════════════════════════════════════════════════
+// SIDEBAR · build pills
+// ══════════════════════════════════════════════════════
+function buildSidebar() {
+  const list = document.getElementById('theme-list');
+  list.innerHTML = '';
+  THEMES.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'theme-pill' + (t.id === activeId ? ' active' : '');
+    btn.dataset.id = t.id;
+    btn.innerHTML = `<span class="pill-icon">${t.icon}</span><span class="pill-label">${t.label}</span>`;
+
+    // Style the pill with theme colors
+    stylePill(btn, t);
+
+    btn.addEventListener('click',      () => selectTheme(t.id));
+    btn.addEventListener('mouseenter', () => { hoverId = t.id; applyEnv(t.env); });
+    btn.addEventListener('mouseleave', () => {
+      hoverId = null;
+      const cur = THEMES.find(x => x.id === activeId);
+      if (cur) applyEnv(cur.env);
+    });
+
+    list.appendChild(btn);
+  });
+}
+
+function stylePill(btn, t) {
+  btn.style.background    = t.env.bg2;
+  btn.style.borderColor   = t.env.border;
+  btn.style.color         = t.env.text;
+  btn.style.fontFamily    = "'Space Mono', monospace";
+}
+
+// ══════════════════════════════════════════════════════
+// SELECT THEME
+// ══════════════════════════════════════════════════════
+function selectTheme(id) {
+  activeId = id;
+  const t = THEMES.find(x => x.id === id);
+  if (!t) return;
+
+  // Update active pill
+  document.querySelectorAll('.theme-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.id === id);
+  });
+
+  // Apply env
+  applyEnv(t.env);
+
+  // Update topbar
+  document.getElementById('theme-name').textContent     = t.label;
+  document.getElementById('theme-tagline').textContent  = t.tagline;
+  document.getElementById('open-link').href             = `${BASE}/${t.file}`;
+
+  // Load iframe · local first, GitHub Pages fallback
+  const iframe  = document.getElementById('theme-iframe');
+  const loading = document.getElementById('iframe-loading');
+  loading.classList.remove('hidden');
+  iframe.style.opacity = '0';
+
+  const localSrc  = t.file;           // relative path · works locally
+  const remoteSrc = `${BASE}/${t.file}`;
+
+  let loaded = false;
+
+  function tryLoad(src) {
+    iframe.src = src;
+    iframe.onload = () => {
+      // If the iframe loaded an error page the contentDocument title might be '404'
+      // but we can't reliably detect that cross-origin; just show it
+      loaded = true;
+      iframe.style.opacity = '1';
+      loading.classList.add('hidden');
+    };
+    iframe.onerror = () => {
+      if (src === localSrc) tryLoad(remoteSrc);
+    };
+  }
+
+  // Try local first; after 1.5s with no onload, fall back to remote
+  tryLoad(localSrc);
+  setTimeout(() => {
+    if (!loaded) tryLoad(remoteSrc);
+  }, 1500);
+
+  // Update info panel
+  document.getElementById('info-about').textContent  = t.about;
+  document.getElementById('info-origin').textContent = t.origin;
+  document.getElementById('info-notes').textContent  = t.notes;
+
+  // Palette
+  const pr = document.getElementById('palette-row');
+  pr.innerHTML = t.palette.map(c =>
+    `<div class="palette-swatch" style="background:${c}" title="${c}"></div>`
+  ).join('');
+
+  // Typography
+  document.getElementById('typo-specimen').textContent = t.label + '_theme';
+  document.getElementById('typo-specimen').style.fontFamily = t.typo.split('+')[0].trim() + ', serif';
+  document.getElementById('typo-sub').textContent = t.typoPair;
+
+  // Tags
+  const tr = document.getElementById('tags-row');
+  tr.innerHTML = t.tags.map(tag =>
+    `<span class="tag">${tag}</span>`
+  ).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// SIDEBAR COLLAPSE
+// ══════════════════════════════════════════════════════
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen;
+  document.getElementById('sidebar').classList.toggle('collapsed', !sidebarOpen);
+  document.getElementById('collapse-btn').textContent = sidebarOpen ? '✕' : '☰';
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+buildSidebar();
+selectTheme('disco');
+document.getElementById('collapse-btn').textContent = '✕';
+</script>
+</body>
+</html>
