@@ -6,7 +6,7 @@
 <title>apolo_theme — Demo</title>
 <meta name="description" content="apolo: tema griego enmarcado por columnas jónicas dibujadas en SVG (éntasis, estrías, volutas) y rosetas, con pétalos derivando sobre un cielo Egeo de día o un atardecer púrpura y naranja de noche.">
 <link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=cinzel:400,700&family=cardo:400,700,italic&family=fira-code:400&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css2?family=Cinzel:wght@400;700&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════
    TOKENS — CLARO (default) · día griego
@@ -42,9 +42,18 @@ body {
   --white:    #FEFAF4;
   --gray:     #907860;
   --display:  'Cinzel', serif;
-  --serif:    'Cardo', serif;
+  --serif:    'Newsreader', serif;
   --mono:     'Fira Code', monospace;
   --radius:   3px;
+  /* Tiras de las columnas (foto real) más claras en modo día — el
+     mármol pide un fondo pálido. body.dark las invierte a más
+     oscuras, ver ahí el porqué. */
+  --strip-filter: blur(6px) brightness(1.25);
+  --tilt-filter:  blur(3px) brightness(1.32);
+  /* Título: oro sólido en modo día (como estaba antes de probar
+     mármol ahí) — el mármol como base del título es solo para modo
+     noche, ver body.dark. */
+  --title-base: var(--gold);
 }
 
 /* ══════════════════════════════════════════════════════
@@ -77,6 +86,12 @@ body.dark {
   --black:    #060408;
   --white:    #F8F0E0;
   --gray:     #806040;
+  /* Atardecer griego ya es una imagen cálida/saturada de por sí —
+     aclararla con el mismo filtro del modo día la lava; se oscurece
+     en su lugar para que lea como fondo de noche, no como flash. */
+  --strip-filter: blur(6px) brightness(.72);
+  --tilt-filter:  blur(3px) brightness(.6);
+  --title-base: var(--marble);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -104,7 +119,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:2
    esta capa asoma detrás — la revelación es el efecto, no una
    transparencia fija. Más blur que la de enfrente (6px vs 3px) para
    que se lea como "más al fondo". */
-#ap-back-stripes{position:fixed;inset:0;z-index:2;pointer-events:none;filter:blur(6px) brightness(1.25)}
+#ap-back-stripes{position:fixed;inset:0;z-index:2;pointer-events:none;filter:var(--strip-filter)}
 .back-stripe{position:absolute;top:0;height:100%;background-repeat:no-repeat}
 /* Tilt-card: cada columna es un div real que muestra su propio recorte
    de la imagen del hero (background-position) y rota en 3D hacia el
@@ -115,7 +130,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:2
    rotaba nada a la vista. El blur/aclarado va en la CAPA completa
    (#ap-tilt-layer), no por columna — un filtro por elemento (50-70
    veces) es mucho más caro que uno solo sobre el contenedor entero. */
-#ap-tilt-layer{position:fixed;inset:0;z-index:3;pointer-events:none;perspective:900px;filter:blur(3px) brightness(1.32)}
+#ap-tilt-layer{position:fixed;inset:0;z-index:3;pointer-events:none;perspective:900px;filter:var(--tilt-filter)}
 .tilt-col{
   position:absolute;top:0;height:100%;
   background-repeat:no-repeat;
@@ -267,7 +282,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
      transparente se ve como un borrón oscuro que se come el oro,
      mismo motivo que .swatch-hex lo desactiva. */
   text-shadow:none;
-  background-image:linear-gradient(120deg,var(--gold) 0%,var(--gold) 38%,var(--gold-lt) 50%,var(--gold) 62%,var(--gold) 100%);
+  background-image:linear-gradient(120deg,var(--title-base) 0%,var(--title-base) 38%,var(--gold-lt) 50%,var(--title-base) 62%,var(--title-base) 100%);
   background-size:220% auto;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   animation:ap-shine 4s linear infinite;
@@ -380,7 +395,7 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
   background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
   font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--white);opacity:.5;cursor:pointer;will-change:transform;transform-origin:center;
+  color:var(--text);opacity:.5;cursor:pointer;will-change:transform;transform-origin:center;
   transition:opacity .25s,border-color .25s,box-shadow .25s;
 }
 .ap-tab:hover{opacity:.8}
@@ -483,16 +498,16 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
       <div class="ap-gallery-caption">Componentes · badges y botones</div>
     </figure>
     <figure class="ap-gallery-card g3">
-      <pre data-lang="python" style="margin:0;font-size:10px"><span class="cm"># El oráculo de Delfos</span>
-<span class="kw">class</span> Oraculo:
-    <span class="fn">def</span> <span class="kw">consultar</span>(self, p):
-        <span class="kw">return</span> <span class="str">f"{p[::-1]}"</span></pre>
+      <pre data-lang="python" style="margin:0;font-size:10px"><span class="cm"># Ejemplo de resaltado</span>
+<span class="kw">class</span> Config:
+    <span class="fn">def</span> <span class="kw">describir</span>(self):
+        <span class="kw">return</span> <span class="str">f"{self.tema}"</span></pre>
       <div class="ap-gallery-caption">Código · resaltado de sintaxis</div>
     </figure>
     <figure class="ap-gallery-card g4">
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div class="ode-dot gold">I</div>
-        <div><h4>Invocación</h4><p class="muted" style="font-size:12px">Canta, oh musa, la cólera del pélida Aquiles.</p></div>
+        <div><h4>Primer trazo</h4><p class="muted" style="font-size:12px">La paleta nace de dos referencias: mármol claro, mar profundo.</p></div>
       </div>
       <div class="ap-gallery-caption">Narrativa · Ode Log</div>
     </figure>
@@ -624,14 +639,14 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 
     <div class="ap-panel" id="panel-componentes" role="tabpanel" aria-labelledby="tab-componentes" hidden>
       <h3>Callouts</h3>
-      <div class="callout"><div class="callout-title">Acento · Oro</div><p>Inscripciones del oráculo. La verdad llega en versos.</p></div>
-      <div class="callout ok"><div class="callout-title">OK · Olivo</div><p>La ofrenda fue aceptada. Los dioses sonríen.</p></div>
-      <div class="callout warn"><div class="callout-title">Warn · Oro</div><p>El sol desciende. Queda poco tiempo antes del ocaso.</p></div>
-      <div class="callout danger"><div class="callout-title">Danger</div><p>La ira de Apolo no conoce límites. Retirarse.</p></div>
-      <div class="callout aegean"><div class="callout-title">Aegean</div><p>El mar habla. Sus olas traen noticias de tierras lejanas.</p></div>
-      <div class="callout olive"><div class="callout-title">Olive</div><p>Atenea bendice el olivo. Sabiduría que da sombra.</p></div>
-      <div class="callout rose"><div class="callout-title">Rose</div><p>Afrodita pasa. Los pétalos caen a su paso.</p></div>
-      <div class="callout marble"><div class="callout-title">Marble</div><p>Mármol de Paros. La piedra más blanca del mundo conocido.</p></div>
+      <div class="callout"><div class="callout-title">Acento · Oro</div><p>Un trazo de oro para lo que no debería pasar desapercibido.</p></div>
+      <div class="callout ok"><div class="callout-title">OK · Olivo</div><p>Confirmado, sin complicaciones.</p></div>
+      <div class="callout warn"><div class="callout-title">Warn · Oro</div><p>El plazo se acerca, todavía hay tiempo.</p></div>
+      <div class="callout danger"><div class="callout-title">Danger</div><p>Una acción que no tiene vuelta atrás.</p></div>
+      <div class="callout aegean"><div class="callout-title">Aegean</div><p>Un aviso que llega desde otra parte del sistema.</p></div>
+      <div class="callout olive"><div class="callout-title">Olive</div><p>Contexto de fondo, nada que resolver ahora.</p></div>
+      <div class="callout rose"><div class="callout-title">Rose</div><p>Un matiz suave, más decorativo que urgente.</p></div>
+      <div class="callout marble"><div class="callout-title">Marble</div><p>Neutro por diseño, la base sobre la que va todo lo demás.</p></div>
 
       <hr class="divider">
       <h3>Badges</h3>
@@ -663,49 +678,49 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
       <hr class="divider">
       <h3>Métricas</h3>
       <div class="metrics-row">
-        <div class="metric"><div class="metric-val">XII</div><div class="metric-lbl">dioses (oro)</div></div>
-        <div class="metric"><div class="metric-val aegean">∞</div><div class="metric-lbl">mares (egeo)</div></div>
-        <div class="metric"><div class="metric-val olive">9</div><div class="metric-lbl">musas (olivo)</div></div>
-        <div class="metric"><div class="metric-val rose">☼</div><div class="metric-lbl">soles (rosa)</div></div>
+        <div class="metric"><div class="metric-val">12</div><div class="metric-lbl">temas en iroFactory</div></div>
+        <div class="metric"><div class="metric-val aegean">∞</div><div class="metric-lbl">combinaciones de paleta</div></div>
+        <div class="metric"><div class="metric-val olive">2</div><div class="metric-lbl">modos, claro y oscuro</div></div>
+        <div class="metric"><div class="metric-val rose">0</div><div class="metric-lbl">dependencias externas</div></div>
       </div>
 
       <hr class="divider">
       <h3>Cards</h3>
       <div class="grid-2">
-        <div class="card"><strong>La Ilíada</strong><span class="badge gold" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">La cólera de Aquiles · Troya · El precio de la gloria.</p></div>
-        <div class="card"><strong>La Odisea</strong><span class="badge aegean" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">Diez años de regreso · El mar oscuro · Ítaca espera.</p></div>
+        <div class="card"><strong>La Ilíada</strong><span class="badge gold" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">Poema épico griego · c. siglo VIII a.C.</p></div>
+        <div class="card"><strong>La Odisea</strong><span class="badge aegean" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">Poema épico griego · secuela de la Ilíada.</p></div>
       </div>
     </div>
 
     <div class="ap-panel" id="panel-codigo" role="tabpanel" aria-labelledby="tab-codigo" hidden>
-      <pre data-lang="python"><span class="cm"># El oráculo de Delfos</span>
-<span class="kw">class</span> Oraculo:
-    <span class="fn">def</span> <span class="kw">__init__</span>(self, dios):
-        self.dios    = dios
+      <pre data-lang="python"><span class="cm"># Ejemplo de resaltado de sintaxis</span>
+<span class="kw">class</span> Config:
+    <span class="fn">def</span> <span class="kw">__init__</span>(self, tema):
+        self.tema    = tema
         self.activo  = <span class="kw">True</span>
 
-    <span class="fn">def</span> <span class="kw">consultar</span>(self, pregunta):
-        <span class="kw">return</span> <span class="str">f"Apolo habla: {pregunta[::-1]}"</span>
+    <span class="fn">def</span> <span class="kw">describir</span>(self):
+        <span class="kw">return</span> <span class="str">f"Tema activo: {self.tema}"</span>
 
-apolo = <span class="fn">Oraculo</span>(<span class="str">"Apolo"</span>)
-<span class="fn">print</span>(apolo.<span class="fn">consultar</span>(<span class="str">"¿Cuál es mi destino?"</span>))</pre>
+config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
+<span class="fn">print</span>(config.<span class="fn">describir</span>())</pre>
     </div>
 
     <div class="ap-panel" id="panel-narrativa" role="tabpanel" aria-labelledby="tab-narrativa" hidden>
       <h3>Ode Log</h3>
       <div class="ode-log">
-        <div class="ode-entry"><div class="ode-dot gold">I</div><div><h4>Invocación</h4><p class="muted">Canta, oh musa, la cólera del pélida Aquiles. El poema comienza.</p></div></div>
-        <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>El mar de vino oscuro</h4><p class="muted">Odiseo navega. El Egeo lo devuelve, el Egeo lo aleja.</p></div></div>
-        <div class="ode-entry"><div class="ode-dot rose">III</div><div><h4>Afrodita pasa</h4><p class="muted">Pétalos de rosa caen sobre el ágora. La diosa no mira atrás.</p></div></div>
-        <div class="ode-entry"><div class="ode-dot olive">IV</div><div><h4>La sabiduría</h4><p class="muted">Atenea planta el olivo. La ciudad tendrá nombre eterno.</p></div></div>
-        <div class="ode-entry"><div class="ode-dot gold">V</div><div><h4>El sol desciende</h4><p class="muted">Apolo conduce su carro al horizonte. Mañana volverá.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot gold">I</div><div><h4>Primer trazo</h4><p class="muted">La paleta nace de dos referencias: mármol claro, mar profundo.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>El fondo se mueve</h4><p class="muted">Cada columna muestra una tira distinta de la misma fotografía.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot rose">III</div><div><h4>Dos luces</h4><p class="muted">El tema completo se reconstruye al alternar claro y oscuro.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot olive">IV</div><div><h4>Sin contorno</h4><p class="muted">El contraste del texto viene del fondo, no de un borde alrededor.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot gold">V</div><div><h4>Ningún blanco puro</h4><p class="muted">Hasta el negro y el blanco de esta paleta son un matiz.</p></div></div>
       </div>
 
       <hr class="divider">
       <h3>Estrofas</h3>
-      <div class="strophe" id="strophe-1"><div class="strophe-num">I</div><div><h4>Estrofa</h4><p class="muted">El coro avanza desde la derecha. Los pétalos caen.</p></div></div>
-      <div class="strophe" id="strophe-2" style="border-left-color:var(--aegean)"><div class="strophe-num" style="color:var(--aegean)">II</div><div><h4>Antistrofa</h4><p class="muted">El coro retrocede. El eco del mar llena el teatro.</p></div></div>
-      <div class="strophe" id="strophe-3" style="border-left-color:var(--olive)"><div class="strophe-num" style="color:var(--olive)">III</div><div><h4>Épodo</h4><p class="muted">El coro se detiene. El oráculo ha hablado.</p></div></div>
+      <div class="strophe" id="strophe-1"><div class="strophe-num">I</div><div><h4>Estrofa</h4><p class="muted">Este párrafo entra desde la derecha.</p></div></div>
+      <div class="strophe" id="strophe-2" style="border-left-color:var(--aegean)"><div class="strophe-num" style="color:var(--aegean)">II</div><div><h4>Antistrofa</h4><p class="muted">Este retrocede, entra desde la izquierda.</p></div></div>
+      <div class="strophe" id="strophe-3" style="border-left-color:var(--olive)"><div class="strophe-num" style="color:var(--olive)">III</div><div><h4>Épodo</h4><p class="muted">Y este se queda quieto, sin desplazarse.</p></div></div>
     </div>
 
     <div class="ap-panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" hidden>
@@ -1884,7 +1899,7 @@ function initTabs() {
       const norm = Math.max(-BEND_NORM, Math.min(BEND_NORM, x / GAP));
       const t = Math.abs(norm) / BEND_NORM;
       const arc = t * BEND_PX;
-      const rot = -Math.sign(norm) * t * BEND_DEG;
+      const rot = Math.sign(norm) * t * BEND_DEG;
       const screenX = containerW / 2 + x - tab.offsetWidth / 2;
       tab.style.transform = `translateX(${screenX}px) translateY(${arc}px) rotate(${rot}deg)`;
       if (Math.abs(x) < nearestDist) { nearestDist = Math.abs(x); nearestI = i; }
