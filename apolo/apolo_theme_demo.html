@@ -25,8 +25,11 @@ body {
   --aegean-lt:#2C82DE;
   --olive:    #607830;
   --rose:     #E87080;
+  --rose-dark:#B8394C;
   --petal:    #F0A0B0;
+  --petal-dark:#D4728A;
   --yellow:   #F0C840;
+  --yellow-dark:#C89A18;
   --sky:      #3E8DE0;
   --sea:      #1A6BC2;
   --cliff:    #507040;
@@ -78,53 +81,72 @@ body.dark {
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-/* El lienzo de fondo es translúcido y su tono cambia con el scroll
-   (mármol sobre cielo) — el text-shadow es un halo claro que mantiene
-   el texto legible sin taparlo con un panel sólido. */
-body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:15px;line-height:1.75;transition:background .5s,color .5s;text-shadow:-1px -1px 0 var(--marble),1px -1px 0 var(--marble),-1px 1px 0 var(--marble),1px 1px 0 var(--marble),0 0 6px var(--marble)}
-/* Oscuro: el texto es claro, así que el contorno debe ser oscuro para
-   separarlo del fondo — el claro de arriba no le sirve. Contorno de
-   1px + resplandor: el resplandor solo no bastaba cuando texto y
-   fondo comparten tono (naranja sobre naranja). */
-body.dark{text-shadow:-1px -1px 0 var(--black),1px -1px 0 var(--black),-1px 1px 0 var(--black),1px 1px 0 var(--black),0 0 6px var(--black)}
+/* Antes: contorno mármol/negro vía text-shadow, para leer texto
+   flotando directo sobre el fondo animado. El usuario lo cuestionó
+   ("no sé si me gusta") y pidió la alternativa: fondo ligeramente
+   más claro detrás del texto + letras planas, sin contorno. Como
+   prácticamente todo el contenido ahora vive dentro de un panel con
+   su propio --bg2/--bg3 (Presentación, Ejemplos, Pestañas), ese panel
+   ya resuelve el contraste — el contorno quedó redundante, no solo
+   opcional. Se quita del todo.*/
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:21px;line-height:1.75;transition:background .5s,color .5s}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
 
 /* ══════════════════════════════════════════════════════
    ESCENA DE FONDO — capas fijas
 ══════════════════════════════════════════════════════ */
 #ap-sky      {position:fixed;inset:0;z-index:0;pointer-events:none}
-/* Light Rays: "luz solar" translúcida detrás de las columnas, no un
-   fondo propio — apolo ya tiene el suyo. Ver initRays() en el script.
-   Beams (mismo concepto, en oro) se probó y se quitó — el usuario no
-   lo veía en ningún lado pese a estar renderizando correctamente
-   (confirmado con readPixels/diff de screenshots), ni con el bug de
-   blend corregido ni con la paleta re-saturada. */
-#ap-rays     {position:fixed;inset:0;z-index:2;pointer-events:none}
-#ap-texture  {position:fixed;inset:0;z-index:3;pointer-events:none} /* lienzo único: mármol + estrías + oro */
-/* Tilt-card: cada columna es una "carta" que rota en 3D hacia el
-   cursor. El SVG de #ap-texture se queda intacto — esta capa solo
-   aporta el transform 3D, sin brillo/sombra encima (se probó un
-   brillo especular vía background+mix-blend-mode, el usuario lo
-   quitó — las columnas deben verse como siempre, solo que tiltean). */
-#ap-tilt-layer{position:fixed;inset:0;z-index:4;pointer-events:none;perspective:900px}
+#ap-texture  {position:fixed;inset:0;z-index:1;pointer-events:none} /* mármol + estrías — lienzo disperso */
+/* Segunda capa de tiras, DETRÁS de las tilt-card, con su propio
+   barajado (independiente del de enfrente) y sin tilt — estática. En
+   reposo las tilt-card de enfrente son opacas y la tapan del todo;
+   al tiltear, el escorzo 3D descubre franjas en el borde rotado y
+   esta capa asoma detrás — la revelación es el efecto, no una
+   transparencia fija. Más blur que la de enfrente (6px vs 3px) para
+   que se lea como "más al fondo". */
+#ap-back-stripes{position:fixed;inset:0;z-index:2;pointer-events:none;filter:blur(6px) brightness(1.25)}
+.back-stripe{position:absolute;top:0;height:100%;background-repeat:no-repeat}
+/* Tilt-card: cada columna es un div real que muestra su propio recorte
+   de la imagen del hero (background-position) y rota en 3D hacia el
+   cursor (motion.dev "js-tilt-card", reconstruido desde el concepto).
+   Las columnas dejaron de ser un solo SVG de fondo en #ap-texture
+   para poder tiltear contenido real y visible — antes la capa de tilt
+   era invisible (sin brillo/fondo propio), rotar un div vacío no
+   rotaba nada a la vista. El blur/aclarado va en la CAPA completa
+   (#ap-tilt-layer), no por columna — un filtro por elemento (50-70
+   veces) es mucho más caro que uno solo sobre el contenedor entero. */
+#ap-tilt-layer{position:fixed;inset:0;z-index:3;pointer-events:none;perspective:900px;filter:blur(3px) brightness(1.32)}
 .tilt-col{
   position:absolute;top:0;height:100%;
+  background-repeat:no-repeat;
   transform-style:preserve-3d;
   transition:transform .35s cubic-bezier(.22,1,.36,1);
   will-change:transform;
 }
+/* Light Rays por encima de ambas capas de columnas, que ahora son
+   lienzos densos (antes #ap-texture era disperso/translúcido y
+   dejaba pasar la luz por debajo; con la imagen real cubriendo casi
+   todo, cualquier capa en un z-index menor queda enterrada — el
+   usuario reportó no ver Light Rays, esta era la causa real, no un
+   z-index mal escrito). */
+#ap-rays     {position:fixed;inset:0;z-index:4;pointer-events:none}
 #ap-petals   {position:fixed;inset:0;z-index:20;pointer-events:none} /* pétalos — pasan por delante de todo */
 
-.page{position:relative;z-index:10;padding:40px 28% 40px 28%;max-width:100%;margin:0}
+/* .page ya no es una columna angosta de 28% — cada nivel (Presentación,
+   Ejemplos, Motivo, Pestañas) maneja su propio ancho vía .wrap. Solo
+   se queda con el z-index para estar arriba de las capas de fondo. */
+.page{position:relative;z-index:10}
+.wrap{max-width:1040px;margin:0 auto;padding:0 40px}
+@media(max-width:760px){.wrap{padding:0 20px}}
 
 /* ══════════════════════════════════════════════════════
    TIPOGRAFÍA
 ══════════════════════════════════════════════════════ */
 h2{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold);margin:36px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:.12em;text-transform:uppercase}
 h3{font-family:var(--display);font-size:12px;font-weight:400;color:var(--aegean);margin:20px 0 10px;letter-spacing:.16em;text-transform:uppercase}
-h4{font-family:var(--display);font-size:13px;color:var(--text);margin-bottom:5px;letter-spacing:.06em}
-p{margin-bottom:12px;line-height:1.75;font-family:var(--serif);font-weight:400;font-size:15px}
-p.muted{color:var(--text2);font-size:13px}
+h4{font-family:var(--display);font-size:14px;color:var(--text);margin-bottom:5px;letter-spacing:.06em}
+p{margin-bottom:12px;line-height:1.75;font-family:var(--serif);font-weight:400;font-size:21px}
+p.muted{color:var(--text2);font-size:14px}
 
 /* ══════════════════════════════════════════════════════
    CÓDIGO
@@ -297,7 +319,85 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
    LAYOUT
 ══════════════════════════════════════════════════════ */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:900px){.page{padding:40px 10px}.grid-2{grid-template-columns:1fr}}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr}}
+
+/* ══════════════════════════════════════════════════════
+   NIVELES — estructura calcada de 43.Proun/docs/index.html
+   (portada · presentación · ejemplos · motivo · pestañas · footer),
+   a pedido del usuario. Cada nivel controla su propio ancho en vez
+   de la columna única de 28% que envolvía todo antes.
+══════════════════════════════════════════════════════ */
+.ap-presentacion{padding:72px 0 48px;border-bottom:1px solid var(--border)}
+/* Panel translúcido detrás del texto en vez del contorno global que
+   se quitó de body — bg2 (claro u oscuro según el token) al 90%, dejando
+   pasar un poco del fondo animado (Light Rays incluido) por debajo. */
+.ap-presentacion-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start;background:color-mix(in srgb,var(--bg2) 90%,transparent);padding:32px 40px;border-radius:var(--radius)}
+.ap-presentacion h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.15;margin:0 0 18px;color:var(--text)}
+.ap-quote{font-family:var(--display);font-size:20px;line-height:1.5;border-left:2px solid var(--gold);padding-left:20px;margin:0;color:var(--text)}
+.ap-quote cite{display:block;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text2);margin-top:10px}
+@media(max-width:760px){.ap-presentacion-grid{grid-template-columns:1fr}}
+
+.ap-ejemplos{padding:56px 0 80px}
+.ap-ejemplos-heading{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);margin:0 0 32px;padding:0 40px}
+.ap-gallery{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:0;padding:20px 40px 40px}
+.ap-gallery-card{margin:0;position:relative;background:color-mix(in srgb,var(--bg2) 90%,transparent);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.ap-gallery-caption{font-family:var(--display);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-top:12px}
+.ap-gallery .g1{grid-column:1/6;transform:rotate(-1deg);z-index:3}
+.ap-gallery .g2{grid-column:6/13;margin-top:70px;transform:rotate(.8deg);z-index:2}
+.ap-gallery .g3{grid-column:2/7;margin-top:40px;transform:rotate(.6deg);z-index:1}
+.ap-gallery .g4{grid-column:7/12;margin-top:10px;transform:rotate(-.7deg);z-index:2}
+@media(max-width:760px){.ap-gallery{grid-template-columns:1fr;padding:0 20px;row-gap:24px}.ap-gallery .g1,.ap-gallery .g2,.ap-gallery .g3,.ap-gallery .g4{grid-column:1/-1;margin-top:0;transform:none}}
+
+/* Fondo fijo (--black/--white), no depende de claro/oscuro — como
+   .about de Proun, es su propia superficie, no una variación del tema. */
+/* text-shadow:none — el contorno mármol/negro heredado de body es
+   para texto sobre el fondo claro/oscuro dinámico; sobre negro sólido
+   con texto blanco se veía como un resplandor/negrita rara, mismo
+   motivo que .swatch-hex y .page-title ya lo desactivan. */
+.ap-motivo{padding:64px 0;background:color-mix(in srgb,var(--black) 90%,transparent);color:var(--white)}
+.ap-motivo .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.ap-motivo h2{font-family:var(--display);font-weight:700;font-size:20px;margin:0 0 16px;color:var(--gold-lt);border:none;padding:0;text-transform:none;letter-spacing:0}
+.ap-motivo p{color:var(--white);opacity:.82;font-size:16px;font-family:var(--serif)}
+@media(max-width:760px){.ap-motivo .wrap{grid-template-columns:1fr}}
+
+.ap-stage-section{padding:0 0 80px;background:color-mix(in srgb,var(--bg2) 90%,transparent);border-top:1px solid var(--border)}
+/* Pestañas como galería circular — React Bits "Circular Gallery" (OGL:
+   planos que se curvan en arco al desplazarse) + "Decay Card" (filtro
+   SVG feTurbulence/feDisplacementMap, distorsión atada a la velocidad
+   del cursor). Reconstruido desde el concepto, no portado literal: los
+   paneles de abajo tienen tablas, código seleccionable y un iframe —
+   convertirlos en texturas WebGL rompería selección de texto y ARIA.
+   En su lugar, los botones <button role="tab"> reales se curvan por
+   CSS transform (misma idea del arco de Circular Gallery, sin OGL) y
+   el filtro de Decay Card se aplica a las miniaturas vía CSS
+   filter:url(), con el "scale" del feDisplacementMap animado por la
+   velocidad de arrastre en vez de la distancia recorrida del cursor. */
+.ap-gallery-tabs{position:relative;background:var(--black);padding:30px 0 22px;overflow:hidden;touch-action:pan-y}
+.ap-gallery-track{position:relative;height:172px;cursor:grab}
+.ap-gallery-track.is-dragging{cursor:grabbing}
+.ap-tab{
+  position:absolute;top:14px;left:0;width:150px;height:118px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--white);opacity:.5;cursor:pointer;will-change:transform;transform-origin:center;
+  transition:opacity .25s,border-color .25s,box-shadow .25s;
+}
+.ap-tab:hover{opacity:.8}
+.ap-tab.is-centered{opacity:.85}
+.ap-tab[aria-selected="true"]{opacity:1;border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.ap-tab:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.ap-tab-preview{filter:url(#ap-decay-filter);pointer-events:none}
+.ap-tab-label{pointer-events:none}
+.ap-stage{padding:40px 40px 0}
+.ap-panel[hidden]{display:none}
+.ap-graph-frame{border:1px solid var(--border);height:560px;border-radius:var(--radius);overflow:hidden}
+.ap-graph-frame iframe{width:100%;height:100%;border:0;display:block}
+@media(max-width:760px){.ap-stage{padding:28px 20px 0}.ap-graph-frame{height:420px}}
+
+.ap-footer{padding:32px 40px 56px}
+.ap-footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);max-width:1040px;margin:0 auto}
+.ap-footer-row a{color:var(--gold)}
 .swatch-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
 .swatch{width:76px;text-align:center;font-family:var(--mono);font-size:8px;color:var(--text2)}
 .swatch-box{height:42px;border-radius:var(--radius);margin-bottom:5px;border:1px solid var(--border);position:relative}
@@ -308,9 +408,10 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 
 <!-- Capas de escena -->
 <canvas id="ap-sky"></canvas>
-<canvas id="ap-rays"></canvas>
 <div id="ap-texture"></div>
+<div id="ap-back-stripes"></div>
 <div id="ap-tilt-layer"></div>
+<canvas id="ap-rays"></canvas>
 <canvas id="ap-petals"></canvas>
 
 <div id="ap-toggle-wrap">
@@ -346,104 +447,238 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 
 <div class="page">
 
-<div class="ornament">✦ ◆ ✦</div>
+<!-- ── Presentación ── -->
+<section class="ap-presentacion">
+  <div class="wrap ap-presentacion-grid">
+    <div>
+      <h1>Un tema de documentación en un solo archivo HTML</h1>
+      <p>Todo el CSS y el JavaScript viven inline, sin dependencias externas más allá de las fuentes. El fondo combina columnas generadas en SVG, dos shaders en WebGL crudo (sin Three.js) y una fotografía que se reordena en tiras para formar cada columna.</p>
+      <p>El tema alterna entre paleta clara y oscura. Ambas reconstruyen el fondo completo · degradado, columnas y tipografía · a partir de los mismos tokens de color que se listan más abajo.</p>
+    </div>
+    <blockquote class="ap-quote">
+      «Ningún color puro #000 o #fff en ningún token · hasta el negro y el blanco de este tema son un matiz.»
+      <cite>Regla de diseño de iroFactory</cite>
+    </blockquote>
+  </div>
+</section>
 
-<!-- ── Paleta ── -->
-<h2>Paleta de colores</h2>
-<p class="muted">Mármol, oro y azul Egeo · El Mediterráneo en dos luces.</p>
+<!-- ── Ejemplos ── -->
+<section class="ap-ejemplos">
+  <p class="ap-ejemplos-heading">Cuatro vistas del mismo tema</p>
+  <div class="ap-gallery">
+    <figure class="ap-gallery-card g1">
+      <div class="swatch-row" style="margin:0">
+        <div class="swatch-box" style="background:var(--gold);height:36px;width:36px"></div>
+        <div class="swatch-box" style="background:var(--aegean);height:36px;width:36px"></div>
+        <div class="swatch-box" style="background:var(--rose);height:36px;width:36px"></div>
+        <div class="swatch-box" style="background:var(--marble);height:36px;width:36px"></div>
+      </div>
+      <div class="ap-gallery-caption">Paleta · tokens de color</div>
+    </figure>
+    <figure class="ap-gallery-card g2">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <span class="badge gold">oro</span><span class="badge aegean">egeo</span><span class="badge rose">rosa</span>
+        <button class="btn primary">primary</button>
+      </div>
+      <div class="ap-gallery-caption">Componentes · badges y botones</div>
+    </figure>
+    <figure class="ap-gallery-card g3">
+      <pre data-lang="python" style="margin:0;font-size:10px"><span class="cm"># El oráculo de Delfos</span>
+<span class="kw">class</span> Oraculo:
+    <span class="fn">def</span> <span class="kw">consultar</span>(self, p):
+        <span class="kw">return</span> <span class="str">f"{p[::-1]}"</span></pre>
+      <div class="ap-gallery-caption">Código · resaltado de sintaxis</div>
+    </figure>
+    <figure class="ap-gallery-card g4">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div class="ode-dot gold">I</div>
+        <div><h4>Invocación</h4><p class="muted" style="font-size:12px">Canta, oh musa, la cólera del pélida Aquiles.</p></div>
+      </div>
+      <div class="ap-gallery-caption">Narrativa · Ode Log</div>
+    </figure>
+  </div>
+</section>
 
-<h3>Cielo y mar</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--aegean)"><span class="swatch-hex" id="hex-aegean"></span></div>--aegean</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--aegean-lt)"><span class="swatch-hex" id="hex-aegean-lt"></span></div>--aegean-lt</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--sky)"><span class="swatch-hex" id="hex-sky"></span></div>--sky</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--sea)"><span class="swatch-hex" id="hex-sea"></span></div>--sea</div>
-</div>
+<!-- ── Motivo ── -->
+<section class="ap-motivo">
+  <div class="wrap">
+    <div>
+      <h2>Sobre este tema</h2>
+      <p>La paleta parte de dos referencias concretas: mármol claro y un azul profundo de mar. De ahí salen los nombres de los tokens, no al revés · la idea vino primero de qué colores se veían bien juntos, la referencia clásica se sumó después.</p>
+      <p>La portada usa fragmentos de una sola fotografía reordenados en tiras, en vez de una imagen o un degradado continuo, para que el fondo tenga textura sin depender de una imagen externa pesada.</p>
+    </div>
+    <div>
+      <h2>Cómo funciona</h2>
+      <p>Sin Three.js · WebGL crudo para Light Rays y Ripple Distortion, SVG procedural para columnas y estrías. El toggle de tema no cambia una imagen por otra al azar: reconstruye el fondo entero, gradiente incluido, desde los mismos tokens que colorean cada swatch de abajo.</p>
+      <p>Una serif de lectura larga para el cuerpo, una serif más geométrica y en mayúsculas para títulos. Ningún color puro #000 o #fff en ningún token.</p>
+    </div>
+  </div>
+</section>
 
-<h3>Mármol y oro</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--marble)"><span class="swatch-hex" id="hex-marble"></span></div>--marble</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--gold-lt)"><span class="swatch-hex" id="hex-gold-lt"></span></div>--gold-lt</div>
-</div>
+<!-- ── Pestañas de información y detalles ── -->
+<section class="ap-stage-section" id="detalles">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="ap-decay-filter" x="-60%" y="-60%" width="220%" height="220%">
+        <feTurbulence type="turbulence" baseFrequency="0.012" numOctaves="2" seed="7" stitchTiles="stitch" result="ap-decay-noise"/>
+        <feDisplacementMap id="ap-decay-displace" in="SourceGraphic" in2="ap-decay-noise" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+  <div class="ap-gallery-tabs" id="ap-gallery-tabs">
+    <div class="ap-gallery-track" id="ap-gallery-track" role="tablist" aria-label="Detalles del tema">
+      <button class="ap-tab" role="tab" id="tab-paleta" aria-controls="panel-paleta" aria-selected="true" data-index="0">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;gap:4px">
+          <span style="width:14px;height:14px;border-radius:3px;background:var(--gold)"></span>
+          <span style="width:14px;height:14px;border-radius:3px;background:var(--aegean)"></span>
+          <span style="width:14px;height:14px;border-radius:3px;background:var(--rose)"></span>
+        </span>
+        <span class="ap-tab-label">Paleta</span>
+      </button>
+      <button class="ap-tab" role="tab" id="tab-componentes" aria-controls="panel-componentes" aria-selected="false" tabindex="-1" data-index="1">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;gap:5px;align-items:center">
+          <span style="font-family:var(--display);font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border:1px solid var(--gold);border-radius:var(--radius);color:var(--gold)">oro</span>
+          <span style="width:26px;height:14px;border-radius:var(--radius);background:var(--gold);opacity:.85"></span>
+        </span>
+        <span class="ap-tab-label">Componentes</span>
+      </button>
+      <button class="ap-tab" role="tab" id="tab-codigo" aria-controls="panel-codigo" aria-selected="false" tabindex="-1" data-index="2">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;flex-direction:column;gap:3px;width:56px">
+          <span style="height:4px;border-radius:2px;width:70%;background:var(--gold)"></span>
+          <span style="height:4px;border-radius:2px;width:100%;background:var(--text2)"></span>
+          <span style="height:4px;border-radius:2px;width:45%;background:var(--aegean)"></span>
+        </span>
+        <span class="ap-tab-label">Código</span>
+      </button>
+      <button class="ap-tab" role="tab" id="tab-narrativa" aria-controls="panel-narrativa" aria-selected="false" tabindex="-1" data-index="3">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;align-items:center;gap:6px">
+          <span style="width:18px;height:18px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:8px;color:var(--gold)">I</span>
+          <span style="width:34px;height:4px;border-radius:2px;background:var(--text2)"></span>
+        </span>
+        <span class="ap-tab-label">Narrativa</span>
+      </button>
+      <button class="ap-tab" role="tab" id="tab-mapa" aria-controls="panel-mapa" aria-selected="false" tabindex="-1" data-index="4">
+        <span class="ap-tab-preview" aria-hidden="true" style="width:40px;height:26px">
+          <svg viewBox="0 0 40 26" width="40" height="26" aria-hidden="true">
+            <line x1="6" y1="20" x2="20" y2="6" stroke="var(--border)" stroke-width="1"/>
+            <line x1="20" y1="6" x2="34" y2="18" stroke="var(--border)" stroke-width="1"/>
+            <line x1="6" y1="20" x2="34" y2="18" stroke="var(--border)" stroke-width="1"/>
+            <circle cx="6" cy="20" r="3" fill="var(--aegean)"/>
+            <circle cx="20" cy="6" r="3" fill="var(--gold)"/>
+            <circle cx="34" cy="18" r="3" fill="var(--rose)"/>
+          </svg>
+        </span>
+        <span class="ap-tab-label">Mapa del código</span>
+      </button>
+    </div>
+  </div>
 
-<h3>Flora</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--olive)"><span class="swatch-hex" id="hex-olive"></span></div>--olive</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--cliff)"><span class="swatch-hex" id="hex-cliff"></span></div>--cliff</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--rose)"><span class="swatch-hex" id="hex-rose"></span></div>--rose</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--petal)"><span class="swatch-hex" id="hex-petal"></span></div>--petal</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--yellow)"><span class="swatch-hex" id="hex-yellow"></span></div>--yellow</div>
-</div>
+  <div class="ap-stage wrap">
 
-<h3>Semánticos</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
-</div>
+    <div class="ap-panel" id="panel-paleta" role="tabpanel" aria-labelledby="tab-paleta">
+      <p class="muted">Mármol, oro y azul Egeo · El Mediterráneo en dos luces.</p>
 
-<div class="ornament">◆ ✦ ◆</div>
-<hr class="divider">
+      <h3>Cielo y mar</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--aegean)"><span class="swatch-hex" id="hex-aegean"></span></div>--aegean</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--aegean-lt)"><span class="swatch-hex" id="hex-aegean-lt"></span></div>--aegean-lt</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--sky)"><span class="swatch-hex" id="hex-sky"></span></div>--sky</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--sea)"><span class="swatch-hex" id="hex-sea"></span></div>--sea</div>
+      </div>
 
-<!-- ── Callouts ── -->
-<h2>Callouts</h2>
-<div class="callout"><div class="callout-title">Acento · Oro</div><p>Inscripciones del oráculo. La verdad llega en versos.</p></div>
-<div class="callout ok"><div class="callout-title">OK · Olivo</div><p>La ofrenda fue aceptada. Los dioses sonríen.</p></div>
-<div class="callout warn"><div class="callout-title">Warn · Oro</div><p>El sol desciende. Queda poco tiempo antes del ocaso.</p></div>
-<div class="callout danger"><div class="callout-title">Danger</div><p>La ira de Apolo no conoce límites. Retirarse.</p></div>
-<div class="callout aegean"><div class="callout-title">Aegean</div><p>El mar habla. Sus olas traen noticias de tierras lejanas.</p></div>
-<div class="callout olive"><div class="callout-title">Olive</div><p>Atenea bendice el olivo. Sabiduría que da sombra.</p></div>
-<div class="callout rose"><div class="callout-title">Rose</div><p>Afrodita pasa. Los pétalos caen a su paso.</p></div>
-<div class="callout marble"><div class="callout-title">Marble</div><p>Mármol de Paros. La piedra más blanca del mundo conocido.</p></div>
+      <h3>Mármol y oro</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--marble)"><span class="swatch-hex" id="hex-marble"></span></div>--marble</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--gold-lt)"><span class="swatch-hex" id="hex-gold-lt"></span></div>--gold-lt</div>
+      </div>
 
-<hr class="divider">
+      <h3>Flora</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--rose)"><span class="swatch-hex" id="hex-rose"></span></div>--rose</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--rose-dark)"><span class="swatch-hex" id="hex-rose-dark"></span></div>--rose-dark</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--petal)"><span class="swatch-hex" id="hex-petal"></span></div>--petal</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--petal-dark)"><span class="swatch-hex" id="hex-petal-dark"></span></div>--petal-dark</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--yellow)"><span class="swatch-hex" id="hex-yellow"></span></div>--yellow</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--yellow-dark)"><span class="swatch-hex" id="hex-yellow-dark"></span></div>--yellow-dark</div>
+      </div>
 
-<!-- ── Badges ── -->
-<h2>Badges</h2>
-<div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
-  <span class="badge gold">oro</span>
-  <span class="badge aegean">egeo</span>
-  <span class="badge olive">olivo</span>
-  <span class="badge rose">rosa</span>
-  <span class="badge yellow">amarillo</span>
-  <span class="badge ok">ok</span>
-  <span class="badge warn">warn</span>
-  <span class="badge danger">danger</span>
-  <span class="badge">default</span>
-</div>
+      <h3>Semánticos</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+      </div>
 
-<hr class="divider">
+      <hr class="divider">
+      <table>
+        <tr><th>Token</th><th>Día</th><th>Atardecer</th><th>Evocación</th></tr>
+        <tr><td><code>--gold</code></td><td>#C8900A</td><td>#E8A820</td><td>Oro · el sol · Apolo</td></tr>
+        <tr><td><code>--aegean</code></td><td>#2050A0</td><td>#C05020</td><td>Egeo · el mar · Poseidón</td></tr>
+        <tr><td><code>--marble</code></td><td>#F8F4EC</td><td>#E8D8B8</td><td>Mármol · los templos</td></tr>
+        <tr><td><code>--olive</code></td><td>#607830</td><td>#405820</td><td>Olivo · Atenea</td></tr>
+        <tr><td><code>--rose</code></td><td>#E87080</td><td>#D06070</td><td>Rosa · Afrodita · pétalos</td></tr>
+        <tr><td><code>--yellow</code></td><td>#F0C840</td><td>#E0A820</td><td>Amarillo · flores del campo</td></tr>
+      </table>
+    </div>
 
-<!-- ── Botones ── -->
-<h2>Botones</h2>
-<div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
-  <button class="btn primary">primary</button>
-  <button class="btn">default</button>
-  <button class="btn aegean">egeo</button>
-  <button class="btn olive">olivo</button>
-  <button class="btn rose">rosa</button>
-  <button class="btn ok">ok</button>
-  <button class="btn warn">warn</button>
-  <button class="btn danger">danger</button>
-</div>
+    <div class="ap-panel" id="panel-componentes" role="tabpanel" aria-labelledby="tab-componentes" hidden>
+      <h3>Callouts</h3>
+      <div class="callout"><div class="callout-title">Acento · Oro</div><p>Inscripciones del oráculo. La verdad llega en versos.</p></div>
+      <div class="callout ok"><div class="callout-title">OK · Olivo</div><p>La ofrenda fue aceptada. Los dioses sonríen.</p></div>
+      <div class="callout warn"><div class="callout-title">Warn · Oro</div><p>El sol desciende. Queda poco tiempo antes del ocaso.</p></div>
+      <div class="callout danger"><div class="callout-title">Danger</div><p>La ira de Apolo no conoce límites. Retirarse.</p></div>
+      <div class="callout aegean"><div class="callout-title">Aegean</div><p>El mar habla. Sus olas traen noticias de tierras lejanas.</p></div>
+      <div class="callout olive"><div class="callout-title">Olive</div><p>Atenea bendice el olivo. Sabiduría que da sombra.</p></div>
+      <div class="callout rose"><div class="callout-title">Rose</div><p>Afrodita pasa. Los pétalos caen a su paso.</p></div>
+      <div class="callout marble"><div class="callout-title">Marble</div><p>Mármol de Paros. La piedra más blanca del mundo conocido.</p></div>
 
-<hr class="divider">
+      <hr class="divider">
+      <h3>Badges</h3>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+        <span class="badge gold">oro</span>
+        <span class="badge aegean">egeo</span>
+        <span class="badge olive">olivo</span>
+        <span class="badge rose">rosa</span>
+        <span class="badge yellow">amarillo</span>
+        <span class="badge ok">ok</span>
+        <span class="badge warn">warn</span>
+        <span class="badge danger">danger</span>
+        <span class="badge">default</span>
+      </div>
 
-<!-- ── Métricas ── -->
-<h2>Métricas</h2>
-<div class="metrics-row">
-  <div class="metric"><div class="metric-val">XII</div><div class="metric-lbl">dioses (oro)</div></div>
-  <div class="metric"><div class="metric-val aegean">∞</div><div class="metric-lbl">mares (egeo)</div></div>
-  <div class="metric"><div class="metric-val olive">9</div><div class="metric-lbl">musas (olivo)</div></div>
-  <div class="metric"><div class="metric-val rose">☼</div><div class="metric-lbl">soles (rosa)</div></div>
-</div>
+      <hr class="divider">
+      <h3>Botones</h3>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+        <button class="btn primary">primary</button>
+        <button class="btn">default</button>
+        <button class="btn aegean">egeo</button>
+        <button class="btn olive">olivo</button>
+        <button class="btn rose">rosa</button>
+        <button class="btn ok">ok</button>
+        <button class="btn warn">warn</button>
+        <button class="btn danger">danger</button>
+      </div>
 
-<hr class="divider">
+      <hr class="divider">
+      <h3>Métricas</h3>
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">XII</div><div class="metric-lbl">dioses (oro)</div></div>
+        <div class="metric"><div class="metric-val aegean">∞</div><div class="metric-lbl">mares (egeo)</div></div>
+        <div class="metric"><div class="metric-val olive">9</div><div class="metric-lbl">musas (olivo)</div></div>
+        <div class="metric"><div class="metric-val rose">☼</div><div class="metric-lbl">soles (rosa)</div></div>
+      </div>
 
-<!-- ── Código ── -->
-<h2>Código</h2>
-<pre data-lang="python"><span class="cm"># El oráculo de Delfos</span>
+      <hr class="divider">
+      <h3>Cards</h3>
+      <div class="grid-2">
+        <div class="card"><strong>La Ilíada</strong><span class="badge gold" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">La cólera de Aquiles · Troya · El precio de la gloria.</p></div>
+        <div class="card"><strong>La Odisea</strong><span class="badge aegean" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">Diez años de regreso · El mar oscuro · Ítaca espera.</p></div>
+      </div>
+    </div>
+
+    <div class="ap-panel" id="panel-codigo" role="tabpanel" aria-labelledby="tab-codigo" hidden>
+      <pre data-lang="python"><span class="cm"># El oráculo de Delfos</span>
 <span class="kw">class</span> Oraculo:
     <span class="fn">def</span> <span class="kw">__init__</span>(self, dios):
         self.dios    = dios
@@ -454,54 +689,43 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 
 apolo = <span class="fn">Oraculo</span>(<span class="str">"Apolo"</span>)
 <span class="fn">print</span>(apolo.<span class="fn">consultar</span>(<span class="str">"¿Cuál es mi destino?"</span>))</pre>
+    </div>
 
-<hr class="divider">
+    <div class="ap-panel" id="panel-narrativa" role="tabpanel" aria-labelledby="tab-narrativa" hidden>
+      <h3>Ode Log</h3>
+      <div class="ode-log">
+        <div class="ode-entry"><div class="ode-dot gold">I</div><div><h4>Invocación</h4><p class="muted">Canta, oh musa, la cólera del pélida Aquiles. El poema comienza.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>El mar de vino oscuro</h4><p class="muted">Odiseo navega. El Egeo lo devuelve, el Egeo lo aleja.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot rose">III</div><div><h4>Afrodita pasa</h4><p class="muted">Pétalos de rosa caen sobre el ágora. La diosa no mira atrás.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot olive">IV</div><div><h4>La sabiduría</h4><p class="muted">Atenea planta el olivo. La ciudad tendrá nombre eterno.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot gold">V</div><div><h4>El sol desciende</h4><p class="muted">Apolo conduce su carro al horizonte. Mañana volverá.</p></div></div>
+      </div>
 
-<!-- ── Tabla ── -->
-<h2>Tabla</h2>
-<table>
-  <tr><th>Token</th><th>Día</th><th>Atardecer</th><th>Evocación</th></tr>
-  <tr><td><code>--gold</code></td><td>#C8900A</td><td>#E8A820</td><td>Oro · el sol · Apolo</td></tr>
-  <tr><td><code>--aegean</code></td><td>#2050A0</td><td>#C05020</td><td>Egeo · el mar · Poseidón</td></tr>
-  <tr><td><code>--marble</code></td><td>#F8F4EC</td><td>#E8D8B8</td><td>Mármol · los templos</td></tr>
-  <tr><td><code>--olive</code></td><td>#607830</td><td>#405820</td><td>Olivo · Atenea</td></tr>
-  <tr><td><code>--rose</code></td><td>#E87080</td><td>#D06070</td><td>Rosa · Afrodita · pétalos</td></tr>
-  <tr><td><code>--yellow</code></td><td>#F0C840</td><td>#E0A820</td><td>Amarillo · flores del campo</td></tr>
-</table>
+      <hr class="divider">
+      <h3>Estrofas</h3>
+      <div class="strophe" id="strophe-1"><div class="strophe-num">I</div><div><h4>Estrofa</h4><p class="muted">El coro avanza desde la derecha. Los pétalos caen.</p></div></div>
+      <div class="strophe" id="strophe-2" style="border-left-color:var(--aegean)"><div class="strophe-num" style="color:var(--aegean)">II</div><div><h4>Antistrofa</h4><p class="muted">El coro retrocede. El eco del mar llena el teatro.</p></div></div>
+      <div class="strophe" id="strophe-3" style="border-left-color:var(--olive)"><div class="strophe-num" style="color:var(--olive)">III</div><div><h4>Épodo</h4><p class="muted">El coro se detiene. El oráculo ha hablado.</p></div></div>
+    </div>
 
-<hr class="divider">
+    <div class="ap-panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" hidden>
+      <p class="muted">Árbol de archivos, dependencias reales entre ellos, y clases/métodos de iroFactory completo, generado con <a href="https://github.com/RemiH06/iroFactory">Ariadne</a> directamente del código de este repositorio. Arrastra para moverte, gira la rueda para acercar, haz clic en un nodo para ver su detalle.</p>
+      <div class="ap-graph-frame">
+        <iframe src="../ariadne/irofactory.html" title="Mapa del código de iroFactory" loading="lazy"></iframe>
+      </div>
+    </div>
 
-<!-- ── Ode Log ── -->
-<h2>Ode Log</h2>
-<div class="ode-log">
-  <div class="ode-entry"><div class="ode-dot gold">I</div><div><h4>Invocación</h4><p class="muted">Canta, oh musa, la cólera del pélida Aquiles. El poema comienza.</p></div></div>
-  <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>El mar de vino oscuro</h4><p class="muted">Odiseo navega. El Egeo lo devuelve, el Egeo lo aleja.</p></div></div>
-  <div class="ode-entry"><div class="ode-dot rose">III</div><div><h4>Afrodita pasa</h4><p class="muted">Pétalos de rosa caen sobre el ágora. La diosa no mira atrás.</p></div></div>
-  <div class="ode-entry"><div class="ode-dot olive">IV</div><div><h4>La sabiduría</h4><p class="muted">Atenea planta el olivo. La ciudad tendrá nombre eterno.</p></div></div>
-  <div class="ode-entry"><div class="ode-dot gold">V</div><div><h4>El sol desciende</h4><p class="muted">Apolo conduce su carro al horizonte. Mañana volverá.</p></div></div>
-</div>
+  </div>
+</section>
 
-<hr class="divider">
+<footer class="ap-footer">
+  <div class="ap-footer-row">
+    <span>Apolo_theme · iroFactory</span>
+    <a href="https://github.com/RemiH06/iroFactory">github.com/RemiH06/iroFactory</a>
+    <span>AGPL-3.0</span>
+  </div>
+</footer>
 
-<!-- ── Strophes ── -->
-<h2>Estrofas</h2>
-<div class="strophe" id="strophe-1"><div class="strophe-num">I</div><div><h4>Estrofa</h4><p class="muted">El coro avanza desde la derecha. Los pétalos caen.</p></div></div>
-<div class="strophe" id="strophe-2" style="border-left-color:var(--aegean)"><div class="strophe-num" style="color:var(--aegean)">II</div><div><h4>Antistrofa</h4><p class="muted">El coro retrocede. El eco del mar llena el teatro.</p></div></div>
-<div class="strophe" id="strophe-3" style="border-left-color:var(--olive)"><div class="strophe-num" style="color:var(--olive)">III</div><div><h4>Épodo</h4><p class="muted">El coro se detiene. El oráculo ha hablado.</p></div></div>
-
-<hr class="divider">
-
-<!-- ── Cards ── -->
-<h2>Cards</h2>
-<div class="grid-2">
-  <div class="card"><strong>La Ilíada</strong><span class="badge gold" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">La cólera de Aquiles · Troya · El precio de la gloria.</p></div>
-  <div class="card"><strong>La Odisea</strong><span class="badge aegean" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">Diez años de regreso · El mar oscuro · Ítaca espera.</p></div>
-</div>
-
-<div class="ornament" style="margin-top:28px">✦ ◆ ✦ ◆ ✦</div>
-<p class="muted" style="text-align:center;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase">
-  apolo_theme · by RemiH06 · iroFactory · AGPL-3.0
-</p>
 </div>
 
 <script>
@@ -536,6 +760,8 @@ function toggleTheme() {
   updateHeroImage();
   buildSky();
   buildTexture();
+  buildBackStripes();
+  buildTiltColumns(); // las tiras de imagen viven acá ahora, no en buildTexture()
   sunArc();
 }
 
@@ -555,7 +781,8 @@ function updateHexes() {
   const map = {
     'hex-aegean':'--aegean','hex-aegean-lt':'--aegean-lt','hex-sky':'--sky','hex-sea':'--sea',
     'hex-marble':'--marble','hex-gold':'--gold','hex-gold-lt':'--gold-lt',
-    'hex-olive':'--olive','hex-cliff':'--cliff','hex-rose':'--rose','hex-petal':'--petal','hex-yellow':'--yellow',
+    'hex-rose':'--rose','hex-rose-dark':'--rose-dark','hex-petal':'--petal','hex-petal-dark':'--petal-dark',
+    'hex-yellow':'--yellow','hex-yellow-dark':'--yellow-dark',
     'hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger',
   };
   Object.entries(map).forEach(([id,tok]) => {
@@ -966,7 +1193,7 @@ function makePetal() {
 // derecha al final) a medida que los pétalos salen por ahí. ──
 function seedAvalanche() {
   avalancheActive = true;
-  const n = 300;
+  const n = 150;
   for (let i = 0; i < n; i++) {
     const p = makePetal();
     p.x = Math.random() * petalW;
@@ -1029,68 +1256,25 @@ function buildTexture() {
   const H = window.innerHeight;
   const marbleBase   = isDark ? '#E0CE9E' : '#FAF6EC';
   const marbleShadow = isDark ? '#5C4826' : '#B0A484';
-  const goldCol      = isDark ? '#E8A820' : '#C8900A';
-
-  // ── Medallón dorado — de vuelta en las columnas dobles (CD, JK,
-  // QR, XY, AEAF...) a pedido del usuario. ──
-  function medallion(cx, cy, r) {
-    let out = '';
-    out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${goldCol}" stroke-width="1" opacity="0.8"/>`;
-    out += `<circle cx="${cx}" cy="${cy}" r="${r*.4}" fill="none" stroke="${goldCol}" stroke-width="0.8" opacity="0.8"/>`;
-    for (let i = 0; i < 8; i++) {
-      const a  = (Math.PI*2*i)/8;
-      const pr = r * 0.68;
-      const px = cx + Math.cos(a)*pr, py = cy + Math.sin(a)*pr;
-      out += `<ellipse cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" rx="${(r*.3).toFixed(1)}" ry="${(r*.17).toFixed(1)}" transform="rotate(${(a*180/Math.PI).toFixed(1)} ${px.toFixed(1)} ${py.toFixed(1)})" fill="none" stroke="${goldCol}" stroke-width="0.7" opacity="0.7"/>`;
-    }
-    out += `<circle cx="${cx}" cy="${cy}" r="${r*.14}" fill="${goldCol}" opacity="0.75"/>`;
-    return out;
-  }
 
   const gap       = COL_GAP;
   const pauseEvery = 7;  // cada N estrías, una pausa: ahí dos columnas delgadas se
                          // funden en una gruesa (se salta la estría divisoria)
-  const rowGap    = 320; // separación vertical entre medallones de una misma pausa
 
   const n = Math.ceil(W / gap) + 1;
 
-  // Posiciones de pausa: ahí se salta la estría divisoria y dos
-  // columnas delgadas (pauseIdx-1 y pauseIdx) se funden en una doble.
+  // Posiciones de pausa: ahí se salta la estría divisoria — el div
+  // real de tilt de ese hueco es el doble de ancho (buildTiltColumns()).
   const pauseSet = new Set();
   for (let i = 0; i <= n; i++) {
     if (i % pauseEvery === Math.floor(pauseEvery / 2)) pauseSet.add(i);
   }
 
-  // Columnas = tiras de prouned_apolo.webp (la misma imagen del hero),
-  // barajadas: cada columna es una ventana angosta que revela una
-  // porción distinta de una copia virtual de la imagen (ancho total
-  // n×gap, `preserveAspectRatio="xMidYMid slice"` la cubre completa),
-  // pero desplazada según un índice barajado en vez del suyo propio —
-  // "la misma imagen pero desordenada", a pedido del usuario. La
-  // imagen real (<image>, ~0.45MB en base64) se define UNA sola vez
-  // en <defs> y cada columna la referencia con <use> — repetirla por
-  // columna (50-70 veces) inflaría el SVG a decenas de MB.
-  const heroSrc = document.getElementById('ap-hero-img').src;
-  const perm = shuffledIndices(n);
-  const heroImgDef = `<image id="ap-hero-strip" width="${n * gap}" height="${H}" preserveAspectRatio="xMidYMid slice" href="${heroSrc}"/>`;
-
-  let cols = '', medallions = '';
-  for (let i = 0; i < n; i++) {
-    const x = i * gap;
-    cols += `<svg x="${x.toFixed(1)}" y="0" width="${gap}" height="${H}" viewBox="0 0 ${gap} ${H}">
-      <use href="#ap-hero-strip" x="${(-perm[i] * gap).toFixed(1)}" y="0"/>
-    </svg>`;
-  }
-  pauseSet.forEach(pauseIdx => {
-    const cx = pauseIdx * gap;
-    const rows = Math.ceil(H / rowGap) + 1;
-    for (let r = 0; r < rows; r++) {
-      const jitter = ((pauseIdx * 71 + r * 113) % 90) - 45;
-      const m = medallion(cx, r * rowGap + 90 + jitter, 19.5); // 150% del tamaño original (13)
-      medallions += `<g filter="url(#ap-gold-glow)">${m}</g>`;
-    }
-  });
-
+  // Ya no dibuja las tiras de imagen (eso vive en buildTiltColumns(),
+  // como divs reales tilteables) ni medallones (quitados). Solo queda
+  // el mármol base + las estrías divisorias — lienzo disperso de
+  // nuevo, no denso, para que Light Rays (z-index encima) no quede
+  // enterrado.
   let flutes = '';
   for (let i = 0; i <= n; i++) {
     if (!pauseSet.has(i)) {
@@ -1099,26 +1283,58 @@ function buildTexture() {
     }
   }
 
-  const glowDef = `<filter id="ap-gold-glow" x="-60%" y="-60%" width="220%" height="220%">
-    <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="blur"/>
-    <feMerge>
-      <feMergeNode in="blur"/>
-      <feMergeNode in="SourceGraphic"/>
-    </feMerge>
-  </filter>`;
-
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
-    <defs>${heroImgDef}${glowDef}</defs>
     <rect width="${W}" height="${H}" fill="${marbleBase}" opacity="0.55"/>
-    ${cols}
     ${flutes}
-    ${medallions}
   </svg>`;
 
   const el = document.getElementById('ap-texture');
   el.style.backgroundImage  = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
   el.style.backgroundSize   = `${W}px ${H}px`;
   el.style.backgroundRepeat = 'no-repeat';
+}
+
+// ══════════════════════════════════════════════════════
+// CAPA 4b — Segunda capa de tiras, detrás del tilt-card, con
+// su propio barajado independiente y SIN tilt (estática). Mismo
+// slot simple/doble que la capa de enfrente (misma cuadrícula de
+// columnas), pero una permutación distinta — otra reordenada,
+// no un espejo de la de enfrente.
+// ══════════════════════════════════════════════════════
+function buildBackStripes() {
+  const layer = document.getElementById('ap-back-stripes');
+  layer.innerHTML = '';
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const n = Math.ceil(W / COL_GAP) + 1;
+  const pauseEvery = 7;
+
+  const pauseSet = new Set();
+  for (let i = 0; i <= n; i++) {
+    if (i % pauseEvery === Math.floor(pauseEvery / 2)) pauseSet.add(i);
+  }
+
+  const heroSrc = document.getElementById('ap-hero-img').src;
+  const virtualW = n * COL_GAP;
+  const perm = shuffledIndices(n); // barajado propio, no el mismo que el de enfrente
+  let permCursor = 0;
+
+  for (let i = 0; i < n; i++) {
+    if (pauseSet.has(i)) continue;
+    const isDouble = pauseSet.has(i + 1);
+    const units = isDouble ? 2 : 1;
+    const width = COL_GAP * units;
+    const offset = Math.min(perm[permCursor++ % perm.length], n - units);
+
+    const div = document.createElement('div');
+    div.className = 'back-stripe';
+    div.style.left = (i * COL_GAP) + 'px';
+    div.style.width = width + 'px';
+    div.style.backgroundImage = `url("${heroSrc}")`;
+    div.style.backgroundSize = `${virtualW}px ${H}px`;
+    div.style.backgroundPosition = `${-offset * COL_GAP}px 0`;
+    layer.appendChild(div);
+  }
 }
 
 // ══════════════════════════════════════════════════════
@@ -1134,6 +1350,7 @@ function buildTiltColumns() {
   layer.innerHTML = '';
   tiltCols = [];
   const W = window.innerWidth;
+  const H = window.innerHeight;
   const n = Math.ceil(W / COL_GAP) + 1;
   const pauseEvery = 7; // mismo ritmo que buildTexture() — ahí se funden 2 en una doble
 
@@ -1142,17 +1359,43 @@ function buildTiltColumns() {
     if (i % pauseEvery === Math.floor(pauseEvery / 2)) pauseSet.add(i);
   }
 
-  // Las columnas dobles (CD, JK, QR, XY, AEAF...) son UNA sola carta
-  // de tilt, del mismo ancho que su bloque real de 2×COL_GAP — no
-  // dos cartas independientes tilteando por separado.
+  // Cada columna es un div real con su propio recorte de la imagen del
+  // hero como background (background-position sobre una copia virtual
+  // de ancho n×COL_GAP) — "la misma imagen pero desordenada", a
+  // pedido del usuario, y ahora con contenido de verdad que SÍ se ve
+  // rotar con el tilt (antes era un div vacío). El barajado se hace a
+  // nivel de "slot" (gap o doble-gap), no por columna individual, para
+  // que las 5 posiciones dobles (CD, JK, QR, XY, AEAF...) reciban UNA
+  // sola tira del doble de ancho en vez de dos tiras independientes
+  // pegadas sin costura — a pedido explícito del usuario.
+  const heroSrc = document.getElementById('ap-hero-img').src;
+  const virtualW = n * COL_GAP;
+  const perm = shuffledIndices(n);
+  let permCursor = 0;
+
   for (let i = 0; i < n; i++) {
     if (pauseSet.has(i)) continue; // ya se creó como parte de la doble anterior
     const isDouble = pauseSet.has(i + 1);
-    const width = isDouble ? COL_GAP * 2 : COL_GAP;
+    const units = isDouble ? 2 : 1;
+    const width = COL_GAP * units;
+    // offset en unidades de COL_GAP, recortado para que la ventana no
+    // se salga del ancho virtual (relevante sobre todo para dobles).
+    const offset = Math.min(perm[permCursor++ % perm.length], n - units);
+
+    // Margen del 8% por lado: sin esto, las tilt-card cubren el 100%
+    // del slot en reposo y la capa de atrás (#ap-back-stripes) nunca
+    // se alcanza a ver — el escorzo 3D del tilt por sí solo no abría
+    // hueco suficiente para notarse (probado, no alcanzaba). Con el
+    // margen, siempre hay una franja visible de la capa de atrás entre
+    // tarjetas, más ancha todavía al tiltear.
+    const margin = width * 0.08;
     const div = document.createElement('div');
     div.className = 'tilt-col';
-    div.style.left = (i * COL_GAP) + 'px';
-    div.style.width = width + 'px';
+    div.style.left = (i * COL_GAP + margin) + 'px';
+    div.style.width = (width - margin * 2) + 'px';
+    div.style.backgroundImage = `url("${heroSrc}")`;
+    div.style.backgroundSize = `${virtualW}px ${H}px`;
+    div.style.backgroundPosition = `${-(offset * COL_GAP + margin)}px 0`;
     layer.appendChild(div);
     tiltCols.push({ el: div, cx: i * COL_GAP + width / 2 });
   }
@@ -1470,16 +1713,18 @@ function animLoop(ts) {
 
 // ── Init ───────────────────────────────────────────────
 window.addEventListener('resize', () => {
-  buildSky(); resizePetals(); buildTexture(); buildTiltColumns();
+  buildSky(); resizePetals(); buildTexture(); buildBackStripes(); buildTiltColumns();
 });
 buildSky();
 resizePetals();
 buildTexture();
+buildBackStripes();
 buildTiltColumns();
 updateHexes();
 raysFx = initRays();
 rippleFx = initRipple();
 initHero();
+initTabs();
 if (!reduceMotion.matches) seedAvalanche();
 animLoop();
 reduceMotion.addEventListener('change', () => { if (!reduceMotion.matches) requestAnimationFrame(animLoop); });
@@ -1499,6 +1744,166 @@ if (!reduceMotion.matches) {
     });
   });
   window.addEventListener('mouseleave', () => updateTilt(-9999, -9999));
+}
+
+// ══════════════════════════════════════════════════════
+// Pestañas (nivel "Detalles") como galería circular — ver el comentario
+// largo junto a .ap-gallery-tabs en el CSS para el porqué de esta
+// reconstrucción (Circular Gallery + Decay Card, sin OGL/GSAP).
+// selectTab() sigue siendo la única fuente de verdad de accesibilidad
+// (aria-selected, hidden, tabindex); la física de abajo es puramente
+// visual y nunca decide qué panel está activo — centrar un plato al
+// arrastrar no selecciona su panel, evita disparar el iframe de Mapa
+// del código o saltar de contenido solo por explorar la galería.
+// ══════════════════════════════════════════════════════
+function initTabs() {
+  const wrap = document.getElementById('ap-gallery-tabs');
+  const track = document.getElementById('ap-gallery-track');
+  const tabs = Array.from(document.querySelectorAll('.ap-tab'));
+  const displaceEl = document.getElementById('ap-decay-displace');
+  if (!tabs.length || !track) return;
+
+  function selectTab(tab) {
+    tabs.forEach(t => {
+      const selected = t === tab;
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+      t.tabIndex = selected ? 0 : -1;
+      const panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (!panel) return;
+      panel.hidden = !selected;
+      if (selected) {
+        // Por si el panel estaba oculto cuando la animación de entrada
+        // general quiso revelarlo (un elemento con `hidden` no
+        // intersecta nunca) — la red de seguridad de más abajo ya lo
+        // hace a los 3s, esto cubre el caso de togglear una pestaña
+        // antes de eso.
+        panel.querySelectorAll('.swatch, .callout, .badge, .btn, .metric, .card, .strophe, .ode-entry')
+          .forEach(el => { el.style.opacity = ''; el.style.transform = ''; });
+      }
+    });
+  }
+
+  // No-op hasta que la física se active más abajo — con reduced-motion
+  // se queda así, un click sigue seleccionando sin centrar nada.
+  let centerOn = () => {};
+  let dragMoved = false;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      if (dragMoved) { dragMoved = false; return; }
+      selectTab(tab);
+      centerOn(tabs.indexOf(tab));
+    });
+  });
+  track.addEventListener('keydown', (e) => {
+    const i = tabs.indexOf(document.activeElement);
+    if (i === -1) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); const n = tabs[(i + 1) % tabs.length]; n.focus(); selectTab(n); centerOn(tabs.indexOf(n)); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); const p = tabs[(i - 1 + tabs.length) % tabs.length]; p.focus(); selectTab(p); centerOn(tabs.indexOf(p)); }
+  });
+
+  if (reduceMotion.matches) {
+    // Sin arco ni arrastre — fila plana con scroll nativo, la
+    // distorsión de Decay Card tampoco corre (scale se queda en 0).
+    track.style.display = 'flex';
+    track.style.gap = '16px';
+    track.style.overflowX = 'auto';
+    track.style.height = 'auto';
+    track.style.cursor = 'default';
+    tabs.forEach(t => { t.style.position = 'static'; });
+    return;
+  }
+
+  const GAP = 166;       // separación centro-a-centro entre platos
+  const BEND_NORM = 2.2; // distancia (en platos) a la que el arco satura
+  const BEND_PX = 46;    // profundidad máxima del arco
+  const BEND_DEG = 12;   // inclinación máxima
+  let containerW = wrap.clientWidth;
+  const scroll = { current: 0, target: 0, last: 0, ease: 0.14 };
+  let displacement = 0;
+  let isDown = false, startX = 0, startScroll = 0, pointerId = null;
+
+  function clampTarget(v) { return Math.max(0, Math.min((tabs.length - 1) * GAP, v)); }
+  centerOn = (i) => { scroll.target = clampTarget(i * GAP); };
+
+  function nearestIndex() {
+    return Math.max(0, Math.min(tabs.length - 1, Math.round(scroll.current / GAP)));
+  }
+
+  function snap() { centerOn(nearestIndex()); }
+
+  function onResize() {
+    containerW = wrap.clientWidth;
+    const current = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true');
+    centerOn(current === -1 ? 0 : current);
+    scroll.current = scroll.target;
+  }
+
+  track.addEventListener('pointerdown', (e) => {
+    isDown = true; dragMoved = false;
+    startX = e.clientX; startScroll = scroll.target;
+    pointerId = e.pointerId;
+    // Sin capturar el puntero todavía: si esto termina siendo un click
+    // simple (sin arrastre), capturar de entrada redirige el evento
+    // click del <button> hacia el track y el botón nunca lo recibe.
+    // Se captura recién en pointermove, cuando ya hay arrastre real.
+  });
+  track.addEventListener('pointermove', (e) => {
+    if (!isDown) return;
+    const dx = startX - e.clientX;
+    if (!dragMoved && Math.abs(dx) > 6) {
+      dragMoved = true;
+      track.classList.add('is-dragging');
+      try { track.setPointerCapture(pointerId); } catch (err) { /* noop */ }
+    }
+    if (dragMoved) scroll.target = clampTarget(startScroll + dx);
+  });
+  function endDrag() {
+    if (!isDown) return;
+    isDown = false;
+    track.classList.remove('is-dragging');
+    if (dragMoved) snap();
+  }
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
+  track.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    scroll.target = clampTarget(scroll.target + (e.deltaY || e.deltaX) * 0.6);
+    clearTimeout(track._wheelSnap);
+    track._wheelSnap = setTimeout(snap, 160);
+  }, { passive: false });
+
+  function render() {
+    scroll.current += (scroll.target - scroll.current) * scroll.ease;
+    const speed = scroll.current - scroll.last;
+    scroll.last = scroll.current;
+
+    let nearestI = 0, nearestDist = Infinity;
+    tabs.forEach((tab, i) => {
+      const x = i * GAP - scroll.current;
+      const norm = Math.max(-BEND_NORM, Math.min(BEND_NORM, x / GAP));
+      const t = Math.abs(norm) / BEND_NORM;
+      const arc = t * BEND_PX;
+      const rot = -Math.sign(norm) * t * BEND_DEG;
+      const screenX = containerW / 2 + x - tab.offsetWidth / 2;
+      tab.style.transform = `translateX(${screenX}px) translateY(${arc}px) rotate(${rot}deg)`;
+      if (Math.abs(x) < nearestDist) { nearestDist = Math.abs(x); nearestI = i; }
+    });
+    tabs.forEach((t, i) => t.classList.toggle('is-centered', i === nearestI));
+
+    // Las miniaturas miden ~40-56px — un scale calibrado para la imagen
+    // grande de Decay Card (~600px) las desplazaría fuera del propio
+    // recuadro del filtro y se verían desaparecer. Tope bajo, a escala
+    // del tamaño real de la miniatura.
+    displacement += (Math.min(Math.abs(speed) * 0.9, 13) - displacement) * 0.15;
+    if (displaceEl) displaceEl.setAttribute('scale', displacement.toFixed(1));
+
+    requestAnimationFrame(render);
+  }
+
+  onResize();
+  window.addEventListener('resize', onResize);
+  requestAnimationFrame(render);
 }
 
 // ── Coreografía de estrofas + ode log + entrada general ──
