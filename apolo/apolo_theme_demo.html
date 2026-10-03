@@ -3,13 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>apolo_theme — Demo</title>
+<title>apolo_theme · Demo</title>
 <meta name="description" content="apolo: tema griego enmarcado por columnas jónicas dibujadas en SVG (éntasis, estrías, volutas) y rosetas, con pétalos derivando sobre un cielo Egeo de día o un atardecer púrpura y naranja de noche.">
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css2?family=Cinzel:wght@400;700&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 <style>
+/* ── PALETA (skill colorimetría) ──
+   Concepto: el Mediterráneo de Apolo en dos luces. Día: oro (40°) y
+   azul Egeo (215°), regla Complementary (175° de separación, casi el
+   opuesto exacto), con el rosa de los pétalos (352°) y el olivo (80°)
+   como acentos de contenido. Atardecer: el Egeo pasa a terracota (20°)
+   y la paleta se vuelve Analogous cálida (rosa 355°, terracota 20°,
+   oro 40°). Las tintas --*-ink son los mismos matices con la
+   luminosidad justa para texto WCAG AA en cada modo. */
 /* ══════════════════════════════════════════════════════
-   TOKENS — CLARO (default) · día griego
+   TOKENS · CLARO (default) · día griego
 ══════════════════════════════════════════════════════ */
 body {
   --bg:       #F5F0E8;
@@ -45,19 +53,32 @@ body {
   --serif:    'Newsreader', serif;
   --mono:     'Fira Code', monospace;
   --radius:   3px;
-  /* Tiras de las columnas (foto real) más claras en modo día — el
+  /* Tiras de las columnas (foto real) más claras en modo día · el
      mármol pide un fondo pálido. body.dark las invierte a más
      oscuras, ver ahí el porqué. */
   --strip-filter: blur(6px) brightness(1.25);
   --tilt-filter:  blur(3px) brightness(1.32);
   /* Título: oro sólido en modo día (como estaba antes de probar
-     mármol ahí) — el mármol como base del título es solo para modo
+     mármol ahí) · el mármol como base del título es solo para modo
      noche, ver body.dark. */
   --title-base: var(--gold);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --gold-ink: #795706;
+  --aegean-lt-ink: #1A5EA7;
+  --rose-ink: #B61D32;
+  --yellow-ink: #725A09;
+  --accent-ink: #795706;
+  --ok-ink: #48653A;
+  --warn-ink: #795706;
+  --danger-ink: #AF2C2C;
+  --olive-ink: #506428;
+  --sky-ink: #1B5EA5;
 }
 
 /* ══════════════════════════════════════════════════════
-   TOKENS — OSCURO · atardecer griego
+   TOKENS · OSCURO · atardecer griego
 ══════════════════════════════════════════════════════ */
 body.dark {
   --bg:       #0E0A14;
@@ -69,7 +90,7 @@ body.dark {
   --marble:   #E8D8B8;
   --gold:     #E8A820;
   --gold-lt:  #F8C840;
-  --aegean:   #C05020;
+  --aegean:   #DA5B24;
   --aegean-lt:#E07040;
   --olive:    #405820;
   --rose:     #D06070;
@@ -79,19 +100,32 @@ body.dark {
   --sea:      #201840;
   --cliff:    #304020;
   --accent:   #E8A820;
-  --accent2:  #C05020;
+  --accent2:  #DA5B24;
   --ok:       #405820;
   --warn:     #E8A820;
   --danger:   #C03030;
   --black:    #060408;
   --white:    #F8F0E0;
   --gray:     #806040;
-  /* Atardecer griego ya es una imagen cálida/saturada de por sí —
+  /* Atardecer griego ya es una imagen cálida/saturada de por sí ·
      aclararla con el mismo filtro del modo día la lava; se oscurece
      en su lugar para que lea como fondo de noche, no como flash. */
   --strip-filter: blur(6px) brightness(.72);
   --tilt-filter:  blur(3px) brightness(.6);
   --title-base: var(--marble);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --gold-ink: var(--gold);
+  --aegean-lt-ink: var(--aegean-lt);
+  --rose-ink: var(--rose);
+  --yellow-ink: var(--yellow);
+  --accent-ink: var(--accent);
+  --ok-ink: #678E34;
+  --warn-ink: var(--warn);
+  --danger-ink: #D65B5B;
+  --olive-ink: #678E34;
+  --sky-ink: #B56C90;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -102,21 +136,21 @@ html,body{height:100%}
    más claro detrás del texto + letras planas, sin contorno. Como
    prácticamente todo el contenido ahora vive dentro de un panel con
    su propio --bg2/--bg3 (Presentación, Ejemplos, Pestañas), ese panel
-   ya resuelve el contraste — el contorno quedó redundante, no solo
+   ya resuelve el contraste · el contorno quedó redundante, no solo
    opcional. Se quita del todo.*/
 body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:21px;line-height:1.75;transition:background .5s,color .5s}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
 
 /* ══════════════════════════════════════════════════════
-   ESCENA DE FONDO — capas fijas
+   ESCENA DE FONDO · capas fijas
 ══════════════════════════════════════════════════════ */
 #ap-sky      {position:fixed;inset:0;z-index:0;pointer-events:none}
-#ap-texture  {position:fixed;inset:0;z-index:1;pointer-events:none} /* mármol + estrías — lienzo disperso */
+#ap-texture  {position:fixed;inset:0;z-index:1;pointer-events:none} /* mármol + estrías · lienzo disperso */
 /* Segunda capa de tiras, DETRÁS de las tilt-card, con su propio
-   barajado (independiente del de enfrente) y sin tilt — estática. En
+   barajado (independiente del de enfrente) y sin tilt · estática. En
    reposo las tilt-card de enfrente son opacas y la tapan del todo;
    al tiltear, el escorzo 3D descubre franjas en el borde rotado y
-   esta capa asoma detrás — la revelación es el efecto, no una
+   esta capa asoma detrás · la revelación es el efecto, no una
    transparencia fija. Más blur que la de enfrente (6px vs 3px) para
    que se lea como "más al fondo". */
 #ap-back-stripes{position:fixed;inset:0;z-index:2;pointer-events:none;filter:var(--strip-filter)}
@@ -125,10 +159,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:2
    de la imagen del hero (background-position) y rota en 3D hacia el
    cursor (motion.dev "js-tilt-card", reconstruido desde el concepto).
    Las columnas dejaron de ser un solo SVG de fondo en #ap-texture
-   para poder tiltear contenido real y visible — antes la capa de tilt
+   para poder tiltear contenido real y visible · antes la capa de tilt
    era invisible (sin brillo/fondo propio), rotar un div vacío no
    rotaba nada a la vista. El blur/aclarado va en la CAPA completa
-   (#ap-tilt-layer), no por columna — un filtro por elemento (50-70
+   (#ap-tilt-layer), no por columna · un filtro por elemento (50-70
    veces) es mucho más caro que uno solo sobre el contenedor entero. */
 #ap-tilt-layer{position:fixed;inset:0;z-index:3;pointer-events:none;perspective:900px;filter:var(--tilt-filter)}
 .tilt-col{
@@ -141,13 +175,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:2
 /* Light Rays por encima de ambas capas de columnas, que ahora son
    lienzos densos (antes #ap-texture era disperso/translúcido y
    dejaba pasar la luz por debajo; con la imagen real cubriendo casi
-   todo, cualquier capa en un z-index menor queda enterrada — el
+   todo, cualquier capa en un z-index menor queda enterrada · el
    usuario reportó no ver Light Rays, esta era la causa real, no un
    z-index mal escrito). */
 #ap-rays     {position:fixed;inset:0;z-index:4;pointer-events:none}
-#ap-petals   {position:fixed;inset:0;z-index:20;pointer-events:none} /* pétalos — pasan por delante de todo */
+#ap-petals   {position:fixed;inset:0;z-index:20;pointer-events:none} /* pétalos · pasan por delante de todo */
 
-/* .page ya no es una columna angosta de 28% — cada nivel (Presentación,
+/* .page ya no es una columna angosta de 28% · cada nivel (Presentación,
    Ejemplos, Motivo, Pestañas) maneja su propio ancho vía .wrap. Solo
    se queda con el z-index para estar arriba de las capas de fondo. */
 .page{position:relative;z-index:10}
@@ -157,7 +191,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:2
 /* ══════════════════════════════════════════════════════
    TIPOGRAFÍA
 ══════════════════════════════════════════════════════ */
-h2{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold);margin:36px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:.12em;text-transform:uppercase}
+/* Mayúsculas espaciadas en títulos, etiquetas y botones: aquí no son
+   el default genérico que señala anti-vibecode. Cinzel es una capitular
+   romana sin minúsculas propias (las dibuja como versalitas), y el
+   espaciado es el de las inscripciones lapidarias del concepto. Solo
+   aplica a Cinzel: en la mono (Fira Code) se quitaron. */
+h2{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold-ink);margin:36px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:.12em;text-transform:uppercase}
 h3{font-family:var(--display);font-size:12px;font-weight:400;color:var(--aegean);margin:20px 0 10px;letter-spacing:.16em;text-transform:uppercase}
 h4{font-family:var(--display);font-size:14px;color:var(--text);margin-bottom:5px;letter-spacing:.06em}
 p{margin-bottom:12px;line-height:1.75;font-family:var(--serif);font-weight:400;font-size:21px}
@@ -166,119 +205,125 @@ p.muted{color:var(--text2);font-size:14px}
 /* ══════════════════════════════════════════════════════
    CÓDIGO
 ══════════════════════════════════════════════════════ */
-code{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border);padding:1px 5px;border-radius:var(--radius);color:var(--gold)}
+code{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border);padding:1px 5px;border-radius:var(--radius);color:var(--gold-ink)}
 pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:var(--radius);padding:12px 16px;margin:12px 0;overflow-x:auto;font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--text);position:relative}
 pre::before{content:attr(data-lang);position:absolute;top:5px;right:8px;font-size:8px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;font-family:var(--display)}
 pre code{background:none;border:none;padding:0;color:inherit}
-pre .kw{color:var(--gold)}pre .fn{color:var(--aegean-lt)}pre .str{color:var(--rose)}
-pre .num{color:var(--yellow)}pre .cm{color:var(--text2);font-style:italic}
+pre .kw{color:var(--gold-ink)}pre .fn{color:var(--aegean-lt-ink)}pre .str{color:var(--rose-ink)}
+pre .num{color:var(--yellow-ink)}pre .cm{color:var(--text2);font-style:italic}
 
 /* ══════════════════════════════════════════════════════
    CALLOUTS
 ══════════════════════════════════════════════════════ */
 .callout{border-left:2px solid var(--accent);background:var(--bg2);padding:10px 14px;margin:8px 0;border-radius:0 var(--radius) var(--radius) 0}
-.callout-title{font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.callout-title{font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:4px}
 .callout p{margin-bottom:0;font-size:12px}
-.callout.ok      {border-color:var(--ok)     }.callout.ok      .callout-title{color:var(--ok)     }
-.callout.warn    {border-color:var(--warn)   }.callout.warn    .callout-title{color:var(--warn)   }
-.callout.danger  {border-color:var(--danger) }.callout.danger  .callout-title{color:var(--danger) }
+.callout.ok      {border-color:var(--ok-ink)     }.callout.ok      .callout-title{color:var(--ok-ink)     }
+.callout.warn    {border-color:var(--warn-ink)   }.callout.warn    .callout-title{color:var(--warn-ink)   }
+.callout.danger  {border-color:var(--danger-ink) }.callout.danger  .callout-title{color:var(--danger-ink) }
 .callout.aegean  {border-color:var(--aegean) }.callout.aegean  .callout-title{color:var(--aegean) }
-.callout.olive   {border-color:var(--olive)  }.callout.olive   .callout-title{color:var(--olive)  }
-.callout.rose    {border-color:var(--rose)   }.callout.rose    .callout-title{color:var(--rose)   }
+.callout.olive   {border-color:var(--olive-ink)  }.callout.olive   .callout-title{color:var(--olive-ink)  }
+.callout.rose    {border-color:var(--rose-ink)   }.callout.rose    .callout-title{color:var(--rose-ink)   }
 .callout.marble  {border-color:var(--border) }.callout.marble  .callout-title{color:var(--text2)  }
 
 /* ══════════════════════════════════════════════════════
    TABLA
 ══════════════════════════════════════════════════════ */
 table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
-th{background:var(--bg3);padding:7px 12px;text-align:left;font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--border)}
+th{background:var(--bg3);padding:7px 12px;text-align:left;font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);border-bottom:1px solid var(--border)}
 td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
 tr:hover td{background:var(--bg3)}
 
 /* ══════════════════════════════════════════════════════
    BOTONES
 ══════════════════════════════════════════════════════ */
-.btn{display:inline-block;font-family:var(--display);font-size:10px;font-weight:700;padding:5px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.1em;text-transform:uppercase}
-.btn:hover,.btn.primary{border-color:var(--gold);color:var(--gold)}
-.btn.ok     {border-color:var(--ok);    color:var(--ok)    }
-.btn.warn   {border-color:var(--warn);  color:var(--warn)  }
-.btn.danger {border-color:var(--danger);color:var(--danger)}
+.btn{display:inline-block;font-family:var(--display);font-size:10px;font-weight:700;padding:5px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;transition:color .2s ease-out,border-color .2s ease-out,background-color .2s ease-out,transform .16s ease-out;letter-spacing:.1em;text-transform:uppercase}
+.btn:hover,.btn.primary{border-color:var(--gold-ink);color:var(--gold-ink)}
+.btn.ok     {border-color:var(--ok-ink);    color:var(--ok-ink)    }
+.btn.warn   {border-color:var(--warn-ink);  color:var(--warn-ink)  }
+.btn.danger {border-color:var(--danger-ink);color:var(--danger-ink)}
 .btn.aegean {border-color:var(--aegean);color:var(--aegean)}
-.btn.rose   {border-color:var(--rose);  color:var(--rose)  }
-.btn.olive  {border-color:var(--olive); color:var(--olive) }
+.btn.rose   {border-color:var(--rose-ink);  color:var(--rose-ink)  }
+.btn.olive  {border-color:var(--olive-ink); color:var(--olive-ink) }
 
 /* ══════════════════════════════════════════════════════
    BADGES
 ══════════════════════════════════════════════════════ */
 .badge{display:inline-block;font-family:var(--display);font-size:8px;font-weight:700;padding:2px 7px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
-.badge.gold   {border-color:var(--gold);   color:var(--gold)  }
+.badge.gold   {border-color:var(--gold-ink);   color:var(--gold-ink)  }
 .badge.aegean {border-color:var(--aegean); color:var(--aegean)}
-.badge.olive  {border-color:var(--olive);  color:var(--olive) }
-.badge.rose   {border-color:var(--rose);   color:var(--rose)  }
-.badge.yellow {border-color:var(--yellow); color:var(--yellow)}
-.badge.ok     {border-color:var(--ok);     color:var(--ok)    }
-.badge.warn   {border-color:var(--warn);   color:var(--warn)  }
-.badge.danger {border-color:var(--danger); color:var(--danger)}
+.badge.olive  {border-color:var(--olive-ink);  color:var(--olive-ink) }
+.badge.rose   {border-color:var(--rose-ink);   color:var(--rose-ink)  }
+.badge.yellow {border-color:var(--yellow-ink); color:var(--yellow-ink)}
+.badge.ok     {border-color:var(--ok-ink);     color:var(--ok-ink)    }
+.badge.warn   {border-color:var(--warn-ink);   color:var(--warn-ink)  }
+.badge.danger {border-color:var(--danger-ink); color:var(--danger-ink)}
 
 /* ══════════════════════════════════════════════════════
    CARDS
 ══════════════════════════════════════════════════════ */
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
-.card:hover{border-color:var(--gold);box-shadow:0 2px 14px color-mix(in srgb,var(--gold) 12%,transparent)}
+.card:hover{border-color:var(--gold-ink);box-shadow:0 2px 14px color-mix(in srgb,var(--gold) 12%,transparent)}
 
 /* ══════════════════════════════════════════════════════
    MÉTRICAS
 ══════════════════════════════════════════════════════ */
 .metrics-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
 .metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;flex:1;min-width:80px}
-.metric-val{font-family:var(--display);font-size:20px;font-weight:700;color:var(--gold);letter-spacing:-.5px}
-.metric-lbl{font-family:var(--mono);font-size:9px;color:var(--text2);margin-top:2px;letter-spacing:.06em;text-transform:uppercase}
-.metric-val.aegean{color:var(--aegean)}.metric-val.olive{color:var(--olive)}
-.metric-val.rose{color:var(--rose)}.metric-val.sky{color:var(--sky)}
+.metric-val{font-family:var(--display);font-size:20px;font-weight:700;color:var(--gold-ink);letter-spacing:-.5px}
+.metric-lbl{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:2px}
+.metric-val.aegean{color:var(--aegean)}.metric-val.olive{color:var(--olive-ink)}
+.metric-val.rose{color:var(--rose-ink)}.metric-val.sky{color:var(--sky-ink)}
 
 /* ══════════════════════════════════════════════════════
    DIVIDER
 ══════════════════════════════════════════════════════ */
 hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
-.ornament{text-align:center;color:var(--gold);font-size:16px;letter-spacing:.3em;margin:6px 0;opacity:.6}
+.ornament{text-align:center;color:var(--gold-ink);font-size:16px;letter-spacing:.3em;margin:6px 0;opacity:.6}
 
 /* ══════════════════════════════════════════════════════
-   ODE LOG — timeline con estética griega
+   ODE LOG · timeline con estética griega
 ══════════════════════════════════════════════════════ */
 .ode-log{margin:12px 0}
 .ode-entry{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
 .ode-entry:last-child{border-bottom:none}
 .ode-dot{width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px;border:1px solid var(--border);border-radius:50%;background:var(--bg3);color:var(--text2);font-family:var(--display)}
-.ode-dot.gold  {border-color:var(--gold);  color:var(--gold)  }
+.ode-dot.gold  {border-color:var(--gold-ink);  color:var(--gold-ink)  }
 .ode-dot.aegean{border-color:var(--aegean);color:var(--aegean)}
-.ode-dot.olive {border-color:var(--olive); color:var(--olive) }
-.ode-dot.rose  {border-color:var(--rose);  color:var(--rose)  }
+.ode-dot.olive {border-color:var(--olive-ink); color:var(--olive-ink) }
+.ode-dot.rose  {border-color:var(--rose-ink);  color:var(--rose-ink)  }
 
 /* ══════════════════════════════════════════════════════
-   STROPHE STEPS — pipeline griego
+   STROPHE STEPS · pipeline griego
 ══════════════════════════════════════════════════════ */
 .strophe{display:flex;gap:14px;align-items:flex-start;margin:8px 0;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:var(--radius);transition:box-shadow .2s}
 .strophe:hover{box-shadow:0 2px 10px color-mix(in srgb,var(--gold) 10%,transparent)}
-.strophe-num{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold);min-width:28px;line-height:1;margin-top:2px;letter-spacing:.04em}
+.strophe-num{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold-ink);min-width:28px;line-height:1;margin-top:2px;letter-spacing:.04em}
 
 /* ══════════════════════════════════════════════════════
    THEME TOGGLE
 ══════════════════════════════════════════════════════ */
-.theme-btn{font-family:var(--display);font-size:10px;font-weight:700;padding:5px 14px;background:none;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.1em;text-transform:uppercase}
-.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
-.theme-btn:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.theme-btn{font-family:var(--display);font-size:10px;font-weight:700;padding:5px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:color .2s ease-out,border-color .2s ease-out,background-color .2s ease-out,transform .16s ease-out;letter-spacing:.1em;text-transform:uppercase}
+.theme-btn:hover{border-color:var(--gold-ink);color:var(--gold-ink)}
+/* Presión: escala sutil, nunca desde 0 (skill frontend-design). */
+.btn:active,.theme-btn:active{transform:scale(.97)}
+/* Enlaces sueltos (el del panel Mapa salía en azul por defecto del navegador). */
+a{color:var(--accent-ink);text-underline-offset:3px}
+/* Foco: tinta de oro (el oro de relleno no llega a 3:1 sobre el mármol
+   claro). Las pestañas viven sobre la franja negra y conservan el oro. */
+.theme-btn:focus-visible,.btn:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold-ink);outline-offset:2px}
 
 /* ══════════════════════════════════════════════════════
-   TÍTULO — h1 real, shiny-text (React Bits) vía CSS puro:
+   TÍTULO · h1 real, shiny-text (React Bits) vía CSS puro:
    degradado diagonal clipeado al texto, background-position
    animado. Reconstrucción, no el shader del original (que no
-   es shader: es un gradiente + rAF de Motion) — @keyframes
+   es shader: es un gradiente + rAF de Motion) · @keyframes
    hace lo mismo con menos código y sin JS por frame.
 ══════════════════════════════════════════════════════ */
 .page-title{
   font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:.08em;margin:0;
   /* El contorno marble/black heredado de body es para texto sólido
-     (h3 azul sobre fondo azul, etc.) — sobre un relleno degradado y
+     (h3 azul sobre fondo azul, etc.) · sobre un relleno degradado y
      transparente se ve como un borrón oscuro que se come el oro,
      mismo motivo que .swatch-hex lo desactiva. */
   text-shadow:none;
@@ -295,25 +340,25 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
 @media(prefers-reduced-motion:reduce){
   .page-title{animation:none;background-position:50% center}
 }
-.page-subtitle{font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:.18em;text-transform:uppercase;margin-top:-2px}
+.page-subtitle{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:-2px}
 
 /* ══════════════════════════════════════════════════════
-   HERO — imagen de bienvenida (prouned_apolo.webp), pin de
+   HERO · imagen de bienvenida (prouned_apolo.webp), pin de
    scroll con blur/zoom estilo Proun (docs/index.html: pin-wrap
    que crece a varios altos de pantalla, header adentro pasa a
    sticky mientras dura el scroll). Sin JS o con reduced-motion,
-   el fallback es un bloque estático de una pantalla — nunca un
+   el fallback es un bloque estático de una pantalla · nunca un
    estado roto a medio cargar (mismo principio defensivo que
    Proun: sin la clase que agrega el script, se ve normal).
 ══════════════════════════════════════════════════════ */
-/* z-index:5 — arriba de las 5 capas fijas de fondo (sky/beams/rays/
+/* z-index:5 · arriba de las 5 capas fijas de fondo (sky/beams/rays/
    texture/tilt, 0-4: son position:fixed;inset:0, cubren todo el
    viewport, y sin esto pintarían encima del hero por estar más
    abajo en el DOM con z-index:auto). Abajo de #ap-toggle-wrap (30)
    y de .page (10), que sí deben quedar siempre por encima. */
 .ap-hero-pin{position:relative;z-index:5}
 /* 200vh (Proun) dejaba una pantalla ENTERA de scroll pinneado antes
-   de soltar — el usuario notó que nunca llegaba a ver las columnas
+   de soltar · el usuario notó que nunca llegaba a ver las columnas
    con los beams. 150vh: mismo alto de hero (100vh), pero solo 50vh
    de scroll "detenido" para el blur/zoom en vez de 100vh completos. */
 html.js-ap-pin .ap-hero-pin{height:150vh}
@@ -323,10 +368,16 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 .ap-hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:filter,transform}
 #ap-hero-ripple{position:absolute;inset:0;width:100%;height:100%;opacity:0}
 .ap-hero-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,color-mix(in srgb,var(--black) 45%,transparent) 0%,color-mix(in srgb,var(--black) 8%,transparent) 45%,color-mix(in srgb,var(--black) 60%,transparent) 100%)}
+/* Atardecer: el título en mármol sobre el naranja de la foto quedaba en
+   2.7:1 (medido en píxeles, sin pétalos); la franja central del velo
+   sube de 8% a 34% solo en este modo para pasar 3:1 de texto grande. */
+body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var(--black) 45%,transparent) 0%,color-mix(in srgb,var(--black) 34%,transparent) 45%,color-mix(in srgb,var(--black) 60%,transparent) 100%)}
 .ap-hero-text{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;will-change:opacity,transform}
 .ap-hero-text .page-title{font-size:clamp(52px,12vw,150px);line-height:.95}
-.ap-hero-text .page-subtitle{margin-top:10px;color:var(--marble);font-size:11px}
-/* Toggle: control persistente, ya no vive dentro de .page — se ve
+/* Sobre la foto del hero el mármol quedaba en 1.6:1 (medido en píxeles):
+   placa oscura detrás, como el toggle tiene la suya. */
+.ap-hero-text .page-subtitle{margin-top:10px;color:var(--marble);font-size:11px;background:color-mix(in srgb,var(--black) 62%,transparent);padding:3px 10px;border-radius:var(--radius)}
+/* Toggle: control persistente, ya no vive dentro de .page · se ve
    sobre la imagen del hero y sobre el resto del contenido igual. */
 #ap-toggle-wrap{position:fixed;top:20px;right:24px;z-index:30}
 
@@ -337,14 +388,14 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 @media(max-width:900px){.grid-2{grid-template-columns:1fr}}
 
 /* ══════════════════════════════════════════════════════
-   NIVELES — estructura calcada de 43.Proun/docs/index.html
+   NIVELES · estructura calcada de 43.Proun/docs/index.html
    (portada · presentación · ejemplos · motivo · pestañas · footer),
    a pedido del usuario. Cada nivel controla su propio ancho en vez
    de la columna única de 28% que envolvía todo antes.
 ══════════════════════════════════════════════════════ */
 .ap-presentacion{padding:72px 0 48px;border-bottom:1px solid var(--border)}
 /* Panel translúcido detrás del texto en vez del contorno global que
-   se quitó de body — bg2 (claro u oscuro según el token) al 90%, dejando
+   se quitó de body · bg2 (claro u oscuro según el token) al 90%, dejando
    pasar un poco del fondo animado (Light Rays incluido) por debajo. */
 .ap-presentacion-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start;background:color-mix(in srgb,var(--bg2) 90%,transparent);padding:32px 40px;border-radius:var(--radius)}
 .ap-presentacion h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.15;margin:0 0 18px;color:var(--text)}
@@ -368,7 +419,7 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 .ap-ejemplos{padding:56px 0 80px}
 .ap-ejemplos-heading{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);margin:0 0 32px;padding:0 40px}
 .ap-gallery{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:0;padding:20px 40px 40px}
-.ap-gallery-card{margin:0;position:relative;background:color-mix(in srgb,var(--bg2) 90%,transparent);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.ap-gallery-card{margin:0;position:relative;background:color-mix(in srgb,var(--bg2) 90%,transparent);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 6px 20px color-mix(in srgb,var(--black) 10%,transparent)}
 .ap-gallery-caption{font-family:var(--display);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-top:12px}
 .ap-gallery .g1{grid-column:1/6;transform:rotate(-1deg);z-index:3}
 .ap-gallery .g2{grid-column:6/13;margin-top:70px;transform:rotate(.8deg);z-index:2}
@@ -376,9 +427,9 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 .ap-gallery .g4{grid-column:7/12;margin-top:10px;transform:rotate(-.7deg);z-index:2}
 @media(max-width:760px){.ap-gallery{grid-template-columns:1fr;padding:0 20px;row-gap:24px}.ap-gallery .g1,.ap-gallery .g2,.ap-gallery .g3,.ap-gallery .g4{grid-column:1/-1;margin-top:0;transform:none}}
 
-/* Fondo fijo (--black/--white), no depende de claro/oscuro — como
+/* Fondo fijo (--black/--white), no depende de claro/oscuro · como
    .about de Proun, es su propia superficie, no una variación del tema. */
-/* text-shadow:none — el contorno mármol/negro heredado de body es
+/* text-shadow:none · el contorno mármol/negro heredado de body es
    para texto sobre el fondo claro/oscuro dinámico; sobre negro sólido
    con texto blanco se veía como un resplandor/negrita rara, mismo
    motivo que .swatch-hex y .page-title ya lo desactivan. */
@@ -389,11 +440,11 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 @media(max-width:760px){.ap-motivo .wrap{grid-template-columns:1fr}}
 
 .ap-stage-section{padding:0 0 80px;background:color-mix(in srgb,var(--bg2) 90%,transparent);border-top:1px solid var(--border)}
-/* Pestañas como galería circular — React Bits "Circular Gallery" (OGL:
+/* Pestañas como galería circular · React Bits "Circular Gallery" (OGL:
    planos que se curvan en arco al desplazarse) + "Decay Card" (filtro
    SVG feTurbulence/feDisplacementMap, distorsión atada a la velocidad
    del cursor). Reconstruido desde el concepto, no portado literal: los
-   paneles de abajo tienen tablas, código seleccionable y un iframe —
+   paneles de abajo tienen tablas, código seleccionable y un iframe ·
    convertirlos en texturas WebGL rompería selección de texto y ARIA.
    En su lugar, los botones <button role="tab"> reales se curvan por
    CSS transform (misma idea del arco de Circular Gallery, sin OGL) y
@@ -408,12 +459,15 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
   background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
   font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--text);opacity:.5;cursor:pointer;will-change:transform;transform-origin:center;
+  color:var(--text);opacity:.6;cursor:pointer;will-change:transform;transform-origin:center;
   transition:opacity .25s,border-color .25s,box-shadow .25s;
 }
+/* Inactivas a .6 (no .5): sobre la franja negra, .52 es el mínimo para
+   que la etiqueta pase 4.5:1 en ambos modos (texto y fondo de la pestaña
+   se componen juntos con el negro de detrás). */
 .ap-tab:hover{opacity:.8}
 .ap-tab.is-centered{opacity:.85}
-.ap-tab[aria-selected="true"]{opacity:1;border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.ap-tab[aria-selected="true"]{opacity:1;border-color:var(--gold-ink);box-shadow:0 0 0 1px var(--gold)}
 .ap-tab:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .ap-tab-preview{filter:url(#ap-decay-filter);pointer-events:none}
 .ap-tab-label{pointer-events:none}
@@ -430,13 +484,16 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
 .ap-graph-frame iframe{width:100%;height:100%;border:0;display:block}
 @media(max-width:760px){.ap-stage{padding:28px 20px 0}.ap-graph-frame{height:420px}}
 
-.ap-footer{padding:32px 40px 56px}
-.ap-footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);max-width:1040px;margin:0 auto}
-.ap-footer-row a{color:var(--gold)}
+/* Superficie propia (como los demás niveles): sin ella el texto quedaba
+   sobre las tiras de foto y en modo día no se leía. */
+.ap-footer{padding:22px 40px 30px;background:color-mix(in srgb,var(--bg2) 94%,transparent);border-top:1px solid var(--border)}
+.ap-footer-row{font-family:var(--mono);font-size:12px;color:var(--text2);text-align:center;max-width:1040px;margin:0 auto}
+.ap-footer-row a{color:var(--gold-ink);text-underline-offset:3px}
 .swatch-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
 .swatch{width:76px;text-align:center;font-family:var(--mono);font-size:8px;color:var(--text2)}
 .swatch-box{height:42px;border-radius:var(--radius);margin-bottom:5px;border:1px solid var(--border);position:relative}
-.swatch-hex{position:absolute;bottom:3px;left:4px;font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none;text-shadow:none}
+.swatch-hex{position:absolute;bottom:3px;left:3px;font-family:var(--mono);font-size:9px;color:var(--text);padding:1px 2px;border-radius:2px;letter-spacing:0;line-height:1;pointer-events:none;text-shadow:none}
+.swatch-hex.is-chip{background:var(--bg)}
 </style>
 </head>
 <body>
@@ -459,11 +516,11 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
      La imagen va en base64 inline (src/img/prouned_apolo.webp es el
      original, se re-genera con
      ffmpeg -i prouned_apolo.png -vf scale=2400:-1 -q:v 82 prouned_apolo.webp
-     si hace falta editarla) — no una referencia externa: Ripple
+     si hace falta editarla) · no una referencia externa: Ripple
      Distortion necesita subir la imagen como textura WebGL, y
      Chromium bloquea eso por seguridad de origen cuando el archivo se
      abre por file:// (doble clic), aunque la imagen esté en la misma
-     carpeta — confirmado con SecurityError real, no hipotético. Como
+     carpeta · confirmado con SecurityError real, no hipotético. Como
      el usuario previsualiza casi siempre por file://, vale la pena
      el salto de ~30KB a ~0.45MB en vez de dejarlo roto ahí. -->
 <div class="ap-hero-pin">
@@ -581,7 +638,7 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
       </button>
       <button class="ap-tab" role="tab" id="tab-componentes" aria-controls="panel-componentes" aria-selected="false" tabindex="-1" data-index="1">
         <span class="ap-tab-preview" aria-hidden="true" style="display:flex;gap:5px;align-items:center">
-          <span style="font-family:var(--display);font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border:1px solid var(--gold);border-radius:var(--radius);color:var(--gold)">oro</span>
+          <span style="font-family:var(--display);font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border:1px solid var(--gold);border-radius:var(--radius);color:var(--gold-ink)">oro</span>
           <span style="width:26px;height:14px;border-radius:var(--radius);background:var(--gold);opacity:.85"></span>
         </span>
         <span class="ap-tab-label">Componentes</span>
@@ -596,7 +653,7 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
       </button>
       <button class="ap-tab" role="tab" id="tab-narrativa" aria-controls="panel-narrativa" aria-selected="false" tabindex="-1" data-index="3">
         <span class="ap-tab-preview" aria-hidden="true" style="display:flex;align-items:center;gap:6px">
-          <span style="width:18px;height:18px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:8px;color:var(--gold)">I</span>
+          <span style="width:18px;height:18px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:8px;color:var(--gold-ink)">I</span>
           <span style="width:34px;height:4px;border-radius:2px;background:var(--text2)"></span>
         </span>
         <span class="ap-tab-label">Narrativa</span>
@@ -659,7 +716,7 @@ html.js-ap-pin .ap-hero{position:sticky;top:0}
       <table>
         <tr><th>Token</th><th>Día</th><th>Atardecer</th><th>Evocación</th></tr>
         <tr><td><code>--gold</code></td><td>#C8900A</td><td>#E8A820</td><td>Oro · el sol · Apolo</td></tr>
-        <tr><td><code>--aegean</code></td><td>#2050A0</td><td>#C05020</td><td>Egeo · el mar · Poseidón</td></tr>
+        <tr><td><code>--aegean</code></td><td>#0F4FA8</td><td>#DA5B24</td><td>Egeo · el mar · Poseidón</td></tr>
         <tr><td><code>--marble</code></td><td>#F8F4EC</td><td>#E8D8B8</td><td>Mármol · los templos</td></tr>
         <tr><td><code>--olive</code></td><td>#607830</td><td>#405820</td><td>Olivo · Atenea</td></tr>
         <tr><td><code>--rose</code></td><td>#E87080</td><td>#D06070</td><td>Rosa · Afrodita · pétalos</td></tr>
@@ -750,7 +807,7 @@ config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
       <h3>Estrofas</h3>
       <div class="strophe" id="strophe-1"><div class="strophe-num">I</div><div><h4>Estrofa</h4><p class="muted">Este párrafo entra desde la derecha.</p></div></div>
       <div class="strophe" id="strophe-2" style="border-left-color:var(--aegean)"><div class="strophe-num" style="color:var(--aegean)">II</div><div><h4>Antistrofa</h4><p class="muted">Este retrocede, entra desde la izquierda.</p></div></div>
-      <div class="strophe" id="strophe-3" style="border-left-color:var(--olive)"><div class="strophe-num" style="color:var(--olive)">III</div><div><h4>Épodo</h4><p class="muted">Y este se queda quieto, sin desplazarse.</p></div></div>
+      <div class="strophe" id="strophe-3" style="border-left-color:var(--olive-ink)"><div class="strophe-num" style="color:var(--olive-ink)">III</div><div><h4>Épodo</h4><p class="muted">Y este se queda quieto, sin desplazarse.</p></div></div>
     </div>
 
     <div class="ap-panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" hidden>
@@ -773,11 +830,7 @@ config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
 </section>
 
 <footer class="ap-footer">
-  <div class="ap-footer-row">
-    <span>Apolo_theme · iroFactory</span>
-    <a href="https://github.com/RemiH06/iroFactory">github.com/RemiH06/iroFactory</a>
-    <span>AGPL-3.0</span>
-  </div>
+  <div class="ap-footer-row">apolo_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · AGPL-3.0</div>
 </footer>
 
 </div>
@@ -820,10 +873,10 @@ function toggleTheme() {
   statueFx.forEach(s => s.refresh());
 }
 
-// prouned_apolo (claro) / prouned_apolo_dark (oscuro) — el usuario
+// prouned_apolo (claro) / prouned_apolo_dark (oscuro) · el usuario
 // hizo una versión en paleta cálida específica para el modo oscuro.
 // heroLightSrc se captura UNA vez del src original en el HTML, antes
-// de que cualquier toggle lo pise — evita duplicar el base64 claro
+// de que cualquier toggle lo pise · evita duplicar el base64 claro
 // otra vez en un atributo aparte solo para "recordarlo".
 const heroImgEl = document.getElementById('ap-hero-img');
 const heroLightSrc = heroImgEl.src;
@@ -842,12 +895,36 @@ function updateHexes() {
   };
   Object.entries(map).forEach(([id,tok]) => {
     const el = document.getElementById(id);
-    if (el) el.textContent = cssVar(tok);
+    if (el) el.textContent = cssVar(tok).toUpperCase();
+  });
+  inkSwatchLabels();
+}
+
+// ── Etiquetas hex de la paleta ─────────────────────────
+// Antes: color fijo con mix-blend-mode: difference. En medios tonos
+// (naranjas, verdes, el gris) quedaba un gris turbio de 1.1 a 2.5:1.
+// Ahora cada etiqueta usa la tinta del modo vigente (--text o --bg)
+// con mayor contraste WCAG real contra su muestra; si ninguna llega
+// a 4.5:1, va sobre una pastilla --bg con --text (skill colorimetría).
+function inkSwatchLabels() {
+  const rgbOf = s => { const m = String(s).match(/[\d.]+/g); return m ? m.slice(0, 3).map(Number) : null; };
+  const hexRgb = h => { h = h.trim().replace('#', ''); if (h.length === 3) h = h.replace(/./g, c => c + c); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  const inks = ['--text', '--bg'].map(t => ({ t, c: hexRgb(cssVar(t)) }));
+  document.querySelectorAll('.swatch-hex').forEach(el => {
+    const sw = rgbOf(getComputedStyle(el.parentElement).backgroundColor);
+    if (!sw) return;
+    const best = inks.map(i => ({ t: i.t, r: ratio(i.c, sw) })).sort((a, b) => b.r - a.r)[0];
+    const chip = best.r < 4.5;
+    el.classList.toggle('is-chip', chip);
+    el.style.color = chip ? 'var(--text)' : `var(${best.t})`;
   });
 }
 
+
 // ══════════════════════════════════════════════════════
-// CAPA 0 — Hero: pin de scroll (blur/zoom) estilo Proun
+// CAPA 0 · Hero: pin de scroll (blur/zoom) estilo Proun
 // (43.Proun/docs/index.html: .hero-pin-wrap crece a varias
 // pantallas, header adentro pasa a sticky mientras dura el
 // scroll, recién al soltarse el contenido real avanza). Sin
@@ -855,7 +932,7 @@ function updateHexes() {
 // con throttle por rAF (mismo patrón que el mousemove del
 // tilt-card), progreso lineal 0→1 mapeado a blur+zoom+fade.
 // Si `prefers-reduced-motion` está activo, ni se expande el
-// wrap ni se agrega la clase — el hero se queda como un bloque
+// wrap ni se agrega la clase · el hero se queda como un bloque
 // estático de una pantalla, igual que el fallback "sin JS" de
 // Proun (ahí la razón era una import externa que podía fallar;
 // acá no hay import que falle, pero el principio es el mismo:
@@ -887,8 +964,8 @@ function initHero() {
 }
 
 // ══════════════════════════════════════════════════════
-// CAPA 0b — Ripple Distortion sobre la imagen del hero
-// (React Bits "Ripple Distortion", es OGL — dos pasadas, sin
+// CAPA 0b · Ripple Distortion sobre la imagen del hero
+// (React Bits "Ripple Distortion", es OGL · dos pasadas, sin
 // geometría 3D real: nivel 2 de la escala de portabilidad de
 // la skill `shaders`, mismo nivel que react-fluid-animation.
 // Reconstruido desde el concepto en WebGL crudo:
@@ -896,7 +973,7 @@ function initHero() {
 //     donde se dibuja cada "ola" activa como un quad con un
 //     brush circular (mismo GLSL que el original: caída
 //     exp(-r·5), anillos concéntricos por coseno) en blend
-//     aditivo — arma un mapa de desplazamiento en escala de
+//     aditivo · arma un mapa de desplazamiento en escala de
 //     grises.
 //  2) Una pasada de composición de pantalla completa que
 //     muestrea la imagen real con las UV empujadas según ese
@@ -904,13 +981,13 @@ function initHero() {
 //     object-fit:cover del canvas coincida con el de la img).
 // Simplificado a propósito: el original dibuja hasta 100 olas
 // en una sola llamada instanciada (`ANGLE_instanced_arrays`);
-// acá son como mucho 24 olas con un `drawArrays` cada una —
+// acá son como mucho 24 olas con un `drawArrays` cada una ·
 // mismo resultado visual a esta escala, sin depender de la
 // extensión de instancing. También se deja fuera la dispersión
 // cromática/tinte/glint opcionales del original (no pedidos,
 // strength=0.01 es casi imperceptible de por sí). Si `gl` sale
 // null o la textura no carga, la función retorna sin tocar
-// nada — la <img> de abajo se queda visible tal cual.
+// nada · la <img> de abajo se queda visible tal cual.
 // ══════════════════════════════════════════════════════
 function initRipple() {
   const host = document.querySelector('.ap-hero-media');
@@ -918,11 +995,11 @@ function initRipple() {
   const canvas = document.getElementById('ap-hero-ripple');
   if (!host || !img || !canvas) return;
 
-  // premultipliedAlpha:false — el default (true) hace que el navegador
+  // premultipliedAlpha:false · el default (true) hace que el navegador
   // trate lo que escribe el fragment shader como ya premultiplicado,
   // así que un color de brillo completo con alpha bajo (oro con alpha
   // 0.2, por ejemplo) sale oscurecido/apagado en vez de oro real y
-  // translúcido — bug real encontrado leyendo los valores crudos con
+  // translúcido · bug real encontrado leyendo los valores crudos con
   // readPixels en Beams/Rays (el oro salía como (58,44,14), un café
   // apagado, no el oro (200,144,10) esperado). Con esto, gl_FragColor.rgb
   // es el color real sin escalar. Mismo fix en initRays/initLens.
@@ -1034,7 +1111,7 @@ function initRipple() {
     swirl: gl.getUniformLocation(compositeProg, 'uSwirl'),
   };
 
-  // Framebuffer propio para el mapa de desplazamiento — a 0.6x de
+  // Framebuffer propio para el mapa de desplazamiento · a 0.6x de
   // resolución, de sobra para un brush suave, más barato de limpiar
   // y redibujar cada frame.
   let fboTex = null, fbo = null, fboW = 2, fboH = 2;
@@ -1072,11 +1149,11 @@ function initRipple() {
       textureReady = true;
       canvas.style.opacity = '1';
     } catch (e) {
-      textureReady = false; // p.ej. canvas "tainted" — la <img> real se queda visible
+      textureReady = false; // p.ej. canvas "tainted" · la <img> real se queda visible
     }
   }
   // El listener se queda pegado (no solo en el else) porque la imagen
-  // cambia de src al alternar claro/oscuro (prouned_apolo vs. _dark) —
+  // cambia de src al alternar claro/oscuro (prouned_apolo vs. _dark) ·
   // hace falta volver a subir la textura cada vez que eso pase, no
   // solo la primera carga.
   if (img.complete && img.naturalWidth) uploadTexture();
@@ -1170,7 +1247,7 @@ function initRipple() {
 }
 
 // ══════════════════════════════════════════════════════
-// CAPA 1 — Cielo (gradiente)
+// CAPA 1 · Cielo (gradiente)
 // ══════════════════════════════════════════════════════
 const skyCanvas = document.getElementById('ap-sky');
 const sCtx = skyCanvas.getContext('2d');
@@ -1180,9 +1257,9 @@ const sCtx = skyCanvas.getContext('2d');
 const COL_GAP = 42;
 
 // Compartido con buildTexture(): las columnas blancas se rellenan con
-// este mismo degradado, desajustado — deben ser el mismo cielo.
+// este mismo degradado, desajustado · deben ser el mismo cielo.
 // Claro: reajustado a la saturación real de prouned_apolo.webp (imagen
-// del hero) — se muestreó su paleta dominante (ffmpeg palettegen: de
+// del hero) · se muestreó su paleta dominante (ffmpeg palettegen: de
 // #00236A a #0684EE/#13A1FB) y el cielo/mar/columnas quedaban muy
 // pálidos al lado, un desajuste real que notó el usuario, no solo
 // gusto. Mismo tono familiar (azul Egeo), bastante más saturado.
@@ -1203,7 +1280,7 @@ function buildSky() {
   const H = skyCanvas.height = window.innerHeight;
   sCtx.clearRect(0, 0, W, H);
 
-  // Degradado único y continuo, sin desajuste — el desajuste vive en
+  // Degradado único y continuo, sin desajuste · el desajuste vive en
   // las columnas blancas de buildTexture(), no aquí (se probó y la
   // costura quedaba pegada al borde del texto, se veía mal).
   const grad = sCtx.createLinearGradient(0, 0, 0, H);
@@ -1213,7 +1290,7 @@ function buildSky() {
 }
 
 // ══════════════════════════════════════════════════════
-// CAPA 3 — Pétalos y hierba volando
+// CAPA 3 · Pétalos y hierba volando
 // ══════════════════════════════════════════════════════
 const petalCanvas = document.getElementById('ap-petals');
 const pCtx = petalCanvas.getContext('2d');
@@ -1243,7 +1320,7 @@ function makePetal() {
   };
 }
 
-// ── Tormenta de apertura — cubre toda la pantalla de golpe y se
+// ── Tormenta de apertura · cubre toda la pantalla de golpe y se
 // revela en diagonal (abajo-izquierda se limpia primero, arriba-
 // derecha al final) a medida que los pétalos salen por ahí. ──
 function seedAvalanche() {
@@ -1266,7 +1343,7 @@ function resizePetals() {
 function drawPetals() {
   pCtx.clearRect(0, 0, petalW, petalH);
 
-  // Generar nuevos a ritmo de viento tenue — el chubasco inicial ya
+  // Generar nuevos a ritmo de viento tenue · el chubasco inicial ya
   // se sembró aparte en seedAvalanche(), esto no lo infla más
   if (Math.random() < 0.06) petals.push(makePetal());
 
@@ -1274,7 +1351,7 @@ function drawPetals() {
     p.x += p.vx;
     p.y += p.vy;
     p.angle += p.vAngle;
-    // ellipse() ya acepta rotación como parámetro nativo — evita el
+    // ellipse() ya acepta rotación como parámetro nativo · evita el
     // save/translate/rotate/restore por pétalo, caro multiplicado por
     // miles (era el cuello de botella real con la tormenta grande).
     pCtx.globalAlpha = p.alpha;
@@ -1290,12 +1367,12 @@ function drawPetals() {
 }
 
 // ══════════════════════════════════════════════════════
-// CAPA 4 — Lienzo único: la textura de la columna (estrías +
+// CAPA 4 · Lienzo único: la textura de la columna (estrías +
 // acentos dorados de la voluta/roseta) estirada a todo el
 // fondo, con pausas rítmicas en vez de columnas completas.
 // ══════════════════════════════════════════════════════
 // Barajado determinístico-por-llamada (Fisher-Yates); se recalcula en
-// cada buildTexture() — un resize/toggle ya reconstruye toda la
+// cada buildTexture() · un resize/toggle ya reconstruye toda la
 // textura de todos modos, un nuevo orden ahí no es un problema extra.
 function shuffledIndices(n) {
   const arr = Array.from({ length: n }, (_, i) => i);
@@ -1318,7 +1395,7 @@ function buildTexture() {
 
   const n = Math.ceil(W / gap) + 1;
 
-  // Posiciones de pausa: ahí se salta la estría divisoria — el div
+  // Posiciones de pausa: ahí se salta la estría divisoria · el div
   // real de tilt de ese hueco es el doble de ancho (buildTiltColumns()).
   const pauseSet = new Set();
   for (let i = 0; i <= n; i++) {
@@ -1327,7 +1404,7 @@ function buildTexture() {
 
   // Ya no dibuja las tiras de imagen (eso vive en buildTiltColumns(),
   // como divs reales tilteables) ni medallones (quitados). Solo queda
-  // el mármol base + las estrías divisorias — lienzo disperso de
+  // el mármol base + las estrías divisorias · lienzo disperso de
   // nuevo, no denso, para que Light Rays (z-index encima) no quede
   // enterrado.
   let flutes = '';
@@ -1350,10 +1427,10 @@ function buildTexture() {
 }
 
 // ══════════════════════════════════════════════════════
-// CAPA 4b — Segunda capa de tiras, detrás del tilt-card, con
+// CAPA 4b · Segunda capa de tiras, detrás del tilt-card, con
 // su propio barajado independiente y SIN tilt (estática). Mismo
 // slot simple/doble que la capa de enfrente (misma cuadrícula de
-// columnas), pero una permutación distinta — otra reordenada,
+// columnas), pero una permutación distinta · otra reordenada,
 // no un espejo de la de enfrente.
 // ══════════════════════════════════════════════════════
 function buildBackStripes() {
@@ -1393,7 +1470,7 @@ function buildBackStripes() {
 }
 
 // ══════════════════════════════════════════════════════
-// CAPA 5 — Tilt-card: cada columna rota en 3D hacia el cursor
+// CAPA 5 · Tilt-card: cada columna rota en 3D hacia el cursor
 // (motion.dev "js-tilt-card", reconstruido desde el concepto:
 // rotateX/rotateY + perspective siguiendo el puntero, con
 // transición suave en vez de física de resorte real).
@@ -1407,7 +1484,7 @@ function buildTiltColumns() {
   const W = window.innerWidth;
   const H = window.innerHeight;
   const n = Math.ceil(W / COL_GAP) + 1;
-  const pauseEvery = 7; // mismo ritmo que buildTexture() — ahí se funden 2 en una doble
+  const pauseEvery = 7; // mismo ritmo que buildTexture() · ahí se funden 2 en una doble
 
   const pauseSet = new Set();
   for (let i = 0; i <= n; i++) {
@@ -1416,13 +1493,13 @@ function buildTiltColumns() {
 
   // Cada columna es un div real con su propio recorte de la imagen del
   // hero como background (background-position sobre una copia virtual
-  // de ancho n×COL_GAP) — "la misma imagen pero desordenada", a
+  // de ancho n×COL_GAP) · "la misma imagen pero desordenada", a
   // pedido del usuario, y ahora con contenido de verdad que SÍ se ve
   // rotar con el tilt (antes era un div vacío). El barajado se hace a
   // nivel de "slot" (gap o doble-gap), no por columna individual, para
   // que las 5 posiciones dobles (CD, JK, QR, XY, AEAF...) reciban UNA
   // sola tira del doble de ancho en vez de dos tiras independientes
-  // pegadas sin costura — a pedido explícito del usuario.
+  // pegadas sin costura · a pedido explícito del usuario.
   const heroSrc = document.getElementById('ap-hero-img').src;
   const virtualW = n * COL_GAP;
   const perm = shuffledIndices(n);
@@ -1439,7 +1516,7 @@ function buildTiltColumns() {
 
     // Margen del 8% por lado: sin esto, las tilt-card cubren el 100%
     // del slot en reposo y la capa de atrás (#ap-back-stripes) nunca
-    // se alcanza a ver — el escorzo 3D del tilt por sí solo no abría
+    // se alcanza a ver · el escorzo 3D del tilt por sí solo no abría
     // hueco suficiente para notarse (probado, no alcanzaba). Con el
     // margen, siempre hay una franja visible de la capa de atrás entre
     // tarjetas, más ancha todavía al tiltear.
@@ -1477,12 +1554,12 @@ function updateTilt(mx, my) {
 }
 
 // ══════════════════════════════════════════════════════
-// CAPA 2 — Light Rays: rayos de sol fijos desde arriba
-// (React Bits "LightRays" — es OGL, no Three.js: su shader ya
+// CAPA 2 · Light Rays: rayos de sol fijos desde arriba
+// (React Bits "LightRays" · es OGL, no Three.js: su shader ya
 // es GLSL plano, mismo patrón que el Shader Lens de abajo, así
 // que el fragment shader es un puerto casi literal. Se fija el
-// origen a "top-center" siempre — Apolo es el dios del sol, los
-// rayos vienen de arriba — y se quita la rama "lightMode" del
+// origen a "top-center" siempre · Apolo es el dios del sol, los
+// rayos vienen de arriba · y se quita la rama "lightMode" del
 // original (tonemap a tinta sobre blanco: no aplica, apolo ya
 // tiene su propio claro/oscuro). "Luz constante en toda la
 // vista no importa el scroll" ya lo resuelve position:fixed,
@@ -1490,7 +1567,7 @@ function updateTilt(mx, my) {
 // ══════════════════════════════════════════════════════
 function initRays() {
   const canvas = document.getElementById('ap-rays');
-  // premultipliedAlpha:false — ver comentario largo en initRipple().
+  // premultipliedAlpha:false · ver comentario largo en initRipple().
   const gl = canvas.getContext('webgl', { premultipliedAlpha: false });
   if (!gl) return null;
 
@@ -1573,9 +1650,9 @@ function initRays() {
   gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
   // Sin blend: cada frame limpia a transparente y dibuja UN solo quad
-  // — no hay nada debajo con qué mezclar. Con blend prendido,
+  // · no hay nada debajo con qué mezclar. Con blend prendido,
   // SRC_ALPHA/ONE_MINUS_SRC_ALPHA multiplica el RGB por el alpha (y el
-  // alpha por sí mismo) igual, apagando el color y el alpha reales —
+  // alpha por sí mismo) igual, apagando el color y el alpha reales ·
   // bug real encontrado con readPixels comparando el mismo shader con
   // y sin blend. Mismo fix en initLens() más abajo.
 
@@ -1617,7 +1694,7 @@ function initRays() {
     gl.uniform1f(u.speed, 0.35);
     // spread 0.55→1.4: con 0.55 el cono era angosto (exponente 1/0.55≈1.8
     // en spreadFactor), casi todo el ancho de pantalla quedaba fuera del
-    // haz — confirmado con diff de screenshots, no solo a ojo. 1.4 abre
+    // haz · confirmado con diff de screenshots, no solo a ojo. 1.4 abre
     // el cono lo suficiente para cubrir bastante más del viewport.
     gl.uniform1f(u.spread, 1.4);
     gl.uniform1f(u.len, 1.6);
@@ -1637,17 +1714,17 @@ function initRays() {
 }
 
 // ══════════════════════════════════════════════════════
-// CAPA 6 — Shader lens: lente de refracción en WebGL crudo,
+// CAPA 6 · Shader lens: lente de refracción en WebGL crudo,
 // sin Three.js (motion.dev "js-three-uniforms" / "Shader Lens",
 // reconstruido desde el concepto: uniforms de puntero animando
 // una distorsión en un ShaderMaterial). Magnifica y distorsiona
-// una banda vertical procedural — mismo ritmo/paleta que el
-// lienzo real — solo dentro del radio del lente; fuera de ahí es
+// una banda vertical procedural · mismo ritmo/paleta que el
+// lienzo real · solo dentro del radio del lente; fuera de ahí es
 // 100% transparente y se ve el fondo real sin tocar.
 // ══════════════════════════════════════════════════════
 function initLens() {
   const canvas = document.getElementById('ap-lens');
-  // premultipliedAlpha:false — ver comentario largo en initRipple().
+  // premultipliedAlpha:false · ver comentario largo en initRipple().
   const gl = canvas.getContext('webgl', { premultipliedAlpha: false });
   if (!gl) return null;
 
@@ -1706,7 +1783,7 @@ function initLens() {
   gl.enableVertexAttribArray(aPos);
   gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-  // Sin blend — ver comentario largo en initRays(): mismo bug, mismo
+  // Sin blend · ver comentario largo en initRays(): mismo bug, mismo
   // fix. Acá afectaba menos (alpha cerca de 0.92 en el borde, no
   // 0.06-0.5 como beams/rays) pero es el mismo error de fondo.
 
@@ -1722,7 +1799,7 @@ function initLens() {
 
   let mx = -9999, my = -9999;
   // Igual que en initRays(): resize() solo en resize real,
-  // nunca dentro de render() — reasignar canvas.width/height reinicia
+  // nunca dentro de render() · reasignar canvas.width/height reinicia
   // el framebuffer entero aunque el valor no cambie.
   function resize() {
     canvas.width = window.innerWidth;
@@ -1997,7 +2074,7 @@ let raysFx = null, rippleFx = null;
 
 function animLoop(ts) {
   // La primera llamada es directa (sin rAF) para pintar de inmediato;
-  // ts llega undefined ahí — sin este default, uTime sale NaN y el
+  // ts llega undefined ahí · sin este default, uTime sale NaN y el
   // resultado del shader queda en manos de cómo cada GPU maneje NaN.
   ts = ts || performance.now();
   drawPetals();
@@ -2025,9 +2102,9 @@ if (!reduceMotion.matches) seedAvalanche();
 animLoop();
 reduceMotion.addEventListener('change', () => { if (!reduceMotion.matches) requestAnimationFrame(animLoop); });
 
-// ── Tilt-card + Light Rays — reaccionan al puntero ───────
+// ── Tilt-card + Light Rays · reaccionan al puntero ───────
 // Lente desactivado por ahora (probando solo tilt-card, a pedido
-// del usuario) — initLens() se queda definida pero sin usarse.
+// del usuario) · initLens() se queda definida pero sin usarse.
 // Se desactiva del todo si el usuario prefiere menos movimiento.
 if (!reduceMotion.matches) {
   let tiltRaf = null;
@@ -2043,12 +2120,12 @@ if (!reduceMotion.matches) {
 }
 
 // ══════════════════════════════════════════════════════
-// Pestañas (nivel "Detalles") como galería circular — ver el comentario
+// Pestañas (nivel "Detalles") como galería circular · ver el comentario
 // largo junto a .ap-gallery-tabs en el CSS para el porqué de esta
 // reconstrucción (Circular Gallery + Decay Card, sin OGL/GSAP).
 // selectTab() sigue siendo la única fuente de verdad de accesibilidad
 // (aria-selected, hidden, tabindex); la física de abajo es puramente
-// visual y nunca decide qué panel está activo — centrar un plato al
+// visual y nunca decide qué panel está activo · centrar un plato al
 // arrastrar no selecciona su panel, evita disparar el iframe de Mapa
 // del código o saltar de contenido solo por explorar la galería.
 // ══════════════════════════════════════════════════════
@@ -2070,7 +2147,7 @@ function initTabs() {
       if (selected) {
         // Por si el panel estaba oculto cuando la animación de entrada
         // general quiso revelarlo (un elemento con `hidden` no
-        // intersecta nunca) — la red de seguridad de más abajo ya lo
+        // intersecta nunca) · la red de seguridad de más abajo ya lo
         // hace a los 3s, esto cubre el caso de togglear una pestaña
         // antes de eso.
         panel.querySelectorAll('.swatch, .callout, .badge, .btn, .metric, .card, .strophe, .ode-entry')
@@ -2079,7 +2156,7 @@ function initTabs() {
     });
   }
 
-  // No-op hasta que la física se active más abajo — con reduced-motion
+  // No-op hasta que la física se active más abajo · con reduced-motion
   // se queda así, un click sigue seleccionando sin centrar nada.
   let centerOn = () => {};
   let dragMoved = false;
@@ -2099,7 +2176,7 @@ function initTabs() {
   });
 
   if (reduceMotion.matches) {
-    // Sin arco ni arrastre — fila plana con scroll nativo, la
+    // Sin arco ni arrastre · fila plana con scroll nativo, la
     // distorsión de Decay Card tampoco corre (scale se queda en 0).
     track.style.display = 'flex';
     track.style.gap = '16px';
@@ -2187,7 +2264,7 @@ function initTabs() {
     });
     tabs.forEach((t, i) => t.classList.toggle('is-centered', i === nearestI));
 
-    // Las miniaturas miden ~40-56px — un scale calibrado para la imagen
+    // Las miniaturas miden ~40-56px · un scale calibrado para la imagen
     // grande de Decay Card (~600px) las desplazaría fuera del propio
     // recuadro del filtro y se verían desaparecer. Tope bajo, a escala
     // del tamaño real de la miniatura.
@@ -2208,7 +2285,7 @@ function initTabs() {
 
   // Estrofa/antistrofa/épodo reenactan su propio texto: el coro avanza
   // desde la derecha, retrocede desde la izquierda, se detiene sin
-  // desplazarse — no es decoración, es literal al contenido.
+  // desplazarse · no es decoración, es literal al contenido.
   const strophes = ['strophe-1', 'strophe-2', 'strophe-3'].map(id => document.getElementById(id));
   if (strophes.every(Boolean)) {
     strophes[0].style.opacity = '0'; strophes[0].style.transform = 'translateX(50px)';
@@ -2227,7 +2304,7 @@ function initTabs() {
     stropheIo.observe(strophes[0]);
   }
 
-  // Ode Log — se revela verso por verso, en orden de recitación
+  // Ode Log · se revela verso por verso, en orden de recitación
   const odeEntries = document.querySelectorAll('.ode-entry');
   const odeLog = document.querySelector('.ode-log');
   if (odeEntries.length && odeLog) {
@@ -2243,7 +2320,7 @@ function initTabs() {
     odeIo.observe(odeLog);
   }
 
-  // Resto de secciones — entrada más ligera, sin coreografía propia
+  // Resto de secciones · entrada más ligera, sin coreografía propia
   const items = document.querySelectorAll('.swatch, .callout, .badge, .btn, .metric, .card');
   if (items.length) {
     items.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(10px)'; });

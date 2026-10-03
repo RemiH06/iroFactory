@@ -3,18 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>sherry_theme — Demo</title>
+<title>sherry_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700|vt323:400&display=swap" rel="stylesheet">
 <style>
+/* ── PALETA (skill colorimetría) ──
+   Concepto: electrónica recuperada de la basura, impresa y escaneada ·
+   tintas de proceso CMY (magenta 338°, cian 182°, amarillo 54°) más el
+   verde y violeta de pantalla RGB (lime 79°, violeta 276°). Regla:
+   Custom (no es una armonía de la rueda); se justifica por el
+   concepto, no por cercanía angular. Pasteles = mismos matices con
+   menos saturación. Modo claro: mismos matices, luminosidad bajada
+   hasta pasar WCAG AA como texto sobre --bg/--bg2/--bg3. */
 /* ── TOKENS OSCURO (default) ── */
 body {
   --bg:      #080808;
   --bg2:     #0e0e0e;
   --bg3:     #141414;
   --text:    #f0f0f0;
-  --text2:   #808080;
-  --text3:   #404040;
+  --text2:   #A8A8A8;
+  --text3:   #7F7F7F;
   --border:  #1e1e1e;
   --border2: #2a2a2a;
   --magenta:  #FF2D78;
@@ -33,8 +41,8 @@ body {
   --warn:     #FFE600;
   --danger:   #FF2D78;
   --info:     #00F5FF;
-  --black:    #000000;
-  --white:    #ffffff;
+  --black:    #050505;
+  --white:    #FAFAFA;
   --gray:     #555555;
   --mono:     'JetBrains Mono', 'Fira Code', monospace;
   --display:  'VT323', 'JetBrains Mono', monospace;
@@ -43,6 +51,11 @@ body {
   --glow-cyan:    0 0 8px rgba(0,245,255,.5);
   --glow-lime:    0 0 8px rgba(170,255,0,.5);
   --glow-violet:  0 0 8px rgba(191,95,255,.5);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --peach-ink: var(--peach);
+  --rose-ink: var(--rose);
 }
 
 /* ── TOKENS CLARO ── */
@@ -51,33 +64,38 @@ body.light {
   --bg2:     #EDEAD2;
   --bg3:     #E0DCCA;
   --text:    #0a0a0a;
-  --text2:   #4a4a4a;
-  --text3:   #9a9a9a;
+  --text2:   #3A3A3A;
+  --text3:   #5F5F5F;
   --border:  #CCCAB8;
   --border2: #B8B6A4;
-  --magenta:  #CC0055;
-  --cyan:     #007A80;
-  --lime:     #557700;
+  --magenta:  #BE004F;
+  --cyan:     #006A6F;
+  --lime:     #4A6800;
   --violet:   #6622AA;
-  --electric: #887700;
+  --electric: #6C5E00;
   --rose:     #CC5588;
   --lavender: #7744AA;
-  --aqua:     #227788;
+  --aqua:     #1E6877;
   --peach:    #AA6633;
-  --mint:     #337755;
-  --accent:   #CC0055;
-  --accent2:  #007A80;
-  --ok:       #557700;
-  --warn:     #887700;
-  --danger:   #CC0055;
-  --info:     #007A80;
-  --black:    #000000;
-  --white:    #ffffff;
+  --mint:     #2D6A4B;
+  --accent:   #BE004F;
+  --accent2:  #006A6F;
+  --ok:       #4A6800;
+  --warn:     #6C5E00;
+  --danger:   #BE004F;
+  --info:     #006A6F;
+  --black:    #050505;
+  --white:    #FAFAFA;
   --gray:     #888880;
   --glow-accent:  none;
   --glow-cyan:    none;
   --glow-lime:    none;
   --glow-violet:  none;
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --peach-ink: #895229;
+  --rose-ink: #A73264;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -104,7 +122,7 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 0; }
 
-/* CRT oscuro — líneas blancas */
+/* CRT oscuro · líneas blancas */
 body.crt-on::after {
   content: '';
   position: fixed; inset: 0;
@@ -112,15 +130,15 @@ body.crt-on::after {
   background: repeating-linear-gradient(
     to bottom,
     transparent 0px, transparent 2px,
-    rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px
+    rgba(250,250,250,.03) 2px, rgba(250,250,250,.03) 4px
   );
 }
-/* CRT claro — líneas negras */
+/* CRT claro · líneas negras */
 body.light.crt-on::after {
   background: repeating-linear-gradient(
     to bottom,
     transparent 0px, transparent 2px,
-    rgba(0,0,0,.015) 2px, rgba(0,0,0,.015) 4px
+    rgba(5,5,5,.015) 2px, rgba(5,5,5,.015) 4px
   );
 }
 
@@ -132,7 +150,7 @@ body.light::before {
   background: repeating-linear-gradient(
     to bottom,
     transparent 0px, transparent 2px,
-    rgba(0,0,0,.018) 2px, rgba(0,0,0,.018) 4px
+    rgba(5,5,5,.018) 2px, rgba(5,5,5,.018) 4px
   );
 }
 
@@ -148,7 +166,7 @@ body.tri-on #tri-canvas {
 }
 body.tri-on .page { position: relative; z-index: 1; }
 
-/* Página — ya no es una columna angosta de 40px/860px: cada nivel
+/* Página · ya no es una columna angosta de 40px/860px: cada nivel
    (.sherry-level) maneja su propio ancho vía .sherry-level-wrap, así
    los fondos "is-opaque" pueden cubrir todo el ancho del viewport en
    vez de solo una columna centrada (si no, el lienzo de triángulos se
@@ -163,16 +181,20 @@ body.tri-on .page { position: relative; z-index: 1; }
 .sherry-corner-title {
   position: fixed; top: 18px; left: 18px; z-index: 40;
   font-size: 15px; font-weight: 700; letter-spacing: -.5px;
+  /* Placa como la de los botones de la esquina opuesta: el título fijo
+     pasa por encima de los fondos Dither al hacer scroll. */
+  background: color-mix(in srgb, var(--bg2) 92%, transparent);
+  border: 1px solid var(--border2); border-radius: var(--radius); padding: 3px 8px;
   opacity: 0; pointer-events: none; transition: opacity .1s linear;
 }
 
 /* ══════════════════════════════════════════════════════
-   HERO — zoom ambiental + fade por scroll + título ASCII
+   HERO · zoom ambiental + fade por scroll + título ASCII
    Mismo patrón de pin que apolo (.ap-hero-pin/.ap-hero):
    position:sticky dentro de un wrapper alto, listener de
    scroll con rAF escribiendo estilos inline. Sin JS o con
    prefers-reduced-motion, el wrapper se queda en su altura
-   natural y el hero es un bloque 100vh estático — nunca un
+   natural y el hero es un bloque 100vh estático · nunca un
    estado a medias.
 ══════════════════════════════════════════════════════ */
 .sherry-hero-pin { position: relative; }
@@ -184,11 +206,11 @@ html.js-sherry-pin .sherry-hero-pin { height: 150vh; }
 }
 html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
 /* Telón de fondo vivo (Dither, fondo procedural) detrás de la propia
-   imagen del hero — a pedido del usuario, el hueco que deja la foto al
+   imagen del hero · a pedido del usuario, el hueco que deja la foto al
    desvanecerse con el scroll revela esto en vez de un color plano. */
 .sherry-hero-dither-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
 .sherry-hero-dither-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-/* Sin background propio a propósito — antes tenía var(--bg2) sólido
+/* Sin background propio a propósito · antes tenía var(--bg2) sólido
    de respaldo, pero eso tapaba por completo el telón de Dither que
    ahora vive detrás (z-index:-1) sin importar la opacidad real de la
    imagen (el background-color de este div es independiente del
@@ -201,12 +223,12 @@ html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
 }
 .sherry-hero-scrim {
   position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.12) 40%, rgba(0,0,0,.68) 100%);
+  background: linear-gradient(180deg, rgba(5,5,5,.55) 0%, rgba(5,5,5,.12) 40%, rgba(5,5,5,.68) 100%);
 }
 .sherry-hero-title-wrap { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 24px; }
 #sherry-ascii-host { width: min(92vw, 920px); height: min(46vh, 320px); position: relative; }
 /* ══════════════════════════════════════════════════════
-   NIVELES — cada categoría de contenido es su propia
+   NIVELES · cada categoría de contenido es su propia
    sección (sin tabs), cada una con su propio fondo. El
    lienzo de triángulos (#tri-canvas) sigue siendo fijo y
    global; los niveles "opacos" lo tapan con su propio
@@ -218,7 +240,7 @@ html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
 .sherry-level-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .sherry-level-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 /* La imagen auxiliar vive dentro de .sherry-level-wrap ahora, en un
-   header flex junto al <h2> — antes flotaba fuera del wrap para
+   header flex junto al <h2> · antes flotaba fuera del wrap para
    sentarse en el margen lateral del nivel, pero a un tamaño grande de
    verdad ese margen no alcanza en la mayoría de los viewports
    (bug real: se pedía más grande y no había dónde ponerla sin invadir
@@ -226,9 +248,14 @@ html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
    cualquier ancho sin ese problema. */
 .sherry-level-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
 .sherry-level-header h2 { flex: 1; min-width: 0; }
+/* Niveles con fondo Dither: detrás de los títulos el ruido dejaba el
+   contraste en 1.9 a 2.8:1 (medido en píxeles, ambos modos). Placa del
+   color de superficie, como los paneles del timeline; las insignias
+   llevan fondo propio por lo mismo. */
+.sherry-level:has(> .sherry-level-bg) h2 { background: color-mix(in srgb, var(--bg2) 94%, transparent); padding: 4px 10px; }
 .sherry-aux-img {
   /* Sin borde, radio ni opacidad: las piezas son PNG transparentes y
-     el canvas de Dither Veil emite alfa real — el componente flota
+     el canvas de Dither Veil emite alfa real · el componente flota
      sobre el fondo del nivel, sin marco. */
   flex-shrink: 0; width: 240px; height: 174px; margin-top: 4px;
   position: relative; touch-action: pan-y;
@@ -236,12 +263,12 @@ html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
 .sherry-aux-img canvas, .sherry-aux-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 /* Pixel Card: el wrapper es ahora el hijo directo de layouts flex/grid
    que antes tenían al elemento de contenido directo (.metrics-row,
-   .grid-2) — se le pasa el mismo comportamiento de tamaño para que el
+   .grid-2) · se le pasa el mismo comportamiento de tamaño para que el
    layout no cambie solo por envolver. */
 /* Capas de Pixel Card: fondo (wrapper) → brillo (::before) → pixeles
    (canvas) → contenido. El fondo que antes traía el contenido se muda
    al wrapper para que el canvas quede ENTRE fondo y texto, como en el
-   original — si no, el fondo opaco del contenido tapa los pixeles. */
+   original · si no, el fondo opaco del contenido tapa los pixeles. */
 .sherry-pixel-card { position: relative; isolation: isolate; overflow: hidden; }
 .sherry-pixel-card:has(> .callout, > .metric, > .step-row, > .card, > .timeline-item) { background: var(--bg2); }
 /* Timeline va sobre fondo Dither: cada entrada pasa a ser un panel
@@ -277,13 +304,13 @@ html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
 }
 
 #sherry-ascii-host pre {
-  /* .pre global (bloques de código) trae fondo/borde propios — se
+  /* .pre global (bloques de código) trae fondo/borde propios · se
      resetean acá, este <pre> es el lienzo del título ASCII, no código.
-     Color: el usuario pasó el código fuente real del componente —
+     Color: el usuario pasó el código fuente real del componente ·
      background-clip:text con un radial-gradient (cada carácter toma
      el color de su posición, la "sombra de colores" que se había
      recortado en el primer port), background-attachment:fixed (el
-     degradado queda anclado a la pantalla, no al elemento — se mueve
+     degradado queda anclado a la pantalla, no al elemento · se mueve
      relativo al texto mientras el texto se anima), mix-blend-mode:
      difference contra lo que haya detrás, y hue-rotate() por el
      ángulo del cursor (ver initAsciiTitle). Colores de sherry en vez
@@ -300,7 +327,7 @@ html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
 /* Modo claro: el original invierte todo el contenedor, pero con
    mix-blend-mode:difference sobre un fondo claro el título quedaba
    pálido. Acá, sin blend y con el degradado de los tokens de
-   body.light (ya oscuros: #CC0055, #007A80, #557700), el título se lee
+   body.light (ya oscuros: #BE004F, #006A6F, #4A6800), el título se lee
    oscuro y sólido sobre la foto. */
 body.light #sherry-ascii-host pre {
   mix-blend-mode: normal; font-weight: 700;
@@ -354,7 +381,7 @@ pre {
 }
 pre::before {
   content: attr(data-lang); position: absolute; top: 6px; right: 10px;
-  font-size: 9px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase;
+  font-size: 10px; color: var(--text3);
 }
 pre code { background: none; border: none; padding: 0; color: inherit; text-shadow: none; }
 pre .kw   { color: var(--magenta);  text-shadow: var(--glow-accent); }
@@ -363,7 +390,7 @@ pre .str  { color: var(--lime);     text-shadow: var(--glow-lime);   }
 pre .num  { color: var(--electric); }
 pre .cm   { color: var(--text3);    font-style: italic; }
 pre .var  { color: var(--lavender); }
-pre .type { color: var(--peach);    }
+pre .type { color: var(--peach-ink);    }
 
 /* ── CALLOUTS ── */
 .callout {
@@ -371,8 +398,7 @@ pre .type { color: var(--peach);    }
   padding: 12px 16px; margin: 10px 0; border-radius: 0 var(--radius) var(--radius) 0;
 }
 .callout-title {
-  font-size: 9px; font-weight: 700; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--accent);
+  font-size: 10px; font-weight: 700; color: var(--accent);
   text-shadow: var(--glow-accent); margin-bottom: 6px;
 }
 .callout-title::before { content: '■ '; }
@@ -382,10 +408,10 @@ pre .type { color: var(--peach);    }
 .callout.danger   { border-color: var(--danger);   } .callout.danger   .callout-title { color: var(--danger);   text-shadow: var(--glow-accent); }
 .callout.info     { border-color: var(--info);     } .callout.info     .callout-title { color: var(--info);     text-shadow: var(--glow-cyan);   }
 .callout.violet   { border-color: var(--violet);   } .callout.violet   .callout-title { color: var(--violet);   text-shadow: var(--glow-violet); }
-.callout.rose     { border-color: var(--rose);     } .callout.rose     .callout-title { color: var(--rose);     }
+.callout.rose     { border-color: var(--rose-ink);     } .callout.rose     .callout-title { color: var(--rose-ink);     }
 .callout.lavender { border-color: var(--lavender); } .callout.lavender .callout-title { color: var(--lavender); }
 .callout.aqua     { border-color: var(--aqua);     } .callout.aqua     .callout-title { color: var(--aqua);     }
-.callout.peach    { border-color: var(--peach);    } .callout.peach    .callout-title { color: var(--peach);    }
+.callout.peach    { border-color: var(--peach-ink);    } .callout.peach    .callout-title { color: var(--peach-ink);    }
 .callout.mint     { border-color: var(--mint);     } .callout.mint     .callout-title { color: var(--mint);     }
 .callout.lime     { border-color: var(--lime);     } .callout.lime     .callout-title { color: var(--lime);     text-shadow: var(--glow-lime);   }
 
@@ -393,7 +419,7 @@ pre .type { color: var(--peach);    }
 table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 12px; }
 th {
   background: var(--bg3); padding: 7px 12px; text-align: left;
-  font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  font-size: 10px; font-weight: 700;
   color: var(--cyan); text-shadow: var(--glow-cyan); border-bottom: 1px solid var(--border2);
 }
 td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
@@ -404,17 +430,17 @@ tr:hover td { background: var(--bg3); }
   display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 700;
   padding: 6px 14px; border: 1px solid var(--border2); border-radius: var(--radius);
   background: var(--bg2); color: var(--text2); cursor: pointer;
-  transition: all .12s; letter-spacing: .05em;
+  transition: color .15s ease-out, border-color .15s ease-out, background-color .15s ease-out, text-shadow .15s ease-out, transform .16s ease-out; letter-spacing: .05em;
 }
 .btn:hover        { border-color: var(--accent); color: var(--accent); text-shadow: var(--glow-accent); }
 .btn.primary      { border-color: var(--accent);   color: var(--accent);   text-shadow: var(--glow-accent);  }
 .btn.cyan         { border-color: var(--cyan);     color: var(--cyan);     text-shadow: var(--glow-cyan);    }
 .btn.lime         { border-color: var(--lime);     color: var(--lime);     text-shadow: var(--glow-lime);    }
 .btn.violet       { border-color: var(--violet);   color: var(--violet);   text-shadow: var(--glow-violet);  }
-.btn.rose         { border-color: var(--rose);     color: var(--rose);     }
+.btn.rose         { border-color: var(--rose-ink);     color: var(--rose-ink);     }
 .btn.lavender     { border-color: var(--lavender); color: var(--lavender); }
 .btn.aqua         { border-color: var(--aqua);     color: var(--aqua);     }
-.btn.peach        { border-color: var(--peach);    color: var(--peach);    }
+.btn.peach        { border-color: var(--peach-ink);    color: var(--peach-ink);    }
 .btn.mint         { border-color: var(--mint);     color: var(--mint);     }
 .btn.ok           { border-color: var(--ok);       color: var(--ok);       text-shadow: var(--glow-lime);    }
 .btn.warn         { border-color: var(--warn);     color: var(--warn);     }
@@ -424,17 +450,17 @@ tr:hover td { background: var(--bg3); }
 .badge {
   display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 700;
   padding: 2px 7px; border: 1px solid var(--border2); border-radius: var(--radius);
-  color: var(--text2); letter-spacing: .08em; text-transform: uppercase;
+  background: var(--bg2); color: var(--text2);
 }
 .badge.accent   { border-color: var(--accent);   color: var(--accent);   text-shadow: var(--glow-accent);  }
 .badge.cyan     { border-color: var(--cyan);     color: var(--cyan);     text-shadow: var(--glow-cyan);    }
 .badge.lime     { border-color: var(--lime);     color: var(--lime);     text-shadow: var(--glow-lime);    }
 .badge.violet   { border-color: var(--violet);   color: var(--violet);   text-shadow: var(--glow-violet);  }
 .badge.electric { border-color: var(--electric); color: var(--electric); }
-.badge.rose     { border-color: var(--rose);     color: var(--rose);     }
+.badge.rose     { border-color: var(--rose-ink);     color: var(--rose-ink);     }
 .badge.lavender { border-color: var(--lavender); color: var(--lavender); }
 .badge.aqua     { border-color: var(--aqua);     color: var(--aqua);     }
-.badge.peach    { border-color: var(--peach);    color: var(--peach);    }
+.badge.peach    { border-color: var(--peach-ink);    color: var(--peach-ink);    }
 .badge.mint     { border-color: var(--mint);     color: var(--mint);     }
 .badge.ok       { border-color: var(--ok);       color: var(--ok);       text-shadow: var(--glow-lime);    }
 .badge.warn     { border-color: var(--warn);     color: var(--warn);     }
@@ -459,7 +485,7 @@ tr:hover td { background: var(--bg3); }
 .metric-val.cyan     { color: var(--cyan);     text-shadow: var(--glow-cyan);   }
 .metric-val.lime     { color: var(--lime);     text-shadow: var(--glow-lime);   }
 .metric-val.violet   { color: var(--violet);   text-shadow: var(--glow-violet); }
-.metric-val.rose     { color: var(--rose);     }
+.metric-val.rose     { color: var(--rose-ink);     }
 .metric-val.lavender { color: var(--lavender); }
 .metric-val.electric { color: var(--electric); }
 
@@ -498,9 +524,17 @@ hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0;
   font-family: var(--mono); font-size: 11px; font-weight: 700;
   padding: 5px 12px; background: none; border: 1px solid var(--border2);
   border-radius: var(--radius); color: var(--text2); cursor: pointer;
-  transition: all .12s; letter-spacing: .05em;
+  transition: color .15s ease-out, border-color .15s ease-out, background-color .15s ease-out, text-shadow .15s ease-out, transform .16s ease-out; letter-spacing: .05em;
 }
 .theme-btn:hover { border-color: var(--accent); color: var(--accent); text-shadow: var(--glow-accent); }
+/* Presión: escala sutil, nunca desde 0 (skill frontend-design, motion-engineering). */
+.btn:active, .theme-btn:active { transform: scale(.97); }
+/* Foco visible con el acento del tema en todo lo interactivo; antes
+   no había ninguna regla y quedaba el anillo por defecto del navegador. */
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible, [role="button"]:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
 
 /* ── LAYOUT ── */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -508,10 +542,11 @@ hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0;
 .swatch { width: 88px; text-align: center; font-size: 9px; color: var(--text2); letter-spacing: .04em; }
 .swatch-box { height: 48px; border-radius: var(--radius); margin-bottom: 6px; border: 1px solid var(--border2); position: relative; }
 .swatch-hex {
-  position: absolute; bottom: 4px; left: 5px; font-size: 9px;
-  color: rgba(255,255,255,.7); mix-blend-mode: difference;
-  letter-spacing: -.3px; line-height: 1; pointer-events: none;
+  position: absolute; bottom: 4px; left: 4px; font-size: 9px; font-weight: 700;
+  color: var(--text); padding: 1px 2px; border-radius: var(--radius);
+  letter-spacing: 0; line-height: 1; pointer-events: none;
 }
+.swatch-hex.is-chip { background: var(--bg); }
 </style>
 </head>
 <body class="tri-on">
@@ -698,15 +733,15 @@ hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0;
     </div>
     <table>
       <tr><th>Token</th><th>Oscuro</th><th>Claro</th><th>Semántica</th></tr>
-      <tr><td><code>--accent</code></td><td>#FF2D78</td><td>#CC0055</td><td>Acento principal · peligro · UI activa</td></tr>
-      <tr><td><code>--magenta</code></td><td>#FF2D78</td><td>#CC0055</td><td>Neon caliente · keywords · error</td></tr>
-      <tr><td><code>--cyan</code></td><td>#00F5FF</td><td>#007A80</td><td>Red · sockets · info técnica</td></tr>
-      <tr><td><code>--lime</code></td><td>#AAFF00</td><td>#557700</td><td>OK · output · éxito neon</td></tr>
+      <tr><td><code>--accent</code></td><td>#FF2D78</td><td>#BE004F</td><td>Acento principal · peligro · UI activa</td></tr>
+      <tr><td><code>--magenta</code></td><td>#FF2D78</td><td>#BE004F</td><td>Neon caliente · keywords · error</td></tr>
+      <tr><td><code>--cyan</code></td><td>#00F5FF</td><td>#006A6F</td><td>Red · sockets · info técnica</td></tr>
+      <tr><td><code>--lime</code></td><td>#AAFF00</td><td>#4A6800</td><td>OK · output · éxito neon</td></tr>
       <tr><td><code>--violet</code></td><td>#BF5FFF</td><td>#6622AA</td><td>Experimental · modelos · IA</td></tr>
-      <tr><td><code>--electric</code></td><td>#FFE600</td><td>#887700</td><td>Advertencia · latencia · energía</td></tr>
+      <tr><td><code>--electric</code></td><td>#FFE600</td><td>#6C5E00</td><td>Advertencia · latencia · energía</td></tr>
       <tr><td><code>--rose</code></td><td>#FFB3DE</td><td>#CC5588</td><td>UI · pastel cálido</td></tr>
       <tr><td><code>--lavender</code></td><td>#D4AAFF</td><td>#7744AA</td><td>ML · clasificación</td></tr>
-      <tr><td><code>--aqua</code></td><td>#A8EFFF</td><td>#227788</td><td>Streams · datos</td></tr>
+      <tr><td><code>--aqua</code></td><td>#A8EFFF</td><td>#1E6877</td><td>Streams · datos</td></tr>
       <tr><td><code>--peach</code></td><td>#FFD4AA</td><td>#AA6633</td><td>Output legible · UX</td></tr>
       <tr><td><code>--mint</code></td><td>#AAFFD4</td><td>#337755</td><td>Log limpio · éxito suave</td></tr>
     </table>
@@ -735,7 +770,7 @@ hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0;
         <div><h4>Componente inestable</h4><p class="muted">Módulo de visión parpadea. Revisar soldadura.</p></div>
       </div></div>
       <div class="sherry-pixel-card"><div class="timeline-item">
-        <div class="timeline-dot pending">—</div>
+        <div class="timeline-dot pending">·</div>
         <div><h4>Actualización pendiente</h4><p class="muted">Esperando materiales para el escudo secundario.</p></div>
       </div></div>
       <div class="sherry-pixel-card"><div class="timeline-item">
@@ -793,7 +828,7 @@ hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0;
 <footer class="sherry-level">
   <div class="sherry-level-wrap">
     <p class="muted prompt" style="font-size:11px">
-      sherry_theme · by RemiH06 · iroFactory · AGPL-3.0
+      sherry_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · AGPL-3.0
     </p>
   </div>
 </footer>
@@ -807,7 +842,7 @@ let triOn   = true;
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-// ── Hero: imagen clara/oscura — mismo patrón que apolo (heroLightSrc
+// ── Hero: imagen clara/oscura · mismo patrón que apolo (heroLightSrc
 // capturado una vez del src original en el HTML, antes de que
 // cualquier toggle lo pise) ──
 const heroImgEl = document.getElementById('sherry-hero-img');
@@ -839,11 +874,11 @@ function toggleTri() {
 }
 
 // Componentes electrónicos y electromecánicos reales (fotos con
-// fondo transparente, dadas por el usuario en src/img/comps/) —
+// fondo transparente, dadas por el usuario en src/img/comps/) ·
 // reemplazan a las radiografías de peces como imagen de Dither Veil.
 // Encajan mejor con "sherry construye desde basura": son literalmente
 // las piezas de las que estaría hecho el artefacto del propio tema.
-// Una sola versión por componente (no claro/oscuro) — son fotos de
+// Una sola versión por componente (no claro/oscuro) · son fotos de
 // producto reales, no ilustraciones que necesiten invertirse.
 const COMPONENT_IMAGES = {
   cap: 'data:image/webp;base64,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',
@@ -860,11 +895,11 @@ function cssVar(name) {
 }
 
 // ══════════════════════════════════════════════════════
-// Pixel Card (React Bits "Pixel Card") — port fiel del código fuente
+// Pixel Card (React Bits "Pixel Card") · port fiel del código fuente
 // real (canvas 2D, sin dependencias). Misma clase Pixel: tamaño máximo
 // aleatorio por pixel (0.5–2px), crecimiento con paso aleatorio,
 // retraso radial desde el centro medido con un contador (no con
-// tiempo), y shimmer — mientras dura el hover cada pixel oscila entre
+// tiempo), y shimmer · mientras dura el hover cada pixel oscila entre
 // su tamaño mínimo y máximo, no se queda quieto. Loop a 60fps con el
 // mismo throttle del original, y se apaga solo cuando todos los
 // pixeles terminan de desaparecer.
@@ -1043,7 +1078,7 @@ function initPixelCards() {
 }
 
 // ══════════════════════════════════════════════════════
-// Dither Veil (React Bits "Dither Veil") — port fiel del código
+// Dither Veil (React Bits "Dither Veil") · port fiel del código
 // fuente real (OGL/WebGL2), sin OGL: WebGL2 crudo, mismos shaders.
 // Mecanismo: en reposo la imagen se ve 100% dithereada a 1 bit
 // (Floyd-Steinberg calculado en CPU, igual que el original); el
@@ -1056,7 +1091,7 @@ function initPixelCards() {
 // fotos rectangulares (detecta un "matte" de fondo y lo rellena). Las
 // imágenes de acá son PNG con fondo transparente, así que la salida
 // respeta el alfa real de la imagen (canvas con alpha, premultiplicado)
-// — fuera de la silueta del componente el canvas es transparente de
+// · fuera de la silueta del componente el canvas es transparente de
 // verdad, sin marco ni rectángulo, en ambos estados (dithereado y
 // revelado). El alfa del estado dithereado también se cuantiza por
 // celda, así el borde de la silueta queda pixelado igual que el resto.
@@ -1094,7 +1129,7 @@ const DV_MASK_SCALE = 0.5, DV_MAX_BURSTS = 4, DV_BURST_SECONDS = 1.2, DV_HOLD = 
 
 // Floyd-Steinberg serpentino, igual que diffuse() del original, más el
 // alfa: los píxeles transparentes (alfa < 50%) ni reciben tono ni
-// reparten error — si no, el error de los bordes se derramaría al
+// reparten error · si no, el error de los bordes se derramaría al
 // vacío alrededor de la pieza.
 function dvDiffuse(pixels, cols, rows, levels, grade) {
   const values = new Float32Array(cols * rows);
@@ -1229,7 +1264,7 @@ function initDitherVeils() {
     if (!src) return;
 
     // Mismos props que el ejemplo del usuario (floyd, pixelSize 2,
-    // softness .6, linger 1); revealRadius bajado de 200 a 70 — el
+    // softness .6, linger 1); revealRadius bajado de 200 a 70 · el
     // original asume un contenedor de ~600px, este mide 240×174.
     const S = { pixelSize: 2, levels: 2, contrast: 1.15, brightness: 0, revealRadius: 70, softness: 0.6, linger: 1 };
 
@@ -1501,21 +1536,21 @@ function initDitherVeils() {
 }
 
 // ══════════════════════════════════════════════════════
-// Dither (React Bits "Dither", fondo — distinto de "Dither Veil" que
+// Dither (React Bits "Dither", fondo · distinto de "Dither Veil" que
 // ya se usa en las imágenes auxiliares). El original es Three.js vía
 // react-three-fiber + postprocessing: un plano de pantalla completa
 // con ruido fractal (Perlin por octavas, deformado por su propio
-// dominio — "domain warp") animado en el tiempo, post-procesado por
+// dominio · "domain warp") animado en el tiempo, post-procesado por
 // un efecto de dithering ordenado (Bayer) que cuantiza a `colorNum`
 // niveles discretos. Confirmado con el código real: NO toma una
-// imagen como entrada en ningún punto, es 100% procedural — dithering
+// imagen como entrada en ningún punto, es 100% procedural · dithering
 // de su propio ruido, no de una foto. Se porta a WebGL1 crudo sin
 // Three.js/R3F/postprocessing (regla del proyecto), reusando el mismo
 // patrón de textura de Bayer 8×8 ya escrito para Dither Veil.
 //
 // Reemplaza a Micro Slats en el nivel Componentes (a pedido del
 // usuario) y se reusa además como telón de fondo del hero, detrás de
-// la fotografía — el hueco que deja la imagen al desvanecerse con el
+// la fotografía · el hueco que deja la imagen al desvanecerse con el
 // scroll ya no revela un color plano, revela este fondo vivo.
 // ══════════════════════════════════════════════════════
 function createDitherBackground(host, opts) {
@@ -1546,7 +1581,7 @@ function createDitherBackground(host, opts) {
     uniform sampler2D uBayer;
     varying vec2 vUv;
 
-    // Perlin 2D real (cnoise) — el usuario pasó el código fuente
+    // Perlin 2D real (cnoise) · el usuario pasó el código fuente
     // completo del componente; usa esto, no simplex noise (lo que se
     // había puesto antes, sin verlo, era una aproximación razonable
     // pero no lo que el original hace de verdad).
@@ -1579,11 +1614,11 @@ function createDitherBackground(host, opts) {
       vec2 n_x = mix(vec2(n00, n01), vec2(n10, n11), fade_xy.x);
       return 2.3 * mix(n_x.x, n_x.y, fade_xy.y);
     }
-    // 4 octavas, ruido "ridged" (abs()) — el look turbulento/con
+    // 4 octavas, ruido "ridged" (abs()) · el look turbulento/con
     // crestas del original, no el fbm suave genérico de antes. La
     // frecuencia y amplitud de cada octava las controlan los mismos
     // props expuestos (uWaveFrequency/uWaveAmplitude), no constantes
-    // fijas — igual que el original.
+    // fijas · igual que el original.
     float fbm(vec2 p){
       float value = 0.0, amp = 1.0, freq = uWaveFrequency;
       for (int i = 0; i < 4; i++) {
@@ -1594,7 +1629,7 @@ function createDitherBackground(host, opts) {
       return value;
     }
     // Un solo domain-warp (no el doble tipo Inigo Quilez que se había
-    // puesto antes) — así es el original, más simple de lo asumido.
+    // puesto antes) · así es el original, más simple de lo asumido.
     float pattern(vec2 p, float t){
       vec2 p2 = p - t * uWaveSpeed;
       return fbm(p + fbm(p2));
@@ -1614,7 +1649,7 @@ function createDitherBackground(host, opts) {
       vec3 color = mix(uBgColor, uWaveColor, clamp(f, 0.0, 1.0));
 
       // Dithering ordenado real: por canal RGB completo (no solo
-      // luminancia) + sesgo por luminancia — el original dithea el
+      // luminancia) + sesgo por luminancia · el original dithea el
       // color entero, no arma un duotono de 2 colores como se había
       // simplificado antes.
       vec2 scaledCoord = floor(gl_FragCoord.xy / uPixelSize);
@@ -1657,7 +1692,7 @@ function createDitherBackground(host, opts) {
   const bayerTex = buildBayer8x8Texture(gl);
 
   // Mismos defaults del componente real (waveSpeed/Frequency/Amplitude,
-  // mouseRadius, colorNum) salvo pixelSize, subido de 2 a 3 — a la
+  // mouseRadius, colorNum) salvo pixelSize, subido de 2 a 3 · a la
   // escala de una sección completa de fondo (no una demo de 600px) un
   // pixelSize de 2 se ve casi imperceptible.
   const P = Object.assign({
@@ -1683,7 +1718,7 @@ function createDitherBackground(host, opts) {
   resize();
   window.addEventListener('resize', resize);
 
-  // Sin voltear Y acá — el shader ya hace vec2(1.0,-1.0) sobre uMouse
+  // Sin voltear Y acá · el shader ya hace vec2(1.0,-1.0) sobre uMouse
   // (igual que el original), voltear en los dos lados se cancelaba
   // entre sí y desalineaba el efecto respecto al cursor real.
   let mouse = { x: 0.5, y: 0.5 }, mouseTarget = { x: 0.5, y: 0.5 };
@@ -1784,9 +1819,33 @@ function updateHexes() {
   };
   Object.entries(map).forEach(([id, token]) => {
     const el = document.getElementById(id);
-    if (el) el.textContent = cssVar(token);
+    if (el) el.textContent = cssVar(token).toUpperCase();
+  });
+  inkSwatchLabels();
+}
+
+// ── Etiquetas hex de la paleta ─────────────────────────
+// Antes: color fijo con mix-blend-mode: difference. En medios tonos
+// (naranjas, verdes, el gris) quedaba un gris turbio de 1.1 a 2.5:1.
+// Ahora cada etiqueta usa la tinta del modo vigente (--text o --bg)
+// con mayor contraste WCAG real contra su muestra; si ninguna llega
+// a 4.5:1, va sobre una pastilla --bg con --text (skill colorimetría).
+function inkSwatchLabels() {
+  const rgbOf = s => { const m = String(s).match(/[\d.]+/g); return m ? m.slice(0, 3).map(Number) : null; };
+  const hexRgb = h => { h = h.trim().replace('#', ''); if (h.length === 3) h = h.replace(/./g, c => c + c); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  const inks = ['--text', '--bg'].map(t => ({ t, c: hexRgb(cssVar(t)) }));
+  document.querySelectorAll('.swatch-hex').forEach(el => {
+    const sw = rgbOf(getComputedStyle(el.parentElement).backgroundColor);
+    if (!sw) return;
+    const best = inks.map(i => ({ t: i.t, r: ratio(i.c, sw) })).sort((a, b) => b.r - a.r)[0];
+    const chip = best.r < 4.5;
+    el.classList.toggle('is-chip', chip);
+    el.style.color = chip ? 'var(--text)' : `var(${best.t})`;
   });
 }
+
 
 // ── Canvas triangular con destellos neón ──────────────
 (function() {
@@ -1794,11 +1853,11 @@ function updateHexes() {
   const ctx    = canvas.getContext('2d');
   let W, H, tris = [], raf;
 
-  // Colores del destello — derivados de los tokens vigentes (magenta,
+  // Colores del destello · derivados de los tokens vigentes (magenta,
   // cyan, lime, violet, electric, rose, aqua), no un array fijo. Antes
   // el destello se quedaba con el neón saturado de modo oscuro incluso
   // en modo claro (los tokens de body.light son más apagados a
-  // propósito, como el resto de la paleta clara) — se recalcula en
+  // propósito, como el resto de la paleta clara) · se recalcula en
   // cada llamada en vez de cachear, ya que cssVar() lee el body
   // computado en vivo y ya cambia solo al togglear.
   function NEONS() {
@@ -1817,7 +1876,7 @@ function updateHexes() {
     const rows = Math.ceil(H / (th * 2)) + 3;
 
     for (let r = 0; r < rows; r++) {
-      // Filas alternas desplazadas s/2 en X — rompe el efecto sierra
+      // Filas alternas desplazadas s/2 en X · rompe el efecto sierra
       const ox = (r % 2 === 1) ? s / 2 : 0;
       for (let c = 0; c < cols; c++) {
         const x  = c * s - s + ox;
@@ -1825,12 +1884,12 @@ function updateHexes() {
         const y1 = y0 + th;
         const y2 = y0 + th * 2;
 
-        // △ — base en y0, vértice en y1
+        // △ · base en y0, vértice en y1
         tris.push({
           pts: [[x, y0], [x+s, y0], [x+s/2, y1]],
           flashColor: null, flashDur: 0, flashT: 0,
         });
-        // ▽ — vértice en y1, base en y2
+        // ▽ · vértice en y1, base en y2
         tris.push({
           pts: [[x+s/2, y1], [x+s, y2], [x, y2]],
           flashColor: null, flashDur: 0, flashT: 0,
@@ -1867,7 +1926,7 @@ function updateHexes() {
     const th = 41.57;
     const numRows = Math.ceil(H / (th * 2)) + 4;
 
-    // ── Líneas horizontales — una sola vez por nivel ──
+    // ── Líneas horizontales · una sola vez por nivel ──
     ctx.strokeStyle = baseColor;
     ctx.lineWidth   = 1.5;
     ctx.globalAlpha = baseAlpha;
@@ -1879,7 +1938,7 @@ function updateHexes() {
       ctx.stroke();
     }
 
-    // ── Triángulos — solo lados oblicuos + destellos ──
+    // ── Triángulos · solo lados oblicuos + destellos ──
     for (const t of tris) {
       const [a, b, c2] = t.pts;
       let color = baseColor;
@@ -1920,31 +1979,36 @@ function updateHexes() {
     raf = requestAnimationFrame(draw);
   }
 
+  // Con prefers-reduced-motion: un solo cuadro estático (la retícula
+  // sin destellos) y se redibuja solo al cambiar tamaño; antes el loop
+  // corría a 60fps aunque el sistema pidiera menos movimiento.
+  const still = () => { cancelAnimationFrame(raf); raf = null; draw(0); cancelAnimationFrame(raf); raf = null; };
   function init() {
     buildTris();
+    if (reduceMotion.matches) { still(); return; }
     scheduleFlash();
     raf = requestAnimationFrame(draw);
   }
 
-  window.addEventListener('resize', buildTris);
+  window.addEventListener('resize', () => { buildTris(); if (reduceMotion.matches) still(); });
   setTimeout(init, 50);
 
   // Exponer para que toggleTri pueda parar/arrancar
   window._sherryTri = {
     pause() { cancelAnimationFrame(raf); },
-    resume() { raf = requestAnimationFrame(draw); },
+    resume() { if (reduceMotion.matches) still(); else raf = requestAnimationFrame(draw); },
   };
 })();
 
 // ══════════════════════════════════════════════════════
-// Hero: pin de scroll (zoom ambiental + fade) — mismo patrón que
+// Hero: pin de scroll (zoom ambiental + fade) · mismo patrón que
 // apolo (.ap-hero-pin/.ap-hero: position:sticky dentro de un wrapper
 // alto, listener de scroll con rAF), fórmulas distintas porque el
 // comportamiento pedido es otro: acá no hay blur/scale por scroll,
 // solo fade de la imagen; el "zoom" es un Ken Burns ambiental atado
 // al tiempo que el hero lleva visible, no al progreso de scroll. El
 // título de esquina hace crossfade con el título grande en vez de
-// que una sola caja de texto se traslade — evita tener que
+// que una sola caja de texto se traslade · evita tener que
 // re-renderizar el pipeline de ASCII Text en cada frame de scroll.
 // ══════════════════════════════════════════════════════
 function initHero() {
@@ -1955,7 +2019,7 @@ function initHero() {
   if (!pinWrap || !hero) return;
 
   if (reduceMotion.matches) {
-    // Sin pin ni zoom — hero estático, título de esquina visible fijo
+    // Sin pin ni zoom · hero estático, título de esquina visible fijo
     // de una (no hay scroll-fade que lo revele).
     if (corner) corner.style.opacity = '1';
     return;
@@ -1970,7 +2034,7 @@ function initHero() {
     const total = pinWrap.offsetHeight - heroH;
     const progress = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 0;
     // Arranca en 60% (no 100%) y baja a 0% con la misma proporción
-    // lineal de antes — la imagen nunca se ve a opacidad plena, ni
+    // lineal de antes · la imagen nunca se ve a opacidad plena, ni
     // siquiera con el scroll en 0.
     media.style.opacity = (0.6 * (1 - progress)).toFixed(2);
     if (corner) {
@@ -1982,7 +2046,7 @@ function initHero() {
   window.addEventListener('resize', () => { if (!raf) raf = requestAnimationFrame(update); });
   update();
 
-  // Zoom ambiental — tiempo activo acumulado, no reloj de pared (si no,
+  // Zoom ambiental · tiempo activo acumulado, no reloj de pared (si no,
   // pausar/reanudar por IntersectionObserver haría saltar la escala de
   // golpe al volver a entrar en pantalla tras un rato scrolleado lejos).
   let zoomElapsed = 0, zoomLast = null, zoomRaf = null;
@@ -2018,7 +2082,7 @@ function initHero() {
 // caracteres por luminancia hacia un <pre>. Acá mismo mecanismo sin
 // Three.js: contexto WebGL propio (mismo patrón que Ripple
 // Distortion de apolo), geometría ya en clip space sin cámara real,
-// inclinación por shear en vez de rotación 3D verdadera — no hace
+// inclinación por shear en vez de rotación 3D verdadera · no hace
 // falta álgebra de matrices para este efecto.
 // ══════════════════════════════════════════════════════
 function initAsciiTitle() {
@@ -2027,7 +2091,7 @@ function initAsciiTitle() {
   if (!host || !plainTitle) return;
 
   const TEXT = 'SHERRY';
-  // Rampa real del componente (70 caracteres, no una simplificada) —
+  // Rampa real del componente (70 caracteres, no una simplificada) ·
   // el usuario pasó el código fuente completo, esto da una gradación
   // mucho más fina que los 10 caracteres que se habían usado antes.
   const RAMP = ' .\'`^",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$';
@@ -2037,7 +2101,7 @@ function initAsciiTitle() {
   textCanvas.width = RENDER_W; textCanvas.height = RENDER_H;
   const tctx = textCanvas.getContext('2d');
   tctx.clearRect(0, 0, RENDER_W, RENDER_H);
-  tctx.fillStyle = '#fff';
+  tctx.fillStyle = '#FAFAFA';
   tctx.textAlign = 'center';
   tctx.textBaseline = 'middle';
   tctx.font = "700 168px 'JetBrains Mono', monospace";
@@ -2205,7 +2269,7 @@ function initAsciiTitle() {
   host.addEventListener('pointerleave', () => { tiltTarget.x = 0; tiltTarget.y = 0; });
 
   // Hue-rotate según el ángulo del cursor respecto al centro del
-  // viewport (no del host) — así es como lo hace el original, es una
+  // viewport (no del host) · así es como lo hace el original, es una
   // lectura global de "dónde está el mouse en la pantalla", no local
   // al título. Se lerpea igual que el tilt, para que gire suave.
   let hueDeg = 0, hueTarget = 0;

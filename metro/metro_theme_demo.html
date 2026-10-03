@@ -7,9 +7,17 @@
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=space-mono:400,700&family=dm-sans:300,400,500,600&display=swap" rel="stylesheet">
 <style>
-/* ── Tokens ── (sin #000 ni #fff puros: regla dura de iroFactory) */
-.metro{--bg:#F5F0E8;--bg2:#EDE8DC;--bg3:#E4DDD0;--text:#1A1410;--text2:#6B5E50;--border:#C8BFB0;--red:#8B1A1A;--yellow:#C4691A;--green:#2A6B3A;--blue:#1A3A6B;--purple:#4A1A6B;--orange:#A84510;--pink:#8B1A4A;--brown:#5C3317;--black:#0D0A08;--white:#FAF7F2;--gray:#9A8E82;--accent:#6B1A2A;--accent2:#C4691A;--ok:#2A6B3A;--warn:#C4691A;--danger:#8B1A1A;--mono:'Space Mono','Courier New',monospace;--sans:'DM Sans',system-ui,sans-serif;--radius:4px;--radius-lg:8px;--hero-ink:var(--black)}
-.metro.dark{--bg:#0a0c10;--bg2:#0f1219;--bg3:#161b26;--text:#e8eaf0;--text2:#7a8099;--border:#1e2535;--red:#ff4560;--yellow:#f5a623;--green:#00e5a0;--blue:#457BFF;--purple:#9B6DFF;--orange:#FF7A30;--pink:#FF4D8F;--brown:#C4855A;--black:#050608;--white:#F2F4F8;--gray:#4a5568;--accent:#00e5a0;--accent2:#457BFF;--ok:#00e5a0;--warn:#f5a623;--danger:#ff4560;--hero-ink:var(--white)}
+/* ── PALETA (skill colorimetría) ──
+   Concepto: señalética de transporte. Regla: Custom por convención, no
+   por la rueda · el semáforo (rojo ~0°, ámbar ~30°, verde ~140°) es la
+   única semántica y viene del estándar vial, no de una armonía. La
+   paleta extendida (azul, púrpura, naranja, rosa, café) son colores de
+   línea de metro: distinguibles entre sí, sin carga semántica. Claro:
+   tintas oscuras sobre papel; oscuro: los mismos roles en neón sobre
+   casi negro. Las --*-ink ajustan solo luminosidad para texto WCAG AA.
+   Sin #000 ni #fff puros (regla dura de iroFactory). */
+.metro{--bg:#F5F0E8;--bg2:#EDE8DC;--bg3:#E4DDD0;--text:#1A1410;--text2:#6B5E50;--border:#C8BFB0;--red:#8B1A1A;--yellow:#C4691A;--green:#2A6B3A;--blue:#1A3A6B;--purple:#4A1A6B;--orange:#A34310;--pink:#8B1A4A;--brown:#5C3317;--black:#0D0A08;--white:#FAF7F2;--gray:#9A8E82;--accent:#6B1A2A;--accent2:#C4691A;--ok:#2A6B3A;--warn:#C4691A;--danger:#8B1A1A;--mono:'Space Mono','Courier New',monospace;--sans:'DM Sans',system-ui,sans-serif;--radius:4px;--radius-lg:8px;--hero-ink:var(--black);--yellow-ink:#924E13;--warn-ink:#924E13;--gray-ink:#6A5F55}
+.metro.dark{--bg:#0a0c10;--bg2:#0f1219;--bg3:#161b26;--text:#e8eaf0;--text2:#7E839C;--border:#1e2535;--red:#ff4560;--yellow:#f5a623;--green:#00e5a0;--blue:#457BFF;--purple:#9B6DFF;--orange:#FF7A30;--pink:#FF4D8F;--brown:#C4855A;--black:#050608;--white:#F2F4F8;--gray:#4a5568;--accent:#00e5a0;--accent2:#457BFF;--ok:#00e5a0;--warn:#f5a623;--danger:#ff4560;--hero-ink:var(--white);--yellow-ink:var(--yellow);--warn-ink:var(--warn);--gray-ink:#76859E}
 .metro *,.metro *::before,.metro *::after{box-sizing:border-box;margin:0;padding:0}
 .metro{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;transition:background .3s,color .3s}
 .metro ::-webkit-scrollbar{width:5px}.metro ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
@@ -21,38 +29,38 @@
 .metro code{font-family:var(--mono);font-size:12px;background:var(--bg3);border:1px solid var(--border);padding:1px 6px;border-radius:var(--radius);color:var(--accent)}
 .metro pre{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:16px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--text)}
 .metro pre code{background:none;border:none;padding:0;color:inherit}
-.metro pre .kw{color:var(--blue)}.metro pre .cm{color:var(--text2);font-style:italic}.metro pre .str{color:var(--green)}.metro pre .num{color:var(--yellow)}.metro pre .fn{color:var(--purple)}
+.metro pre .kw{color:var(--blue)}.metro pre .cm{color:var(--text2);font-style:italic}.metro pre .str{color:var(--green)}.metro pre .num{color:var(--yellow-ink)}.metro pre .fn{color:var(--purple)}
 .metro .callout{border-left:3px solid var(--accent);background:var(--bg2);padding:14px 18px;margin:20px 0;border-radius:0 var(--radius) var(--radius) 0}
-.metro .callout-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.metro .callout-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px}
 .metro .callout p{margin-bottom:0;font-size:13px}
 .metro .callout.ok{border-color:var(--ok);--mg-color:var(--ok)}.metro .callout.ok .callout-title{color:var(--ok)}
-.metro .callout.warn{border-color:var(--warn);--mg-color:var(--warn)}.metro .callout.warn .callout-title{color:var(--warn)}
+.metro .callout.warn{border-color:var(--warn-ink);--mg-color:var(--warn-ink)}.metro .callout.warn .callout-title{color:var(--warn-ink)}
 .metro .callout.danger{border-color:var(--danger);--mg-color:var(--danger)}.metro .callout.danger .callout-title{color:var(--danger)}
 .metro .callout.blue{border-color:var(--blue);--mg-color:var(--blue)}.metro .callout.blue .callout-title{color:var(--blue)}
 .metro .callout.purple{border-color:var(--purple);--mg-color:var(--purple)}.metro .callout.purple .callout-title{color:var(--purple)}
 .metro .callout.orange{border-color:var(--orange);--mg-color:var(--orange)}.metro .callout.orange .callout-title{color:var(--orange)}
 .metro .callout.pink{border-color:var(--pink);--mg-color:var(--pink)}.metro .callout.pink .callout-title{color:var(--pink)}
 .metro .callout.brown{border-color:var(--brown);--mg-color:var(--brown)}.metro .callout.brown .callout-title{color:var(--brown)}
-.metro .callout.gray{border-color:var(--gray);--mg-color:var(--gray)}.metro .callout.gray .callout-title{color:var(--gray)}
+.metro .callout.gray{border-color:var(--gray-ink);--mg-color:var(--gray-ink)}.metro .callout.gray .callout-title{color:var(--gray-ink)}
 .metro table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
 .metro th{background:var(--bg3);padding:8px 12px;text-align:left;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--text2);border-bottom:1px solid var(--border)}
 .metro td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;background:color-mix(in srgb,var(--bg) 85%,transparent)}
 .metro tr:hover td{background:var(--bg3)}
-.metro .btn{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;padding:6px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text);cursor:pointer;transition:all .15s;text-decoration:none}
+.metro .btn{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;padding:6px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text);cursor:pointer;transition:color .15s ease-out,border-color .15s ease-out,background-color .15s ease-out,transform .16s ease-out;text-decoration:none}
 .metro .btn:hover{border-color:var(--accent);color:var(--accent)}
 .metro .btn.primary{background:color-mix(in srgb,var(--accent) 15%,transparent);border-color:var(--accent);color:var(--accent)}
-.metro .btn.ok{border-color:var(--ok);color:var(--ok)}.metro .btn.warn{border-color:var(--warn);color:var(--warn)}.metro .btn.danger{border-color:var(--danger);color:var(--danger)}
+.metro .btn.ok{border-color:var(--ok);color:var(--ok)}.metro .btn.warn{border-color:var(--warn-ink);color:var(--warn-ink)}.metro .btn.danger{border-color:var(--danger);color:var(--danger)}
 .metro .btn.blue{border-color:var(--blue);color:var(--blue)}.metro .btn.purple{border-color:var(--purple);color:var(--purple)}.metro .btn.orange{border-color:var(--orange);color:var(--orange)}.metro .btn.pink{border-color:var(--pink);color:var(--pink)}
 .metro .badge{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);background:var(--bg)}
-.metro .badge.accent{border-color:var(--accent);color:var(--accent)}.metro .badge.ok{border-color:var(--ok);color:var(--ok)}.metro .badge.warn{border-color:var(--warn);color:var(--warn)}.metro .badge.danger{border-color:var(--danger);color:var(--danger)}
-.metro .badge.blue{border-color:var(--blue);color:var(--blue)}.metro .badge.purple{border-color:var(--purple);color:var(--purple)}.metro .badge.orange{border-color:var(--orange);color:var(--orange)}.metro .badge.pink{border-color:var(--pink);color:var(--pink)}.metro .badge.brown{border-color:var(--brown);color:var(--brown)}.metro .badge.gray{border-color:var(--gray);color:var(--gray)}
+.metro .badge.accent{border-color:var(--accent);color:var(--accent)}.metro .badge.ok{border-color:var(--ok);color:var(--ok)}.metro .badge.warn{border-color:var(--warn-ink);color:var(--warn-ink)}.metro .badge.danger{border-color:var(--danger);color:var(--danger)}
+.metro .badge.blue{border-color:var(--blue);color:var(--blue)}.metro .badge.purple{border-color:var(--purple);color:var(--purple)}.metro .badge.orange{border-color:var(--orange);color:var(--orange)}.metro .badge.pink{border-color:var(--pink);color:var(--pink)}.metro .badge.brown{border-color:var(--brown);color:var(--brown)}.metro .badge.gray{border-color:var(--gray-ink);color:var(--gray-ink)}
 .metro .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px}
 .metro .metrics-row{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
 .metro .metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;flex:1;min-width:100px}
 .metro .metric-val{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent)}
 .metro .metric-lbl{font-size:11px;color:var(--text2);margin-top:2px}
-.metro .metric-val.red{color:var(--red)}.metro .metric-val.yellow{color:var(--yellow)}.metro .metric-val.green{color:var(--green)}.metro .metric-val.blue{color:var(--blue)}.metro .metric-val.purple{color:var(--purple)}
-.metro .metric:has(.metric-val.red){--mg-color:var(--red)}.metro .metric:has(.metric-val.yellow){--mg-color:var(--yellow)}.metro .metric:has(.metric-val.green){--mg-color:var(--green)}.metro .metric:has(.metric-val.blue){--mg-color:var(--blue)}.metro .metric:has(.metric-val.purple){--mg-color:var(--purple)}
+.metro .metric-val.red{color:var(--red)}.metro .metric-val.yellow{color:var(--yellow-ink)}.metro .metric-val.green{color:var(--green)}.metro .metric-val.blue{color:var(--blue)}.metro .metric-val.purple{color:var(--purple)}
+.metro .metric:has(.metric-val.red){--mg-color:var(--red)}.metro .metric:has(.metric-val.yellow){--mg-color:var(--yellow-ink)}.metro .metric:has(.metric-val.green){--mg-color:var(--green)}.metro .metric:has(.metric-val.blue){--mg-color:var(--blue)}.metro .metric:has(.metric-val.purple){--mg-color:var(--purple)}
 .metro .divider{border:none;border-top:1px solid var(--border);margin:32px 0}
 .metro .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:600px){.metro .grid-2{grid-template-columns:1fr}}
@@ -61,20 +69,27 @@
 .metro .timeline{margin:16px 0;display:flex;flex-direction:column;gap:10px}
 .metro .timeline-item{display:flex;gap:16px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)}
 .metro .timeline-item p{margin-bottom:0}
-.metro .timeline-item:has(.done){--mg-color:var(--ok)}.metro .timeline-item:has(.warn){--mg-color:var(--warn)}.metro .timeline-item:has(.danger){--mg-color:var(--danger)}.metro .timeline-item:has(.pending){--mg-color:var(--gray)}
+.metro .timeline-item:has(.done){--mg-color:var(--ok)}.metro .timeline-item:has(.warn){--mg-color:var(--warn-ink)}.metro .timeline-item:has(.danger){--mg-color:var(--danger)}.metro .timeline-item:has(.pending){--mg-color:var(--gray-ink)}
 .metro .timeline-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;margin-top:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3)}
-.metro .timeline-dot.done{background:color-mix(in srgb,var(--ok) 15%,transparent);border-color:var(--ok);color:var(--ok)}
+/* Tinte de 8% (antes 15%): con 15% el verde y el ámbar sobre su propio
+   tinte quedaban en 4.3-4.4:1 en modo claro. */
+.metro .timeline-dot.done{background:color-mix(in srgb,var(--ok) 8%,transparent);border-color:var(--ok);color:var(--ok)}
 .metro .timeline-dot.pending{background:var(--bg3);border-color:var(--border);color:var(--text2)}
-.metro .timeline-dot.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);border-color:var(--warn);color:var(--warn)}
-.metro .timeline-dot.danger{background:color-mix(in srgb,var(--danger) 15%,transparent);border-color:var(--danger);color:var(--danger)}
-.metro .theme-btn{font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .2s}
+.metro .timeline-dot.warn{background:color-mix(in srgb,var(--warn) 8%,transparent);border-color:var(--warn-ink);color:var(--warn-ink)}
+.metro .timeline-dot.danger{background:color-mix(in srgb,var(--danger) 8%,transparent);border-color:var(--danger);color:var(--danger)}
+.metro .theme-btn{font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:color .15s ease-out,border-color .15s ease-out,background-color .15s ease-out,transform .16s ease-out}
 .metro .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
 .swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
 .swatch{width:80px;font-family:var(--mono);font-size:9px;color:var(--text2);text-align:center}
 .swatch-box{height:48px;border-radius:4px;margin-bottom:6px;border:1px solid var(--border);position:relative}
-.swatch-hex{position:absolute;bottom:4px;left:5px;font-family:var(--mono);font-size:9px;color:var(--white);opacity:.8;mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}
+.swatch-hex{position:absolute;bottom:4px;left:4px;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text);padding:1px 2px;border-radius:2px;letter-spacing:0;line-height:1;pointer-events:none}
+.swatch-hex.is-chip{background:var(--bg)}
 .metro-title-anim{transition:color .6s ease}
 
+/* ── Radios ── una sola escala: --radius (4px) para controles e
+   insignias (botones, ítems del dock, tooltip, celdas), --radius-lg
+   (8px) para contenedores (tarjeta de intro, panel del dock, mosaicos
+   de la galería). Antes convivían 4/6/8/10/12/14px sin regla. */
 /* ── Layout por niveles ── */
 html,body.metro{margin:0}
 body.metro{min-height:100vh}
@@ -105,8 +120,10 @@ html.js-pin .metro-hero{position:sticky;top:0}
 .metro-warp canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .metro-warp-fallback{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:clamp(3rem,10vw,9rem);letter-spacing:-.06em;line-height:.9;color:var(--hero-ink)}
 .metro-warp.is-gl .metro-warp-fallback{opacity:0}
-.metro-hero-sub{font-family:var(--mono);font-size:13px;color:var(--hero-ink);margin-top:6px;letter-spacing:.02em}
-.metro-hero-credit{position:absolute;z-index:2;right:24px;bottom:20px;font-family:var(--mono);font-size:11px;color:var(--hero-ink);opacity:.75}
+/* Placas: sobre el collage claro del modo oscuro el subtítulo y el
+   crédito quedaban en 3.0 y 2.4:1 (medido en píxeles). */
+.metro-hero-sub{font-family:var(--mono);font-size:13px;color:var(--hero-ink);margin-top:6px;letter-spacing:.02em;background:color-mix(in srgb,var(--bg) 82%,transparent);padding:3px 10px;border-radius:var(--radius)}
+.metro-hero-credit{position:absolute;z-index:2;right:24px;bottom:20px;font-family:var(--mono);font-size:11px;color:var(--hero-ink);background:color-mix(in srgb,var(--bg) 82%,transparent);padding:3px 8px;border-radius:var(--radius)}
 
 
 /* ══════════════════════════════════════════════════════
@@ -184,7 +201,8 @@ html.js-pin .metro-hero{position:sticky;top:0}
 .metro-panel-loader{display:none;min-height:240px;align-items:center;justify-content:center;color:var(--text2)}
 .metro-panel.is-loading .metro-panel-loader{display:flex}
 .metro-panel.is-loading .metro-panel-body{display:none}
-.metro-footer{padding:24px 0 48px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--text2)}
+.metro-footer{padding:22px 0 30px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--text2);background:color-mix(in srgb,var(--bg) 92%,transparent);border-top:1px solid var(--border)}
+.metro-footer a{text-underline-offset:3px}
 
 /* ══════════════════════════════════════════════════════
    DOCK (React Bits) · mismos números del original: ítem base
@@ -194,15 +212,21 @@ html.js-pin .metro-hero{position:sticky;top:0}
    hay contenido debajo que brincaría). Roles de tablist/tab.
 ══════════════════════════════════════════════════════ */
 .metro-dock-outer{position:relative;height:124px;margin:0 auto 12px;max-width:100%}
-.metro-dock-panel{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:var(--dock-gap,12px);width:max-content;height:68px;padding:0 8px 8px;border-radius:14px;background:color-mix(in srgb,var(--bg2) 92%,transparent);border:1px solid var(--border)}
-.metro-dock-item{position:relative;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:10px;background:var(--bg);border:1px solid var(--border);box-shadow:0 4px 6px -1px color-mix(in srgb,var(--black) 12%,transparent),0 2px 4px -1px color-mix(in srgb,var(--black) 8%,transparent);color:var(--text2);cursor:pointer;outline:none;font:inherit;padding:0;transition:color .2s,border-color .2s}
+.metro-dock-panel{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:var(--dock-gap,12px);width:max-content;height:68px;padding:0 8px 8px;border-radius:var(--radius-lg);background:color-mix(in srgb,var(--bg2) 92%,transparent);border:1px solid var(--border)}
+.metro-dock-item{position:relative;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:var(--radius);background:var(--bg);border:1px solid var(--border);box-shadow:0 4px 6px -1px color-mix(in srgb,var(--black) 12%,transparent),0 2px 4px -1px color-mix(in srgb,var(--black) 8%,transparent);color:var(--text2);cursor:pointer;outline:none;font:inherit;padding:0;transition:color .2s,border-color .2s}
 .metro-dock-item:hover{color:var(--text)}
 .metro-dock-item[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
 .metro-dock-item[aria-selected="true"]::after{content:"";position:absolute;bottom:-7px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--accent)}
 .metro-dock-item:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+/* Presión: escala sutil (skill frontend-design). El dock no la lleva:
+   su tamaño ya lo mueve el resorte de magnificación. */
+.metro .btn:active,.metro .theme-btn:active{transform:scale(.97)}
+/* Foco visible con el acento en todo lo interactivo (antes el botón de
+   tema y .btn quedaban con el anillo por defecto del navegador). */
+.metro a:focus-visible,.metro button:not(.metro-dock-item):focus-visible,.metro [tabindex]:not(.metro-dock-item):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .metro-dock-icon{display:flex;align-items:center;justify-content:center;width:46%;height:46%;pointer-events:none}
 .metro-dock-icon svg{width:100%;height:100%;display:block}
-.metro-dock-label{position:absolute;top:-1.6rem;left:50%;white-space:pre;border-radius:6px;border:1px solid var(--border);background:var(--bg2);padding:2px 8px;font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--text);pointer-events:none;opacity:0;transform:translate(-50%,0);transition:opacity .2s,transform .2s}
+.metro-dock-label{position:absolute;top:-1.6rem;left:50%;white-space:pre;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);padding:2px 8px;font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--text);pointer-events:none;opacity:0;transform:translate(-50%,0);transition:opacity .2s,transform .2s}
 .metro-dock-item.is-hover .metro-dock-label{opacity:1;transform:translate(-50%,-10px)}
 
 /* ── Lattice Loader (React Bits) · CSS del original ── */
@@ -242,7 +266,7 @@ html.js-pin .metro-hero{position:sticky;top:0}
    mosaico rota en Y/X sobre la esfera y se empuja con
    translateZ(radio); la esfera entera rota al arrastrar.
 ══════════════════════════════════════════════════════ */
-.dg-root{position:relative;width:100%;height:620px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);--radius:520px;--viewer-pad:72px;--circ:calc(var(--radius) * 3.14);--rot-y:calc((360deg / var(--segments-x)) / 2);--rot-x:calc((360deg / var(--segments-y)) / 2);--item-width:calc(var(--circ) / var(--segments-x));--item-height:calc(var(--circ) / var(--segments-y));--overlay-blur-color:var(--bg);--tile-radius:8px;--enlarge-radius:12px;--image-filter:none}
+.dg-root{position:relative;width:100%;height:620px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);--radius:520px;--viewer-pad:72px;--circ:calc(var(--radius) * 3.14);--rot-y:calc((360deg / var(--segments-x)) / 2);--rot-x:calc((360deg / var(--segments-y)) / 2);--item-width:calc(var(--circ) / var(--segments-x));--item-height:calc(var(--circ) / var(--segments-y));--overlay-blur-color:var(--bg);--tile-radius:var(--radius-lg);--enlarge-radius:var(--radius-lg);--image-filter:none}
 @media(max-width:600px){.dg-root{height:440px}}
 /* A todo el ancho: se sale de .wrap hasta los bordes del viewport
    (el clip horizontal de .metro-page absorbe la barra de scroll).
@@ -441,7 +465,7 @@ html.js-pin .metro-hero{position:sticky;top:0}
           <tr><td><code>--green</code></td><td>#2A6B3A</td><td>#00e5a0</td><td>Semáforo verde · OK</td></tr>
           <tr><td><code>--blue</code></td><td>#1A3A6B</td><td>#457BFF</td><td>Info técnica · links</td></tr>
           <tr><td><code>--purple</code></td><td>#4A1A6B</td><td>#9B6DFF</td><td>Experimental · RL</td></tr>
-          <tr><td><code>--orange</code></td><td>#A84510</td><td>#FF7A30</td><td>Rendimiento · alertas</td></tr>
+          <tr><td><code>--orange</code></td><td>#A34310</td><td>#FF7A30</td><td>Rendimiento · alertas</td></tr>
           <tr><td><code>--pink</code></td><td>#8B1A4A</td><td>#FF4D8F</td><td>Diseño · UI</td></tr>
           <tr><td><code>--brown</code></td><td>#5C3317</td><td>#C4855A</td><td>Histórico · contexto</td></tr>
         </table>
@@ -486,7 +510,7 @@ html.js-pin .metro-hero{position:sticky;top:0}
   </div>
 </section>
 
-<footer class="metro-footer">metro_theme · by RemiH06 · iroFactory · AGPL-3.0</footer>
+<footer class="metro-footer">metro_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · AGPL-3.0</footer>
 
 </main>
 
@@ -530,6 +554,7 @@ function rebuildNodes() {
     col: cols[Math.floor(Math.random()*cols.length)],
     alpha: 0.35+Math.random()*.45,
   }));
+  if (reduceMotion.matches && typeof drawBg === 'function') drawBg();
 }
 function drawBg() {
   ctx.clearRect(0,0,W,H);
@@ -539,7 +564,9 @@ function drawBg() {
   ctx.strokeStyle = gc; ctx.lineWidth = 1;
   for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
   for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  nodes.forEach(n=>{
+  // Con prefers-reduced-motion los nodos no se mueven: un solo cuadro,
+  // redibujado al cambiar tema o tamaño (antes el loop seguía a 60fps).
+  if (!reduceMotion.matches) nodes.forEach(n=>{
     n.x+=n.vx; n.y+=n.vy;
     if(n.x<0||n.x>W) n.vx*=-1;
     if(n.y<0||n.y>H) n.vy*=-1;
@@ -569,23 +596,46 @@ function drawBg() {
     ctx.fillRect(n.x - s/2, n.y - s/2, s, s);
     ctx.globalAlpha=1;
   });
-  requestAnimationFrame(drawBg);
+  if (!reduceMotion.matches) requestAnimationFrame(drawBg);
 }
 
 // ── Ciclo de color "_theme" ───────────────────────────
 (function(){
   const el=document.querySelector('.metro-title-anim');
   if(!el) return;
-  const toks=['--red','--yellow','--green']; let i=0;
+  const toks=['--red','--yellow-ink','--green']; let i=0;
   function cycle(){ el.style.color=cssVar(toks[i]); i=(i+1)%3; }
   cycle(); setInterval(cycle,1200);
   changeListeners.push(()=>{i=0;cycle();});
 })();
 
+// ── Etiquetas hex de la paleta ─────────────────────────
+// Antes: color fijo con mix-blend-mode: difference. En medios tonos
+// (naranjas, verdes, el gris) quedaba un gris turbio de 1.1 a 2.5:1.
+// Ahora cada etiqueta usa la tinta del modo vigente (--text o --bg)
+// con mayor contraste WCAG real contra su muestra; si ninguna llega
+// a 4.5:1, va sobre una pastilla --bg con --text (skill colorimetría).
+function inkSwatchLabels() {
+  const rgbOf = s => { const m = String(s).match(/[\d.]+/g); return m ? m.slice(0, 3).map(Number) : null; };
+  const hexRgb = h => { h = h.trim().replace('#', ''); if (h.length === 3) h = h.replace(/./g, c => c + c); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  const inks = ['--text', '--bg'].map(t => ({ t, c: hexRgb(cssVar(t)) }));
+  document.querySelectorAll('.swatch-hex').forEach(el => {
+    const sw = rgbOf(getComputedStyle(el.parentElement).backgroundColor);
+    if (!sw) return;
+    const best = inks.map(i => ({ t: i.t, r: ratio(i.c, sw) })).sort((a, b) => b.r - a.r)[0];
+    const chip = best.r < 4.5;
+    el.classList.toggle('is-chip', chip);
+    el.style.color = chip ? 'var(--text)' : `var(${best.t})`;
+  });
+}
+
 // ── Hexes ─────────────────────────────────────────────
 function updateHexes(){
   const m={'hex-red':'--red','hex-yellow':'--yellow','hex-green':'--green','hex-blue':'--blue','hex-purple':'--purple','hex-orange':'--orange','hex-pink':'--pink','hex-brown':'--brown','hex-black':'--black','hex-gray':'--gray','hex-white':'--white','hex-accent':'--accent','hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger'};
-  Object.entries(m).forEach(([id,tok])=>{const el=document.getElementById(id);if(el)el.textContent=cssVar(tok);});
+  Object.entries(m).forEach(([id,tok])=>{const el=document.getElementById(id);if(el)el.textContent=cssVar(tok).toUpperCase();});
+  inkSwatchLabels();
 }
 
 // ══════════════════════════════════════════════════════
@@ -874,7 +924,8 @@ void main(){
     gl.uniform1f(U.uTime, rm ? 0 : el);
     gl.uniform1f(U.uMotion, rm ? 0 : 1);
     render();
-    if (visible && !document.hidden) raf = requestAnimationFrame(loop);
+    // Con reduced-motion: un cuadro estático (sin deriva ni lente).
+    if (visible && !document.hidden && !reduceMotion.matches) raf = requestAnimationFrame(loop);
   }
   const kick = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(loop); };
   new IntersectionObserver(([en]) => { visible = en.isIntersecting; kick(); }, { threshold: 0 }).observe(host);
