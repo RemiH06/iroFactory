@@ -494,6 +494,28 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
 .swatch-box{height:42px;border-radius:var(--radius);margin-bottom:5px;border:1px solid var(--border);position:relative}
 .swatch-hex{position:absolute;bottom:3px;left:3px;font-family:var(--mono);font-size:9px;color:var(--text);padding:1px 2px;border-radius:2px;letter-spacing:0;line-height:1;pointer-events:none;text-shadow:none}
 .swatch-hex.is-chip{background:var(--bg)}
+/* ── Vertical (celular) · frontend-design/references/responsive-portrait.md
+   Revisión del 2026-10-03 a 390×844: el toggle fijo tapaba líneas de texto
+   al hacer scroll, las tablas partían --token en dos líneas y había texto
+   de 8 a 10px. En escritorio no cambia nada. */
+@media(max-width:760px){
+  #ap-toggle-wrap{position:absolute;top:16px;right:16px}
+  .ap-ejemplos-heading{display:inline-block;margin:0 20px 28px;padding:4px 10px;background:color-mix(in srgb,var(--bg) 90%,transparent);border-radius:var(--radius)}
+}
+/* Tamaños mínimos también en táctil ancho (teléfono acostado, tablet). */
+@media(max-width:760px),(pointer:coarse){
+  .theme-btn,.btn,.ap-tab{font-size:12px}
+  .ap-gallery-card pre{font-size:12px!important}
+  .badge{font-size:12px}
+  .page-subtitle,.ap-hero-text .page-subtitle{font-size:12px}
+  .ap-gallery-caption{font-size:12px;letter-spacing:.04em}
+  pre,code{font-size:12px}
+  th{font-size:12px;letter-spacing:.06em}
+  .swatch{font-size:12px;width:auto;min-width:76px}
+  .swatch-hex{font-size:12px}
+  table{display:block;overflow-x:auto}
+  td code{white-space:nowrap}
+}
 </style>
 </head>
 <body>

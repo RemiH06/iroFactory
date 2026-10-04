@@ -547,6 +547,25 @@ a { color: var(--accent); text-underline-offset: 3px; }
   letter-spacing: 0; line-height: 1; pointer-events: none;
 }
 .swatch-hex.is-chip { background: var(--bg); }
+/* ── Vertical (celular) · frontend-design/references/responsive-portrait.md
+   Revisión del 2026-10-03 a 390×844: el lienzo del título ASCII medía
+   359×320 (casi cuadrado) y el texto, rasterizado a 3:1, salía apretado
+   y alto; ahora conserva el 3:1. Los controles fijos tapaban renglones
+   al hacer scroll: en vertical van sobre una franja propia, como barra
+   de app. Tablas sin partir --token y texto mínimo de 12px. */
+@media (max-width: 760px) {
+  #sherry-ascii-host { height: calc(min(92vw, 920px) / 3); }
+  .sherry-controls::before {
+    content: ""; position: fixed; left: 0; right: 0; top: 0; height: 52px; z-index: -1;
+    background: color-mix(in srgb, var(--bg) 94%, transparent); border-bottom: 1px solid var(--border);
+  }
+}
+/* Tamaños mínimos también en táctil ancho (teléfono acostado, tablet). */
+@media (max-width: 760px), (pointer: coarse) {
+  .btn, .theme-btn, .swatch, .swatch-hex, .callout-title, .badge, .metric-lbl, th, p.muted, .sherry-footer a, footer a { font-size: 12px; }
+  table { display: block; overflow-x: auto; }
+  td code { white-space: nowrap; }
+}
 </style>
 </head>
 <body class="tri-on">
@@ -827,7 +846,7 @@ a { color: var(--accent); text-underline-offset: 3px; }
 
 <footer class="sherry-level">
   <div class="sherry-level-wrap">
-    <p class="muted prompt" style="font-size:11px">
+    <p class="muted prompt" style="font-size:12px">
       sherry_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · AGPL-3.0
     </p>
   </div>
@@ -2105,6 +2124,12 @@ function initAsciiTitle() {
   tctx.textAlign = 'center';
   tctx.textBaseline = 'middle';
   tctx.font = "700 168px 'JetBrains Mono', monospace";
+  // En vertical el lienzo es angosto: el texto se agranda hasta ~80% del
+  // ancho para que el ASCII tenga columnas suficientes y se lea.
+  if (window.innerWidth < 760) {
+    const tw = tctx.measureText(TEXT).width;
+    tctx.font = `700 ${Math.floor(168 * RENDER_W * 0.8 / tw)}px 'JetBrains Mono', monospace`;
+  }
   tctx.fillText(TEXT, RENDER_W / 2, RENDER_H / 2);
 
   const glCanvas = document.createElement('canvas');
@@ -2218,6 +2243,8 @@ function initAsciiTitle() {
   }
 
   const pre = document.createElement('pre');
+  // Arte, no texto: el título real es #sherry-hero-title.
+  pre.setAttribute('aria-hidden', 'true');
   host.appendChild(pre);
 
   const charAspect = 0.52;

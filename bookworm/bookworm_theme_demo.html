@@ -122,7 +122,7 @@ body.dark {
   /* Noche: el komorebi azul y los rayos aclaran el fondo detrás del texto;
      con 30% los títulos quedaban en 2.5 a 4.3:1 (medido en píxeles), con 60%
      en 3.6 a 4.2:1; 74% los pasa y el invernadero sigue visible. */
-  --glass-tint: color-mix(in srgb, var(--bg) 74%, transparent);
+  --glass-tint: color-mix(in srgb, var(--bg) 80%, transparent);
   --mh-filter: brightness(1.8) saturate(1.05);
   /* Borde claro fino: en las zonas verde oscuro de la foto la letra se
      perdía contra el fondo nocturno (p25 2.0:1). */
@@ -273,6 +273,9 @@ body.mode-desktop:not(.is-switching) #bw-gh{visibility:hidden}
 html.js #bw-hero{position:fixed;inset:0;min-height:0}
 body.mode-desktop:not(.is-switching) #bw-hero{visibility:hidden}
 .bw-hero-inner{width:min(1100px,92vw);display:flex;flex-direction:column;align-items:center;gap:18px}
+/* De noche las fibras brillan detrás del título: una penumbra radial de --bg solo bajo él, el resto del invernadero queda igual. */
+body.dark .bw-hero-inner{position:relative}
+body.dark .bw-hero-inner::before{content:"";position:absolute;inset:-14% -8%;z-index:-1;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--bg) 78%,transparent) 55%,transparent)}
 .mh{position:relative;width:100%;margin:0;text-align:center;font-family:var(--serif);font-weight:700;font-style:italic;letter-spacing:-.03em;line-height:1.06;color:var(--moss-ink);font-size:clamp(56px,14vw,200px);-webkit-font-smoothing:antialiased}
 html.js .mh .mh-measure{color:transparent}
 .mh-word{display:inline-block;white-space:pre}
@@ -368,7 +371,15 @@ body.is-switching #bw-desktop{z-index:20}
   .bw-rz{display:none}
   .bw-win-bar{cursor:default}
   .bw-credit{display:none}
+  th{font-size:12px}
+  .bw-win table{display:block;overflow-x:auto}
+  .bw-win td code{white-space:nowrap}
 }
+/* Teléfono acostado (390px de alto): el crédito tapaba los íconos y
+   se comía los toques (revisión móvil del 2026-10-03). */
+@media (max-height:500px){.bw-credit{display:none}.bw-icons{top:44px;gap:58px 4px;grid-template-columns:repeat(3,92px)}}
+@media (pointer:coarse){th{font-size:12px}}
+@media (max-width:400px){.bw-hero-foot{white-space:normal;width:calc(100% - 32px);text-align:center}}
 #bw-crumple{position:fixed;inset:0;width:100%;height:100%;z-index:4000;pointer-events:none;display:none}
 
 /* ── Sin JS: las seis secciones como una página normal bajo el hero ── */
@@ -380,6 +391,7 @@ html.js #bw-library{display:none}
 <body>
 
 <div id="bw-gh" aria-hidden="true">
+  <canvas id="bw-sky"></canvas>
   <canvas id="bw-tri"></canvas>
   <canvas id="bw-light"></canvas>
   <canvas id="bw-wood"></canvas>
@@ -705,6 +717,120 @@ void main() {
     };
   })();
 
+  // ── Cielo: la capa más profunda, visible por los agujeros de la madera
+  // detrás de la retícula y el komorebi. Ghost Fibers (React Bits, OGL) en
+  // los dos modos: de día la rama clara del original, de noche la oscura
+  // (suma de líneas y brillo). Era WebGL2: traducido a GLSL ES 1.0 con la
+  // misma fórmula. Cambios: (1) fondo = --bg del modo (el original usaba
+  // blanco puro de día y un morado casi negro de noche); (2) las fibras
+  // van del color del brillo (de día --ochre, de noche la luna --gh-ray1),
+  // más capas y escala menor para que se vean más por los agujeros.
+  const skyCv = $('#bw-sky');
+  // Media resolución: las fibras son suaves y solo asoman por los agujeros,
+  // así el shader cuesta ~4 veces menos por cuadro. El CSS lo estira.
+  const SKY_RES = .5;
+  const sky = (() => {
+    const gl = skyCv.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: true });
+    if (!gl) return null;
+    const vs = `attribute vec2 position; void main(){ gl_Position = vec4(position, 0.0, 1.0); }`;
+    const fs = `precision highp float;
+uniform vec2 uResolution; uniform float uTime; uniform float uSpeed; uniform float uScale; uniform float uRotation; uniform float uLayers;
+uniform float uWaveAmplitude; uniform float uWaveFrequency; uniform float uWaveSpeed; uniform float uLayerSpeed; uniform float uTwist;
+uniform float uTwistFrequency; uniform float uTwistSpeed; uniform float uLineFrequency; uniform float uLineSpacing; uniform float uLineSharpness;
+uniform float uGlowFalloff; uniform float uGlowIntensity; uniform float uBrightness; uniform float uBlueBoost; uniform float uVignette; uniform float uGrain;
+uniform float uRotationSpeed; uniform float uLightMode; uniform vec3 uLineColor; uniform vec3 uGlowColor; uniform vec3 uBackdrop;
+uniform float uFiberMix; uniform float uFiberInk; uniform float uNightGain;
+#define MAX_LAYERS 10
+mat2 rotate2d(float angle) { float sine = sin(angle); float cosine = cos(angle); return mat2(cosine, -sine, sine, cosine); }
+float grainHash(vec2 point) { point = floor(point); float hash = 52.9829189 * fract(dot(point, vec2(0.065, 0.005))); return fract(hash); }
+float layeredGrain(vec2 fragmentPixel) {
+  vec2 point = mod(fragmentPixel + vec2(uTime * 30.0, -uTime * 21.0), 1024.0);
+  vec2 rotated = mat2(0.8, -0.5, 0.5, 0.8) * point;
+  float grain = 0.0;
+  grain += 0.40 * grainHash(rotated); grain += 0.25 * grainHash(rotated * 2.0 + 17.0); grain += 0.20 * grainHash(rotated * 4.0 + 47.0);
+  grain += 0.10 * grainHash(rotated * 8.0 + 113.0); grain += 0.05 * grainHash(rotated * 16.0 + 191.0);
+  return grain;
+}
+void main() {
+  vec2 resolution = max(uResolution, vec2(1.0));
+  vec2 uv = (2.0 * gl_FragCoord.xy - resolution) / resolution.y;
+  float time = uTime * uSpeed;
+  vec3 backdrop = uBackdrop;
+  vec3 centerTone = max(uLineColor * 0.85567 - uGlowColor * 0.06186, vec3(0.0));
+  vec3 cloudTone = uLineColor * 0.19588 + uGlowColor * 0.2268;
+  vec2 p = uv / max(uScale, 0.05);
+  p = rotate2d(radians(uRotation) + time * uRotationSpeed) * p;
+  vec3 color = vec3(0.0);
+  float fiberField = 0.0;
+  for (int index = 0; index < MAX_LAYERS; index++) {
+    float fi = float(index) + 1.0;
+    if (fi > uLayers) break;
+    p += uWaveAmplitude * sin(p.yx * fi * uWaveFrequency + time * (uWaveSpeed + fi * uLayerSpeed));
+    float radius = length(p);
+    float polarAngle = atan(p.y, p.x);
+    polarAngle += sin(radius * uTwistFrequency - time * uTwistSpeed + fi) * uTwist;
+    p = vec2(cos(polarAngle), sin(polarAngle)) * radius;
+    float lines = abs(sin(p.x * (uLineFrequency + fi * uLineSpacing) + sin(p.y * 3.0 + time)));
+    lines = pow(max(0.0, 1.0 - lines), uLineSharpness);
+    fiberField += lines / fi;
+    color += uLineColor * lines / fi;
+    float glow = exp(-uGlowFalloff * abs(sin(p.x * 3.0 + time + fi)));
+    color += uGlowColor * glow * uGlowIntensity / (fi * 2.0);
+  }
+  float center = exp(-2.2 * dot(uv, uv));
+  color += centerTone * center;
+  float cloud = exp(-1.5 * length(uv + vec2(sin(time * 0.3) * 0.25, cos(time * 0.25) * 0.18)));
+  color += cloudTone * cloud;
+  float vignette = 1.0 - smoothstep(0.35, 1.45, length(uv));
+  color *= mix(1.0 - uVignette, 1.0, vignette);
+  color = 1.0 - exp(-color * uBrightness);
+  color.b *= uBlueBoost;
+  vec3 outputColor;
+  if (uLightMode > 0.5) {
+    float edgeFade = mix(1.0 - uVignette, 1.0, vignette);
+    float fibers = pow(smoothstep(0.12, 1.05, fiberField) * edgeFade, 1.5);
+    float atmosphere = (center * 0.025 + cloud * 0.015) * edgeFade;
+    vec3 fiberInk = mix(backdrop, uLineColor, uFiberInk);
+    vec3 airColor = mix(backdrop, uGlowColor, 0.16);
+    outputColor = mix(backdrop, airColor, atmosphere);
+    outputColor = mix(outputColor, fiberInk, min(1.0, fibers * uFiberMix));
+  } else {
+    outputColor = backdrop + color * uNightGain;
+  }
+  float noise = (layeredGrain(gl_FragCoord.xy) - 0.5) * uGrain;
+  gl_FragColor = vec4(clamp(outputColor + noise, 0.0, 0.97), 1.0);
+}`;
+    const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); return o; };
+    const prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+    gl.useProgram(prog);
+    const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const pl = gl.getAttribLocation(prog, 'position'); gl.enableVertexAttribArray(pl); gl.vertexAttribPointer(pl, 2, gl.FLOAT, false, 0, 0);
+    const U = {}; const u = n => (U[n] === undefined ? (U[n] = gl.getUniformLocation(prog, n)) : U[n]);
+    // Valores por defecto del original salvo: capas 4→5 y escala 2→1.4 (más
+    // fibras sin saturar; con 7 y 1.1 eran demasiadas y el loop se trababa), mezcla de fibras .3→1 y tinta .52→.8 de día (solo asoman por
+    // los agujeros, detrás del komorebi). De noche: la suma aditiva va a
+    // .42 (uNightGain) para que el título enmascarado y el vidrio de las
+    // ventanas sigan en contraste; brillo e intensidad
+    // más bajos para que la suma aditiva no tape el bosque nocturno.
+    Object.entries({ uSpeed: .2, uScale: 1.4, uRotation: 0, uRotationSpeed: .25, uLayers: 5, uWaveAmplitude: .015, uWaveFrequency: 3, uWaveSpeed: .15, uLayerSpeed: .08, uTwist: .1, uTwistFrequency: 5, uTwistSpeed: 1.2, uLineFrequency: 5, uLineSpacing: 2, uLineSharpness: 16, uGlowFalloff: 10, uVignette: .8, uGrain: .05, uFiberMix: 1, uFiberInk: .8, uNightGain: .42 }).forEach(([k, v]) => gl.uniform1f(u(k), v));
+    let w = 1, h = 1;
+    return {
+      resize(nw, nh) { w = Math.ceil(nw * SKY_RES); h = Math.ceil(nh * SKY_RES); skyCv.width = w; skyCv.height = h; gl.viewport(0, 0, w, h); },
+      render(t) {
+        const rgb = n => hexRgb(cssVar(n)).map(v => v / 255);
+        const bg = rgb('--bg'), line = rgb(isDark ? '--gh-ray1' : '--ochre'), glow = rgb(isDark ? '--gh-ray1' : '--ochre');
+        gl.uniform2f(u('uResolution'), w, h); gl.uniform1f(u('uTime'), t * 0.001);
+        gl.uniform1f(u('uLightMode'), isDark ? 0 : 1);
+        gl.uniform1f(u('uGlowIntensity'), isDark ? .55 : 1.6); gl.uniform1f(u('uBrightness'), isDark ? .9 : 2); gl.uniform1f(u('uBlueBoost'), isDark ? 1 : 1.25);
+        gl.uniform3f(u('uLineColor'), line[0], line[1], line[2]); gl.uniform3f(u('uGlowColor'), glow[0], glow[1], glow[2]);
+        gl.uniform3f(u('uBackdrop'), bg[0], bg[1], bg[2]);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      },
+    };
+  })();
+
   // Hojas (claro) y lluvia (noche): mismas reglas del tema original.
   const LEAF = ['#6A8050', '#8A6040', '#B08030', '#C89040', '#4A6040'];
   const makeLeaf = (y = -20) => ({ type: 'leaf', x: Math.random() * W, y, vx: (Math.random() - .5) * .8, vy: .4 + Math.random() * .6, angle: Math.random() * Math.PI * 2, vAngle: (Math.random() - .5) * .04, size: 5 + Math.random() * 8, sway: Math.random() * Math.PI * 2, swaySpeed: .01 + Math.random() * .02, color: LEAF[Math.floor(Math.random() * 5)], alpha: .4 + Math.random() * .4 });
@@ -737,12 +863,14 @@ void main() {
     parts.width = W; parts.height = H;
     buildTri(); buildLight(); buildWood();
     if (rays) { rays.resize(W, H); rays.colors(); }
-    if (reduceMotion.matches) { stillParts(); if (rays) rays.render(0); }
+    if (sky) { sky.resize(W, H); sky.render(0); }
+    if (reduceMotion.matches) { stillParts(); if (rays) rays.render(0); if (sky) sky.render(0); }
   }
   // Copia la región de pantalla (x, y, w, h) del invernadero a otro canvas.
   function blit(ctx, x, y, w, h) {
     ctx.globalCompositeOperation = 'source-over';
     ctx.fillStyle = bgFill; ctx.fillRect(0, 0, w, h);
+    if (sky) ctx.drawImage(skyCv, x * SKY_RES, y * SKY_RES, w * SKY_RES, h * SKY_RES, 0, 0, w, h);
     ctx.drawImage(tri, x, y, w, h, 0, 0, w, h);
     ctx.drawImage(light, x, y, w, h, 0, 0, w, h);
     ctx.drawImage(wood, x, y, w, h, 0, 0, w, h);
@@ -751,7 +879,7 @@ void main() {
   }
   return {
     rebuild, blit,
-    frame(t) { if (!reduceMotion.matches) { drawParts(true); if (rays) rays.render(t); } },
+    frame(t) { if (!reduceMotion.matches) { drawParts(true); if (rays) rays.render(t); if (sky) sky.render(t); } },
     get size() { return [W, H]; },
   };
 })();

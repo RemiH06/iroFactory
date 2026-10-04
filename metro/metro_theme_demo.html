@@ -296,6 +296,17 @@ html.js-pin .metro-hero{position:sticky;top:0}
 .dg-edge-fade{position:absolute;left:0;right:0;height:120px;z-index:5;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--overlay-blur-color))}
 .dg-edge-fade.top{top:0;transform:rotate(180deg)}
 .dg-edge-fade.bottom{bottom:0}
+/* ── Vertical (celular) · frontend-design/references/responsive-portrait.md
+   Revisión del 2026-10-03: el layout ya se apilaba bien; solo quedaba
+   texto de 9 a 11px (muestras, etiquetas hex, títulos de aviso, toggle).
+   También en táctil ancho (teléfono acostado, tablet). */
+@media(max-width:760px),(pointer:coarse){
+  .metro .theme-btn,.metro-hero-credit,.metro .callout-title{font-size:12px}
+  .swatch,.swatch-hex{font-size:12px}
+  .swatch{width:auto;min-width:80px}
+  table{display:block;overflow-x:auto}
+  td code{white-space:nowrap}
+}
 </style>
 </head>
 <body class="metro">
