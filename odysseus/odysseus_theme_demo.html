@@ -46,6 +46,11 @@ body {
   --black:     #100804;
   --white:     #FDF8F0;
   --gray:      #907858;
+  /* Mesa: los colores de la madera de siempre, ahora para Line Waves. */
+  --desk:      #B8864A;
+  --desk-dk:   #9A6E38;
+  --desk-lt:   #D09A5E;
+  --desk-glow: #F0DCB0;
 
   /* Título Gradient Text: tintas que pasan 3:1 sobre --bg de cada modo. */
   --gt1:       #A05828;
@@ -112,6 +117,10 @@ body.dark {
   --black:     #060408;
   --white:     #F0E8D0;
   --gray:      #706050;
+  --desk:      #1E150A;
+  --desk-dk:   #150E06;
+  --desk-lt:   #5A3A18;
+  --desk-glow: #E0A830;
 
   --gt1:       #E0A830;
   --gt2:       #E05040;
@@ -197,6 +206,13 @@ a { color: var(--route-ink); text-underline-offset: 3px; }
   position: relative; isolation: isolate; height: 100vh; height: 100svh; min-height: 620px;
   display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(340px, 1fr); grid-template-rows: minmax(0, 1fr) auto;
 }
+/* Mesa: base y luz de sol (día) o de lámpara (noche) en CSS; encima, las
+   ondas de Line Waves con las vetas de la madera. */
+.od-voyage { background:
+  radial-gradient(70% 60% at 0% 0%, color-mix(in srgb, var(--desk-glow) 32%, transparent), transparent 70%),
+  radial-gradient(45% 45% at 82% 6%, color-mix(in srgb, var(--desk-glow) 18%, transparent), transparent 70%),
+  radial-gradient(60% 50% at 50% 100%, color-mix(in srgb, var(--desk-dk) 55%, transparent), transparent 75%),
+  var(--desk); }
 #od-desk { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; display: block; }
 .od-stage { grid-column: 1; grid-row: 1; position: relative; min-height: 0; }
 .od-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: manipulation; }
@@ -721,33 +737,66 @@ const HOME = { id: 'gdl', name: 'Guadalajara', iata: 'GDL', lat: 20.6597, lon: -
 const fmtCoords = p => `${Math.abs(p.lat).toFixed(2)}° ${p.lat >= 0 ? 'N' : 'S'}, ${Math.abs(p.lon).toFixed(2)}° ${p.lon >= 0 ? 'E' : 'O'}`;
 
 // ══════════════════════════════════════════════════════
-// Mesa de madera (la de siempre, ahora detrás de la sección de viaje)
+// Mesa · Line Waves (React Bits, OGL → WebGL1): líneas que se ondulan en
+// diagonal como vetas de madera vivas, en los colores de la madera de
+// siempre (veta clara, oscura y la luz de sol o de lámpara). Encima de la
+// base en CSS; el cursor las tuerce. 50% de resolución y 30 fps.
 // ══════════════════════════════════════════════════════
 (() => {
-  const canvas = $('#od-desk'), ctx = canvas.getContext('2d'), host = $('#viaje');
-  let seed = 7;
-  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-  const draw = () => {
-    const r = host.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const W = Math.max(1, r.width), H = Math.max(1, r.height);
-    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    seed = 7;
-    const base = isDark ? '#1E150A' : '#B8864A', dark = isDark ? '#150E06' : '#9A6E38', light = isDark ? '#2A1C0E' : '#D09A5E';
-    ctx.fillStyle = base; ctx.fillRect(0, 0, W, H);
-    for (let i = 0; i < 42; i++) {
-      const y = (i / 42) * H + (rnd() - 0.5) * 20;
-      ctx.beginPath(); ctx.moveTo(0, y);
-      ctx.bezierCurveTo(W * 0.25, y + (rnd() - 0.5) * 22, W * 0.65, y + (rnd() - 0.5) * 22, W, y + (rnd() - 0.5) * 14);
-      ctx.strokeStyle = rnd() < 0.5 ? dark : light; ctx.lineWidth = 0.5 + rnd() * 1.4; ctx.globalAlpha = 0.14 + rnd() * 0.16; ctx.stroke();
-    }
-    ctx.globalAlpha = 1;
-    const lights = isDark
-      ? [{ x: .22, y: .08, r: .52, c: '255,200,90', a: .28 }, { x: .76, y: .12, r: .44, c: '255,185,70', a: .22 }, { x: .5, y: .88, r: .4, c: '220,160,60', a: .16 }]
-      : [{ x: -.05, y: -.05, r: .7, c: '255,245,210', a: .45 }, { x: .85, y: .05, r: .48, c: '255,230,180', a: .2 }, { x: .5, y: .4, r: .65, c: '255,225,170', a: .12 }];
-    lights.forEach(({ x, y, r: rr, c, a }) => { const cx = x * W, cy = y * H, rad = rr * Math.max(W, H), g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad); g.addColorStop(0, `rgba(${c},${a})`); g.addColorStop(.5, `rgba(${c},${(a * .35).toFixed(3)})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); });
+  const canvas = $('#od-desk'), host = $('#viaje');
+  const fs = `precision highp float;
+uniform float uTime; uniform vec3 uResolution; uniform vec3 uColor1; uniform vec3 uColor2; uniform vec3 uColor3; uniform vec2 uMouse; uniform float uBrightness;
+const float SPEED = 0.3; const float INNER = 32.0; const float OUTER = 36.0; const float WARP = 1.0; const float ROT = -0.785398; const float EDGE = 0.0; const float CYCLE = 1.0; const float MOUSE = 2.0;
+#define HALF_PI 1.5707963
+float hashF(float n) { return fract(sin(n * 127.1) * 43758.5453123); }
+float smoothNoise(float x) { float i = floor(x); float f = fract(x); float u = f * f * (3.0 - 2.0 * f); return mix(hashF(i), hashF(i + 1.0), u); }
+float displaceA(float c, float t) { return sin(c * 2.123) * 0.2 + sin(c * 3.234 + t * 4.345) * 0.1 + sin(c * 0.589 + t * 0.934) * 0.5; }
+float displaceB(float c, float t) { return sin(c * 1.345) * 0.3 + sin(c * 2.734 + t * 3.345) * 0.2 + sin(c * 0.189 + t * 0.934) * 0.3; }
+vec2 rotate2D(vec2 p, float a) { float c = cos(a); float s = sin(a); return vec2(p.x * c - p.y * s, p.x * s + p.y * c); }
+void main() {
+  vec2 coords = gl_FragCoord.xy / uResolution.xy; coords = coords * 2.0 - 1.0; coords = rotate2D(coords, ROT);
+  float halfT = uTime * SPEED * 0.5; float fullT = uTime * SPEED;
+  vec2 mPos = rotate2D(uMouse * 2.0 - 1.0, ROT); float mDist = length(coords - mPos); float mouseWarp = MOUSE * exp(-mDist * mDist * 4.0);
+  float warpAx = coords.x + displaceA(coords.y, halfT) * WARP + mouseWarp; float warpAy = coords.y - displaceA(coords.x * cos(fullT) * 1.235, halfT) * WARP;
+  float warpBx = coords.x + displaceB(coords.y, halfT) * WARP + mouseWarp; float warpBy = coords.y - displaceB(coords.x * sin(fullT) * 1.235, halfT) * WARP;
+  vec2 fieldA = vec2(warpAx, warpAy); vec2 fieldB = vec2(warpBx, warpBy); vec2 blended = mix(fieldA, fieldB, mix(fieldA, fieldB, 0.5));
+  float fadeTop = smoothstep(EDGE, EDGE + 0.4, blended.y); float fadeBottom = smoothstep(-EDGE, -(EDGE + 0.4), blended.y); float vMask = 1.0 - max(fadeTop, fadeBottom);
+  float tileCount = mix(OUTER, INNER, vMask); float scaledY = blended.y * tileCount; float nY = smoothNoise(abs(scaledY));
+  float ridge = pow(step(abs(nY - blended.x) * 2.0, HALF_PI) * cos(2.0 * (nY - blended.x)), 5.0);
+  float lines = 0.0; for (float i = 1.0; i < 3.0; i += 1.0) lines += pow(max(fract(scaledY), fract(-scaledY)), i * 2.0);
+  float pattern = vMask * lines; float cycleT = fullT * CYCLE;
+  float r = (pattern + lines * ridge) * (cos(blended.y + cycleT * 0.234) * 0.5 + 1.0);
+  float g = (pattern + vMask * ridge) * (sin(blended.x + cycleT * 1.745) * 0.5 + 1.0);
+  float b = (pattern + lines * ridge) * (cos(blended.x + cycleT * 0.534) * 0.5 + 1.0);
+  // El original suma los tres canales sobre negro: aquí se normaliza por su
+  // peso para que el color sea una mezcla de las tres tintas de la madera.
+  float w = r + g + b; vec3 tint = (r * uColor1 + g * uColor2 + b * uColor3) / max(w, 0.0001);
+  float a = clamp(w * uBrightness, 0.0, 1.0);
+  gl_FragColor = vec4(min(tint, vec3(0.97)), a);
+}`;
+  const g = glProgram(canvas, fs, { premultipliedAlpha: false, preserveDrawingBuffer: false });
+  if (!g) return;
+  const { gl, u } = g, RES = coarsePointer.matches ? 0.4 : 0.5;
+  let mouse = [0.5, 0.5], target = [0.5, 0.5];
+  const colors = () => {
+    gl.uniform3fv(u('uColor1'), rgb01('--desk-lt')); gl.uniform3fv(u('uColor2'), rgb01('--desk-dk')); gl.uniform3fv(u('uColor3'), rgb01('--desk-glow'));
+    gl.uniform1f(u('uBrightness'), isDark ? 0.16 : 0.3);
   };
-  new ResizeObserver(draw).observe(host);
-  onTheme(draw);
+  const resize = () => { const r = host.getBoundingClientRect(); canvas.width = Math.max(1, Math.round(r.width * RES)); canvas.height = Math.max(1, Math.round(r.height * RES)); gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform3f(u('uResolution'), canvas.width, canvas.height, canvas.width / canvas.height); };
+  host.addEventListener('pointermove', e => { const r = host.getBoundingClientRect(); target = [(e.clientX - r.left) / r.width, 1 - (e.clientY - r.top) / r.height]; }, { passive: true });
+  host.addEventListener('pointerleave', () => { target = [0.5, 0.5]; });
+  let lastDraw = 0;
+  const draw = t => {
+    if (lastDraw && t - lastDraw < 32) return; lastDraw = t;
+    mouse = [mouse[0] + (target[0] - mouse[0]) * 0.1, mouse[1] + (target[1] - mouse[1]) * 0.1];
+    gl.uniform1f(u('uTime'), t * 0.001); gl.uniform2f(u('uMouse'), mouse[0], mouse[1]);
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  colors(); resize();
+  const loop = makeLoop(host, draw);
+  new ResizeObserver(() => { resize(); lastDraw = 0; loop.still(); }).observe(host);
+  onTheme(() => { colors(); lastDraw = 0; loop.still(); });
+  loop.still();
 })();
 
 // ══════════════════════════════════════════════════════
