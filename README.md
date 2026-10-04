@@ -10,7 +10,7 @@
        by Hex (@RemiH06)          version 1.0
 ```
 
-![License](https://img.shields.io/badge/License-AGPL%20v3-blue.svg?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
 
 ## :art: iroFactory
 
@@ -77,4 +77,6 @@ Live preview at **[remih06.github.io/iroFactory](https://remih06.github.io/iroFa
 
 ## License
 
-Distributed under the AGPL-3.0 License.
+Distributed under the MIT License. See `LICENSE`.
+
+Some themes include third-party code, data and images (React Bits, WebGL-Fluid-Simulation, Motion, OpenStreetMap, Natural Earth, Smithsonian radiographs) that keep their own licenses. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

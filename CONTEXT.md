@@ -12,7 +12,7 @@ Sirven como skins de documentación para proyectos propios. Se hostean en GitHub
 
 Repo: `github.com/RemiH06/iroFactory`
 Gallery: `remih06.github.io/iroFactory/iroFactory_gallery.html`
-Licencia: AGPL-3.0 (el archivo `LICENSE` ya existe en el repo)
+Licencia: MIT; las partes de terceros conservan la suya (ver `THIRD_PARTY_NOTICES.md`)
 
 ---
 

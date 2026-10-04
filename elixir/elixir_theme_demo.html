@@ -1,4 +1,41 @@
 <!DOCTYPE html>
+<!--
+elixir_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: Antigravity, Gooey Nav, Infinite Spiral, Light Pillar, Line Sidebar, Liquid Chrome, Meta Balls, Refine Frame, Tech Text.
+· Radiografías de peces · Sandra Raredon, Smithsonian National Museum of Natural History, División de Peces.
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -387,6 +424,14 @@ html.js .gooey-nav li.active::after { opacity: 0; }
   100% { transform: scale(0); opacity: 0; }
 }
 .ex-tabpanel[hidden] { display: none; }
+/* Cambio de pestaña sin brinco: el contenedor tiene un piso de altura (las
+   pestañas cortas ya no lo colapsan y dejan ver el fondo) y entre una y otra
+   la altura se desliza mientras el panel nuevo entra con un fundido. */
+html.js .ex-tabstack { min-height: 440px; overflow: hidden; transition: height .38s cubic-bezier(.2, .7, .2, 1); }
+@media (max-width: 760px) { html.js .ex-tabstack { min-height: 560px; } }
+.ex-tabpanel.is-entering { animation: ex-tab-in .32s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes ex-tab-in { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { html.js .ex-tabstack { transition: none; } .ex-tabpanel.is-entering { animation: none; } }
 .ex-tabpanel > h3:first-child { margin-top: 0; }
 
 /* ── COMPONENTES BASE ── */
@@ -623,6 +668,7 @@ td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: 
         <span class="effect text" aria-hidden="true"></span>
       </div>
 
+      <div class="ex-tabstack">
       <div class="ex-tabpanel" id="panel-codigo" role="tabpanel" aria-labelledby="tab-codigo">
         <h3>Código</h3>
         <p>Inline: <code>toggleTheme()</code> alterna entre modo claro y oscuro.</p>
@@ -702,12 +748,13 @@ td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: 
           <div class="card"><strong>Scraper async</strong><span class="badge train">activo</span><p class="muted" style="margin:8px 0 0">Extracción concurrente con rate limiting configurable y retry automático.</p></div>
         </div>
       </div>
+      </div>
     </div>
   </div>
 </section>
 </main>
 
-<footer class="ex-footer">elixir_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · AGPL-3.0</footer>
+<footer class="ex-footer">elixir_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Radiografías de Sandra Raredon, Smithsonian NMNH</footer>
 
 <script>
 document.documentElement.classList.add('js');
@@ -1539,7 +1586,15 @@ void main() {
     activeIndex = index;
     lis.forEach((li, i) => li.classList.toggle('active', i === index));
     tabs.forEach((b, i) => { b.setAttribute('aria-selected', String(i === index)); b.tabIndex = i === index ? 0 : -1; });
-    panels.forEach((p, i) => { p.hidden = i !== index; });
+    // Fija la altura actual, cambia de panel y desliza hacia la nueva.
+    const stack = panels[0].parentElement, from = stack.offsetHeight;
+    panels.forEach((p, i) => { p.hidden = i !== index; p.classList.remove('is-entering'); });
+    if (!reduceMotion.matches) {
+      stack.style.height = 'auto'; const to = stack.offsetHeight;
+      stack.style.height = from + 'px'; void stack.offsetHeight; stack.style.height = to + 'px';
+      clearTimeout(stack._t); stack._t = setTimeout(() => { stack.style.height = ''; }, 420);
+      panels[index].classList.add('is-entering');
+    }
     if (focus) tabs[index].focus();
     place(lis[index]);
     filter.querySelectorAll('.particle').forEach(p => p.remove());
