@@ -31,12 +31,12 @@ No romper sin discutirlo primero.
 | `apolo` | Cinzel + Fira Code | claro | Columnas jónicas SVG (entasis, estrías, volutas), rosetas, pétalos derivando sobre gradiente de cielo. |
 | `bookworm` | Libre Baskerville + Fira Code | claro | 4 capas: triángulos isométricos, komorebi estático, lienzo SVG con máscara de agujeros, partículas (hojas claro / lluvia oscuro). |
 | `disco` | Plus Jakarta Sans | claro | Patrón asanoha + luces disco flotantes en canvas con `mix-blend-mode` multiply/screen. |
-| `elixir` | Iosevka | oscuro | Grafo neuronal; nodos cambian de color permanentemente al terminar el pulso. |
+| `elixir` | Iosevka | oscuro | Cuatro segmentos con Line Sidebar: hero Tech Text + Refine Frame; Liquid Chrome bajo la paleta; grafo del pipeline (los nodos se quedan con el color del pulso que los alcanzó) + espiral de radiografías; Light Pillar + Meta Balls + Antigravity bajo los componentes en Gooey Nav. |
 | `forge` | Azeret Mono | oscuro | Oscuro: lava por ambos costados + chispas/cenizas. Claro: arcos eléctricos + 3 osciloscopios apilados. |
 | `lambda` | Cormorant Garamond + Fira Code | claro, auto-toggle a oscuro al cargar | Grid hexagonal CSS + objetos matemáticos estáticos con doble trazo (simula gis). |
 | `ludus` | Righteous + Fira Code | oscuro | Oscuro: carpa de circo, cortinas SVG, damero crimson/dorado, polvo dorado. Claro: feria pastel, **no tocar**. |
 | `metro` | Space Mono + DM Sans | oscuro | Grafo de nodos con aristas dinámicas; semántica solo rojo/amarillo/verde. |
-| `odysseus` | IM Fell English + Fira Code | claro | Mesa de madera + mapa inclinado en ángulo aleatorio, agua animada clipeada, brújula que titubea buscando el norte. |
+| `odysseus` | IM Fell English + Fira Code | claro | Mapamundi real (Natural Earth) en una hoja sobre la mesa; siete puertos con calles de OpenStreetMap y relieve de Topography, vuelo entre ellos, pase de abordar Tear Ticket por puerto, carrusel 3D de tarjetas. Noche: carta estelar con Galaxy y las constelaciones del canto V. |
 | `sherry` | JetBrains Mono | oscuro | Triángulos orgánicos que flashean en 7 colores neón. Toggle de CRT. |
-| `shui` | Recursive (`CASL 1`) | claro | Claro: turquesa Caribe, un haz de luz, burbujas. Oscuro: casi negro, partículas bioluminiscentes. |
+| `shui` | Recursive (`CASL 1`) | claro | Ferrofluid como cáusticas de fondo; día: Splash Cursor (fluidos); noche: Swarm Cursor + partículas bioluminiscentes que suben. Proun de fondo en el hero al 50%. Radiografías invertidas de día. Grafo radial + pestañas que cambian el módulo visible tras una consulta tipo cqlsh; contenedores de hielo (riff de Figma), Morph Slider con ripple suave, Blur Text. |
 | `tarot` | Cinzel + Josefin Sans | claro | Lienzo art deco estático (7 tipos de módulo) + cartas flotantes lentas. |
