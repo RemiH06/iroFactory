@@ -332,6 +332,18 @@ html:not(.js) .infinite-spiral__item { position: relative; top: auto; left: auto
 
 /* ── 04 · COMPONENTES sobre Light Pillar + Meta Balls, con Antigravity ── */
 .ex-seg--pillar .ex-panel { position: relative; }
+/* Componentes: el fondo (Light Pillar + Meta Balls + Antigravity) es el
+   protagonista. El panel pasa a vidrio casi transparente y sin blur; solo
+   el texto que no tiene superficie propia lleva una placa pequeña. Avisos,
+   botones, badges, cards y código ya traen su fondo. */
+.ex-seg--pillar .ex-panel { background: color-mix(in srgb, var(--bg) 16%, transparent); border-color: color-mix(in srgb, var(--text) 18%, transparent); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.ex-seg--pillar .ex-seg-head, .ex-seg--pillar .ex-tabpanel > h3, .ex-seg--pillar .ex-tabpanel > p {
+  display: inline-flex; width: fit-content; background: color-mix(in srgb, var(--bg) 84%, transparent);
+  padding: 4px 12px; border-radius: 6px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.ex-seg--pillar .ex-tabpanel > p { display: block; }
+.ex-seg--pillar .ex-table { background: color-mix(in srgb, var(--bg) 86%, transparent); border-radius: 6px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ex-seg--pillar .gooey-nav li:not(.active) { background: color-mix(in srgb, var(--bg) 80%, transparent); }
 /* Gooey Nav (React Bits, sin dependencias). El original arma el goo con
    blur + contrast(100) sobre negro y blanco puros; aquí es el filtro SVG
    clásico (blur + umbral de alfa), que conserva los colores del tema. */
