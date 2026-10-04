@@ -1898,9 +1898,9 @@ void main() {
   uv = (uv - 0.5) * (1.0 - uDrift * 0.02 * sin(uTime * 0.4)) + 0.5;
   vec2 uvC = uv; vec2 uvN = uv; float m = smoothstep(0.0, 1.0, p);
   if (uReduce < 0.5) {
-    float d = distance(uv, uPointer); float ring = p * 1.6; float wave = sin((d - ring) * 12.0) * env;
+    float d = distance(uv, uPointer); float ring = p * 1.6; float wave = sin((d - ring) * 8.0) * env;
     vec2 dir = normalize(uv - uPointer + 1e-4); vec2 disp = dir * wave * uIntensity * 0.25;
-    uvC = uv + disp; uvN = uv + disp * 0.6; m = 1.0 - smoothstep(ring - 0.16, ring + 0.16, d);
+    uvC = uv + disp; uvN = uv + disp * 0.6; m = 1.0 - smoothstep(ring - 0.24, ring + 0.24, d);
   }
   vec2 sC = coverUV(uvC, uResolution, uCurrentSize); vec2 sN = coverUV(uvN, uResolution, uNextSize);
   float ca = uReduce < 0.5 ? uAberration * env * 0.03 : 0.0;
@@ -1921,8 +1921,8 @@ void main() {
   gl.uniform1i(u('tCurrent'), 0); gl.uniform1i(u('tNext'), 1);
   const bind = () => { gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex[current]); gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, tex[nextI]); gl.uniform2f(u('uCurrentSize'), ...sizes[current]); gl.uniform2f(u('uNextSize'), ...sizes[nextI]); };
   const colors = () => { gl.uniform3fv(u('uLo'), rgb01(isDark ? '--bg' : '--deep')); gl.uniform3fv(u('uHi'), rgb01(isDark ? '--biolum-cyan' : '--foam')); gl.uniform3fv(u('uOverlay'), rgb01('--deep')); };
-  // Más suave que el original (intensidad .55, aberración .35, 1.1 s): la onda se sentía demasiado.
-  Object.entries({ uIntensity: 0.2, uScale: 2.4, uAberration: 0.1, uDrift: 0.4 }).forEach(([k, v]) => gl.uniform1f(u(k), v));
+  // Más suave que el original (intensidad .55, aberración .35, 1.1 s; luego .2, .1, 1.7 s): la onda se sentía demasiado.
+  Object.entries({ uIntensity: 0.12, uScale: 2.4, uAberration: 0.05, uDrift: 0.4 }).forEach(([k, v]) => gl.uniform1f(u(k), v));
   const resize = () => { const r = stage.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2); canvas.width = Math.max(1, Math.round(r.width * d)); canvas.height = Math.max(1, Math.round(r.height * d)); gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(u('uResolution'), canvas.width, canvas.height); };
   const draw = t => { gl.uniform1f(u('uTime'), t * 0.001); gl.uniform1f(u('uProgress'), progress); gl.uniform2f(u('uPointer'), ...pointer); gl.uniform1f(u('uReduce'), reduceMotion.matches ? 1 : 0); gl.drawArrays(gl.TRIANGLES, 0, 3); };
   const wrap = i => ((i % ITEMS.length) + ITEMS.length) % ITEMS.length;
@@ -1934,7 +1934,7 @@ void main() {
     if (animating || dragging) return;
     target = wrap(target); if (target === current) return;
     prepare(target, dirHint || (target > current ? 1 : -1)); animating = true; announce(target); loop.start();
-    tw = tween(reduceMotion.matches ? 400 : 1700, power2InOut, v => { progress = v; if (reduceMotion.matches) loop.still(); }, () => commit(target));
+    tw = tween(reduceMotion.matches ? 400 : 2000, power2InOut, v => { progress = v; if (reduceMotion.matches) loop.still(); }, () => commit(target));
   }
   root.querySelectorAll('.morph-slider-btn').forEach(b => b.addEventListener('click', () => { pointer = [0.5, 0.5]; goTo(current + +b.dataset.dir, +b.dataset.dir); }));
   stage.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); const d = e.key === 'ArrowRight' ? 1 : -1; goTo(current + d, d); } });
