@@ -9,7 +9,7 @@ Roadmap activo y estado de fases: ver `steps.md`.
 No romper sin discutirlo primero.
 
 1. **Autocontenido.** Todo el CSS y JS va inline en el `.html` de cada tema. Sin dependencias externas salvo fuentes por CDN. No negociable sin una razón fuerte.
-2. **Fuentes desde Bunny Fonts**, no Google Fonts. Mismo string de import.
+2. **Fuentes desde Bunny Fonts**, no Google Fonts. Mismo string de import. Excepción aprobada (2026-10-05): fuentes de ffonts.net incrustadas en base64 **sin modificar** (sin convertir ni recortar), solo si su licencia es abierta, freeware explícito o zona gris aceptada (Nick's Fonts, Cabaret Voltaire con crédito). Nunca las de uso personal/no comercial, demo, licencia de escritorio o sin licencia («todos los derechos reservados»). Lista y licencias en `THIRD_PARTY_NOTICES.md`.
 3. **Ningún color llega a `#000` ni `#fff` puros.**
 4. **Sin guiones largos en ningún texto.** Se reemplazan por punto medio (`·`).
 5. **Tokens CSS declarados en `body` y en `body.dark` o `body.light`.** El toggle opera `document.body.classList` directamente.
@@ -32,7 +32,7 @@ No romper sin discutirlo primero.
 | `bookworm` | Libre Baskerville + Fira Code | claro | 4 capas: triángulos isométricos, komorebi estático, lienzo SVG con máscara de agujeros, partículas (hojas claro / lluvia oscuro). |
 | `disco` | Plus Jakarta Sans | claro | Patrón asanoha + luces disco flotantes en canvas con `mix-blend-mode` multiply/screen. |
 | `elixir` | Iosevka | oscuro | Cuatro segmentos con Line Sidebar: hero Tech Text + Refine Frame; Liquid Chrome bajo la paleta; grafo del pipeline (los nodos se quedan con el color del pulso que los alcanzó) + espiral de radiografías; Light Pillar + Meta Balls + Antigravity bajo los componentes en Gooey Nav. |
-| `forge` | Azeret Mono | oscuro | Oscuro: lava por ambos costados + chispas/cenizas. Claro: arcos eléctricos + 3 osciloscopios apilados. |
+| `forge` | Azeret Mono | oscuro (forja) · alterno taller | Dos oficios en penumbra. Portada con tubos nixie de cátodos SVG propios, apilados como en un tubo real (Split Flap Text); títulos en BPdots Vertical: FORGE y el hex del oficio (idea Nixie hex del vault). Forja: Laser Flow como chorro de metal, brasas y ceniza, contenedores al rojo, Molten Metal en el crisol. Taller: Lightning + núcleo Strands en esfera de vidrio, chispas de arco, Electric Border, tormenta en cintas (riff @nellucci). Navegación con tablero de breakers; la carga viaja por cables hasta el título (riff @hardikgondhiya). Osciloscopio con fósforo, protoboard en ASCII con onda de fondo en §4 (riff @quanhoangindex), Noise, Target Cursor. |
 | `lambda` | Cormorant Garamond + Fira Code | oscuro | Libro de texto en el pizarrón: capítulos § con Staggered Menu; portada con Stroke Text y hélice de vidrio (shader, riff de @brettmcm) sobre wallpaper temporal; una curva de vidrio tenue por capítulo; Waves en §1 y §4; Raimei Hakke (Magnet Lines con los 64 hexagramas); formulario de apuntes CETI/ITESO por área con lente Fluid Glass y vista completa filtrable con gises; colofón con Logo Loop en bandas cruzadas por área y graficador de curvas r(t) (ADN por default). Base: rejilla hexagonal + objetos en gis. |
 | `ludus` | Righteous + Fira Code | oscuro | Oscuro: carpa de circo, cortinas SVG, damero crimson/dorado, polvo dorado. Claro: feria pastel, **no tocar**. |
 | `metro` | Space Mono + DM Sans | oscuro | Grafo de nodos con aristas dinámicas; semántica solo rojo/amarillo/verde. |
