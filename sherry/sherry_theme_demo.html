@@ -8,6 +8,8 @@ iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
 
 · React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
   Componentes portados: ASCII Text, Dither, Dither Veil, Pixel Card.
+· LCD Display Grid · autor desconocido · ffonts.net · sin licencia declarada,
+  incrustada sin modificar en los títulos (decisión del autor de iroFactory).
 
 ──── React Bits ────
 MIT + Commons Clause License Condition v1.0
@@ -41,12 +43,12 @@ SOFTWARE.
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>sherry_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700|vt323:400&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700|doto:700&display=swap" rel="stylesheet">
 <style>
 /* ── PALETA (skill colorimetría) ──
    Concepto: electrónica recuperada de la basura, impresa y escaneada ·
-   tintas de proceso CMY (magenta 338°, cian 182°, amarillo 54°) más el
-   verde y violeta de pantalla RGB (lime 79°, violeta 276°). Regla:
+   tintas de proceso CMY (magenta 341°, cian 182°, amarillo 54°) más
+   el verde neón y violeta profundo de pantalla RGB (lime 111°, violeta 272°). Regla:
    Custom (no es una armonía de la rueda); se justifica por el
    concepto, no por cercanía angular. Pasteles = mismos matices con
    menos saturación. Modo claro: mismos matices, luminosidad bajada
@@ -61,32 +63,33 @@ body {
   --text3:   #7F7F7F;
   --border:  #1e1e1e;
   --border2: #2a2a2a;
-  --magenta:  #FF2D78;
+  --magenta:  #FF1466;
   --cyan:     #00F5FF;
-  --lime:     #AAFF00;
-  --violet:   #BF5FFF;
+  --lime:     #39FF14;
+  --violet:   #AC4DFF;
   --electric: #FFE600;
   --rose:     #FFB3DE;
   --lavender: #D4AAFF;
   --aqua:     #A8EFFF;
   --peach:    #FFD4AA;
   --mint:     #AAFFD4;
-  --accent:   #FF2D78;
+  --accent:   #FF1466;
   --accent2:  #00F5FF;
-  --ok:       #AAFF00;
+  --ok:       #39FF14;
   --warn:     #FFE600;
-  --danger:   #FF2D78;
+  --danger:   #FF1466;
   --info:     #00F5FF;
   --black:    #050505;
   --white:    #FAFAFA;
   --gray:     #555555;
   --mono:     'JetBrains Mono', 'Fira Code', monospace;
-  --display:  'VT323', 'JetBrains Mono', monospace;
+  --display:  'LCD Display Grid', 'Doto', 'JetBrains Mono', monospace;
   --radius:   2px;
-  --glow-accent:  0 0 8px rgba(255,45,120,.5);
+  --glow-accent:  0 0 8px rgba(255,20,102,.55);
   --glow-cyan:    0 0 8px rgba(0,245,255,.5);
-  --glow-lime:    0 0 8px rgba(170,255,0,.5);
-  --glow-violet:  0 0 8px rgba(191,95,255,.5);
+  --glow-lime:    0 0 8px rgba(57,255,20,.55);
+  --glow-violet:  0 0 8px rgba(172,77,255,.6);
+  --glow-electric: 0 0 8px rgba(255,230,0,.45);
   /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
      para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
      token original se queda para rellenos y muestras de la paleta. */
@@ -104,21 +107,21 @@ body.light {
   --text3:   #5F5F5F;
   --border:  #CCCAB8;
   --border2: #B8B6A4;
-  --magenta:  #BE004F;
+  --magenta:  #B2003F;
   --cyan:     #006A6F;
-  --lime:     #4A6800;
-  --violet:   #6622AA;
+  --lime:     #2B6A10;
+  --violet:   #5A0FA8;
   --electric: #6C5E00;
   --rose:     #CC5588;
   --lavender: #7744AA;
   --aqua:     #1E6877;
   --peach:    #AA6633;
   --mint:     #2D6A4B;
-  --accent:   #BE004F;
+  --accent:   #B2003F;
   --accent2:  #006A6F;
-  --ok:       #4A6800;
+  --ok:       #2B6A10;
   --warn:     #6C5E00;
-  --danger:   #BE004F;
+  --danger:   #B2003F;
   --info:     #006A6F;
   --black:    #050505;
   --white:    #FAFAFA;
@@ -127,6 +130,7 @@ body.light {
   --glow-cyan:    none;
   --glow-lime:    none;
   --glow-violet:  none;
+  --glow-electric: none;
   /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
      para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
      token original se queda para rellenos y muestras de la paleta. */
@@ -354,7 +358,7 @@ html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
   position: absolute; inset: 0; margin: 0; padding: 0; background: none; border: none;
   font-family: var(--mono); font-size: 8px; line-height: 1;
   white-space: pre; overflow: hidden; text-align: center;
-  background-image: radial-gradient(circle, var(--magenta) 0%, var(--cyan) 50%, var(--lime) 100%);
+  background-image: radial-gradient(circle, var(--magenta) 0%, var(--cyan) 50%, var(--electric) 100%);
   background-attachment: fixed;
   -webkit-background-clip: text; background-clip: text; color: transparent;
   mix-blend-mode: difference;
@@ -363,7 +367,7 @@ html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
 /* Modo claro: el original invierte todo el contenedor, pero con
    mix-blend-mode:difference sobre un fondo claro el título quedaba
    pálido. Acá, sin blend y con el degradado de los tokens de
-   body.light (ya oscuros: #BE004F, #006A6F, #4A6800), el título se lee
+   body.light (ya oscuros: #B2003F, #006A6F, #6C5E00), el título se lee
    oscuro y sólido sobre la foto. */
 body.light #sherry-ascii-host pre {
   mix-blend-mode: normal; font-weight: 700;
@@ -372,7 +376,7 @@ body.light #sherry-ascii-host pre {
 .sherry-plain-title {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   margin: 0; font-size: clamp(48px, 11vw, 130px); font-weight: 700; letter-spacing: -2px;
-  color: var(--white); text-shadow: 0 0 24px rgba(255,45,120,.35);
+  color: var(--white); text-shadow: 0 0 24px rgba(255,20,102,.35);
 }
 @media (max-width: 760px) {
   .sherry-controls { top: 10px; right: 10px; }
@@ -381,17 +385,22 @@ body.light #sherry-ascii-host pre {
 
 /* ── TIPOGRAFÍA ── */
 h2 {
-  font-family: var(--display); font-size: 26px; font-weight: 400; line-height: 1.1;
+  font-family: var(--display); font-size: 30px; font-weight: 400; font-synthesis: none; line-height: 1.15;
   color: var(--cyan); text-shadow: var(--glow-cyan);
   margin: 36px 0 14px; padding-bottom: 6px;
   border-bottom: 1px solid var(--border2);
-  letter-spacing: .05em; text-transform: uppercase;
+  letter-spacing: 0; text-transform: uppercase;
 }
 h2::before { content: '// '; color: var(--text3); }
+/* LCD Display Grid (ffonts.net, sin modificar; sin autor ni licencia
+   declarados, ver THIRD_PARTY_NOTICES.md). No trae acentos ni eñe: esas
+   letras caen glifo por glifo en Doto, otra matriz de puntos. */
+.lcd-fb { font-family: 'Doto', var(--mono); font-weight: 700; font-size: 1.22em; line-height: 0; }
+@font-face { font-family: 'LCD Display Grid'; src: url(data:font/ttf;base64,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AAABNTMVAzUzFSE1MxUDNTMVATUzFTM1MxUBNTMVATUzFSE1MxUBNTMVEzUzFRM1MxUzNTMVMzUzFQM1MxUDNTMVAQC5ubkCR7m5uf1HuUe5/Ee5Ake5/ke5/Ue5R7lHuUe5R7m5ubm5BQC5uf0Aubm5uf8AubkBALm5ubkCALm5/AC5ubm5AwC5uf0AubkFALm5ubm5uf8Aubn/ALm5AAAOAAAAAAS5BrkAAwAHAAsADwATABcAGwAfACMAJwArAC8AMwA3AAABNTMVATUzFSE1MxUBNTMVAzUzFQM1MxUDNTMVITUzFQE1MxUTNTMVATUzFQM1MxUhNTMVAzUzFQQAuf5Huf5Huf1Hubm5ubm5uQNHuftHuUe5Ake5ubn7R7m5uQMAubkBALm5ubkCALm5/QC5uf4Aubn/ALm5ubkEALm5/wC5uf4AubkBALm5ubkDALm5AAkBAAAAA7kGuQADAAcACwAPABMAFwAbAB8AIwAAATUzFQM1MxUBNTMVATUzFSE1MxUzNTMVAzUzFQM1MxUDNTMVAgC5ubn+R7kBR7n9R7lHubm5ubm5uQIAubn/ALm5AwC5ufwAubm5ubm5BAC5uQIAubn9ALm5AAkAAAAAA7kGuQADAAcACwAPABMAFwAbAB8AIwAAATUzFQM1MxUDNTMVATUzFQM1MxUTNTMVAzUzFQE1MxUBNTMVAwC5ubm5uf5Hubm5R7m5uf1Huf5HuQMAubkDALm5/gC5ufwAubkEALm5/QC5uQEAubn+ALm5AQC5uQAMAAAAAAO5BrkAAwAHAAsADwATABcAGwAfACMAJwArAC8AABE1MxUDNTMVATUzFQE1MxUBNTMVAzUzFQM1MxUDNTMVAzUzFQE1MxUTNTMVAzUzFbm5uQFHuf5Huf5Hubm5ubm5ubm5AUe5R7m5uQIAubn+ALm5AwC5uf8AubkDALm5/AC5uQMAubkCALm5/QC5uf4AubkDALm5/AC5uQAACgEAAAADuQa5AAMABwALAA8AEwAXABsAHwAjACcAACE1MxUBNTMVAzUzFQM1MxUBNTMVEzUzFQM1MxUDNTMVATUzFRM1MxUDALn+R7m5ubm5/ke5R7m5ubm5/ke5R7m5uQYAubn7ALm5AwC5uQIAubn6ALm5AgC5uQMAubn7ALm5AwC5uQANAAAAAAS5BLkAAwAHAAsADwAT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) format('truetype'); font-display: swap; }
 h3 {
-  font-family: var(--display); font-size: 20px; font-weight: 400; line-height: 1.1;
+  font-family: var(--display); font-size: 22px; font-weight: 400; font-synthesis: none; line-height: 1.15;
   color: var(--magenta); text-shadow: var(--glow-accent);
-  margin: 22px 0 10px; letter-spacing: .05em;
+  margin: 22px 0 10px; letter-spacing: 0;
 }
 h3::before { content: '> '; color: var(--text3); }
 h4 { font-size: 12px; font-weight: 700; color: var(--lavender); margin-bottom: 6px; }
@@ -399,7 +408,7 @@ p  { margin-bottom: 14px; line-height: 1.8; }
 p.muted { color: var(--text2); font-size: 12px; }
 
 /* Prompt */
-.prompt::before { content: '$ '; color: var(--lime); text-shadow: var(--glow-lime); }
+.prompt::before { content: '$ '; color: var(--electric); text-shadow: var(--glow-electric); }
 
 /* ── CÓDIGO ── */
 code {
@@ -422,8 +431,8 @@ pre::before {
 pre code { background: none; border: none; padding: 0; color: inherit; text-shadow: none; }
 pre .kw   { color: var(--magenta);  text-shadow: var(--glow-accent); }
 pre .fn   { color: var(--cyan);     text-shadow: var(--glow-cyan);   }
-pre .str  { color: var(--lime);     text-shadow: var(--glow-lime);   }
-pre .num  { color: var(--electric); }
+pre .str  { color: var(--electric); text-shadow: var(--glow-electric); }
+pre .num  { color: var(--lime);     text-shadow: var(--glow-lime);   }
 pre .cm   { color: var(--text3);    font-style: italic; }
 pre .var  { color: var(--lavender); }
 pre .type { color: var(--peach-ink);    }
@@ -492,7 +501,7 @@ tr:hover td { background: var(--bg3); }
 .badge.cyan     { border-color: var(--cyan);     color: var(--cyan);     text-shadow: var(--glow-cyan);    }
 .badge.lime     { border-color: var(--lime);     color: var(--lime);     text-shadow: var(--glow-lime);    }
 .badge.violet   { border-color: var(--violet);   color: var(--violet);   text-shadow: var(--glow-violet);  }
-.badge.electric { border-color: var(--electric); color: var(--electric); }
+.badge.electric { border-color: var(--electric); color: var(--electric); text-shadow: var(--glow-electric); }
 .badge.rose     { border-color: var(--rose-ink);     color: var(--rose-ink);     }
 .badge.lavender { border-color: var(--lavender); color: var(--lavender); }
 .badge.aqua     { border-color: var(--aqua);     color: var(--aqua);     }
@@ -523,7 +532,7 @@ tr:hover td { background: var(--bg3); }
 .metric-val.violet   { color: var(--violet);   text-shadow: var(--glow-violet); }
 .metric-val.rose     { color: var(--rose-ink);     }
 .metric-val.lavender { color: var(--lavender); }
-.metric-val.electric { color: var(--electric); }
+.metric-val.electric { color: var(--electric); text-shadow: var(--glow-electric); }
 
 /* ── DIVIDER ── */
 hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0; }
@@ -646,9 +655,9 @@ a { color: var(--accent); text-underline-offset: 3px; }
     <div class="swatch-row">
       <div class="swatch"><div class="swatch-box" style="background:var(--magenta)"><span class="swatch-hex" id="hex-magenta"></span></div>--magenta</div>
       <div class="swatch"><div class="swatch-box" style="background:var(--cyan)"><span class="swatch-hex" id="hex-cyan"></span></div>--cyan</div>
-      <div class="swatch"><div class="swatch-box" style="background:var(--lime)"><span class="swatch-hex" id="hex-lime"></span></div>--lime</div>
-      <div class="swatch"><div class="swatch-box" style="background:var(--violet)"><span class="swatch-hex" id="hex-violet"></span></div>--violet</div>
       <div class="swatch"><div class="swatch-box" style="background:var(--electric)"><span class="swatch-hex" id="hex-electric"></span></div>--electric</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--violet)"><span class="swatch-hex" id="hex-violet"></span></div>--violet</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--lime)"><span class="swatch-hex" id="hex-lime"></span></div>--lime</div>
     </div>
 
     <h3>Pastel</h3>
@@ -706,9 +715,9 @@ a { color: var(--accent); text-underline-offset: 3px; }
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
       <span class="badge accent">magenta</span>
       <span class="badge cyan">cyan</span>
-      <span class="badge lime">lime</span>
-      <span class="badge violet">violet</span>
       <span class="badge electric">electric</span>
+      <span class="badge violet">violet</span>
+      <span class="badge lime">lime</span>
       <span class="badge rose">rose</span>
       <span class="badge lavender">lavender</span>
       <span class="badge aqua">aqua</span>
@@ -750,10 +759,10 @@ a { color: var(--accent); text-underline-offset: 3px; }
     </div>
     <div class="metrics-row">
       <div class="sherry-pixel-card"><div class="metric"><div class="metric-val">7</div><div class="metric-lbl">artefactos (accent)</div></div></div>
-      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lime">100%</div><div class="metric-lbl">uptime (lime)</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val electric">100%</div><div class="metric-lbl">uptime (electric)</div></div></div>
       <div class="sherry-pixel-card"><div class="metric"><div class="metric-val cyan">∞</div><div class="metric-lbl">recursión (cyan)</div></div></div>
       <div class="sherry-pixel-card"><div class="metric"><div class="metric-val violet">RL</div><div class="metric-lbl">modelo (violet)</div></div></div>
-      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val electric">3ms</div><div class="metric-lbl">latencia (electric)</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lime">3ms</div><div class="metric-lbl">latencia (lime)</div></div></div>
       <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lavender">ML</div><div class="metric-lbl">módulo (lavender)</div></div></div>
     </div>
   </div>
@@ -788,12 +797,12 @@ a { color: var(--accent); text-underline-offset: 3px; }
     </div>
     <table>
       <tr><th>Token</th><th>Oscuro</th><th>Claro</th><th>Semántica</th></tr>
-      <tr><td><code>--accent</code></td><td>#FF2D78</td><td>#BE004F</td><td>Acento principal · peligro · UI activa</td></tr>
-      <tr><td><code>--magenta</code></td><td>#FF2D78</td><td>#BE004F</td><td>Neon caliente · keywords · error</td></tr>
+      <tr><td><code>--accent</code></td><td>#FF1466</td><td>#B2003F</td><td>Acento principal · peligro · UI activa</td></tr>
+      <tr><td><code>--magenta</code></td><td>#FF1466</td><td>#B2003F</td><td>Neon caliente · keywords · error</td></tr>
       <tr><td><code>--cyan</code></td><td>#00F5FF</td><td>#006A6F</td><td>Red · sockets · info técnica</td></tr>
-      <tr><td><code>--lime</code></td><td>#AAFF00</td><td>#4A6800</td><td>OK · output · éxito neon</td></tr>
-      <tr><td><code>--violet</code></td><td>#BF5FFF</td><td>#6622AA</td><td>Experimental · modelos · IA</td></tr>
-      <tr><td><code>--electric</code></td><td>#FFE600</td><td>#6C5E00</td><td>Advertencia · latencia · energía</td></tr>
+      <tr><td><code>--electric</code></td><td>#FFE600</td><td>#6C5E00</td><td>Advertencia · output · energía</td></tr>
+      <tr><td><code>--violet</code></td><td>#AC4DFF</td><td>#5A0FA8</td><td>Experimental · modelos · IA</td></tr>
+      <tr><td><code>--lime</code></td><td>#39FF14</td><td>#2B6A10</td><td>OK · latencia · éxito neon</td></tr>
       <tr><td><code>--rose</code></td><td>#FFB3DE</td><td>#CC5588</td><td>UI · pastel cálido</td></tr>
       <tr><td><code>--lavender</code></td><td>#D4AAFF</td><td>#7744AA</td><td>ML · clasificación</td></tr>
       <tr><td><code>--aqua</code></td><td>#A8EFFF</td><td>#1E6877</td><td>Streams · datos</td></tr>
@@ -851,8 +860,8 @@ a { color: var(--accent); text-underline-offset: 3px; }
       <div class="step-num" style="color:var(--cyan);text-shadow:var(--glow-cyan)">02</div>
       <div><h4>Desensamblar y clasificar</h4><p class="muted">Probar y categorizar cada pieza antes de integrarla.</p></div>
     </div></div>
-    <div class="sherry-pixel-card"><div class="step-row" style="border-left-color:var(--lime)">
-      <div class="step-num" style="color:var(--lime);text-shadow:var(--glow-lime)">03</div>
+    <div class="sherry-pixel-card"><div class="step-row" style="border-left-color:var(--electric)">
+      <div class="step-num" style="color:var(--electric);text-shadow:var(--glow-electric)">03</div>
       <div><h4>Ensamblar el artefacto</h4><p class="muted">Integrar los módulos verificados en el núcleo.</p></div>
     </div></div>
   </div>
@@ -883,7 +892,7 @@ a { color: var(--accent); text-underline-offset: 3px; }
 <footer class="sherry-level">
   <div class="sherry-level-wrap">
     <p class="muted prompt" style="font-size:12px">
-      sherry_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>)
+      sherry_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Títulos en LCD Display Grid (ffonts.net, autor desconocido)
     </p>
   </div>
 </footer>
@@ -2375,6 +2384,21 @@ initPixelCards();
 initDitherVeils();
 initDitherBackgrounds();
 document.body.classList.add('crt-on');
+
+
+// ── Títulos en LCD Display Grid: acentos y eñe en Doto a la misma altura ──
+document.querySelectorAll('h2, h3').forEach(el => {
+  [...el.childNodes].forEach(n => {
+    if (n.nodeType !== 3 || !/[^\x00-\x7F]/.test(n.textContent)) return;
+    const frag = document.createDocumentFragment();
+    n.textContent.split(/([^\x00-\x7F]+)/).forEach((part, i) => {
+      if (!part) return;
+      if (i % 2) { const s = document.createElement('span'); s.className = 'lcd-fb'; s.textContent = part; frag.appendChild(s); }
+      else frag.appendChild(document.createTextNode(part));
+    });
+    n.replaceWith(frag);
+  });
+});
 </script>
 </body>
 </html>
