@@ -9,7 +9,7 @@ Roadmap activo y estado de fases: ver `steps.md`.
 No romper sin discutirlo primero.
 
 1. **Autocontenido.** Todo el CSS y JS va inline en el `.html` de cada tema. Sin dependencias externas salvo fuentes por CDN. No negociable sin una razón fuerte.
-2. **Fuentes desde Bunny Fonts**, no Google Fonts. Mismo string de import. Excepción aprobada (2026-10-05): fuentes de ffonts.net incrustadas en base64 **sin modificar** (sin convertir ni recortar), solo si su licencia es abierta, freeware explícito o zona gris aceptada (Nick's Fonts, Cabaret Voltaire con crédito). Nunca las de uso personal/no comercial, demo, licencia de escritorio o sin licencia («todos los derechos reservados»). Única excepción decidida por el autor (2026-10-05): LCD Display Grid en los títulos de sherry, sin autor ni licencia declarados, riesgo aceptado. Lista y licencias en `THIRD_PARTY_NOTICES.md`.
+2. **Fuentes desde Bunny Fonts**, no Google Fonts. Mismo string de import. Excepción aprobada (2026-10-05): fuentes de ffonts.net incrustadas en base64 **sin modificar** (sin convertir ni recortar), solo si su licencia es abierta, freeware explícito o zona gris aceptada (Nick's Fonts, Cabaret Voltaire con crédito). Nunca las de uso personal/no comercial, demo, licencia de escritorio o sin licencia («todos los derechos reservados»). Lista y licencias en `THIRD_PARTY_NOTICES.md`.
 3. **Ningún color llega a `#000` ni `#fff` puros.**
 4. **Sin guiones largos en ningún texto.** Se reemplazan por punto medio (`·`).
 5. **Tokens CSS declarados en `body` y en `body.dark` o `body.light`.** El toggle opera `document.body.classList` directamente.
@@ -37,6 +37,6 @@ No romper sin discutirlo primero.
 | `ludus` | Righteous + Fira Code | oscuro | Oscuro: carpa de circo, cortinas SVG, damero crimson/dorado, polvo dorado. Claro: feria pastel, **no tocar**. |
 | `metro` | Space Mono + DM Sans | oscuro | Grafo de nodos con aristas dinámicas; semántica solo rojo/amarillo/verde. |
 | `odysseus` | IM Fell English + Fira Code | claro | Mapamundi real (Natural Earth) en una hoja sobre la mesa; siete puertos con calles de OpenStreetMap y relieve de Topography, vuelo entre ellos, pase de abordar Tear Ticket por puerto, carrusel 3D de tarjetas. Noche: carta estelar con Galaxy y las constelaciones del canto V. |
-| `sherry` | JetBrains Mono + LCD Display Grid (títulos, acentos en Doto) | oscuro | Triángulos orgánicos que flashean en 7 colores neón. Toggle de CRT. |
+| `sherry` | JetBrains Mono + Doto (títulos) | oscuro | Triángulos orgánicos que flashean en 7 colores neón. Toggle de CRT. |
 | `shui` | Recursive (`CASL 1`) | claro | Ferrofluid como cáusticas de fondo; día: Splash Cursor (fluidos); noche: Swarm Cursor + partículas bioluminiscentes que suben. Proun de fondo en el hero al 50%. Radiografías invertidas de día. Grafo radial + pestañas que cambian el módulo visible tras una consulta tipo cqlsh; contenedores de hielo (riff de Figma), Morph Slider con ripple suave, Blur Text. |
 | `tarot` | Cinzel + Josefin Sans | claro | Lienzo art deco estático (7 tipos de módulo) + cartas flotantes lentas. |

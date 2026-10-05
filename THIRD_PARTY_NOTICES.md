@@ -39,7 +39,6 @@ The React Bits license allows using the components as part of an application, we
 |---|---|---|---|
 | BPdots Vertical Bold | George Triantafyllakos (Backpacker) | Freeware | forge (section titles) |
 | Universe | Vincent Labonne | Free Font (as stated in the font file) | forge (nixie cathodes) |
-| LCD Display Grid | Unknown (the uploader states they do not know its origin) | None declared · used at the project author's own risk | sherry (section titles) |
 
 ## Design references (no code copied)
 
