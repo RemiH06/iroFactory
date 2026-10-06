@@ -41,6 +41,8 @@ The React Bits license allows using the components as part of an application, we
 | BPdots Vertical Bold | George Triantafyllakos (Backpacker) | Freeware | forge (section titles) |
 | Universe | Vincent Labonne | Free Font (as stated in the font file) | forge (nixie cathodes) |
 | Y2KBUG | Ray Larabie (Larabie Fonts) | Freeware | shui (title, section headings, scroll button) |
+| Dolphian | Unknown («Please Steal This Font», as stated in the font file) | Free to use and modify | apolo (titles) · two broken tables removed (PCLT, kern) so browsers accept it; glyphs untouched |
+| GreeKish | Manfred Klein | Freeware (Manfred Klein's usual terms; no license text in the file) | apolo (only its Greek vase dingbats, as section dividers) |
 | Boogie Nights NF | Nick Curtis (Nick's Fonts) | Nick's Fonts license: free for personal and paid projects, no modification | disco (split flap board, headings, metrics) |
 | Debonair Inline NF | Nick Curtis (Nick's Fonts) | Nick's Fonts license: free for personal and paid projects, no modification | odysseus (port titles, cards) |
 | Cabaret Voltaire | Haimeluna ([morbofly.com](http://www.morbofly.com)) | Free with mandatory credit: "Cabaret Voltaire" Designed by Haimeluna | odysseus (boarding pass codes, map labels) |

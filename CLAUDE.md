@@ -19,7 +19,7 @@ Cada tema no tiene código propio: solo su contenido, su piel (tokens y estilos 
 
 No romper sin discutirlo primero.
 
-1. **Fuentes desde Bunny Fonts**, no Google Fonts. Mismo string de import. Excepción aprobada (2026-10-05): fuentes de ffonts.net como archivo en `assets/fonts/` **sin modificar** (sin convertir ni recortar), solo si su licencia es abierta, freeware explícito o zona gris aceptada (Nick's Fonts, Cabaret Voltaire con crédito). Nunca las de uso personal/no comercial, demo, licencia de escritorio o sin licencia («todos los derechos reservados»). Lista y licencias en `THIRD_PARTY_NOTICES.md`.
+1. **Fuentes desde Bunny Fonts**, no Google Fonts. Mismo string de import. Excepción aprobada (2026-10-05): fuentes de ffonts.net como archivo en `assets/fonts/` **sin modificar** (sin convertir ni recortar), solo si su licencia es abierta, freeware explícito o zona gris aceptada (Nick's Fonts, Cabaret Voltaire con crédito). Excepción puntual: Dolphian (apolo) trae las tablas PCLT y kern rotas y el navegador la rechaza; se usa sin esas dos tablas, letras intactas. Nunca las de uso personal/no comercial, demo, licencia de escritorio o sin licencia («todos los derechos reservados»). Lista y licencias en `THIRD_PARTY_NOTICES.md`.
 2. **Ningún color llega a `#000` ni `#fff` puros.**
 3. **Sin guiones largos en ningún texto.** Se reemplazan por punto medio (`·`).
 4. **Tokens CSS declarados en `body` y en `body.dark` o `body.light`.** El toggle opera `document.body.classList` directamente.
@@ -37,7 +37,7 @@ No romper sin discutirlo primero.
 
 | Tema | Fuente | Default | Técnica de fondo |
 |---|---|---|---|
-| `apolo` | Cinzel + Fira Code | claro | Columnas jónicas SVG (entasis, estrías, volutas), rosetas, pétalos derivando sobre gradiente de cielo. |
+| `apolo` | Cinzel + Newsreader + Fira Code · Dolphian (títulos) · GreeKish (vasijas en los separadores) | claro | Columnas jónicas SVG (entasis, estrías, volutas), rosetas, pétalos derivando sobre gradiente de cielo. |
 | `bookworm` | Libre Baskerville + Fira Code | claro | 4 capas: triángulos isométricos, komorebi estático, lienzo SVG con máscara de agujeros, partículas (hojas claro / lluvia oscuro). |
 | `disco` | Plus Jakarta Sans + Fira Code · Boogie Nights (tablero, títulos y métricas) | claro | Pista para apps y sistemas de diseño. Portada: el proun en Halftone Reveal a pantalla completa (la lupa revela el color) con tablero Split Flap Text en una placa. Bentos de vidrio con Spotlight Card, circuitos entre módulos y esferas (riff @dd_uiux), botón «+» que muestra cómo se usa cada componente. secciones separadas por hilos de Soft Aurora que siguen el hilo de Ariadne (ruta nueva en cada carga, se dibujan de punta a punta); Corcholatas que se enfocan (riff @singhshristi, canvas 2D) sobre Prismatic Burst; pie con la pirámide de Prism. Staggered Menu. Base: asanoha + luces de disco. |
 | `elixir` | Iosevka | oscuro | Cuatro segmentos con Line Sidebar: hero Tech Text + Refine Frame; Liquid Chrome bajo la paleta; grafo del pipeline (los nodos se quedan con el color del pulso que los alcanzó) + espiral de radiografías; Light Pillar + Meta Balls + Antigravity bajo los componentes en Gooey Nav. |

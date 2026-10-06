@@ -1,3 +1,11 @@
+/* Fuentes de ffonts.net (ver THIRD_PARTY_NOTICES.md):
+   · Dolphian («Please Steal This Font») en los títulos. Excepción a la regla 1:
+     el archivo original trae dos tablas rotas (PCLT y kern) y el navegador lo
+     rechaza; se quitaron solo esas dos, las letras están intactas.
+   · GreeKish (Manfred Klein) solo por sus vasijas griegas, como ornamento de
+     los separadores: en las letras acentuadas trae vasijas, no sirve para texto. */
+@font-face { font-family: 'Dolphian'; src: url('../assets/fonts/Dolphian.ttf') format('truetype'); font-display: swap; }
+@font-face { font-family: 'GreeKish'; src: url('../assets/fonts/GreeKish.ttf') format('truetype'); font-display: swap; }
 /* ── PALETA (skill colorimetría) ──
    Concepto: el Mediterráneo de Apolo en dos luces. Día: oro (40°) y
    azul Egeo (215°), regla Complementary (175° de separación, casi el
@@ -40,6 +48,7 @@ body {
   --white:    #FEFAF4;
   --gray:     #907860;
   --display:  'Cinzel', serif;
+  --title:    'Dolphian', 'Cinzel', serif;
   --serif:    'Newsreader', serif;
   --mono:     'Fira Code', monospace;
   --radius:   3px;
@@ -186,7 +195,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:2
    romana sin minúsculas propias (las dibuja como versalitas), y el
    espaciado es el de las inscripciones lapidarias del concepto. Solo
    aplica a Cinzel: en la mono (Fira Code) se quitaron. */
-h2{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold-ink);margin:36px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:.12em;text-transform:uppercase}
+h2{font-family:var(--title);font-size:24px;font-weight:400;font-synthesis:none;color:var(--gold-ink);margin:36px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:.12em;text-transform:uppercase}
 h3{font-family:var(--display);font-size:12px;font-weight:400;color:var(--aegean);margin:20px 0 10px;letter-spacing:.16em;text-transform:uppercase}
 h4{font-family:var(--display);font-size:14px;color:var(--text);margin-bottom:5px;letter-spacing:.06em}
 p{margin-bottom:12px;line-height:1.75;font-family:var(--serif);font-weight:400;font-size:21px}
@@ -268,7 +277,9 @@ tr:hover td{background:var(--bg3)}
 /* ══════════════════════════════════════════════════════
    DIVIDER
 ══════════════════════════════════════════════════════ */
-hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+/* Separador: dos tramos de línea y al centro una vasija de GreeKish (el carácter va en data-v). */
+hr.divider{border:none;height:48px;margin:20px 0;position:relative;overflow:visible;background:linear-gradient(var(--border),var(--border)) left center/calc(50% - 36px) 1px no-repeat,linear-gradient(var(--border),var(--border)) right center/calc(50% - 36px) 1px no-repeat}
+hr.divider::after{content:attr(data-v) / '';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'GreeKish';font-size:42px;line-height:1;color:var(--gold-ink)}
 .ornament{text-align:center;color:var(--gold-ink);font-size:16px;letter-spacing:.3em;margin:6px 0;opacity:.6}
 
 /* ══════════════════════════════════════════════════════
@@ -311,7 +322,7 @@ a{color:var(--accent-ink);text-underline-offset:3px}
    hace lo mismo con menos código y sin JS por frame.
 ══════════════════════════════════════════════════════ */
 .page-title{
-  font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:.08em;margin:0;
+  font-family:var(--title);font-size:42px;font-weight:400;font-synthesis:none;letter-spacing:.08em;margin:0;
   /* El contorno marble/black heredado de body es para texto sólido
      (h3 azul sobre fondo azul, etc.) · sobre un relleno degradado y
      transparente se ve como un borrón oscuro que se come el oro,
@@ -388,7 +399,7 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
    se quitó de body · bg2 (claro u oscuro según el token) al 90%, dejando
    pasar un poco del fondo animado (Light Rays incluido) por debajo. */
 .ap-presentacion-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start;background:color-mix(in srgb,var(--bg2) 90%,transparent);padding:32px 40px;border-radius:var(--radius)}
-.ap-presentacion h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.15;margin:0 0 18px;color:var(--text)}
+.ap-presentacion h1{font-family:var(--title);font-weight:400;font-synthesis:none;font-size:clamp(32px,4.6vw,48px);line-height:1.15;margin:0 0 18px;color:var(--text)}
 .ap-quote{font-family:var(--display);font-size:20px;line-height:1.5;border-left:2px solid var(--gold);padding-left:20px;margin:0;color:var(--text)}
 .ap-quote cite{display:block;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text2);margin-top:10px}
 @media(max-width:760px){.ap-presentacion-grid{grid-template-columns:1fr}}
@@ -425,7 +436,7 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
    motivo que .swatch-hex y .page-title ya lo desactivan. */
 .ap-motivo{padding:64px 0;background:color-mix(in srgb,var(--black) 90%,transparent);color:var(--white)}
 .ap-motivo .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px}
-.ap-motivo h2{font-family:var(--display);font-weight:700;font-size:20px;margin:0 0 16px;color:var(--gold-lt);border:none;padding:0;text-transform:none;letter-spacing:0}
+.ap-motivo h2{font-family:var(--title);font-weight:400;font-synthesis:none;font-size:28px;margin:0 0 16px;color:var(--gold-lt);border:none;padding:0;text-transform:none;letter-spacing:0}
 .ap-motivo p{color:var(--white);opacity:.82;font-size:16px;font-family:var(--serif)}
 @media(max-width:760px){.ap-motivo .wrap{grid-template-columns:1fr}}
 
