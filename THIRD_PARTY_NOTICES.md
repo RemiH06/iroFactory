@@ -8,6 +8,7 @@ iroFactory's own code is MIT licensed (see `LICENSE`). Some themes include code,
 |---|---|---|---|
 | [React Bits](https://github.com/DavidHDev/react-bits) | David Haz ([@DavidHDev](https://github.com/DavidHDev)) | MIT + Commons Clause | apolo, bookworm, disco, elixir, forge, lambda, metro, odysseus, sherry, shui |
 | [WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | Pavel Dobryakov ([@PavelDoGreat](https://github.com/PavelDoGreat)) | MIT | shui (Splash Cursor is built on it) |
+| [Three.js](https://threejs.org) r186 · `shared/vendor/three/` (minified core + GLTFLoader, BufferGeometryUtils, SkeletonUtils, meshopt decoder) | three.js authors ([@mrdoob](https://github.com/mrdoob)) | MIT (`shared/vendor/three/LICENSE`) | apolo (3D statue) |
 | [Motion](https://motion.dev) v11.18.2, mini build, inlined | Motion B.V. ([@motiondivision](https://github.com/motiondivision)) | MIT | apolo |
 
 React Bits components ported per theme:
@@ -32,6 +33,7 @@ The React Bits license allows using the components as part of an application, we
 | [OpenStreetMap](https://www.openstreetmap.org/copyright) · © OpenStreetMap contributors | ODbL 1.0 | odysseus (streets, water and parks around each port) |
 | [Natural Earth](https://www.naturalearthdata.com) | Public domain | odysseus (world map and coastlines) |
 | [Simple Icons](https://simpleicons.org) v16.34.0 · tool logos | CC0 1.0 (the brands belong to their owners) | lambda (tool strip) |
+| "Apollo Statue" · 3D scan by artfletch ([Sketchfab](https://sketchfab.com/3d-models/apollo-statue-a01dbaf0b7db4c308c9fcecade6d4283)) · reduced to 142k triangles, 2048 px texture, meshopt compression | CC BY 4.0 | apolo (`assets/models/apolo/apollo-statue.glb`) |
 | Fish radiographs · Sandra Raredon, Smithsonian National Museum of Natural History, Division of Fishes | Credited to the author and institution | elixir, shui |
 
 ## Fonts from ffonts.net (unmodified; embedded in the older single-file themes, as files in `assets/fonts/` in the migrated ones)

@@ -34,7 +34,7 @@ export function makePetal() {
 // derecha al final) a medida que los pétalos salen por ahí. ──
 export function seedAvalanche() {
   avalancheActive = true;
-  const n = 150;
+  const n = 75; // antes 150: a la mitad, a pedido
   for (let i = 0; i < n; i++) {
     const p = makePetal();
     p.x = Math.random() * petalW;

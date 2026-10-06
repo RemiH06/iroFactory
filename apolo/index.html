@@ -69,6 +69,8 @@ SOFTWARE.
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css2?family=Cinzel:wght@400;700&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="apolo.css">
+<link rel="stylesheet" href="../shared/components/statue-3d/statue-3d.css">
+<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/" } }</script>
 </head>
 <body>
 
@@ -396,7 +398,6 @@ config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
       <figure class="ap-statue ap-statue-apollo">
         <div class="ap-statue-media">
           <img src="../assets/img/apolo/56aedbd715.webp" alt="Estatua de Apolo con lira, en mármol">
-          <canvas aria-hidden="true"></canvas>
         </div>
       </figure>
     </aside>
@@ -404,7 +405,7 @@ config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
 </section>
 
 <footer class="ap-footer">
-  <div class="ap-footer-row">apolo_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Animación con <a href="https://motion.dev">Motion</a> (<a href="https://github.com/motiondivision">@motiondivision</a>) · Títulos en Dolphian y vasijas de GreeKish de Manfred Klein</div>
+  <div class="ap-footer-row">apolo_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Animación con <a href="https://motion.dev">Motion</a> (<a href="https://github.com/motiondivision">@motiondivision</a>) · Títulos en Dolphian y vasijas de GreeKish de Manfred Klein · Estatua 3D <a href="https://sketchfab.com/3d-models/apollo-statue-a01dbaf0b7db4c308c9fcecade6d4283">«Apollo Statue»</a> de <a href="https://sketchfab.com/artfletch">artfletch</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), con <a href="https://threejs.org">Three.js</a></div>
 </footer>
 
 </div>
@@ -416,6 +417,7 @@ import { toggleTheme } from '../shared/components/apolo/kit.js';
 // El marcado llama estas funciones con on…="": van en window.
 Object.assign(window, { toggleTheme });
 m0(); m1();
+import('../shared/components/statue-3d/statue-3d.js').then(m => m.mount({ el: '.ap-statue-apollo .ap-statue-media', src: '../assets/models/apolo/apollo-statue.glb', tint: '--sky' }));
 </script>
 </body>
 </html>

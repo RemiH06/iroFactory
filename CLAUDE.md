@@ -27,7 +27,7 @@ No romper sin discutirlo primero.
 
 ## Decisiones técnicas ya tomadas
 
-**Three.js descartado.** Pesa ~600KB minificado; inlinearlo doce veces es absurdo y traerlo por CDN rompe la regla de autocontenido. El camino para animación avanzada es WebGL crudo: shaders como strings de GLSL, boilerplate de contexto ~40 líneas, todo cabe inline.
+**Three.js, solo donde haya escena 3D de verdad** (decidido 2026-10-06, al dejar de ser un solo archivo). Una sola copia en `shared/vendor/three/` (r186 minificado + los addons que se usen, MIT), cargada con import map y `import()` dinámico para no frenar la primera pintura. La usan: apolo (estatua 3D). Candidatos: ludus, tarot, odysseus. Para fondos y efectos de pantalla completa sigue valiendo WebGL crudo.
 
 **Solo tres temas ganan algo con shaders**, en este orden de piloto: `shui` (agua/causticas, caso canónico de fragment shader) → `forge` (lava con turbulencia por noise) → `sherry` (bloom real sobre el neón). Los otros nueve temas son composiciones estáticas o sistemas de partículas donde canvas 2D ya es la herramienta correcta; reescribirlos sería trabajo sin ganancia.
 

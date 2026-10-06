@@ -1,0 +1,4 @@
+/* Estatua 3D: el lienzo cubre la caja de la foto; se gira arrastrando. */
+.statue-3d { cursor: grab; touch-action: pan-y; }
+.statue-3d:active { cursor: grabbing; }
+.statue-3d > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
