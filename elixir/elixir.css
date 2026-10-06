@@ -1,0 +1,456 @@
+/* ── TOKENS CLARO ── */
+body {
+  --bg:      #EEF0F5;
+  --bg2:     #E4E7EF;
+  --bg3:     #D8DCE8;
+  --text:    #0E1018;
+  --text2:   #4A5068;
+  --border:  #B8BDD0;
+  --input:   #2A3A7A;
+  --train:   #0A5C58;
+  --output:  #1A5C30;
+  --teal:    #0A5C58;
+  --indigo:  #2A3A7A;
+  --pine:    #1A5C30;
+  --slate:   #3A4A6A;
+  --steel:   #2A3C52;
+  --violet:  #3A2A6A;
+  --arctic:  #1A4A6A;
+  --black:   #080C14;
+  --white:   #F4F6FA;
+  --gray:    #7A80A0;
+  --accent:  #0A5C58;
+  --accent2: #2A3A7A;
+  --ok:      #1A5C30;
+  --warn:    #7A5A0A;
+  --danger:  #7A1A2A;
+  --mono:    'Iosevka', 'Fira Code', monospace;
+  --radius:  3px;
+  --gutter:  clamp(16px, 4vw, 40px);
+  --glass:      color-mix(in srgb, var(--bg) 86%, transparent);
+  --glass-edge: color-mix(in srgb, var(--text) 14%, transparent);
+  --scanline-color: color-mix(in srgb, var(--black) 2.2%, transparent);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --text2-ink: var(--text2);
+  --gray-ink: #595E7C;
+}
+
+/* ── TOKENS OSCURO ── */
+body.dark {
+  --bg:      #080C14;
+  --bg2:     #0C1018;
+  --bg3:     #10161E;
+  --text:    #DCE0F0;
+  --text2:   #5A6080;
+  --border:  #181E2E;
+  --input:   #4D8FFF;
+  --train:   #00E8D8;
+  --output:  #00F090;
+  --teal:    #00E8D8;
+  --indigo:  #4D8FFF;
+  --pine:    #00F090;
+  --slate:   #7090C0;
+  --steel:   #5080A0;
+  --violet:  #8566FF;
+  --arctic:  #00C8FF;
+  --black:   #040608;
+  --white:   #ECF0F8;
+  --gray:    #303850;
+  --accent:  #00E8D8;
+  --accent2: #4D8FFF;
+  --ok:      #00F090;
+  --warn:    #F0C000;
+  --danger:  #F04050;
+  /* 90%: con 82% las crestas teal del cromo bajaban el texto tenue a 3.2:1. */
+  --glass:      color-mix(in srgb, var(--bg) 90%, transparent);
+  --glass-edge: color-mix(in srgb, var(--text) 12%, transparent);
+  --scanline-color: color-mix(in srgb, var(--white) 2.5%, transparent);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --text2-ink: #787FA0;
+  --gray-ink: #717FAA;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--mono); font-size: 14px; line-height: 1.7;
+  overflow-x: clip;
+  transition: background-color .3s ease, color .3s ease;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Scanlines y retícula de diamantes: la textura de terminal de siempre. */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+  background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, var(--scanline-color) 2px, var(--scanline-color) 4px);
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .12;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='41.57'%3E%3Cpolyline points='0,41.57 24,0 48,41.57' fill='none' stroke='%23777777' stroke-width='1.5'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='41.57'%3E%3Cpolyline points='0,0 24,41.57 48,0' fill='none' stroke='%23777777' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: 48px 41.57px, 48px 41.57px;
+  background-position: 0 0, 48px 20px;
+}
+
+/* ── LAYOUT ── */
+.ex-wrap { width: min(1160px, calc(100% - 2 * var(--gutter))); margin-inline: auto; }
+@media (min-width: 1100px) {
+  /* Deja libre la columna de la barra lateral fija. */
+  .ex-wrap { margin-left: max(212px, calc((100% - 1160px) / 2)); margin-right: auto; width: min(1160px, calc(100% - 212px - 40px)); }
+}
+.ex-seg { position: relative; z-index: 2; padding: clamp(56px, 9vw, 120px) 0; isolation: isolate; }
+.ex-seg-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.ex-seg-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ex-seg-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
+.ex-seg-index { font-size: 14px; font-weight: 700; color: var(--accent); }
+.ex-seg-title { font-size: clamp(26px, 4vw, 40px); font-weight: 700; letter-spacing: -.02em; line-height: 1.15; }
+.ex-seg-lede { max-width: 64ch; color: var(--text2-ink); margin-bottom: 30px; }
+.ex-panel {
+  background: var(--glass); border: 1px solid var(--glass-edge); border-radius: 6px;
+  padding: clamp(18px, 3vw, 34px);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+
+/* ── TIPOGRAFÍA ── */
+h3 { font-size: 14px; font-weight: 700; color: var(--accent); margin: 26px 0 10px; }
+h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+p { margin-bottom: 14px; }
+.muted { color: var(--text2-ink); }
+p.muted { font-size: 13px; }
+
+/* ── NAVEGACIÓN · Line Sidebar (React Bits, sin dependencias) ── */
+.ex-nav { position: fixed; z-index: 50; left: 26px; top: 50%; transform: translateY(-50%); }
+.line-sidebar { display: flex; justify-content: flex-start; --marker-length: 34px; --tick-scale: .5; --max-shift: 14px; --item-gap: 18px; }
+.line-sidebar--markers { padding-left: var(--marker-length); }
+.line-sidebar__list { list-style: none; margin: 0; padding: 1rem 0; display: flex; flex-direction: column; gap: var(--item-gap); }
+.line-sidebar__item { position: relative; }
+.line-sidebar__item a { color: inherit; text-decoration: none; display: block; }
+.line-sidebar__item::before { content: ''; position: absolute; inset: -6px -48px; }
+.line-sidebar__label {
+  position: relative; display: inline-flex; align-items: baseline; font-size: 14px; line-height: 1.2;
+  color: color-mix(in srgb, var(--accent) calc(var(--effect, 0) * 100%), var(--text));
+  transform: translateX(calc(var(--effect, 0) * var(--max-shift)));
+}
+.line-sidebar__index { margin-right: .6rem; font-size: .85em; opacity: calc(.55 + var(--effect, 0) * .45); }
+.line-sidebar__marker {
+  position: absolute; top: 50%; left: calc(-1 * var(--marker-length)); height: 1px; width: var(--marker-length);
+  background-color: color-mix(in srgb, var(--accent) calc(var(--effect, 0) * 100%), var(--border));
+  transform-origin: left center; transform: translateY(-50%) scaleX(calc(.7 + var(--effect, 0) * .5));
+}
+.line-sidebar--markers .line-sidebar__item:not(:last-child)::after {
+  content: ''; position: absolute; top: calc(100% + var(--item-gap) / 2); left: calc(-1 * var(--marker-length));
+  height: 1px; width: calc(var(--marker-length) * var(--tick-scale)); background-color: var(--border); opacity: .5;
+  transform-origin: left center; transform: translateY(-50%) scaleX(calc(.7 + var(--effect, 0) * .6));
+}
+.ex-toggle {
+  position: fixed; z-index: 51; top: 18px; right: 20px;
+  font-family: var(--mono); font-size: 13px; font-weight: 700; padding: 6px 14px; min-height: 34px;
+  background: var(--glass); border: 1px solid var(--glass-edge); border-radius: var(--radius);
+  color: var(--text); cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: border-color .15s ease-out, color .15s ease-out, transform .16s ease-out;
+}
+.ex-toggle:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .ex-toggle:hover { border-color: var(--accent); color: var(--accent); } }
+/* Vertical y tablet: la barra lateral pasa a barra inferior con el toggle
+   a la derecha (frontend-design/references/responsive-portrait.md, regla 10). */
+@media (max-width: 1099px) {
+  .ex-nav {
+    left: 0; right: 0; top: auto; bottom: 0; transform: none;
+    background: var(--glass); border-top: 1px solid var(--glass-edge);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    padding: 0 84px env(safe-area-inset-bottom) 0;
+  }
+  .line-sidebar--markers { padding-left: 0; }
+  .line-sidebar__list { flex-direction: row; width: 100%; padding: 0; gap: 0; }
+  .line-sidebar__item { flex: 1 1 auto; min-height: 54px; display: flex; align-items: center; justify-content: center; }
+  .line-sidebar__item a { padding: 12px 6px; text-align: center; width: 100%; white-space: nowrap; }
+  .line-sidebar__item::before { inset: 0; }
+  .line-sidebar__item::after { display: none; }
+  .line-sidebar__index { display: none; }
+  .line-sidebar__label { transform: none; font-size: 12px; }
+  .line-sidebar__marker { top: 0; left: 18%; width: 64%; transform-origin: center; transform: scaleX(calc(.35 + var(--effect, 0) * .65)); }
+  .ex-toggle { top: auto; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(56px + env(safe-area-inset-bottom)); }
+}
+
+/* ── HERO · Tech Text + Refine Frame ── */
+.ex-hero { position: relative; z-index: 2; isolation: isolate; overflow: hidden; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: 88px 0 64px; }
+/* La imagen que se refina cubre toda la pantalla; una penumbra de --bg
+   (izquierda en escritorio, desde abajo en vertical) deja leer el texto
+   y funde el hero con el segmento siguiente. */
+.ex-hero > .refine-frame { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; border: 0; z-index: -2; }
+.ex-hero > .refine-frame .refine-frame__chip { left: auto; right: 20px; bottom: 24px; }
+.ex-hero-scrim {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 92%, transparent) 34%, color-mix(in srgb, var(--bg) 70%, transparent) 52%, color-mix(in srgb, var(--bg) 32%, transparent) 66%, transparent 84%),
+    linear-gradient(0deg, var(--bg) 0%, transparent 16%);
+}
+.ex-hero-copy { max-width: 640px; }
+.ex-title { position: relative; height: clamp(140px, 18vw, 250px); }
+.ex-title canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
+.ex-title h1 { font-size: clamp(72px, 13vw, 180px); font-weight: 700; letter-spacing: -.05em; line-height: 1; height: 100%; display: flex; align-items: center; }
+html.js .ex-title h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ex-hero-sub { display: inline-block; font-size: 15px; color: var(--text); margin-top: 4px; }
+.ex-hero-sub b { color: var(--accent); }
+.ex-hero-lede { max-width: 48ch; margin-top: 18px; }
+/* Solo en vertical: acostado, el texto ocupa casi todo el alto y le toca
+   la penumbra lateral de escritorio. */
+@media (max-width: 900px) and (orientation: portrait) {
+  .ex-hero { align-items: flex-end; padding: 72px 0 40px; }
+  .ex-hero-scrim { background: linear-gradient(0deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 90%, transparent) 40%, color-mix(in srgb, var(--bg) 40%, transparent) 64%, transparent 82%); }
+  .ex-hero > .refine-frame .refine-frame__chip { bottom: auto; top: 16px; right: 16px; }
+}
+
+/* Refine Frame (React Bits, sin dependencias): mosaico de bloques que se
+   refina por niveles con un frente que baja. Íconos: SVG propios en vez
+   de hugeicons. Estado inicial en CSS = completo, para que sin JS la
+   imagen se vea nítida. */
+.refine-frame {
+  --rf-blur: 0px; --rf-sat: 1; --rf-scale: 1; --rf-opacity: 1; --rf-stage: 400ms;
+  --rf-ease-out: cubic-bezier(.23, 1, .32, 1);
+  position: relative; isolation: isolate; width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden;
+  background: var(--bg3); color: var(--text); font-size: 12px; font-weight: 700; line-height: 1;
+  border: 1px solid var(--glass-edge);
+}
+.refine-frame__media {
+  position: absolute; inset: 0; opacity: var(--rf-opacity);
+  filter: blur(var(--rf-blur)) saturate(var(--rf-sat)); transform: scale(var(--rf-scale));
+  transition: opacity var(--rf-stage) var(--rf-ease-out), filter var(--rf-stage) var(--rf-ease-out), transform var(--rf-stage) var(--rf-ease-out);
+}
+.refine-frame[data-status='queued'] .refine-frame__media { animation: refine-frame-wait 2.4s ease-in-out infinite; }
+@keyframes refine-frame-wait { 0%, 100% { opacity: .45; } 50% { opacity: .65; } }
+.refine-frame__print { width: 100%; height: 100%; transition: opacity var(--rf-stage) ease; }
+.refine-frame__print > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.refine-frame[data-mosaic] .refine-frame__print { opacity: 0; }
+.refine-frame[data-resolved] .refine-frame__print { opacity: 1; }
+.refine-frame__mosaic { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; transition: opacity var(--rf-stage) ease; }
+.refine-frame[data-mosaic] .refine-frame__mosaic { opacity: 1; }
+.refine-frame[data-resolved] .refine-frame__mosaic { opacity: 0; }
+.refine-frame__sweep {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity var(--rf-stage) ease;
+  background: linear-gradient(115deg, transparent 38%, color-mix(in srgb, var(--text) 14%, transparent) 50%, transparent 62%);
+  background-size: 260% 100%;
+}
+.refine-frame[data-sweep]:not([data-mosaic]) .refine-frame__sweep { opacity: 1; animation: refine-frame-sweep 2.2s linear infinite; }
+@keyframes refine-frame-sweep { from { background-position: 130% 0; } to { background-position: -130% 0; } }
+.refine-frame__chip {
+  position: absolute; bottom: 10px; left: 10px; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 11px 0 9px;
+  border-radius: 14px; background: color-mix(in srgb, var(--bg3) 78%, transparent);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms var(--rf-ease-out);
+}
+.refine-frame__chip[hidden] { display: inline-flex; opacity: 0; transform: translateY(4px); }
+html:not(.js) .refine-frame__chip { display: none; }
+.refine-frame__mark { display: inline-flex; color: var(--accent); }
+.refine-frame__mark[data-kind='spin'] { animation: refine-frame-spin 1.1s linear infinite; }
+@keyframes refine-frame-spin { to { transform: rotate(360deg); } }
+.refine-frame__label { animation: refine-frame-label 200ms ease both; }
+@keyframes refine-frame-label { from { opacity: 0; filter: blur(2px); } }
+.ex-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) {
+  .refine-frame__media { transition: opacity var(--rf-stage) ease; }
+  .refine-frame[data-sweep] .refine-frame__sweep, .refine-frame[data-status='queued'] .refine-frame__media, .refine-frame__mark[data-kind='spin'] { animation: none; }
+}
+
+/* ── 02 · PALETA Y MÉTRICAS sobre Liquid Chrome ── */
+.ex-split { display: grid; grid-template-columns: 1.45fr 1fr; gap: clamp(24px, 4vw, 48px); }
+@media (max-width: 900px) { .ex-split { grid-template-columns: 1fr; } }
+.swatch-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 4px; }
+.swatch { min-width: 88px; text-align: center; font-size: 12px; color: var(--text2-ink); }
+.swatch-box { height: 52px; border-radius: var(--radius); margin-bottom: 6px; border: 1px solid var(--glass-edge); position: relative; }
+.swatch-hex { position: absolute; bottom: 4px; left: 5px; font-size: 12px; font-weight: 700; line-height: 1; pointer-events: none; padding: 1px 2px; border-radius: 2px; }
+.swatch-hex.is-chip { background: var(--bg); }
+.metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+.metric { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.metric-val { font-size: 26px; font-weight: 700; color: var(--accent); letter-spacing: -1px; line-height: 1.2; }
+.metric-lbl { font-size: 12px; color: var(--text2-ink); margin-top: 2px; }
+.metric-val.output { color: var(--output); } .metric-val.train { color: var(--train); } .metric-val.teal { color: var(--teal); }
+.metric-val.violet { color: var(--violet); } .metric-val.arctic { color: var(--arctic); }
+
+/* ── 03 · PIPELINE · texto, diagrama, espiral ── */
+.ex-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.ex-sticky { position: sticky; top: 28px; }
+@media (max-width: 1000px) { .ex-cols { grid-template-columns: 1fr; } .ex-sticky { position: static; } }
+.ex-col-text h3:first-child { margin-top: 0; }
+.pipeline-row {
+  display: flex; gap: 14px; align-items: flex-start; margin: 10px 0; padding: 13px 16px;
+  background: var(--bg2); border: 1px solid var(--border); border-left: 2px solid var(--accent); border-radius: var(--radius);
+}
+.pipeline-step { font-size: 12px; font-weight: 700; color: var(--accent); min-width: 72px; line-height: 1.4; }
+.run-log { margin: 10px 0; }
+.run-entry { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.run-entry:last-child { border-bottom: none; }
+.run-dot {
+  width: 28px; height: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; margin-top: 2px; color: var(--text2-ink); background: var(--bg3);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.run-dot.done { color: var(--ok); } .run-dot.running { color: var(--train); } .run-dot.failed { color: var(--danger); }
+.ex-figure { margin: 0; }
+.ex-figure figcaption { font-size: 12px; color: var(--text2-ink); margin-top: 10px; line-height: 1.5; }
+.ex-figure figcaption b { color: var(--accent); }
+.ex-net { position: relative; height: 460px; padding: 0; overflow: hidden; }
+html:not(.js) .ex-net, html:not(.js) .ex-net + figcaption { display: none; }
+.ex-net canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+@media (max-width: 1000px) { .ex-net { height: 340px; } }
+
+/* Infinite Spiral (React Bits, sin dependencias). Sin JS: las cuatro
+   radiografías en una cuadrícula normal. */
+.infinite-spiral { position: relative; width: 100%; height: 520px; overflow: hidden; isolation: isolate; perspective: 1000px; border-radius: 6px; }
+.infinite-spiral__stage { position: absolute; inset: 0; transform-style: preserve-3d; }
+.infinite-spiral__item {
+  position: absolute; top: 50%; left: 50%; display: block; width: 150px; height: 112px; overflow: hidden;
+  border: 1px solid var(--glass-edge); border-radius: 6px; background: var(--bg);
+  box-shadow: 0 14px 38px color-mix(in srgb, var(--black) 22%, transparent);
+  transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity, filter;
+}
+.infinite-spiral__item img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; filter: url(#ex-duo); }
+html:not(.js) .infinite-spiral { height: auto; }
+html:not(.js) .infinite-spiral__stage { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+html:not(.js) .infinite-spiral__item { position: relative; top: auto; left: auto; width: 100%; }
+@media (max-width: 1000px) { .infinite-spiral { height: 400px; } }
+.ex-fish-name { display: block; color: var(--text); font-weight: 700; }
+.ex-fish-name i { font-weight: 400; }
+
+/* ── 04 · COMPONENTES sobre Light Pillar + Meta Balls, con Antigravity ── */
+.ex-seg--pillar .ex-panel { position: relative; }
+/* Componentes: el fondo (Light Pillar + Meta Balls + Antigravity) es el
+   protagonista. El panel pasa a vidrio casi transparente y sin blur; solo
+   el texto que no tiene superficie propia lleva una placa pequeña. Avisos,
+   botones, badges, cards y código ya traen su fondo. */
+.ex-seg--pillar .ex-panel { background: color-mix(in srgb, var(--bg) 16%, transparent); border-color: color-mix(in srgb, var(--text) 18%, transparent); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.ex-seg--pillar .ex-seg-head, .ex-seg--pillar .ex-tabpanel > h3, .ex-seg--pillar .ex-tabpanel > p {
+  display: inline-flex; width: fit-content; background: color-mix(in srgb, var(--bg) 84%, transparent);
+  padding: 4px 12px; border-radius: 6px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.ex-seg--pillar .ex-tabpanel > p { display: block; }
+.ex-seg--pillar .ex-table { background: color-mix(in srgb, var(--bg) 86%, transparent); border-radius: 6px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ex-seg--pillar .gooey-nav li:not(.active) { background: color-mix(in srgb, var(--bg) 80%, transparent); }
+/* Gooey Nav (React Bits, sin dependencias). El original arma el goo con
+   blur + contrast(100) sobre negro y blanco puros; aquí es el filtro SVG
+   clásico (blur + umbral de alfa), que conserva los colores del tema. */
+.gooey-nav { position: relative; margin: 6px 0 26px; --color-1: var(--train); --color-2: var(--input); --color-3: var(--output); --color-4: var(--violet); }
+.gooey-nav ul { display: flex; flex-wrap: wrap; gap: 6px 8px; list-style: none; position: relative; z-index: 3; }
+.gooey-nav li { border-radius: 999px; position: relative; color: var(--text); transition: color .3s ease; }
+.gooey-nav li button {
+  font: inherit; font-size: 14px; color: inherit; background: none; border: 0; cursor: pointer;
+  display: inline-block; padding: .6em 1.1em; border-radius: 999px; min-height: 40px;
+}
+.gooey-nav li::after {
+  content: ''; position: absolute; inset: 0; border-radius: 999px; background: var(--accent);
+  opacity: 0; transform: scale(0); transition: opacity .3s ease, transform .3s ease; z-index: -1;
+}
+.gooey-nav li.active { color: var(--bg); }
+.gooey-nav li.active::after { opacity: 1; transform: scale(1); }
+html.js .gooey-nav li.active { color: transparent; }
+html.js .gooey-nav li.active::after { opacity: 0; }
+.gooey-nav .effect { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; display: grid; place-items: center; z-index: 1; }
+.gooey-nav .effect.text { color: var(--text); transition: color .3s ease; font-size: 14px; z-index: 4; }
+.gooey-nav .effect.text.active { color: var(--bg); }
+.gooey-nav .effect.filter { filter: url(#ex-goo); }
+.gooey-nav .effect.filter::after { content: ''; position: absolute; inset: 0; background: var(--accent); transform: scale(0); opacity: 0; z-index: -1; border-radius: 999px; }
+.gooey-nav .effect.active::after { animation: ex-pill .3s ease both; }
+@keyframes ex-pill { to { transform: scale(1); opacity: 1; } }
+.particle, .point { display: block; opacity: 0; width: 20px; height: 20px; border-radius: 100%; transform-origin: center; }
+.particle { --time: 5s; position: absolute; top: calc(50% - 8px); left: calc(50% - 8px); animation: ex-particle calc(var(--time)) ease 1 -350ms; }
+.point { background: var(--color); opacity: 1; animation: ex-point calc(var(--time)) ease 1 -350ms; }
+@keyframes ex-particle {
+  0% { transform: rotate(0deg) translate(var(--start-x), var(--start-y)); opacity: 1; animation-timing-function: cubic-bezier(.55, 0, 1, .45); }
+  70% { transform: rotate(calc(var(--rotate) * .5)) translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2)); opacity: 1; animation-timing-function: ease; }
+  85% { transform: rotate(calc(var(--rotate) * .66)) translate(var(--end-x), var(--end-y)); opacity: 1; }
+  100% { transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * .5), calc(var(--end-y) * .5)); opacity: 1; }
+}
+@keyframes ex-point {
+  0% { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(.55, 0, 1, .45); }
+  25% { transform: scale(calc(var(--scale) * .25)); }
+  38% { opacity: 1; }
+  65% { transform: scale(var(--scale)); opacity: 1; animation-timing-function: ease; }
+  85% { transform: scale(var(--scale)); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}
+.ex-tabpanel[hidden] { display: none; }
+/* Cambio de pestaña sin brinco: el contenedor tiene un piso de altura (las
+   pestañas cortas ya no lo colapsan y dejan ver el fondo) y entre una y otra
+   la altura se desliza mientras el panel nuevo entra con un fundido. */
+html.js .ex-tabstack { min-height: 440px; overflow: hidden; transition: height .38s cubic-bezier(.2, .7, .2, 1); }
+@media (max-width: 760px) { html.js .ex-tabstack { min-height: 560px; } }
+.ex-tabpanel.is-entering { animation: ex-tab-in .32s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes ex-tab-in { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { html.js .ex-tabstack { transition: none; } .ex-tabpanel.is-entering { animation: none; } }
+.ex-tabpanel > h3:first-child { margin-top: 0; }
+
+/* ── COMPONENTES BASE ── */
+code { font-family: var(--mono); font-size: 13px; background: var(--bg3); border: 1px solid var(--border); padding: 1px 6px; border-radius: var(--radius); color: var(--accent); white-space: nowrap; }
+pre {
+  background: var(--bg2); border: 1px solid var(--border); border-left: 2px solid var(--accent); border-radius: var(--radius);
+  padding: 14px 18px; margin: 14px 0; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.75; color: var(--text); position: relative;
+}
+pre::before { content: attr(data-lang); position: absolute; top: 6px; right: 10px; font-size: 12px; color: var(--text2-ink); }
+@media (max-width: 760px) { pre { padding-top: 30px; } }
+pre code { background: none; border: none; padding: 0; color: inherit; white-space: pre; }
+pre .kw { color: var(--indigo); } pre .fn { color: var(--teal); } pre .str { color: var(--pine); }
+pre .num { color: var(--arctic); } pre .cm { color: var(--text2-ink); font-style: italic; } pre .tp { color: var(--violet); }
+.callouts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 760px) { .callouts { grid-template-columns: 1fr; } }
+.callout { border-left: 2px solid var(--accent); background: var(--bg2); padding: 12px 16px; border-radius: 0 var(--radius) var(--radius) 0; }
+.callout-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.callout p { margin-bottom: 0; font-size: 13px; }
+.callout.ok { border-color: var(--ok); } .callout.ok .callout-title { color: var(--ok); }
+.callout.warn { border-color: var(--warn); } .callout.warn .callout-title { color: var(--warn); }
+.callout.danger { border-color: var(--danger); } .callout.danger .callout-title { color: var(--danger); }
+.callout.input { border-color: var(--input); } .callout.input .callout-title { color: var(--input); }
+.callout.train { border-color: var(--train); } .callout.train .callout-title { color: var(--train); }
+.callout.output { border-color: var(--output); } .callout.output .callout-title { color: var(--output); }
+.callout.indigo { border-color: var(--indigo); } .callout.indigo .callout-title { color: var(--indigo); }
+.callout.violet { border-color: var(--violet); } .callout.violet .callout-title { color: var(--violet); }
+.callout.arctic { border-color: var(--arctic); } .callout.arctic .callout-title { color: var(--arctic); }
+.callout.gray { border-color: var(--gray-ink); } .callout.gray .callout-title { color: var(--text2-ink); }
+.ex-table { overflow-x: auto; margin: 14px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: var(--bg3); padding: 8px 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text); border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+@media (hover: hover) and (pointer: fine) { tr:hover td { background: var(--bg3); } }
+.btn-row, .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.btn {
+  display: inline-block; font-family: var(--mono); font-size: 13px; font-weight: 700; padding: 7px 14px; min-height: 34px;
+  border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg2); color: var(--text2-ink); cursor: pointer;
+  transition: border-color .15s ease-out, color .15s ease-out, transform .16s ease-out;
+}
+.btn:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .btn:hover { border-color: var(--accent); color: var(--accent); } }
+.btn.primary { border-color: var(--accent); color: var(--accent); } .btn.ok { border-color: var(--ok); color: var(--ok); }
+.btn.warn { border-color: var(--warn); color: var(--warn); } .btn.danger { border-color: var(--danger); color: var(--danger); }
+.btn.input { border-color: var(--input); color: var(--input); } .btn.train { border-color: var(--train); color: var(--train); }
+.btn.output { border-color: var(--output); color: var(--output); } .btn.violet { border-color: var(--violet); color: var(--violet); }
+.btn.arctic { border-color: var(--arctic); color: var(--arctic); }
+.badge { display: inline-block; font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 2px 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text2-ink); }
+.badge.accent { border-color: var(--accent); color: var(--accent); } .badge.ok { border-color: var(--ok); color: var(--ok); }
+.badge.warn { border-color: var(--warn); color: var(--warn); } .badge.danger { border-color: var(--danger); color: var(--danger); }
+.badge.input { border-color: var(--input); color: var(--input); } .badge.train { border-color: var(--train); color: var(--train); }
+.badge.output { border-color: var(--output); color: var(--output); } .badge.slate { border-color: var(--slate); color: var(--slate); }
+.badge.violet { border-color: var(--violet); color: var(--violet); } .badge.arctic { border-color: var(--arctic); color: var(--arctic); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 760px) { .grid-2 { grid-template-columns: 1fr; } }
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; transition: border-color .15s ease-out; }
+@media (hover: hover) and (pointer: fine) { .card:hover { border-color: var(--accent); } }
+.card .badge { margin-left: 8px; }
+
+.ex-footer {
+  position: relative; z-index: 2; padding: 22px var(--gutter) 30px; text-align: center; font-size: 12px; color: var(--text2-ink);
+  background: color-mix(in srgb, var(--bg) 92%, transparent); border-top: 1px solid var(--border);
+}
+
+/* Vertical: cuerpo a 16px (responsive-portrait, regla 2). */
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  p.muted, .callout p { font-size: 14px; }
+}

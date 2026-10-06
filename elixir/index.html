@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<!--
+elixir_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: Antigravity, Gooey Nav, Infinite Spiral, Light Pillar, Line Sidebar, Liquid Chrome, Meta Balls, Refine Frame, Tech Text.
+· Radiografías de peces · Sandra Raredon, Smithsonian National Museum of Natural History, División de Peces.
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>elixir_theme · Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=iosevka:400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="elixir.css">
+</head>
+<body class="dark">
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <!-- Duotono de las radiografías: luminancia → del fondo a la tinta del modo. -->
+    <filter id="ex-duo" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values=".33 .33 .33 0 0  .33 .33 .33 0 0  .33 .33 .33 0 0  0 0 0 1 0"/>
+      <feComponentTransfer>
+        <feFuncR id="ex-duo-r" type="table" tableValues=".03 0"/>
+        <feFuncG id="ex-duo-g" type="table" tableValues=".05 .91"/>
+        <feFuncB id="ex-duo-b" type="table" tableValues=".08 .85"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="ex-goo" x="-150%" y="-300%" width="400%" height="700%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="b"/>
+      <feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"/>
+    </filter>
+  </defs>
+</svg>
+
+<nav class="ex-nav line-sidebar line-sidebar--markers" aria-label="Secciones">
+  <ul class="line-sidebar__list">
+    <li class="line-sidebar__item"><a href="#inicio"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">01</span><span>Inicio</span></span></a></li>
+    <li class="line-sidebar__item"><a href="#paleta"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">02</span><span>Paleta</span></span></a></li>
+    <li class="line-sidebar__item"><a href="#pipeline"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">03</span><span>Pipeline</span></span></a></li>
+    <li class="line-sidebar__item"><a href="#componentes"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">04</span><span>Componentes</span></span></a></li>
+  </ul>
+</nav>
+<button class="ex-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo claro">◑ claro</button>
+
+<main>
+<!-- ── 01 · INICIO ── -->
+<header class="ex-hero" id="inicio" data-seg="0">
+  <div class="refine-frame" id="ex-refine" role="img" aria-label="Imagen del tema">
+    <div class="refine-frame__media" aria-hidden="true">
+      <div class="refine-frame__print"><img src="../assets/img/elixir/2e1f3d7c1c.webp" data-light="../assets/img/elixir/3da3e43e67.webp" alt=""></div>
+      <canvas class="refine-frame__mosaic"></canvas>
+    </div>
+    <div class="refine-frame__sweep" aria-hidden="true"></div>
+    <div class="refine-frame__chip" aria-hidden="true"><span class="refine-frame__mark"></span><span class="refine-frame__label">Listo</span></div>
+    <span class="ex-sr" role="status"></span>
+  </div>
+  <div class="ex-hero-scrim" aria-hidden="true"></div>
+  <div class="ex-wrap">
+    <div class="ex-hero-copy">
+      <div class="ex-title" id="ex-title">
+        <h1>elixir</h1>
+        <canvas aria-hidden="true"></canvas>
+      </div>
+      <p class="ex-hero-sub"><b>_theme</b> · iroFactory</p>
+      <p class="ex-hero-lede">Documentación para modelos y pipelines de datos. La señal entra, se entrena y sale; cada nodo queda marcado por la etapa que lo alcanzó.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ── 02 · PALETA Y MÉTRICAS ── -->
+<section class="ex-seg" id="paleta" data-seg="1">
+  <div class="ex-seg-bg"><canvas id="ex-chrome" aria-hidden="true"></canvas></div>
+  <div class="ex-wrap">
+    <div class="ex-panel ex-split">
+      <div>
+        <div class="ex-seg-head"><span class="ex-seg-index">02</span><h2 class="ex-seg-title">Paleta y métricas</h2></div>
+        <p class="muted">Tokens disponibles como variables CSS. Cambian con el modo.</p>
+        <h3>Señal de modelo</h3>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-box" style="background:var(--input)"><span class="swatch-hex" id="hex-input"></span></div>--input</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--train)"><span class="swatch-hex" id="hex-train"></span></div>--train</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--output)"><span class="swatch-hex" id="hex-output"></span></div>--output</div>
+        </div>
+        <h3>Paleta analítica</h3>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-box" style="background:var(--teal)"><span class="swatch-hex" id="hex-teal"></span></div>--teal</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--indigo)"><span class="swatch-hex" id="hex-indigo"></span></div>--indigo</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--pine)"><span class="swatch-hex" id="hex-pine"></span></div>--pine</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--slate)"><span class="swatch-hex" id="hex-slate"></span></div>--slate</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--steel)"><span class="swatch-hex" id="hex-steel"></span></div>--steel</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--violet)"><span class="swatch-hex" id="hex-violet"></span></div>--violet</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--arctic)"><span class="swatch-hex" id="hex-arctic"></span></div>--arctic</div>
+        </div>
+        <h3>Neutros y semánticos</h3>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-top:6px">Métricas</h3>
+        <p class="muted">Una métrica, un color: el mismo token que la etapa que la produce.</p>
+        <div class="metrics-grid">
+          <div class="metric"><div class="metric-val">94.3%</div><div class="metric-lbl">accuracy · accent</div></div>
+          <div class="metric"><div class="metric-val output">0.021</div><div class="metric-lbl">loss · output</div></div>
+          <div class="metric"><div class="metric-val train">14/50</div><div class="metric-lbl">epoch · train</div></div>
+          <div class="metric"><div class="metric-val teal">2.4M</div><div class="metric-lbl">registros · teal</div></div>
+          <div class="metric"><div class="metric-val violet">768</div><div class="metric-lbl">dims · violet</div></div>
+          <div class="metric"><div class="metric-val arctic">12ms</div><div class="metric-lbl">latencia · arctic</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 · PIPELINE ── -->
+<section class="ex-seg" id="pipeline" data-seg="2">
+  <div class="ex-wrap">
+    <div class="ex-seg-head"><span class="ex-seg-index">03</span><h2 class="ex-seg-title">Pipeline</h2></div>
+    <p class="ex-seg-lede">Las cuatro etapas, lo que pasó en la última corrida y el grafo donde cada pulso deja su color.</p>
+    <div class="ex-cols">
+      <div class="ex-col-text">
+        <h3>Etapas</h3>
+        <div class="pipeline-row"><div class="pipeline-step">ingest</div><div><h4>Extracción de datos</h4><p class="muted" style="margin:0">Scraper conectado a la fuente. Validación de esquema en cada registro.</p></div></div>
+        <div class="pipeline-row"><div class="pipeline-step">transform</div><div><h4>Preprocesamiento</h4><p class="muted" style="margin:0">Normalización, tokenización y generación de embeddings.</p></div></div>
+        <div class="pipeline-row"><div class="pipeline-step">train</div><div><h4>Entrenamiento del modelo</h4><p class="muted" style="margin:0">Clasificador supervisado con validación cruzada de 5 folds.</p></div></div>
+        <div class="pipeline-row"><div class="pipeline-step">eval</div><div><h4>Evaluación y exportación</h4><p class="muted" style="margin:0">Métricas sobre el test set. Exportación a ONNX para inferencia.</p></div></div>
+        <h3>Run log</h3>
+        <div class="run-log">
+          <div class="run-entry"><div class="run-dot done" aria-label="Completado">✓</div><div><h4>Preprocesamiento completado</h4><p class="muted" style="margin:0">2.4M registros normalizados. Sin valores nulos.</p></div></div>
+          <div class="run-entry"><div class="run-dot done" aria-label="Completado">✓</div><div><h4>Feature engineering</h4><p class="muted" style="margin:0">768 dimensiones generadas. Embeddings en caché.</p></div></div>
+          <div class="run-entry"><div class="run-dot running" aria-label="En curso">▶</div><div><h4>Entrenamiento en curso</h4><p class="muted" style="margin:0">Epoch 14/50 · loss 0.021 · mejorando.</p></div></div>
+          <div class="run-entry"><div class="run-dot" aria-label="Pendiente">·</div><div><h4>Evaluación pendiente</h4><p class="muted" style="margin:0">Esperando fin del entrenamiento para correr el test set.</p></div></div>
+          <div class="run-entry"><div class="run-dot failed" aria-label="Fallido">✕</div><div><h4>Scraper fallido</h4><p class="muted" style="margin:0">Timeout en la fuente. Reintentando con backoff exponencial.</p></div></div>
+        </div>
+      </div>
+      <figure class="ex-figure ex-sticky">
+        <div class="ex-panel ex-net"><canvas id="ex-net" role="img" aria-label="Grafo del pipeline: ingest, transform, train y eval; cada nodo conserva el color del último pulso que lo alcanzó"></canvas></div>
+        <figcaption>epoch <b id="ex-epoch">1</b>/50 · <span id="ex-pulses">0</span> pulsos. Cada nodo conserva el color del último pulso que lo alcanzó.</figcaption>
+      </figure>
+      <figure class="ex-figure ex-sticky">
+        <div class="infinite-spiral" id="ex-spiral">
+          <div class="infinite-spiral__stage" role="list" aria-label="Radiografías de peces">
+            <div class="infinite-spiral__item" role="listitem" data-name="Eusphyra blochii" data-common="winghead shark"><img src="../assets/img/elixir/2a818138bb.webp" data-light="../assets/img/elixir/6353fdb2c7.webp" alt="Radiografía de Eusphyra blochii (winghead shark)" draggable="false"></div>
+            <div class="infinite-spiral__item" role="listitem" data-name="Centriscus scutatus" data-common="grooved razorfish"><img src="../assets/img/elixir/c87a17ed6f.webp" data-light="../assets/img/elixir/9b2c694d1d.webp" alt="Radiografía de un banco de Centriscus scutatus (grooved razorfish)" draggable="false"></div>
+            <div class="infinite-spiral__item" role="listitem" data-name="Enchelynassa canina" data-common="viper moray"><img src="../assets/img/elixir/39a93c59ca.webp" data-light="../assets/img/elixir/8a75a6a1ad.webp" alt="Radiografía de Enchelynassa canina (viper moray)" draggable="false"></div>
+            <div class="infinite-spiral__item" role="listitem" data-name="Nemichthys scolopaceus" data-common="slender snipe eel"><img src="../assets/img/elixir/72447ce34e.webp" data-light="../assets/img/elixir/9419aa9bd9.webp" alt="Radiografía de Nemichthys scolopaceus (slender snipe eel)" draggable="false"></div>
+          </div>
+        </div>
+        <figcaption><span class="ex-fish-name" id="ex-fish-name"><i>Eusphyra blochii</i> · winghead shark</span>Radiografías · Sandra Raredon, Smithsonian NMNH, División de Peces</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 · COMPONENTES ── -->
+<section class="ex-seg ex-seg--pillar" id="componentes" data-seg="3">
+  <div class="ex-seg-bg"><canvas id="ex-pillar" aria-hidden="true"></canvas><canvas id="ex-anti" aria-hidden="true"></canvas></div>
+  <div class="ex-wrap">
+    <div class="ex-panel">
+      <div class="ex-seg-head"><span class="ex-seg-index">04</span><h2 class="ex-seg-title">Componentes</h2></div>
+      <div class="gooey-nav" id="ex-gooey">
+        <nav aria-label="Componentes">
+          <ul role="tablist">
+            <li class="active"><button type="button" role="tab" id="tab-codigo" aria-controls="panel-codigo" aria-selected="true">Código</button></li>
+            <li><button type="button" role="tab" id="tab-tabla" aria-controls="panel-tabla" aria-selected="false" tabindex="-1">Tabla</button></li>
+            <li><button type="button" role="tab" id="tab-avisos" aria-controls="panel-avisos" aria-selected="false" tabindex="-1">Avisos</button></li>
+            <li><button type="button" role="tab" id="tab-botones" aria-controls="panel-botones" aria-selected="false" tabindex="-1">Botones</button></li>
+            <li><button type="button" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="false" tabindex="-1">Cards</button></li>
+          </ul>
+        </nav>
+        <span class="effect filter" aria-hidden="true"></span>
+        <span class="effect text" aria-hidden="true"></span>
+      </div>
+
+      <div class="ex-tabstack">
+      <div class="ex-tabpanel" id="panel-codigo" role="tabpanel" aria-labelledby="tab-codigo">
+        <h3>Código</h3>
+        <p>Inline: <code>toggleTheme()</code> alterna entre modo claro y oscuro.</p>
+<pre data-lang="python"><code><span class="cm"># Pipeline de clasificación supervisada</span>
+<span class="kw">from</span> sklearn.pipeline <span class="kw">import</span> Pipeline
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> LabelEncoder
+
+<span class="tp">@dataclass</span>
+<span class="kw">class</span> <span class="tp">Experimento</span>:
+    nombre: <span class="tp">str</span>
+    epochs: <span class="tp">int</span>  = <span class="num">50</span>
+    lr:     <span class="tp">float</span> = <span class="num">1e-4</span>
+
+    <span class="fn">def</span> entrenar(<span class="kw">self</span>, X, y):
+        modelo = Pipeline([
+            (<span class="str">'enc'</span>, LabelEncoder()),
+            (<span class="str">'clf'</span>, self._build()),
+        ])
+        <span class="kw">return</span> modelo.fit(X, y)   <span class="cm"># clasificador listo</span></code></pre>
+      </div>
+
+      <div class="ex-tabpanel" id="panel-tabla" role="tabpanel" aria-labelledby="tab-tabla">
+        <h3>Tabla</h3>
+        <div class="ex-table">
+          <table>
+            <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Semántica</th></tr>
+            <tr><td><code>--accent</code></td><td>#0A5C58</td><td>#00E8D8</td><td>Acento principal · teal pizarra</td></tr>
+            <tr><td><code>--input</code></td><td>#2A3A7A</td><td>#4D8FFF</td><td>Dato entrante · validación pendiente</td></tr>
+            <tr><td><code>--train</code></td><td>#0A5C58</td><td>#00E8D8</td><td>Entrenamiento activo · epoch en curso</td></tr>
+            <tr><td><code>--output</code></td><td>#1A5C30</td><td>#00F090</td><td>Predicción lista · resultado validado</td></tr>
+            <tr><td><code>--teal</code></td><td>#0A5C58</td><td>#00E8D8</td><td>Scraper activo · conexión</td></tr>
+            <tr><td><code>--indigo</code></td><td>#2A3A7A</td><td>#4D8FFF</td><td>Modelo base · checkpoint</td></tr>
+            <tr><td><code>--pine</code></td><td>#1A5C30</td><td>#00F090</td><td>Verde pizarra · clasificación OK</td></tr>
+            <tr><td><code>--violet</code></td><td>#3A2A6A</td><td>#8060FF</td><td>Experimental · embeddings</td></tr>
+            <tr><td><code>--arctic</code></td><td>#1A4A6A</td><td>#00C8FF</td><td>Stream frío · batch diferido</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="ex-tabpanel" id="panel-avisos" role="tabpanel" aria-labelledby="tab-avisos">
+        <h3>Callouts</h3>
+        <div class="callouts">
+          <div class="callout"><div class="callout-title">Acento (default)</div><p>Documentación del pipeline, notas de implementación y referencias.</p></div>
+          <div class="callout ok"><div class="callout-title">OK · Pine</div><p>Predicción validada. Métrica dentro del umbral esperado.</p></div>
+          <div class="callout warn"><div class="callout-title">Warn</div><p>Overfitting detectado. Revisar regularización antes de continuar.</p></div>
+          <div class="callout danger"><div class="callout-title">Danger</div><p>Datos corruptos en el batch. Pipeline detenido.</p></div>
+          <div class="callout input"><div class="callout-title">Input</div><p>Datos crudos entrando al pipeline. Validación de esquema pendiente.</p></div>
+          <div class="callout train"><div class="callout-title">Train</div><p>Entrenamiento activo. Epoch 14/50 · loss decreciendo.</p></div>
+          <div class="callout output"><div class="callout-title">Output</div><p>Predicción lista. Confianza 94.3% sobre la clase objetivo.</p></div>
+          <div class="callout indigo"><div class="callout-title">Indigo</div><p>Modelo base cargado. Pesos inicializados desde checkpoint.</p></div>
+          <div class="callout violet"><div class="callout-title">Violet</div><p>Feature experimental. Embeddings de segunda generación en prueba.</p></div>
+          <div class="callout arctic"><div class="callout-title">Arctic</div><p>Stream de datos frío. Procesamiento en batch diferido.</p></div>
+          <div class="callout gray"><div class="callout-title">Gray</div><p>Notas de contexto. Información secundaria del experimento.</p></div>
+        </div>
+        <h3>Badges</h3>
+        <div class="badge-row">
+          <span class="badge accent">accent</span><span class="badge ok">ok</span><span class="badge warn">warn</span><span class="badge danger">danger</span>
+          <span class="badge input">input</span><span class="badge train">train</span><span class="badge output">output</span><span class="badge slate">slate</span>
+          <span class="badge violet">violet</span><span class="badge arctic">arctic</span><span class="badge">default</span>
+        </div>
+      </div>
+
+      <div class="ex-tabpanel" id="panel-botones" role="tabpanel" aria-labelledby="tab-botones">
+        <h3>Botones</h3>
+        <div class="btn-row">
+          <button class="btn primary">primary</button><button class="btn">default</button><button class="btn ok">ok</button>
+          <button class="btn warn">warn</button><button class="btn danger">danger</button><button class="btn input">input</button>
+          <button class="btn train">train</button><button class="btn output">output</button><button class="btn violet">violet</button>
+          <button class="btn arctic">arctic</button>
+        </div>
+      </div>
+
+      <div class="ex-tabpanel" id="panel-cards" role="tabpanel" aria-labelledby="tab-cards">
+        <h3>Cards</h3>
+        <div class="grid-2">
+          <div class="card"><strong>Clasificador base</strong><span class="badge slate">v3.1.0</span><p class="muted" style="margin:8px 0 0">Modelo de texto entrenado sobre corpus multilingüe. 94.3% accuracy en test.</p></div>
+          <div class="card"><strong>Scraper async</strong><span class="badge train">activo</span><p class="muted" style="margin:8px 0 0">Extracción concurrente con rate limiting configurable y retry automático.</p></div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="ex-footer">elixir_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Radiografías de Sandra Raredon, Smithsonian NMNH</footer>
+
+<script type="module">
+import { mount as m0 } from '../shared/components/elixir/kit.js';
+import { mount as m1 } from '../shared/components/elixir/theme-toggle.js';
+import { mount as m2 } from '../shared/components/elixir/line-sidebar.js';
+import { mount as m3 } from '../shared/components/elixir/tech-text.js';
+import { mount as m4 } from '../shared/components/elixir/refine-frame.js';
+import { mount as m5 } from '../shared/components/elixir/liquid-chrome.js';
+import { mount as m6 } from '../shared/components/elixir/pipeline-graph.js';
+import { mount as m7 } from '../shared/components/elixir/infinite-spiral.js';
+import { mount as m8 } from '../shared/components/elixir/light-pillar-meta-balls.js';
+import { mount as m9 } from '../shared/components/elixir/antigravity.js';
+import { mount as m10 } from '../shared/components/elixir/gooey-nav-tabs.js';
+m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7(); m8(); m9(); m10();
+</script>
+</body>
+</html>

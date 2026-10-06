@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--
+tarot_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tarot_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=josefin-sans:300,400,600,700&family=cinzel:400,700&family=fira-code:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tarot.css">
+</head>
+<body>
+
+<canvas id="tarot-deco"></canvas>
+<div id="tarot-cards"></div>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
+  <div>
+    <div style="font-family:var(--serif);font-size:36px;font-weight:400;letter-spacing:.12em;color:var(--gold)">
+      TAROT
+    </div>
+    <div style="font-family:var(--display);font-size:11px;font-weight:300;letter-spacing:.3em;color:var(--text2);text-transform:uppercase;margin-top:-4px">
+      _theme · iroFactory
+    </div>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">✦ oscuro</button>
+</div>
+
+<div class="ornament">✦ ◆ ✦ ◆ ✦</div>
+
+<!-- ── Paleta ── -->
+<h2>Paleta de colores</h2>
+<p class="muted">Oro, plata y carmesí · Cuatro palos · Arcanos mayores.</p>
+
+<h3>Metales</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gold-lt)"><span class="swatch-hex" id="hex-gold-lt"></span></div>--gold-lt</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gold-dk)"><span class="swatch-hex" id="hex-gold-dk"></span></div>--gold-dk</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--silver)"><span class="swatch-hex" id="hex-silver"></span></div>--silver</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--silver-lt)"><span class="swatch-hex" id="hex-silver-lt"></span></div>--silver-lt</div>
+</div>
+
+<h3>Rojos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--crimson)"><span class="swatch-hex" id="hex-crimson"></span></div>--crimson</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--scarlet)"><span class="swatch-hex" id="hex-scarlet"></span></div>--scarlet</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--wine)"><span class="swatch-hex" id="hex-wine"></span></div>--wine</div>
+</div>
+
+<h3>Palos de cartas</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--hearts)"><span class="swatch-hex" id="hex-hearts"></span></div>♥ hearts</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--diamonds)"><span class="swatch-hex" id="hex-diamonds"></span></div>♦ diamonds</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--spades)"><span class="swatch-hex" id="hex-spades"></span></div>♠ spades</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--clubs)"><span class="swatch-hex" id="hex-clubs"></span></div>♣ clubs</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--arcana)"><span class="swatch-hex" id="hex-arcana"></span></div>★ arcana</div>
+</div>
+
+<h3>Neutros y semánticos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--ebony)"><span class="swatch-hex" id="hex-ebony"></span></div>--ebony</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ivory)"><span class="swatch-hex" id="hex-ivory"></span></div>--ivory</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<div class="ornament">◆ ✦ ◆</div>
+<hr class="divider">
+
+<!-- ── Callouts ── -->
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento · Dorado</div><p>Notas generales, observaciones de la partida y referencias de juego.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Verde</div><p>Mano ganadora. El jugador captura el bote.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Dorado</div><p>Bluff en riesgo. La apuesta supera el valor de la mano.</p></div>
+<div class="callout danger"><div class="callout-title">Danger · Carmesí</div><p>Mano perdedora. Retirarse antes del showdown.</p></div>
+<div class="callout hearts"><div class="callout-title">♥ Corazones</div><p>Palo de corazones. Asociado a emociones y relaciones.</p></div>
+<div class="callout diamonds"><div class="callout-title">♦ Diamantes</div><p>Palo de oros. Prosperidad, riqueza, recursos materiales.</p></div>
+<div class="callout spades"><div class="callout-title">♠ Espadas</div><p>Palo de espadas. Conflicto, decisión, pensamiento crítico.</p></div>
+<div class="callout clubs"><div class="callout-title">♣ Tréboles</div><p>Palo de bastos. Trabajo, esfuerzo, crecimiento.</p></div>
+<div class="callout arcana"><div class="callout-title">★ Arcanos Mayores</div><p>Cartas de destino. El Loco, La Torre, La Rueda de la Fortuna.</p></div>
+<div class="callout silver"><div class="callout-title">◈ Plateado</div><p>Intuición, misterio, la cara oculta de la carta.</p></div>
+<div class="callout wine"><div class="callout-title">✦ Vino</div><p>Pasión, riesgo, la apuesta más alta de la noche.</p></div>
+
+<hr class="divider">
+
+<!-- ── Badges ── -->
+<h2>Badges</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <span class="badge gold">dorado</span>
+  <span class="badge silver">plateado</span>
+  <span class="badge crimson">carmesí</span>
+  <span class="badge hearts">♥ hearts</span>
+  <span class="badge diamonds">♦ diamonds</span>
+  <span class="badge spades">♠ spades</span>
+  <span class="badge clubs">♣ clubs</span>
+  <span class="badge arcana">★ arcana</span>
+  <span class="badge ok">ok</span>
+  <span class="badge warn">warn</span>
+  <span class="badge danger">danger</span>
+  <span class="badge">default</span>
+</div>
+
+<hr class="divider">
+
+<!-- ── Botones ── -->
+<h2>Botones</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <button class="btn primary">primary</button>
+  <button class="btn">default</button>
+  <button class="btn hearts">♥ hearts</button>
+  <button class="btn diamonds">♦ diamonds</button>
+  <button class="btn spades">♠ spades</button>
+  <button class="btn clubs">♣ clubs</button>
+  <button class="btn arcana">★ arcana</button>
+  <button class="btn silver">silver</button>
+  <button class="btn ok">ok</button>
+  <button class="btn warn">warn</button>
+  <button class="btn danger">danger</button>
+</div>
+
+<hr class="divider">
+
+<!-- ── Métricas ── -->
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">A♠</div><div class="metric-lbl">mano (gold)</div></div>
+  <div class="metric"><div class="metric-val hearts">♥ K</div><div class="metric-lbl">corazones</div></div>
+  <div class="metric"><div class="metric-val diamonds">♦ Q</div><div class="metric-lbl">diamantes</div></div>
+  <div class="metric"><div class="metric-val spades">♠ J</div><div class="metric-lbl">espadas</div></div>
+  <div class="metric"><div class="metric-val arcana">★ XV</div><div class="metric-lbl">arcano</div></div>
+  <div class="metric"><div class="metric-val silver">$4,200</div><div class="metric-lbl">bote</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Código ── -->
+<h2>Código</h2>
+<p class="muted">Inline: <code>toggleTheme()</code> alterna entre claro y oscuro.</p>
+<pre data-lang="python"><span class="cm"># Evaluación de mano de póker</span>
+<span class="kw">from</span> enum <span class="kw">import</span> IntEnum
+
+<span class="kw">class</span> <span class="fn">Mano</span>(IntEnum):
+    HIGH_CARD      = <span class="num">1</span>
+    ONE_PAIR       = <span class="num">2</span>
+    TWO_PAIR       = <span class="num">3</span>
+    THREE_OF_A_KIND= <span class="num">4</span>
+    STRAIGHT       = <span class="num">5</span>
+    FLUSH          = <span class="num">6</span>
+    FULL_HOUSE     = <span class="num">7</span>
+    FOUR_OF_A_KIND = <span class="num">8</span>
+    STRAIGHT_FLUSH = <span class="num">9</span>
+    ROYAL_FLUSH    = <span class="num">10</span>  <span class="cm"># ♠ A K Q J T</span>
+
+<span class="fn">def</span> es_flush(cartas):
+    <span class="kw">return</span> len({c.palo <span class="kw">for</span> c <span class="kw">in</span> cartas}) == <span class="num">1</span></pre>
+
+<hr class="divider">
+
+<!-- ── Tabla ── -->
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Significado</th></tr>
+  <tr><td><code>--gold</code></td><td>#C8921A</td><td>#E8A820</td><td>Dorado principal · riqueza · triunfo</td></tr>
+  <tr><td><code>--crimson</code></td><td>#A81820</td><td>#D02030</td><td>Carmesí · pasión · riesgo</td></tr>
+  <tr><td><code>--silver</code></td><td>#8090A8</td><td>#9090C0</td><td>Plateado · intuición · misterio</td></tr>
+  <tr><td><code>--hearts</code></td><td>#A81820</td><td>#D02030</td><td>♥ Corazones · emociones</td></tr>
+  <tr><td><code>--diamonds</code></td><td>#C8921A</td><td>#E8A820</td><td>♦ Diamantes · prosperidad</td></tr>
+  <tr><td><code>--spades</code></td><td>#5060A0</td><td>#7080C0</td><td>♠ Espadas · conflicto</td></tr>
+  <tr><td><code>--clubs</code></td><td>#385840</td><td>#50805A</td><td>♣ Tréboles · crecimiento</td></tr>
+  <tr><td><code>--arcana</code></td><td>#7030A0</td><td>#9040C0</td><td>★ Arcanos · destino</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ── Reading Log (timeline) ── -->
+<h2>Reading Log</h2>
+<div class="reading-log">
+  <div class="reading-entry">
+    <div class="reading-card arcana">★</div>
+    <div><h4>El Loco · Arcano 0</h4><p class="muted">Inicio de un nuevo viaje. Energía sin filtrar. Potencial puro.</p></div>
+  </div>
+  <div class="reading-entry">
+    <div class="reading-card hearts">♥</div>
+    <div><h4>As de Corazones</h4><p class="muted">Nuevo comienzo emocional. La carta de amor más poderosa del mazo.</p></div>
+  </div>
+  <div class="reading-entry">
+    <div class="reading-card diamonds">♦</div>
+    <div><h4>Rey de Diamantes</h4><p class="muted">Dominio sobre los recursos materiales. Liderazgo financiero.</p></div>
+  </div>
+  <div class="reading-entry">
+    <div class="reading-card warn">!</div>
+    <div><h4>La Torre · Arcano XVI</h4><p class="muted">Ruptura repentina. Estructuras que se derrumban para dar paso a lo nuevo.</p></div>
+  </div>
+  <div class="reading-entry">
+    <div class="reading-card spades">♠</div>
+    <div><h4>Sota de Espadas</h4><p class="muted">Pensamiento vigilante. Un mensajero con noticias importantes.</p></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Deal steps (pipeline) ── -->
+<h2>La Mano</h2>
+<div class="deal-row">
+  <div class="deal-num">I</div>
+  <div><h4>Blind y ante</h4><p class="muted">Los jugadores colocan sus apuestas ciegas antes de ver las cartas.</p></div>
+</div>
+<div class="deal-row" style="border-left-color:var(--hearts)">
+  <div class="deal-num" style="color:var(--hearts)">II</div>
+  <div><h4>Reparto inicial</h4><p class="muted">Cada jugador recibe dos cartas boca abajo. El dealer distribuye en sentido horario.</p></div>
+</div>
+<div class="deal-row" style="border-left-color:var(--diamonds)">
+  <div class="deal-num" style="color:var(--diamonds)">III</div>
+  <div><h4>El Flop</h4><p class="muted">Tres cartas comunitarias reveladas. Primera ronda de apuestas post-flop.</p></div>
+</div>
+<div class="deal-row" style="border-left-color:var(--arcana)">
+  <div class="deal-num" style="color:var(--arcana)">IV</div>
+  <div><h4>Showdown</h4><p class="muted">Los jugadores activos revelan sus manos. La mejor combinación gana el bote.</p></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Cards UI ── -->
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card">
+    <strong style="font-family:var(--serif);letter-spacing:.08em">Royal Flush</strong>
+    <span class="badge hearts" style="margin-left:8px">♥ mejor mano</span>
+    <p class="muted" style="margin-top:8px">A♠ K♠ Q♠ J♠ 10♠ — la mano perfecta. Probabilidad: 1 en 649,740.</p>
+  </div>
+  <div class="card">
+    <strong style="font-family:var(--serif);letter-spacing:.08em">El Ermitaño · IX</strong>
+    <span class="badge arcana" style="margin-left:8px">★ arcano mayor</span>
+    <p class="muted" style="margin-top:8px">Introspección y búsqueda interior. El conocimiento viene del silencio.</p>
+  </div>
+</div>
+
+<div class="ornament" style="margin-top:32px">✦ ◆ ✦ ◆ ✦</div>
+<p class="muted" style="text-align:center;margin-top:12px;font-family:var(--display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:300">
+  tarot_theme · by RemiH06 · iroFactory · MIT
+</p>
+
+</div><!-- .page -->
+
+<script type="module">
+import { mount as m0 } from '../shared/components/tarot/art-deco-canvas.js';
+import { mount as m1 } from '../shared/components/tarot/floating-cards.js';
+import { toggleTheme } from '../shared/components/tarot/kit.js';
+// El marcado llama estas funciones con on…="": van en window.
+Object.assign(window, { toggleTheme });
+m0(); m1();
+</script>
+</body>
+</html>

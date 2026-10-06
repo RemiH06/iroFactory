@@ -46,29 +46,29 @@ A personal collection of 12 self-contained HTML design themes for project docume
 iroFactory/
 ├── iroFactory_gallery.html
 ├── apolo/
-│   └── apolo_theme_demo.html
+│   └── index.html
 ├── bookworm/
-│   └── bookworm_theme_demo.html
+│   └── index.html
 ├── disco/
 │   └── index.html (compone componentes de shared/)
 ├── elixir/
-│   └── elixir_theme_demo.html
+│   └── index.html
 ├── forge/
-│   └── forge_theme_demo.html
+│   └── index.html
 ├── lambda/
-│   └── lambda_theme_demo.html
+│   └── index.html
 ├── ludus/
-│   └── ludus_theme_demo.html
+│   └── index.html
 ├── metro/
-│   └── metro_theme_demo.html
+│   └── index.html
 ├── odysseus/
-│   └── odysseus_theme_demo.html
+│   └── index.html
 ├── sherry/
-│   └── sherry_theme_demo.html
+│   └── index.html
 ├── shui/
-│   └── shui_theme_demo.html
+│   └── index.html
 └── tarot/
-    └── tarot_theme_demo.html
+    └── index.html
 ```
 
 ## Gallery

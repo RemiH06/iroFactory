@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!--
+odysseus_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: Galaxy, Gradient Text, Line Waves, Tear Ticket, Topography.
+· Datos de mapas · © OpenStreetMap contributors, ODbL 1.0 · https://www.openstreetmap.org/copyright · Natural Earth (dominio público) · https://www.naturalearthdata.com
+· Carrusel de puertos · riff "Iconic Cities" de Figma por @ariantaheri (inspiración, sin código copiado).
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>odysseus_theme · Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=im-fell-english:400,400i|fira-code:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="odysseus.css">
+</head>
+<body>
+
+<main>
+<!-- ── HERO ── -->
+<header class="od-hero" id="inicio">
+  <img class="od-hero-img" src="../assets/img/odysseus/7daa44cdc5.webp" data-dark="../assets/img/odysseus/a52836ff2e.webp" alt="">
+  <div class="od-hero-scrim" aria-hidden="true"></div>
+  <button class="od-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo noche">☽ noche</button>
+  <div class="od-wrap">
+    <div class="od-hero-copy">
+      <h1 class="gradient-text">odysseus</h1>
+      <p class="od-hero-sub"><b>_theme</b> · iroFactory</p>
+      <p class="od-hero-lede">Una bitácora de viaje sobre un mapamundi real. Cada sección es un puerto: elígelo y la carta se acerca hasta sus calles.</p>
+      <div class="od-hero-actions"><a class="od-go" href="#viaje">Zarpar</a></div>
+    </div>
+  </div>
+  <span class="od-hero-credit">Imagen temporal · prouned_apolo</span>
+</header>
+
+<!-- ── VIAJE ── -->
+<section class="od-voyage" id="viaje" aria-label="Mapa y puertos">
+  <canvas id="od-desk" aria-hidden="true"></canvas>
+  <div class="od-stage">
+    <canvas id="od-map" role="img" aria-label="Mapamundi con siete puertos: Chichén Itzá, Machu Picchu, Río de Janeiro, Roma, Petra, Agra y Badaling. Elígelos en las tarjetas de abajo."></canvas>
+    <div class="od-stage-bar">
+      <button class="od-chip" type="button" id="od-world" hidden>◎ Mapamundi</button>
+      <span class="od-chip" id="od-where">Mapamundi · 7 puertos</span>
+    </div>
+  </div>
+
+  <div class="od-ports" aria-label="Puertos">
+    <div class="od-ports-stage">
+      <button class="od-ports-nav prev" type="button" aria-label="Puerto anterior">‹</button>
+      <div class="od-ports-track" id="od-track">
+        <button class="od-card" type="button" data-i="0" aria-label="Puerto 1: Chichén Itzá, México · por visitar"><span class="od-card-top"><span class="od-pill">México</span><span class="od-dot" aria-hidden="true"></span></span><svg class="od-ill" viewBox="0 0 120 90" aria-hidden="true"><circle class="i-sun" cx="94" cy="22" r="8"/><path class="i-c" d="M10 82h100v-6H10z"/><path class="i-b" d="M18 76h84l-6-10H24z M27 66h66l-5-9H32z M35 57h50l-5-9H40z M43 48h34l-4-8H47z"/><path class="i-a" d="M54 76h12l-3-36h-6z M47 40h26V28H47z"/><path class="i-h" d="M57 40h6v-7h-6z"/></svg><span class="od-card-name">Chichén Itzá</span><span class="od-card-sub">Yucatán</span></button>
+        <button class="od-card" type="button" data-i="1" aria-label="Puerto 2: Machu Picchu, Perú · por visitar"><span class="od-card-top"><span class="od-pill">Perú</span><span class="od-dot" aria-hidden="true"></span></span><svg class="od-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="i-d" d="M66 82 L84 26 Q89 14 95 26 L114 82Z"/><path class="i-c" d="M4 82 L28 50 L58 44 L80 82Z"/><path class="s-b" stroke-width="1.6" d="M16 74h52 M22 67h44 M28 60h36 M33 53h28"/><path class="i-a" d="M34 50h8v-6h-8z M46 49h10v-8H46z M58 50h7v-5h-7z"/></svg><span class="od-card-name">Machu Picchu</span><span class="od-card-sub">Cusco</span></button>
+        <button class="od-card" type="button" data-i="2" aria-label="Puerto 3: Río de Janeiro, Brasil · por visitar"><span class="od-card-top"><span class="od-pill">Brasil</span><span class="od-dot" aria-hidden="true"></span></span><svg class="od-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="i-c" d="M6 82 Q36 44 60 36 Q84 44 114 82Z"/><path class="i-b" d="M55 37h10v-6H55z"/><path class="i-a" d="M57.5 31 L58.5 13 h3 L62.5 31Z M38 15h44v3.4H38z"/><circle class="i-a" cx="60" cy="10" r="2.8"/></svg><span class="od-card-name">Río de Janeiro</span><span class="od-card-sub">Cristo Redentor</span></button>
+        <button class="od-card" type="button" data-i="3" aria-label="Puerto 4: Roma, Italia · por visitar"><span class="od-card-top"><span class="od-pill">Italia</span><span class="od-dot" aria-hidden="true"></span></span><svg class="od-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="i-c" d="M10 82V38 Q46 24 84 28 L92 36 L110 40V82Z"/><path class="i-h" d="M15.8 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889zM26.1 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889zM36.3 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889zM46.5 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889zM56.7 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889zM67.0 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889zM77.2 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889zM87.4 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889zM97.6 80v-9.72888888888889a3.3 3.3 0 0 1 6.5 0v9.72888888888889z"/><path class="i-h" d="M15.8 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889zM26.1 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889zM36.3 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889zM46.5 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889zM56.7 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889zM67.0 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889zM77.2 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889zM87.4 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889zM97.6 64v-7.728888888888889a3.3 3.3 0 0 1 6.5 0v7.728888888888889z"/><path class="i-h" d="M15.8 49v-5.88a3.1 3.1 0 0 1 6.2 0v5.88zM25.5 49v-5.88a3.1 3.1 0 0 1 6.2 0v5.88zM35.3 49v-5.88a3.1 3.1 0 0 1 6.2 0v5.88zM45.0 49v-5.88a3.1 3.1 0 0 1 6.2 0v5.88zM54.8 49v-5.88a3.1 3.1 0 0 1 6.2 0v5.88zM64.5 49v-5.88a3.1 3.1 0 0 1 6.2 0v5.88zM74.3 49v-5.88a3.1 3.1 0 0 1 6.2 0v5.88zM84.0 49v-5.88a3.1 3.1 0 0 1 6.2 0v5.88z"/><path class="i-b" d="M10 82h100v-3H10z"/></svg><span class="od-card-name">Roma</span><span class="od-card-sub">Coliseo</span></button>
+        <button class="od-card" type="button" data-i="4" aria-label="Puerto 5: Petra, Jordania · por visitar"><span class="od-card-top"><span class="od-pill">Jordania</span><span class="od-dot" aria-hidden="true"></span></span><svg class="od-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="i-c" d="M0 90V12 Q30 4 60 9 Q90 3 120 12V90Z"/><path class="i-b" d="M26 84h68V56H26z M23 56 L60 46 L97 56Z M30 44h14V28H30z M76 44h14V28H76z M50 44h20V26H50z M48 26 Q60 15 72 26Z"/><path class="i-h" d="M29.9 84h2.2V58h-2.2zM41.5 84h2.2V58h-2.2zM53.1 84h2.2V58h-2.2zM64.7 84h2.2V58h-2.2zM76.3 84h2.2V58h-2.2zM87.9 84h2.2V58h-2.2z"/><path class="i-h" d="M55 84h10V66H55z"/><path class="i-a" d="M59 15h2v-4h-2z"/></svg><span class="od-card-name">Petra</span><span class="od-card-sub">Ma'an</span></button>
+        <button class="od-card" type="button" data-i="5" aria-label="Puerto 6: Agra, India · por visitar"><span class="od-card-top"><span class="od-pill">India</span><span class="od-dot" aria-hidden="true"></span></span><svg class="od-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="i-c" d="M8 82h104v-6H8z"/><path class="i-a" d="M34 76h52V48H34z M44 48 Q44 30 60 22 Q76 30 76 48Z M59.3 22V12h1.4v10z M35 48 Q39.5 40 44 48Z M76 48 Q80.5 40 85 48Z"/><path class="i-h" d="M53 76V60 Q60 50 67 60V76Z"/><path class="i-b" d="M15 76h4V34h-4z M101 76h4V34h-4z M23 76h3V42h-3z M94 76h3V42h-3z"/><circle class="i-b" cx="17" cy="33" r="3"/><circle class="i-b" cx="103" cy="33" r="3"/></svg><span class="od-card-name">Agra</span><span class="od-card-sub">Taj Mahal</span></button>
+        <button class="od-card" type="button" data-i="6" aria-label="Puerto 7: Badaling, China · por visitar"><span class="od-card-top"><span class="od-pill">China</span><span class="od-dot" aria-hidden="true"></span></span><svg class="od-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="i-d" d="M0 72 L18 46 L36 58 L58 32 L80 54 L98 38 L120 56V90H0Z"/><path class="s-b" stroke-width="7" stroke-linecap="round" d="M-2 76 C18 72 24 58 40 61 S62 42 76 53 S100 48 122 60"/><path class="s-b" stroke-width="3" stroke-dasharray="3 3" d="M-2 70 C18 66 24 52 40 55 S62 36 76 47 S100 42 122 54"/><path class="i-a" d="M69 53h13V38H69z M67 38h17l-3-5H70z"/></svg><span class="od-card-name">Badaling</span><span class="od-card-sub">Gran Muralla</span></button>
+      </div>
+      <button class="od-ports-nav next" type="button" aria-label="Puerto siguiente">›</button>
+    </div>
+    <p class="od-ports-hint"><span>Desliza las tarjetas o toca un alfiler del mapa</span></p>
+  </div>
+
+  <aside class="od-carta" id="od-carta" aria-live="polite">
+    <div class="od-carta-head">
+      <span class="od-carta-kicker" id="od-kicker">Bitácora · 7 puertos por visitar</span>
+      <button class="od-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo noche">☽ noche</button>
+    </div>
+    <div class="tear-ticket" id="od-ticket" aria-label="Pase de abordar">
+      <div class="tear-ticket__stage">
+        <div class="tear-ticket__plane">
+          <div class="tear-ticket__piece tear-ticket__piece--body">
+            <svg class="tear-ticket__edge" aria-hidden="true"><path class="tt-body-outline"/></svg>
+            <div class="tear-ticket__paper tt-body-paper">
+              <div class="tear-ticket__content">
+                <div class="tt-kicker">Pase de abordar · Odysseus</div>
+                <div class="tt-route"><span class="tt-from">GDL</span> <b>→</b> <span class="tt-to">CZA</span></div>
+                <div class="tt-cities"><span class="tt-from-city">Guadalajara</span><span class="tt-to-city">Chichén Itzá</span></div>
+                <div class="tt-meta">Puerto <span class="tt-n">1</span> de 7 · <span class="tt-coords">20.68° N, 88.57° O</span></div>
+              </div>
+            </div>
+          </div>
+          <svg class="tear-ticket__fibres" aria-hidden="true"></svg>
+          <div class="tear-ticket__piece tear-ticket__piece--stub" role="button" tabindex="0" aria-label="Arrancar el talón para zarpar">
+            <svg class="tear-ticket__edge" aria-hidden="true"><path class="tt-stub-outline"/></svg>
+            <div class="tear-ticket__paper tear-ticket__paper--stub tt-stub-paper">
+              <div class="tear-ticket__stub">
+                <div class="tt-stub-code tt-to">CZA</div>
+                <div class="tt-stub-hint">Arranca el talón para zarpar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="od-sr" role="status"></span>
+    </div>
+
+    <article class="od-doc" data-port="intro">
+      <div class="od-doc-head">
+        <div class="od-doc-place">Guadalajara · puerto de salida</div>
+        <h2 class="od-doc-title">Siete maravillas por visitar</h2>
+      </div>
+      <p>La ruta va de oeste a este: Chichén Itzá, Machu Picchu, Río de Janeiro, Roma, Petra, Agra y Badaling. Cada puerto guarda una parte del tema.</p>
+      <p class="muted">Arranca el talón del pase para zarpar al siguiente puerto, o elige uno en las tarjetas o en el mapa. Los mapas son reales: Natural Earth para el mundo, OpenStreetMap para las calles.</p>
+      <div class="ornament" aria-hidden="true">✦ ◈ ✦</div>
+    </article>
+
+    <article class="od-doc" data-port="chichen">
+      <div class="od-doc-head"><div class="od-doc-place">Puerto 1 · Yucatán, México</div><h2 class="od-doc-title">Chichén Itzá</h2><div class="od-doc-section">Paleta de colores</div></div>
+      <p class="muted">Pergamino, tinta y oro. Los tokens cambian con el modo.</p>
+      <h3>El mapa</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--land)"><span class="swatch-hex" id="hex-land"></span></div>--land</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--land-dk)"><span class="swatch-hex" id="hex-land-dk"></span></div>--land-dk</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--sea)"><span class="swatch-hex" id="hex-sea"></span></div>--sea</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--sea-dk)"><span class="swatch-hex" id="hex-sea-dk"></span></div>--sea-dk</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--ink)"><span class="swatch-hex" id="hex-ink"></span></div>--ink</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--rust)"><span class="swatch-hex" id="hex-rust"></span></div>--rust</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--stain)"><span class="swatch-hex" id="hex-stain"></span></div>--stain</div>
+      </div>
+      <h3>Marcadores de viaje</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--route)"><span class="swatch-hex" id="hex-route"></span></div>--route</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--must)"><span class="swatch-hex" id="hex-must"></span></div>--must</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--wonder)"><span class="swatch-hex" id="hex-wonder"></span></div>--wonder</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--fey)"><span class="swatch-hex" id="hex-fey"></span></div>--fey</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--visited)"><span class="swatch-hex" id="hex-visited"></span></div>--visited</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--unvisited)"><span class="swatch-hex" id="hex-unvisited"></span></div>--unvisited</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--compass)"><span class="swatch-hex" id="hex-compass"></span></div>--compass</div>
+      </div>
+      <h3>Semánticos</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+      </div>
+    </article>
+
+    <article class="od-doc" data-port="machu">
+      <div class="od-doc-head"><div class="od-doc-place">Puerto 2 · Cusco, Perú</div><h2 class="od-doc-title">Machu Picchu</h2><div class="od-doc-section">Avisos y badges</div></div>
+      <div class="callout"><div class="callout-title">Acento · Ruta</div><p>Notas de bitácora. El viajero anota lo que ve.</p></div>
+      <div class="callout ok"><div class="callout-title">OK · Visitado</div><p>Destino alcanzado. El sello en el pasaporte es prueba suficiente.</p></div>
+      <div class="callout warn"><div class="callout-title">Warn · Brújula</div><p>La ruta cambia. El norte magnético no siempre coincide con el norte verdadero.</p></div>
+      <div class="callout danger"><div class="callout-title">Danger · Ruta</div><p>Aquí hay dragones. El mapa dice que no hay camino.</p></div>
+      <div class="callout route"><div class="callout-title">Route</div><p>Trayecto marcado en rojo. De un puerto al siguiente, sin desviarse.</p></div>
+      <div class="callout must"><div class="callout-title">Must · Imprescindible</div><p>Subir a la ciudadela antes de que la niebla se levante.</p></div>
+      <div class="callout wonder"><div class="callout-title">Wonder · Extraordinario</div><p>Las terrazas incas siguen la curva exacta de la montaña.</p></div>
+      <div class="callout fey"><div class="callout-title">Fey · Feérico</div><p>La niebla del Urubamba borra y devuelve la montaña.</p></div>
+      <div class="callout unvisited"><div class="callout-title">Unvisited</div><p>Pendiente. La lista crece más rápido de lo que viajo.</p></div>
+      <div class="callout compass"><div class="callout-title">Compass</div><p>La brújula titubea. El norte verdadero es el que tú eliges.</p></div>
+      <h3>Badges</h3>
+      <div class="badge-row">
+        <span class="badge route">ruta</span><span class="badge must">imprescindible</span><span class="badge wonder">extraordinario</span><span class="badge fey">feérico</span>
+        <span class="badge visited">visitado</span><span class="badge unvisited">pendiente</span><span class="badge compass">brújula</span>
+        <span class="badge ok">ok</span><span class="badge warn">warn</span><span class="badge danger">danger</span><span class="badge">default</span>
+      </div>
+    </article>
+
+    <article class="od-doc" data-port="cristo">
+      <div class="od-doc-head"><div class="od-doc-place">Puerto 3 · Río de Janeiro, Brasil</div><h2 class="od-doc-title">Cristo Redentor</h2><div class="od-doc-section">Botones y métricas</div></div>
+      <h3>Botones</h3>
+      <div class="btn-row">
+        <button class="btn primary">primary</button><button class="btn">default</button><button class="btn route">ruta</button><button class="btn wonder">extraordinario</button>
+        <button class="btn fey">feérico</button><button class="btn visited">visitado</button><button class="btn compass">brújula</button>
+        <button class="btn ok">ok</button><button class="btn warn">warn</button><button class="btn danger">danger</button>
+      </div>
+      <h3>Métricas</h3>
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">7</div><div class="metric-lbl">puertos en la ruta</div></div>
+        <div class="metric"><div class="metric-val visited">0</div><div class="metric-lbl">visitados</div></div>
+        <div class="metric"><div class="metric-val wonder">7</div><div class="metric-lbl">maravillas por ver</div></div>
+        <div class="metric"><div class="metric-val compass">195</div><div class="metric-lbl">países en la meta</div></div>
+      </div>
+    </article>
+
+    <article class="od-doc" data-port="coliseo">
+      <div class="od-doc-head"><div class="od-doc-place">Puerto 4 · Roma, Italia</div><h2 class="od-doc-title">Coliseo</h2><div class="od-doc-section">Código</div></div>
+      <p>Inline: <code>toggleTheme()</code> cambia la carta de día a carta estelar.</p>
+<pre data-lang="python"><code><span class="cm"># Bitácora del viajero</span>
+<span class="kw">class</span> Destino:
+    <span class="fn">def</span> <span class="kw">__init__</span>(self, nombre, lat, lon):
+        self.nombre   = nombre
+        self.coords   = (lat, lon)
+        self.visitado = <span class="kw">False</span>
+
+    <span class="fn">def</span> <span class="kw">marcar</span>(self, nota=<span class="num">None</span>):
+        self.visitado = <span class="kw">True</span>
+        <span class="kw">return</span> <span class="str">f"{self.nombre} · registrado"</span>
+
+ruta = [
+    <span class="fn">Destino</span>(<span class="str">"Roma"</span>,  <span class="num">41.89</span>, <span class="num">12.49</span>),
+    <span class="fn">Destino</span>(<span class="str">"Petra"</span>, <span class="num">30.32</span>, <span class="num">35.45</span>),
+]</code></pre>
+    </article>
+
+    <article class="od-doc" data-port="petra">
+      <div class="od-doc-head"><div class="od-doc-place">Puerto 5 · Ma'an, Jordania</div><h2 class="od-doc-title">Petra</h2><div class="od-doc-section">Tabla</div></div>
+      <div class="od-table">
+        <table>
+          <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Significado</th></tr>
+          <tr><td><code>--route</code></td><td>#A82018</td><td>#D04030</td><td>Ruta trazada · camino obligado</td></tr>
+          <tr><td><code>--must</code></td><td>#C83020</td><td>#E05040</td><td>Imprescindible · no te lo pierdas</td></tr>
+          <tr><td><code>--wonder</code></td><td>#603890</td><td>#8050C0</td><td>Extraordinario · cambia vidas</td></tr>
+          <tr><td><code>--fey</code></td><td>#D070A0</td><td>#E090C0</td><td>Feérico · fuera de lo ordinario</td></tr>
+          <tr><td><code>--visited</code></td><td>#507040</td><td>#608050</td><td>Visitado · sello en el pasaporte</td></tr>
+          <tr><td><code>--unvisited</code></td><td>#8A6840</td><td>#A08050</td><td>Pendiente · en la lista</td></tr>
+          <tr><td><code>--compass</code></td><td>#C89030</td><td>#E0A830</td><td>Brújula · el norte del viajero</td></tr>
+        </table>
+      </div>
+    </article>
+
+    <article class="od-doc" data-port="taj">
+      <div class="od-doc-head"><div class="od-doc-place">Puerto 6 · Uttar Pradesh, India</div><h2 class="od-doc-title">Taj Mahal</h2><div class="od-doc-section">Bitácora y etapas</div></div>
+      <h3>Bitácora</h3>
+      <div class="journey-log">
+        <div class="journey-entry"><div class="journey-pin route">→</div><div><h4>Guadalajara · salida</h4><p class="muted" style="margin:0">El puerto de casa. Aquí empieza la ruta.</p></div></div>
+        <div class="journey-entry"><div class="journey-pin wonder">◆</div><div><h4>Chichén Itzá, México</h4><p class="muted" style="margin:0">La serpiente de luz baja por la escalinata en los equinoccios.</p></div></div>
+        <div class="journey-entry"><div class="journey-pin wonder">◆</div><div><h4>Petra, Jordania</h4><p class="muted" style="margin:0">La ciudad rosa tallada en roca, al final del Siq.</p></div></div>
+        <div class="journey-entry"><div class="journey-pin unvisited">○</div><div><h4>Todos los países</h4><p class="muted" style="margin:0">La meta larga: 195 sellos, uno por país.</p></div></div>
+      </div>
+      <h3>Etapas</h3>
+      <div class="leg"><div class="leg-num">I</div><div><h4>Salida</h4><p class="muted" style="margin:0">El aeropuerto a las 4am. El café de máquina. La anticipación.</p></div></div>
+      <div class="leg" style="border-left-color:var(--wonder-ink)"><div class="leg-num" style="color:var(--wonder-ink)">II</div><div><h4>El primer asombro</h4><p class="muted" style="margin:0">Siempre hay un momento en que entiendes por qué viniste.</p></div></div>
+      <div class="leg" style="border-left-color:var(--fey-ink)"><div class="leg-num" style="color:var(--fey-ink)">III</div><div><h4>Lo inesperado</h4><p class="muted" style="margin:0">El pueblo sin nombre en el mapa. La familia que te invita a cenar.</p></div></div>
+      <div class="leg" style="border-left-color:var(--visited)"><div class="leg-num" style="color:var(--visited)">IV</div><div><h4>El regreso</h4><p class="muted" style="margin:0">Vuelves siendo otro. El lugar de origen se ve diferente desde afuera.</p></div></div>
+    </article>
+
+    <article class="od-doc" data-port="muralla">
+      <div class="od-doc-head"><div class="od-doc-place">Puerto 7 · Pekín, China</div><h2 class="od-doc-title">Gran Muralla</h2><div class="od-doc-section">Cards</div></div>
+      <div class="grid-2">
+        <div class="card"><strong>Badaling</strong><span class="badge wonder">extraordinario</span><p class="muted" style="margin:6px 0 0">El tramo restaurado más visitado, a 70 km de Pekín. Torres de vigía cada pocos cientos de metros.</p></div>
+        <div class="card"><strong>Mutianyu</strong><span class="badge fey">feérico</span><p class="muted" style="margin:6px 0 0">Menos gente y bosque a los dos lados. Se baja en tobogán.</p></div>
+      </div>
+    </article>
+    <p class="od-osm">Mapas: © OpenStreetMap contributors (ODbL) · Natural Earth</p>
+  </aside>
+</section>
+</main>
+
+<footer class="od-footer">odysseus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Carrusel inspirado en <a href="https://www.figma.com/@ariantaheri">@ariantaheri</a> · Mapas © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> · Natural Earth · Puertos y tarjetas en Debonair Inline de Nick Curtis · "Cabaret Voltaire" Designed by Haimeluna (<a href="http://www.morbofly.com">www.morbofly.com</a>)</footer>
+
+<script type="module">
+import { mount as m0 } from '../shared/components/odysseus/kit.js';
+import { mount as m1 } from '../shared/components/odysseus/geography.js';
+import { mount as m2 } from '../shared/components/odysseus/desk.js';
+import { mount as m3 } from '../shared/components/odysseus/voyage.js';
+m0(); m1(); m2(); m3();
+</script>
+</body>
+</html>

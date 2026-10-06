@@ -1,0 +1,561 @@
+/* ── PALETA (skill colorimetría) ──
+   Concepto: electrónica recuperada de la basura, impresa y escaneada ·
+   tintas de proceso CMY (magenta 341°, cian 182°, amarillo 54°) más
+   el verde neón y violeta profundo de pantalla RGB (lime 111°, violeta 272°). Regla:
+   Custom (no es una armonía de la rueda); se justifica por el
+   concepto, no por cercanía angular. Pasteles = mismos matices con
+   menos saturación. Modo claro: mismos matices, luminosidad bajada
+   hasta pasar WCAG AA como texto sobre --bg/--bg2/--bg3. */
+/* ── TOKENS OSCURO (default) ── */
+body {
+  --bg:      #080808;
+  --bg2:     #0e0e0e;
+  --bg3:     #141414;
+  --text:    #f0f0f0;
+  --text2:   #A8A8A8;
+  --text3:   #7F7F7F;
+  --border:  #1e1e1e;
+  --border2: #2a2a2a;
+  --magenta:  #FF1466;
+  --cyan:     #00F5FF;
+  --lime:     #39FF14;
+  --violet:   #AC4DFF;
+  --electric: #FFE600;
+  --rose:     #FFB3DE;
+  --lavender: #D4AAFF;
+  --aqua:     #A8EFFF;
+  --peach:    #FFD4AA;
+  --mint:     #AAFFD4;
+  --accent:   #FF1466;
+  --accent2:  #00F5FF;
+  --ok:       #39FF14;
+  --warn:     #FFE600;
+  --danger:   #FF1466;
+  --info:     #00F5FF;
+  --black:    #050505;
+  --white:    #FAFAFA;
+  --gray:     #555555;
+  --mono:     'JetBrains Mono', 'Fira Code', monospace;
+  --display:  'Doto', 'JetBrains Mono', monospace;
+  --radius:   2px;
+  --glow-accent:  0 0 8px rgba(255,20,102,.55);
+  --glow-cyan:    0 0 8px rgba(0,245,255,.5);
+  --glow-lime:    0 0 8px rgba(57,255,20,.55);
+  --glow-violet:  0 0 8px rgba(172,77,255,.6);
+  --glow-electric: 0 0 8px rgba(255,230,0,.45);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --peach-ink: var(--peach);
+  --rose-ink: var(--rose);
+}
+
+/* ── TOKENS CLARO ── */
+body.light {
+  --bg:      #F5F2EC;
+  --bg2:     #EDEAD2;
+  --bg3:     #E0DCCA;
+  --text:    #0a0a0a;
+  --text2:   #3A3A3A;
+  --text3:   #5F5F5F;
+  --border:  #CCCAB8;
+  --border2: #B8B6A4;
+  --magenta:  #B2003F;
+  --cyan:     #006A6F;
+  --lime:     #2B6A10;
+  --violet:   #5A0FA8;
+  --electric: #6C5E00;
+  --rose:     #CC5588;
+  --lavender: #7744AA;
+  --aqua:     #1E6877;
+  --peach:    #AA6633;
+  --mint:     #2D6A4B;
+  --accent:   #B2003F;
+  --accent2:  #006A6F;
+  --ok:       #2B6A10;
+  --warn:     #6C5E00;
+  --danger:   #B2003F;
+  --info:     #006A6F;
+  --black:    #050505;
+  --white:    #FAFAFA;
+  --gray:     #888880;
+  --glow-accent:  none;
+  --glow-cyan:    none;
+  --glow-lime:    none;
+  --glow-violet:  none;
+  --glow-electric: none;
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --peach-ink: #895229;
+  --rose-ink: #A73264;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  transition: background .25s, color .25s;
+}
+
+/* Cursor */
+@keyframes sherry-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.cursor::after {
+  content: '█'; display: inline-block;
+  animation: sherry-blink 1s step-end infinite;
+  color: var(--accent); margin-left: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 0; }
+
+/* CRT oscuro · líneas blancas */
+body.crt-on::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(250,250,250,.03) 2px, rgba(250,250,250,.03) 4px
+  );
+}
+/* CRT claro · líneas negras */
+body.light.crt-on::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(5,5,5,.015) 2px, rgba(5,5,5,.015) 4px
+  );
+}
+
+/* Scanlines permanentes en claro */
+body.light::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9998;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(5,5,5,.018) 2px, rgba(5,5,5,.018) 4px
+  );
+}
+
+/* Fondo triangular */
+body.tri-on #tri-canvas {
+  display: block;
+  opacity: 1;
+}
+#tri-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  display: none;
+}
+body.tri-on .page { position: relative; z-index: 1; }
+
+/* Página · ya no es una columna angosta de 40px/860px: cada nivel
+   (.sherry-level) maneja su propio ancho vía .sherry-level-wrap, así
+   los fondos "is-opaque" pueden cubrir todo el ancho del viewport en
+   vez de solo una columna centrada (si no, el lienzo de triángulos se
+   sigue viendo en los márgenes de cualquier nivel "opaco"). */
+.page { position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════════════════════
+   CONTROLES fijos + título de esquina (persisten en toda
+   la página, no solo en el hero)
+══════════════════════════════════════════════════════ */
+.sherry-controls { position: fixed; top: 16px; right: 16px; z-index: 40; display: flex; gap: 8px; }
+.sherry-corner-title {
+  position: fixed; top: 18px; left: 18px; z-index: 40;
+  font-size: 15px; font-weight: 700; letter-spacing: -.5px;
+  /* Placa como la de los botones de la esquina opuesta: el título fijo
+     pasa por encima de los fondos Dither al hacer scroll. */
+  background: color-mix(in srgb, var(--bg2) 92%, transparent);
+  border: 1px solid var(--border2); border-radius: var(--radius); padding: 3px 8px;
+  opacity: 0; pointer-events: none; transition: opacity .1s linear;
+}
+
+/* ══════════════════════════════════════════════════════
+   HERO · zoom ambiental + fade por scroll + título ASCII
+   Mismo patrón de pin que apolo (.ap-hero-pin/.ap-hero):
+   position:sticky dentro de un wrapper alto, listener de
+   scroll con rAF escribiendo estilos inline. Sin JS o con
+   prefers-reduced-motion, el wrapper se queda en su altura
+   natural y el hero es un bloque 100vh estático · nunca un
+   estado a medias.
+══════════════════════════════════════════════════════ */
+.sherry-hero-pin { position: relative; }
+html.js-sherry-pin .sherry-hero-pin { height: 150vh; }
+.sherry-hero {
+  position: relative; height: 100vh; min-height: 480px; max-height: 900px;
+  overflow: hidden; isolation: isolate; background: var(--bg);
+  border-bottom: 1px solid var(--border2);
+}
+html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
+/* Telón de fondo vivo (Dither, fondo procedural) detrás de la propia
+   imagen del hero · a pedido del usuario, el hueco que deja la foto al
+   desvanecerse con el scroll revela esto en vez de un color plano. */
+.sherry-hero-dither-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+.sherry-hero-dither-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* Sin background propio a propósito · antes tenía var(--bg2) sólido
+   de respaldo, pero eso tapaba por completo el telón de Dither que
+   ahora vive detrás (z-index:-1) sin importar la opacidad real de la
+   imagen (el background-color de este div es independiente del
+   opacity de su <img> hijo). El propio Dither ya cubre el rol de
+   "algo visible mientras la imagen carga o se desvanece". */
+.sherry-hero-media { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.sherry-hero-media img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  will-change: opacity, transform; transform: scale(1);
+}
+.sherry-hero-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(5,5,5,.55) 0%, rgba(5,5,5,.12) 40%, rgba(5,5,5,.68) 100%);
+}
+.sherry-hero-title-wrap { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 24px; }
+#sherry-ascii-host { width: min(92vw, 920px); height: min(46vh, 320px); position: relative; }
+/* ══════════════════════════════════════════════════════
+   NIVELES · cada categoría de contenido es su propia
+   sección (sin tabs), cada una con su propio fondo. El
+   lienzo de triángulos (#tri-canvas) sigue siendo fijo y
+   global; los niveles "opacos" lo tapan con su propio
+   fondo, Paleta se queda transparente para que se vea.
+══════════════════════════════════════════════════════ */
+.sherry-level { position: relative; padding: 56px 0; overflow: hidden; }
+.sherry-level.is-opaque { background: var(--bg2); border-top: 1px solid var(--border); }
+.sherry-level-wrap { max-width: 860px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; }
+.sherry-level-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.sherry-level-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* La imagen auxiliar vive dentro de .sherry-level-wrap ahora, en un
+   header flex junto al <h2> · antes flotaba fuera del wrap para
+   sentarse en el margen lateral del nivel, pero a un tamaño grande de
+   verdad ese margen no alcanza en la mayoría de los viewports
+   (bug real: se pedía más grande y no había dónde ponerla sin invadir
+   contenido). Un header flex dentro de la columna se adapta a
+   cualquier ancho sin ese problema. */
+.sherry-level-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.sherry-level-header h2 { flex: 1; min-width: 0; }
+/* Niveles con fondo Dither: detrás de los títulos el ruido dejaba el
+   contraste en 1.9 a 2.8:1 (medido en píxeles, ambos modos). Placa del
+   color de superficie, como los paneles del timeline; las insignias
+   llevan fondo propio por lo mismo. */
+.sherry-level:has(> .sherry-level-bg) h2 { background: color-mix(in srgb, var(--bg2) 94%, transparent); padding: 4px 10px; }
+.sherry-aux-img {
+  /* Sin borde, radio ni opacidad: las piezas son PNG transparentes y
+     el canvas de Dither Veil emite alfa real · el componente flota
+     sobre el fondo del nivel, sin marco. */
+  flex-shrink: 0; width: 240px; height: 174px; margin-top: 4px;
+  position: relative; touch-action: pan-y;
+}
+.sherry-aux-img canvas, .sherry-aux-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Pixel Card: el wrapper es ahora el hijo directo de layouts flex/grid
+   que antes tenían al elemento de contenido directo (.metrics-row,
+   .grid-2) · se le pasa el mismo comportamiento de tamaño para que el
+   layout no cambie solo por envolver. */
+/* Capas de Pixel Card: fondo (wrapper) → brillo (::before) → pixeles
+   (canvas) → contenido. El fondo que antes traía el contenido se muda
+   al wrapper para que el canvas quede ENTRE fondo y texto, como en el
+   original · si no, el fondo opaco del contenido tapa los pixeles. */
+.sherry-pixel-card { position: relative; isolation: isolate; overflow: hidden; }
+.sherry-pixel-card:has(> .callout, > .metric, > .step-row, > .card, > .timeline-item) { background: var(--bg2); }
+/* Timeline va sobre fondo Dither: cada entrada pasa a ser un panel
+   (como los callouts de Componentes) para que el texto no quede
+   directo sobre el ruido. */
+#level-timeline .timeline .sherry-pixel-card { margin-bottom: 8px; border: 1px solid var(--border2); }
+#level-timeline .timeline-item { padding: 12px 14px; border-bottom: none; }
+.sherry-pixel-card::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, var(--pc-glow, transparent), transparent 85%);
+  opacity: 0; transition: opacity 800ms cubic-bezier(0.5, 1, 0.89, 1);
+}
+.sherry-pixel-card:hover::before, .sherry-pixel-card:focus-within::before { opacity: 1; }
+.sherry-pc-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; display: block; }
+.sherry-pixel-card > .sherry-pc-content { position: relative; z-index: 2; background: transparent; }
+/* Halo de contraste: al llenarse de pixeles, el texto se recorta con
+   un brillo en --pc-halo (calculado por tarjeta en JS). Va sobre todos
+   los descendientes porque títulos y valores traen su propio
+   text-shadow neón, que si no ganaría por especificidad. */
+.sherry-pc-content, .sherry-pc-content * { transition: text-shadow 600ms cubic-bezier(0.5, 1, 0.89, 1); }
+.sherry-pixel-card:hover .sherry-pc-content,
+.sherry-pixel-card:hover .sherry-pc-content *,
+.sherry-pixel-card:focus-within .sherry-pc-content,
+.sherry-pixel-card:focus-within .sherry-pc-content * {
+  text-shadow: 0 0 1px var(--pc-halo), 0 0 3px var(--pc-halo), 0 0 6px var(--pc-halo), 0 0 10px var(--pc-halo);
+}
+.metrics-row .sherry-pixel-card { flex: 1; min-width: 100px; }
+.metrics-row .sherry-pixel-card .metric { height: 100%; }
+@media (max-width: 760px) {
+  .sherry-level-wrap { padding: 0 20px; }
+  .sherry-level-header { flex-direction: column; }
+  .sherry-aux-img { width: 100%; height: 180px; }
+}
+
+#sherry-ascii-host pre {
+  /* .pre global (bloques de código) trae fondo/borde propios · se
+     resetean acá, este <pre> es el lienzo del título ASCII, no código.
+     Color: el usuario pasó el código fuente real del componente ·
+     background-clip:text con un radial-gradient (cada carácter toma
+     el color de su posición, la "sombra de colores" que se había
+     recortado en el primer port), background-attachment:fixed (el
+     degradado queda anclado a la pantalla, no al elemento · se mueve
+     relativo al texto mientras el texto se anima), mix-blend-mode:
+     difference contra lo que haya detrás, y hue-rotate() por el
+     ángulo del cursor (ver initAsciiTitle). Colores de sherry en vez
+     de los del demo original (coral/naranja/amarillo). */
+  position: absolute; inset: 0; margin: 0; padding: 0; background: none; border: none;
+  font-family: var(--mono); font-size: 8px; line-height: 1;
+  white-space: pre; overflow: hidden; text-align: center;
+  background-image: radial-gradient(circle, var(--magenta) 0%, var(--cyan) 50%, var(--electric) 100%);
+  background-attachment: fixed;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none; user-select: none;
+}
+/* Modo claro: el original invierte todo el contenedor, pero con
+   mix-blend-mode:difference sobre un fondo claro el título quedaba
+   pálido. Acá, sin blend y con el degradado de los tokens de
+   body.light (ya oscuros: #B2003F, #006A6F, #6C5E00), el título se lee
+   oscuro y sólido sobre la foto. */
+body.light #sherry-ascii-host pre {
+  mix-blend-mode: normal; font-weight: 700;
+  background-image: radial-gradient(circle, var(--text) 0%, var(--violet) 60%, var(--magenta) 100%);
+}
+.sherry-plain-title {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  margin: 0; font-size: clamp(48px, 11vw, 130px); font-weight: 700; letter-spacing: -2px;
+  color: var(--white); text-shadow: 0 0 24px rgba(255,20,102,.35);
+}
+@media (max-width: 760px) {
+  .sherry-controls { top: 10px; right: 10px; }
+  .sherry-corner-title { top: 12px; left: 12px; font-size: 13px; }
+}
+
+/* ── TIPOGRAFÍA ── */
+h2 {
+  font-family: var(--display); font-size: 36px; font-weight: 700; line-height: 1.1;
+  color: var(--cyan); text-shadow: var(--glow-cyan);
+  margin: 36px 0 14px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border2);
+  letter-spacing: 0; text-transform: uppercase;
+}
+h2::before { content: '// '; color: var(--text3); }
+h3 {
+  font-family: var(--display); font-size: 27px; font-weight: 700; line-height: 1.1;
+  color: var(--magenta); text-shadow: var(--glow-accent);
+  margin: 22px 0 10px; letter-spacing: 0;
+}
+h3::before { content: '> '; color: var(--text3); }
+h4 { font-size: 12px; font-weight: 700; color: var(--lavender); margin-bottom: 6px; }
+p  { margin-bottom: 14px; line-height: 1.8; }
+p.muted { color: var(--text2); font-size: 12px; }
+
+/* Prompt */
+.prompt::before { content: '$ '; color: var(--electric); text-shadow: var(--glow-electric); }
+
+/* ── CÓDIGO ── */
+code {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  padding: 1px 5px; border-radius: var(--radius);
+  color: var(--cyan); text-shadow: var(--glow-cyan);
+}
+pre {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-left: 2px solid var(--accent); border-radius: var(--radius);
+  padding: 14px 18px; margin: 14px 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 12px; line-height: 1.7;
+  color: var(--text); position: relative;
+}
+pre::before {
+  content: attr(data-lang); position: absolute; top: 6px; right: 10px;
+  font-size: 10px; color: var(--text3);
+}
+pre code { background: none; border: none; padding: 0; color: inherit; text-shadow: none; }
+pre .kw   { color: var(--magenta);  text-shadow: var(--glow-accent); }
+pre .fn   { color: var(--cyan);     text-shadow: var(--glow-cyan);   }
+pre .str  { color: var(--electric); text-shadow: var(--glow-electric); }
+pre .num  { color: var(--lime);     text-shadow: var(--glow-lime);   }
+pre .cm   { color: var(--text3);    font-style: italic; }
+pre .var  { color: var(--lavender); }
+pre .type { color: var(--peach-ink);    }
+
+/* ── CALLOUTS ── */
+.callout {
+  border-left: 2px solid var(--accent); background: var(--bg2);
+  padding: 12px 16px; margin: 10px 0; border-radius: 0 var(--radius) var(--radius) 0;
+}
+.callout-title {
+  font-size: 10px; font-weight: 700; color: var(--accent);
+  text-shadow: var(--glow-accent); margin-bottom: 6px;
+}
+.callout-title::before { content: '■ '; }
+.callout p { margin-bottom: 0; font-size: 12px; }
+.callout.ok       { border-color: var(--ok);       } .callout.ok       .callout-title { color: var(--ok);       text-shadow: var(--glow-lime);   }
+.callout.warn     { border-color: var(--warn);     } .callout.warn     .callout-title { color: var(--warn);     text-shadow: none; }
+.callout.danger   { border-color: var(--danger);   } .callout.danger   .callout-title { color: var(--danger);   text-shadow: var(--glow-accent); }
+.callout.info     { border-color: var(--info);     } .callout.info     .callout-title { color: var(--info);     text-shadow: var(--glow-cyan);   }
+.callout.violet   { border-color: var(--violet);   } .callout.violet   .callout-title { color: var(--violet);   text-shadow: var(--glow-violet); }
+.callout.rose     { border-color: var(--rose-ink);     } .callout.rose     .callout-title { color: var(--rose-ink);     }
+.callout.lavender { border-color: var(--lavender); } .callout.lavender .callout-title { color: var(--lavender); }
+.callout.aqua     { border-color: var(--aqua);     } .callout.aqua     .callout-title { color: var(--aqua);     }
+.callout.peach    { border-color: var(--peach-ink);    } .callout.peach    .callout-title { color: var(--peach-ink);    }
+.callout.mint     { border-color: var(--mint);     } .callout.mint     .callout-title { color: var(--mint);     }
+.callout.lime     { border-color: var(--lime);     } .callout.lime     .callout-title { color: var(--lime);     text-shadow: var(--glow-lime);   }
+
+/* ── TABLA ── */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 12px; }
+th {
+  background: var(--bg3); padding: 7px 12px; text-align: left;
+  font-size: 10px; font-weight: 700;
+  color: var(--cyan); text-shadow: var(--glow-cyan); border-bottom: 1px solid var(--border2);
+}
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+tr:hover td { background: var(--bg3); }
+
+/* ── BOTONES ── */
+.btn {
+  display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 700;
+  padding: 6px 14px; border: 1px solid var(--border2); border-radius: var(--radius);
+  background: var(--bg2); color: var(--text2); cursor: pointer;
+  transition: color .15s ease-out, border-color .15s ease-out, background-color .15s ease-out, text-shadow .15s ease-out, transform .16s ease-out; letter-spacing: .05em;
+}
+.btn:hover        { border-color: var(--accent); color: var(--accent); text-shadow: var(--glow-accent); }
+.btn.primary      { border-color: var(--accent);   color: var(--accent);   text-shadow: var(--glow-accent);  }
+.btn.cyan         { border-color: var(--cyan);     color: var(--cyan);     text-shadow: var(--glow-cyan);    }
+.btn.lime         { border-color: var(--lime);     color: var(--lime);     text-shadow: var(--glow-lime);    }
+.btn.violet       { border-color: var(--violet);   color: var(--violet);   text-shadow: var(--glow-violet);  }
+.btn.rose         { border-color: var(--rose-ink);     color: var(--rose-ink);     }
+.btn.lavender     { border-color: var(--lavender); color: var(--lavender); }
+.btn.aqua         { border-color: var(--aqua);     color: var(--aqua);     }
+.btn.peach        { border-color: var(--peach-ink);    color: var(--peach-ink);    }
+.btn.mint         { border-color: var(--mint);     color: var(--mint);     }
+.btn.ok           { border-color: var(--ok);       color: var(--ok);       text-shadow: var(--glow-lime);    }
+.btn.warn         { border-color: var(--warn);     color: var(--warn);     }
+.btn.danger       { border-color: var(--danger);   color: var(--danger);   text-shadow: var(--glow-accent);  }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 700;
+  padding: 2px 7px; border: 1px solid var(--border2); border-radius: var(--radius);
+  background: var(--bg2); color: var(--text2);
+}
+.badge.accent   { border-color: var(--accent);   color: var(--accent);   text-shadow: var(--glow-accent);  }
+.badge.cyan     { border-color: var(--cyan);     color: var(--cyan);     text-shadow: var(--glow-cyan);    }
+.badge.lime     { border-color: var(--lime);     color: var(--lime);     text-shadow: var(--glow-lime);    }
+.badge.violet   { border-color: var(--violet);   color: var(--violet);   text-shadow: var(--glow-violet);  }
+.badge.electric { border-color: var(--electric); color: var(--electric); text-shadow: var(--glow-electric); }
+.badge.rose     { border-color: var(--rose-ink);     color: var(--rose-ink);     }
+.badge.lavender { border-color: var(--lavender); color: var(--lavender); }
+.badge.aqua     { border-color: var(--aqua);     color: var(--aqua);     }
+.badge.peach    { border-color: var(--peach-ink);    color: var(--peach-ink);    }
+.badge.mint     { border-color: var(--mint);     color: var(--mint);     }
+.badge.ok       { border-color: var(--ok);       color: var(--ok);       text-shadow: var(--glow-lime);    }
+.badge.warn     { border-color: var(--warn);     color: var(--warn);     }
+.badge.danger   { border-color: var(--danger);   color: var(--danger);   text-shadow: var(--glow-accent);  }
+
+/* ── CARDS ── */
+.card {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 16px 18px; margin-bottom: 10px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.card:hover { border-color: var(--accent); box-shadow: var(--glow-accent); }
+
+/* ── MÉTRICAS ── */
+.metrics-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+.metric {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 12px 16px; flex: 1; min-width: 100px;
+}
+.metric-val { font-size: 22px; font-weight: 700; color: var(--accent); text-shadow: var(--glow-accent); }
+.metric-lbl { font-size: 10px; color: var(--text2); margin-top: 3px; letter-spacing: .05em; }
+.metric-val.cyan     { color: var(--cyan);     text-shadow: var(--glow-cyan);   }
+.metric-val.lime     { color: var(--lime);     text-shadow: var(--glow-lime);   }
+.metric-val.violet   { color: var(--violet);   text-shadow: var(--glow-violet); }
+.metric-val.rose     { color: var(--rose-ink);     }
+.metric-val.lavender { color: var(--lavender); }
+.metric-val.electric { color: var(--electric); text-shadow: var(--glow-electric); }
+
+/* ── DIVIDER ── */
+hr.divider { border: none; border-top: 1px solid var(--border2); margin: 28px 0; }
+
+/* ── TIMELINE ── */
+.timeline { margin: 14px 0; }
+.timeline-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.timeline-item:last-child { border-bottom: none; }
+.timeline-dot {
+  width: 26px; height: 26px; border-radius: var(--radius); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; margin-top: 2px;
+  border: 1px solid var(--border2); color: var(--text2); background: var(--bg3);
+}
+.timeline-dot.done    { border-color: var(--ok);     color: var(--ok);     text-shadow: var(--glow-lime);   }
+.timeline-dot.pending { border-color: var(--border2);color: var(--text3);  }
+.timeline-dot.warn    { border-color: var(--warn);   color: var(--warn);   }
+.timeline-dot.danger  { border-color: var(--danger); color: var(--danger); text-shadow: var(--glow-accent); }
+.timeline-dot.info    { border-color: var(--cyan);   color: var(--cyan);   text-shadow: var(--glow-cyan);   }
+
+/* ── STEP ROW ── */
+.step-row {
+  display: flex; gap: 14px; align-items: flex-start; margin: 12px 0; padding: 14px;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-left: 2px solid var(--accent); border-radius: var(--radius);
+}
+.step-num {
+  font-size: 18px; font-weight: 700; color: var(--accent);
+  text-shadow: var(--glow-accent); min-width: 28px; line-height: 1; margin-top: 2px;
+}
+
+/* ── TOGGLE ── */
+.theme-btn {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  padding: 5px 12px; background: none; border: 1px solid var(--border2);
+  border-radius: var(--radius); color: var(--text2); cursor: pointer;
+  transition: color .15s ease-out, border-color .15s ease-out, background-color .15s ease-out, text-shadow .15s ease-out, transform .16s ease-out; letter-spacing: .05em;
+}
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); text-shadow: var(--glow-accent); }
+/* Presión: escala sutil, nunca desde 0 (skill frontend-design, motion-engineering). */
+.btn:active, .theme-btn:active { transform: scale(.97); }
+/* Foco visible con el acento del tema en todo lo interactivo; antes
+   no había ninguna regla y quedaba el anillo por defecto del navegador. */
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible, [role="button"]:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+
+/* ── LAYOUT ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.swatch-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+.swatch { width: 88px; text-align: center; font-size: 9px; color: var(--text2); letter-spacing: .04em; }
+.swatch-box { height: 48px; border-radius: var(--radius); margin-bottom: 6px; border: 1px solid var(--border2); position: relative; }
+.swatch-hex {
+  position: absolute; bottom: 4px; left: 4px; font-size: 9px; font-weight: 700;
+  color: var(--text); padding: 1px 2px; border-radius: var(--radius);
+  letter-spacing: 0; line-height: 1; pointer-events: none;
+}
+.swatch-hex.is-chip { background: var(--bg); }
+/* ── Vertical (celular) · frontend-design/references/responsive-portrait.md
+   Revisión del 2026-10-03 a 390×844: el lienzo del título ASCII medía
+   359×320 (casi cuadrado) y el texto, rasterizado a 3:1, salía apretado
+   y alto; ahora conserva el 3:1. Los controles fijos tapaban renglones
+   al hacer scroll: en vertical van sobre una franja propia, como barra
+   de app. Tablas sin partir --token y texto mínimo de 12px. */
+@media (max-width: 760px) {
+  #sherry-ascii-host { height: calc(min(92vw, 920px) / 3); }
+  .sherry-controls::before {
+    content: ""; position: fixed; left: 0; right: 0; top: 0; height: 52px; z-index: -1;
+    background: color-mix(in srgb, var(--bg) 94%, transparent); border-bottom: 1px solid var(--border);
+  }
+}
+/* Tamaños mínimos también en táctil ancho (teléfono acostado, tablet). */
+@media (max-width: 760px), (pointer: coarse) {
+  .btn, .theme-btn, .swatch, .swatch-hex, .callout-title, .badge, .metric-lbl, th, p.muted, .sherry-footer a, footer a { font-size: 12px; }
+  table { display: block; overflow-x: auto; }
+  td code { white-space: nowrap; }
+}

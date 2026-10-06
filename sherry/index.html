@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!--
+sherry_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: ASCII Text, Dither, Dither Veil, Pixel Card.
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>sherry_theme · Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700|doto:700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sherry.css">
+</head>
+<body class="tri-on">
+
+<div class="sherry-controls">
+  <button class="btn" onclick="toggleTri()" aria-label="Alternar fondo de triángulos">tri</button>
+  <button class="btn" onclick="toggleCRT()" aria-label="Alternar líneas CRT">crt</button>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()" aria-label="Cambiar a modo claro">⬜ light</button>
+</div>
+
+<div class="sherry-corner-title" id="sherry-corner-title" aria-hidden="true">
+  sherry<span style="color:var(--accent)">_theme</span><span class="cursor"></span>
+</div>
+
+<canvas id="tri-canvas"></canvas>
+
+<!-- ── Portada: hero con zoom ambiental + fade por scroll + título ASCII Text ── -->
+<div class="sherry-hero-pin" id="sherry-hero-pin">
+  <header class="sherry-hero">
+    <div class="sherry-hero-dither-bg" id="sherry-hero-dither"></div>
+    <div class="sherry-hero-media">
+      <img id="sherry-hero-img" src="../assets/img/sherry/21868b780e.webp" data-dark="../assets/img/sherry/7b319153d5.webp" alt="Collage de esquemas hechos a mano, breadboard, agallas de hongo y placas de circuito separadas en capas de color.">
+    </div>
+    <div class="sherry-hero-scrim"></div>
+    <div class="sherry-hero-title-wrap">
+      <div id="sherry-ascii-host">
+        <h1 id="sherry-hero-title" class="sherry-plain-title">SHERRY</h1>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div class="page">
+
+<!-- ── Nivel: Paleta (fondo transparente, deja ver el lienzo de triángulos) ── -->
+<section class="sherry-level" id="level-paleta">
+  <div class="sherry-level-wrap">
+    <h2>Paleta de colores</h2>
+    <p class="muted">Tokens disponibles como variables CSS. Cambian automáticamente con el tema.</p>
+
+    <h3>Neon</h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-box" style="background:var(--magenta)"><span class="swatch-hex" id="hex-magenta"></span></div>--magenta</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--cyan)"><span class="swatch-hex" id="hex-cyan"></span></div>--cyan</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--electric)"><span class="swatch-hex" id="hex-electric"></span></div>--electric</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--violet)"><span class="swatch-hex" id="hex-violet"></span></div>--violet</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--lime)"><span class="swatch-hex" id="hex-lime"></span></div>--lime</div>
+    </div>
+
+    <h3>Pastel</h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-box" style="background:var(--rose)"><span class="swatch-hex" id="hex-rose"></span></div>--rose</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--lavender)"><span class="swatch-hex" id="hex-lavender"></span></div>--lavender</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--aqua)"><span class="swatch-hex" id="hex-aqua"></span></div>--aqua</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--peach)"><span class="swatch-hex" id="hex-peach"></span></div>--peach</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--mint)"><span class="swatch-hex" id="hex-mint"></span></div>--mint</div>
+    </div>
+
+    <h3>Neutros</h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div>
+    </div>
+
+    <h3>Acento y semánticos</h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--accent2)"><span class="swatch-hex" id="hex-accent2"></span></div>--accent2</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--info)"><span class="swatch-hex" id="hex-info"></span></div>--info</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Nivel: Componentes (Callouts + Badges + Botones), fondo Micro Slats ── -->
+<section class="sherry-level is-opaque" id="level-componentes">
+  <div class="sherry-level-bg" id="sherry-dither-bg"></div>
+  <div class="sherry-level-wrap">
+    <div class="sherry-level-header">
+      <h2>Callouts</h2>
+      <div class="sherry-aux-img" id="aux-componentes" data-crop="res"></div>
+    </div>
+    <div class="sherry-pixel-card"><div class="callout"><div class="callout-title">Acento (default)</div><p>Notas generales, referencias y documentación del artefacto.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout ok"><div class="callout-title">OK · Lime</div><p>Compilación exitosa. El artefacto está operativo.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout warn"><div class="callout-title">Warn · Electric</div><p>Componente inestable. Revisar antes de continuar.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout danger"><div class="callout-title">Danger · Magenta</div><p>Fallo crítico en el núcleo. No encender sin reparar.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout info"><div class="callout-title">Info · Cyan</div><p>Protocolo de red activo. Escuchando en el puerto 8080.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout violet"><div class="callout-title">Violet</div><p>Experimental. Comportamiento no documentado. Resultados consistentes.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout rose"><div class="callout-title">Rose</div><p>Interfaz de usuario. Pastel suave.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout lavender"><div class="callout-title">Lavender</div><p>Módulo de aprendizaje autónomo. Clasificación en progreso.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout aqua"><div class="callout-title">Aqua</div><p>Stream de datos entrante. Buffer al 74%.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout peach"><div class="callout-title">Peach</div><p>Contenido de salida. Legible por humanos.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout mint"><div class="callout-title">Mint</div><p>Log de éxito. Sin errores en los últimos 48h.</p></div></div>
+    <div class="sherry-pixel-card"><div class="callout lime"><div class="callout-title">Lime</div><p>Output verificado. Todos los assertions en verde.</p></div></div>
+
+    <hr class="divider">
+
+    <h2>Badges</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+      <span class="badge accent">magenta</span>
+      <span class="badge cyan">cyan</span>
+      <span class="badge electric">electric</span>
+      <span class="badge violet">violet</span>
+      <span class="badge lime">lime</span>
+      <span class="badge rose">rose</span>
+      <span class="badge lavender">lavender</span>
+      <span class="badge aqua">aqua</span>
+      <span class="badge peach">peach</span>
+      <span class="badge mint">mint</span>
+      <span class="badge ok">ok</span>
+      <span class="badge warn">warn</span>
+      <span class="badge danger">danger</span>
+      <span class="badge">default</span>
+    </div>
+
+    <hr class="divider">
+
+    <h2>Botones</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+      <button class="btn primary">primary</button>
+      <button class="btn">default</button>
+      <button class="btn ok">ok</button>
+      <button class="btn warn">warn</button>
+      <button class="btn danger">danger</button>
+      <button class="btn cyan">cyan</button>
+      <button class="btn lime">lime</button>
+      <button class="btn violet">violet</button>
+      <button class="btn rose">rose</button>
+      <button class="btn lavender">lavender</button>
+      <button class="btn aqua">aqua</button>
+      <button class="btn peach">peach</button>
+      <button class="btn mint">mint</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── Nivel: Métricas, fondo CRT Warp ── -->
+<section class="sherry-level" id="level-metricas">
+  <div class="sherry-level-wrap">
+    <div class="sherry-level-header">
+      <h2>Métricas</h2>
+      <div class="sherry-aux-img" id="aux-metricas" data-crop="ic"></div>
+    </div>
+    <div class="metrics-row">
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val">7</div><div class="metric-lbl">artefactos (accent)</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val electric">100%</div><div class="metric-lbl">uptime (electric)</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val cyan">∞</div><div class="metric-lbl">recursión (cyan)</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val violet">RL</div><div class="metric-lbl">modelo (violet)</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lime">3ms</div><div class="metric-lbl">latencia (lime)</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lavender">ML</div><div class="metric-lbl">módulo (lavender)</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Nivel: Código ── -->
+<section class="sherry-level is-opaque" id="level-codigo">
+  <div class="sherry-level-wrap">
+    <div class="sherry-level-header">
+      <h2>Código</h2>
+      <div class="sherry-aux-img" id="aux-codigo" data-crop="esp32"></div>
+    </div>
+    <p>Inline: <code>toggleCRT()</code> activa el efecto de scanlines.</p>
+    <pre data-lang="python"><span class="cm"># sherry construye desde basura</span>
+<span class="kw">class</span> <span class="type">Artefacto</span>:
+    <span class="fn">def</span> <span class="kw">__init__</span>(<span class="var">self</span>, materiales):
+        <span class="var">self</span>.core   = materiales[<span class="num">0</span>]
+        <span class="var">self</span>.shield = <span class="str">"basura reutilizada"</span>
+        <span class="var">self</span>.online = <span class="kw">True</span>
+
+    <span class="fn">def</span> <span class="kw">activar</span>(<span class="var">self</span>):
+        <span class="kw">return</span> <span class="str">f"[SYS] {self.core} online · shield: {self.shield}"</span></pre>
+  </div>
+</section>
+
+<!-- ── Nivel: Tabla ── -->
+<section class="sherry-level is-opaque" id="level-tabla">
+  <div class="sherry-level-wrap">
+    <div class="sherry-level-header">
+      <h2>Tabla</h2>
+      <div class="sherry-aux-img" id="aux-tabla" data-crop="cap"></div>
+    </div>
+    <table>
+      <tr><th>Token</th><th>Oscuro</th><th>Claro</th><th>Semántica</th></tr>
+      <tr><td><code>--accent</code></td><td>#FF1466</td><td>#B2003F</td><td>Acento principal · peligro · UI activa</td></tr>
+      <tr><td><code>--magenta</code></td><td>#FF1466</td><td>#B2003F</td><td>Neon caliente · keywords · error</td></tr>
+      <tr><td><code>--cyan</code></td><td>#00F5FF</td><td>#006A6F</td><td>Red · sockets · info técnica</td></tr>
+      <tr><td><code>--electric</code></td><td>#FFE600</td><td>#6C5E00</td><td>Advertencia · output · energía</td></tr>
+      <tr><td><code>--violet</code></td><td>#AC4DFF</td><td>#5A0FA8</td><td>Experimental · modelos · IA</td></tr>
+      <tr><td><code>--lime</code></td><td>#39FF14</td><td>#2B6A10</td><td>OK · latencia · éxito neon</td></tr>
+      <tr><td><code>--rose</code></td><td>#FFB3DE</td><td>#CC5588</td><td>UI · pastel cálido</td></tr>
+      <tr><td><code>--lavender</code></td><td>#D4AAFF</td><td>#7744AA</td><td>ML · clasificación</td></tr>
+      <tr><td><code>--aqua</code></td><td>#A8EFFF</td><td>#1E6877</td><td>Streams · datos</td></tr>
+      <tr><td><code>--peach</code></td><td>#FFD4AA</td><td>#AA6633</td><td>Output legible · UX</td></tr>
+      <tr><td><code>--mint</code></td><td>#AAFFD4</td><td>#337755</td><td>Log limpio · éxito suave</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ── Nivel: Timeline ── -->
+<section class="sherry-level is-opaque" id="level-timeline">
+  <div class="sherry-level-bg" id="sherry-dither-bg-timeline"></div>
+  <div class="sherry-level-wrap">
+    <div class="sherry-level-header">
+      <h2>Timeline</h2>
+      <div class="sherry-aux-img" id="aux-timeline" data-crop="ind"></div>
+    </div>
+    <div class="timeline">
+      <div class="sherry-pixel-card"><div class="timeline-item">
+        <div class="timeline-dot done">✓</div>
+        <div><h4>Artefacto ensamblado</h4><p class="muted">Núcleo operativo. Todos los módulos responden.</p></div>
+      </div></div>
+      <div class="sherry-pixel-card"><div class="timeline-item">
+        <div class="timeline-dot info">▶</div>
+        <div><h4>Cargando protocolo de red</h4><p class="muted">Estableciendo conexión. Último cable en su lugar.</p></div>
+      </div></div>
+      <div class="sherry-pixel-card"><div class="timeline-item">
+        <div class="timeline-dot warn">!</div>
+        <div><h4>Componente inestable</h4><p class="muted">Módulo de visión parpadea. Revisar soldadura.</p></div>
+      </div></div>
+      <div class="sherry-pixel-card"><div class="timeline-item">
+        <div class="timeline-dot pending">·</div>
+        <div><h4>Actualización pendiente</h4><p class="muted">Esperando materiales para el escudo secundario.</p></div>
+      </div></div>
+      <div class="sherry-pixel-card"><div class="timeline-item">
+        <div class="timeline-dot danger">✕</div>
+        <div><h4>Fallo crítico</h4><p class="muted">El núcleo no responde. Requiere reconstrucción.</p></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Nivel: Pasos de ensamblaje ── -->
+<section class="sherry-level is-opaque" id="level-pasos">
+  <div class="sherry-level-wrap">
+    <div class="sherry-level-header">
+      <h2>Pasos de ensamblaje</h2>
+      <div class="sherry-aux-img" id="aux-pasos" data-crop="rel"></div>
+    </div>
+    <div class="sherry-pixel-card"><div class="step-row">
+      <div class="step-num">01</div>
+      <div><h4>Recolectar materiales</h4><p class="muted">Buscando componentes útiles en el perímetro.</p></div>
+    </div></div>
+    <div class="sherry-pixel-card"><div class="step-row" style="border-left-color:var(--cyan)">
+      <div class="step-num" style="color:var(--cyan);text-shadow:var(--glow-cyan)">02</div>
+      <div><h4>Desensamblar y clasificar</h4><p class="muted">Probar y categorizar cada pieza antes de integrarla.</p></div>
+    </div></div>
+    <div class="sherry-pixel-card"><div class="step-row" style="border-left-color:var(--electric)">
+      <div class="step-num" style="color:var(--electric);text-shadow:var(--glow-electric)">03</div>
+      <div><h4>Ensamblar el artefacto</h4><p class="muted">Integrar los módulos verificados en el núcleo.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ── Nivel: Cards ── -->
+<section class="sherry-level is-opaque" id="level-cards">
+  <div class="sherry-level-wrap">
+    <div class="sherry-level-header">
+      <h2>Cards</h2>
+      <div class="sherry-aux-img" id="aux-cards" data-crop="lil"></div>
+    </div>
+    <div class="grid-2">
+      <div class="sherry-pixel-card"><div class="card">
+        <span class="badge cyan" style="margin-bottom:10px;display:inline-block">módulo</span>
+        <h4>Núcleo de procesamiento</h4>
+        <p class="muted" style="margin-top:6px">Componentes reciclados integrados en un sistema funcional.</p>
+      </div></div>
+      <div class="sherry-pixel-card"><div class="card" style="border-color:var(--violet)">
+        <span class="badge violet" style="margin-bottom:10px;display:inline-block">experimental</span>
+        <h4>Protocolo fantasma</h4>
+        <p class="muted" style="margin-top:6px">Comportamiento no documentado. Resultados consistentes.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="sherry-level">
+  <div class="sherry-level-wrap">
+    <p class="muted prompt" style="font-size:12px">
+      sherry_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>)
+    </p>
+  </div>
+</footer>
+
+</div><!-- .page -->
+
+<script type="module">
+import { mount as m0 } from '../shared/components/sherry/dither.js';
+import { mount as m1 } from '../shared/components/sherry/ascii-title.js';
+import { toggleTri, toggleCRT, toggleTheme } from '../shared/components/sherry/kit.js';
+// El marcado llama estas funciones con on…="": van en window.
+Object.assign(window, { toggleTri, toggleCRT, toggleTheme });
+m0(); m1();
+</script>
+</body>
+</html>

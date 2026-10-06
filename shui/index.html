@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!--
+shui_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: Blur Text, Ferrofluid, Morph Slider, Splash Cursor, Swarm Cursor.
+· WebGL-Fluid-Simulation · https://github.com/PavelDoGreat/WebGL-Fluid-Simulation · Pavel Dobryakov (@PavelDoGreat). Base de Splash Cursor.
+· Radiografías de peces · Sandra Raredon, Smithsonian National Museum of Natural History, División de Peces.
+· Contenedores de hielo · riff "Ice cubes" de Figma por @helorebyron (inspiración, sin código copiado).
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+──── WebGL-Fluid-Simulation ────
+MIT License
+
+Copyright (c) 2017 Pavel Dobryakov
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>shui_theme · Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=recursive:400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shui.css">
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <filter id="sh-frost" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="t"/>
+    <feDisplacementMap in="SourceGraphic" in2="t" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+    <feGaussianBlur stdDeviation=".6"/>
+  </filter>
+</svg>
+<canvas id="sh-water" aria-hidden="true"></canvas>
+<canvas id="sh-splash" aria-hidden="true"></canvas>
+<canvas id="sh-swarm" aria-hidden="true"></canvas>
+<canvas id="sh-bio" aria-hidden="true"></canvas>
+
+<main>
+<!-- ── HERO ── -->
+<header class="sh-hero" id="inicio">
+  <button class="sh-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo abisal">☾ noche</button>
+  <figure class="sh-proun">
+    <img src="../assets/img/shui/451f38d6a5.webp" data-dark="../assets/img/shui/99b92ff250.webp" alt="">
+    <figcaption>Imagen temporal · prouned_disco</figcaption>
+  </figure>
+  <div class="sh-wrap">
+    <div>
+      <h1 class="sh-title blur-text" data-blur="letters" data-delay="50">shui</h1>
+      <p class="sh-sub"><b>_theme</b> · iroFactory</p>
+      <p class="sh-lede">Documentación para flujos de datos. Todo corre como agua: entra, se filtra, se guarda.</p>
+      <a class="sh-scroll" href="#corrientes">↓ Corrientes</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── CORRIENTES · el grafo cambia el módulo que se ve ── -->
+<section class="sh-app" id="corrientes" aria-label="Corrientes">
+  <div class="sh-wrap sh-app-grid">
+    <div class="sh-app-side">
+      <div class="sh-app-nav">
+        <div class="sh-graph-head">
+          <h2 class="sh-h2 blur-text" data-blur="words" data-delay="80">Corrientes</h2>
+          <button class="sh-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo abisal">☾ noche</button>
+        </div>
+        <div class="sh-graph" id="sh-graph"><canvas role="img" aria-label="Grafo de módulos: desde el manantial salen cuatro corrientes (superficie, corrientes, profundidad y desembocadura). Tocar un nodo abre su módulo; las pestañas hacen lo mismo."></canvas></div>
+      </div>
+      <nav class="sh-tabs" role="tablist" aria-label="Módulos"><a class="sh-tab" role="tab" id="tab-paleta" href="#paleta" aria-controls="paleta" aria-selected="true">Paleta</a><a class="sh-tab" role="tab" id="tab-galeria" href="#galeria" aria-controls="galeria" aria-selected="false" tabindex="-1">Galería</a><a class="sh-tab" role="tab" id="tab-avisos" href="#avisos" aria-controls="avisos" aria-selected="false" tabindex="-1">Avisos</a><a class="sh-tab" role="tab" id="tab-badges" href="#badges" aria-controls="badges" aria-selected="false" tabindex="-1">Badges</a><a class="sh-tab" role="tab" id="tab-botones" href="#botones" aria-controls="botones" aria-selected="false" tabindex="-1">Botones</a><a class="sh-tab" role="tab" id="tab-metricas" href="#metricas" aria-controls="metricas" aria-selected="false" tabindex="-1">Métricas</a><a class="sh-tab" role="tab" id="tab-codigo" href="#codigo" aria-controls="codigo" aria-selected="false" tabindex="-1">Código</a><a class="sh-tab" role="tab" id="tab-tabla" href="#tabla" aria-controls="tabla" aria-selected="false" tabindex="-1">Tabla</a><a class="sh-tab" role="tab" id="tab-log" href="#log" aria-controls="log" aria-selected="false" tabindex="-1">Pipeline log</a><a class="sh-tab" role="tab" id="tab-pipeline" href="#pipeline" aria-controls="pipeline" aria-selected="false" tabindex="-1">Pipeline</a><a class="sh-tab" role="tab" id="tab-cards" href="#cards" aria-controls="cards" aria-selected="false" tabindex="-1">Cards</a></nav>
+    </div>
+    <div class="sh-app-main" id="sh-main">
+      <div class="sh-query ice" id="sh-query" aria-hidden="true"><pre></pre></div>
+  <!-- Superficie -->
+  <section class="sh-sec" id="paleta" data-group="superficie">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--query)"></i>Superficie</span><h2 class="sh-h2 blur-text" data-blur="words">Paleta de colores</h2></header>
+    <div class="ice">
+      <p class="muted">Turquesa Caribe de día, bioluminiscencia abisal de noche. Los tokens cambian con el modo.</p>
+      <h3>Pelágica</h3>
+      <div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--deep)"><span class="swatch-hex" id="hex-deep"></span></div>--deep</div><div class="swatch"><div class="swatch-box" style="background:var(--current)"><span class="swatch-hex" id="hex-current"></span></div>--current</div><div class="swatch"><div class="swatch-box" style="background:var(--surface)"><span class="swatch-hex" id="hex-surface"></span></div>--surface</div><div class="swatch"><div class="swatch-box" style="background:var(--foam)"><span class="swatch-hex" id="hex-foam"></span></div>--foam</div><div class="swatch"><div class="swatch-box" style="background:var(--kelp)"><span class="swatch-hex" id="hex-kelp"></span></div>--kelp</div><div class="swatch"><div class="swatch-box" style="background:var(--coral)"><span class="swatch-hex" id="hex-coral"></span></div>--coral</div><div class="swatch"><div class="swatch-box" style="background:var(--sand)"><span class="swatch-hex" id="hex-sand"></span></div>--sand</div><div class="swatch"><div class="swatch-box" style="background:var(--turquoise)"><span class="swatch-hex" id="hex-turquoise"></span></div>--turquoise</div><div class="swatch"><div class="swatch-box" style="background:var(--aqua)"><span class="swatch-hex" id="hex-aqua"></span></div>--aqua</div><div class="swatch"><div class="swatch-box" style="background:var(--light-ray)"><span class="swatch-hex" id="hex-light-ray"></span></div>--light-ray</div></div>
+      <h3>Datos</h3>
+      <div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--stream)"><span class="swatch-hex" id="hex-stream"></span></div>--stream</div><div class="swatch"><div class="swatch-box" style="background:var(--cache)"><span class="swatch-hex" id="hex-cache"></span></div>--cache</div><div class="swatch"><div class="swatch-box" style="background:var(--query)"><span class="swatch-hex" id="hex-query"></span></div>--query</div><div class="swatch"><div class="swatch-box" style="background:var(--index)"><span class="swatch-hex" id="hex-index"></span></div>--index</div><div class="swatch"><div class="swatch-box" style="background:var(--schema)"><span class="swatch-hex" id="hex-schema"></span></div>--schema</div><div class="swatch"><div class="swatch-box" style="background:var(--scrape)"><span class="swatch-hex" id="hex-scrape"></span></div>--scrape</div><div class="swatch"><div class="swatch-box" style="background:var(--store)"><span class="swatch-hex" id="hex-store"></span></div>--store</div></div>
+    </div>
+  </section>
+
+  <section class="sh-sec" id="galeria" data-group="superficie">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--query)"></i>Superficie</span><h2 class="sh-h2 blur-text" data-blur="words">Galería</h2></header>
+    <div class="ice">
+      <div class="morph-slider" id="sh-morph">
+        <img class="morph-fallback" src="../assets/img/shui/6353fdb2c7.webp" alt="Radiografía de Eusphyra blochii (winghead shark)">
+        <div class="morph-slider-stage" role="group" aria-roledescription="carrusel" aria-label="Radiografías de peces" tabindex="0"></div>
+        <div class="morph-slider-caption" aria-live="polite"></div>
+        <div class="morph-slider-controls">
+          <button type="button" class="morph-slider-btn" data-dir="-1" aria-label="Imagen anterior"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="morph-slider-btn" data-dir="1" aria-label="Imagen siguiente"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+      <div class="morph-slider-dots" role="tablist" aria-label="Imágenes"></div>
+      <p class="sh-credit">Radiografías · Sandra Raredon, Smithsonian NMNH, División de Peces (imágenes temporales). Arrastra o toca para que la onda las cambie.</p>
+    </div>
+  </section>
+
+  <!-- Corrientes -->
+  <section class="sh-sec" id="avisos" data-group="corrientes">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--stream)"></i>Corrientes</span><h2 class="sh-h2 blur-text" data-blur="words">Avisos</h2></header>
+    <div class="ice-grid">
+      <div class="ice"><div class="callout"><div class="callout-title">Acento · Stream</div><p>Flujo de datos en tiempo real. Los paquetes suben desde el fondo.</p></div>
+        <div class="callout ok"><div class="callout-title">OK · Store</div><p>Datos almacenados correctamente. El índice fue actualizado.</p></div>
+        <div class="callout warn"><div class="callout-title">Warn · Sand</div><p>Latencia alta en la consulta. El buffer está al 87%.</p></div>
+        <div class="callout danger"><div class="callout-title">Danger · Coral</div><p>Conexión al scraper perdida. Reintentar en 30 segundos.</p></div></div>
+      <div class="ice"><div class="callout stream"><div class="callout-title">Stream</div><p>Ingesta continua. El pipeline procesa 14,000 eventos por segundo.</p></div>
+        <div class="callout cache"><div class="callout-title">Cache</div><p>Hit rate al 94%. Los datos viven en memoria.</p></div>
+        <div class="callout query"><div class="callout-title">Query</div><p>SELECT * FROM ocean WHERE depth &gt; 200;</p></div>
+        <div class="callout index"><div class="callout-title">Index</div><p>B-tree sobre depth. La búsqueda cae de O(n) a O(log n).</p></div></div>
+      <div class="ice"><div class="callout schema"><div class="callout-title">Schema</div><p>Migración 0042. Columna bioluminescence en organisms.</p></div>
+        <div class="callout scrape"><div class="callout-title">Scrape</div><p>Spider activo en 12 dominios. Rate limit a 2 req/s por host.</p></div>
+        <div class="callout store"><div class="callout-title">Store</div><p>Bucket sincronizado. 2.4TB comprimidos en Parquet.</p></div></div>
+    </div>
+  </section>
+
+  <section class="sh-sec" id="badges" data-group="corrientes">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--stream)"></i>Corrientes</span><h2 class="sh-h2 blur-text" data-blur="words">Badges</h2></header>
+    <div class="ice"><div class="badge-row">
+      <span class="badge stream">stream</span><span class="badge cache">cache</span><span class="badge query">query</span><span class="badge index">index</span><span class="badge schema">schema</span>
+      <span class="badge scrape">scrape</span><span class="badge store">store</span><span class="badge ok">ok</span><span class="badge warn">warn</span><span class="badge danger">danger</span><span class="badge">default</span>
+    </div></div>
+  </section>
+
+  <section class="sh-sec" id="botones" data-group="corrientes">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--stream)"></i>Corrientes</span><h2 class="sh-h2 blur-text" data-blur="words">Botones</h2></header>
+    <div class="ice"><div class="btn-row">
+      <button class="btn primary">primary</button><button class="btn">default</button><button class="btn stream">stream</button><button class="btn cache">cache</button><button class="btn query">query</button>
+      <button class="btn schema">schema</button><button class="btn scrape">scrape</button><button class="btn store">store</button><button class="btn ok">ok</button><button class="btn warn">warn</button><button class="btn danger">danger</button>
+    </div></div>
+  </section>
+
+  <!-- Profundidad -->
+  <section class="sh-sec" id="metricas" data-group="profundidad">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--schema)"></i>Profundidad</span><h2 class="sh-h2 blur-text" data-blur="words">Métricas</h2></header>
+    <div class="ice-grid">
+      <div class="ice"><div class="metric-val">14k</div><div class="metric-lbl">eventos/s</div></div>
+      <div class="ice"><div class="metric-val cache">94%</div><div class="metric-lbl">cache hit</div></div>
+      <div class="ice"><div class="metric-val schema">2.4TB</div><div class="metric-lbl">almacenado</div></div>
+      <div class="ice"><div class="metric-val scrape">12</div><div class="metric-lbl">spiders</div></div>
+      <div class="ice"><div class="metric-val store">∞</div><div class="metric-lbl">profundidad</div></div>
+    </div>
+  </section>
+
+  <section class="sh-sec" id="codigo" data-group="profundidad">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--schema)"></i>Profundidad</span><h2 class="sh-h2 blur-text" data-blur="words">Código</h2></header>
+    <div class="ice">
+      <p>Inline: <code>toggleTheme()</code> baja de la zona pelágica a la abisal.</p>
+<pre data-lang="python"><code><span class="cm"># Scraper de datos oceánicos</span>
+<span class="kw">import</span> asyncio
+<span class="kw">from</span> aiohttp <span class="kw">import</span> ClientSession
+
+<span class="kw">class</span> <span class="tp">OceanScraper</span>:
+    <span class="fn">def</span> <span class="kw">__init__</span>(self, depth: int):
+        self.depth  = depth
+        self.buffer = []
+        self.zone   = <span class="str">"pelagic"</span> <span class="kw">if</span> depth &lt; <span class="num">200</span> <span class="kw">else</span> <span class="str">"abyssal"</span>
+
+    <span class="kw">async def</span> <span class="fn">fetch</span>(self, url: str) -&gt; dict:
+        <span class="kw">async with</span> ClientSession() <span class="kw">as</span> s:
+            <span class="kw">async with</span> s.get(url) <span class="kw">as</span> r:
+                <span class="kw">return await</span> r.json()</code></pre>
+    </div>
+  </section>
+
+  <section class="sh-sec" id="tabla" data-group="profundidad">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--schema)"></i>Profundidad</span><h2 class="sh-h2 blur-text" data-blur="words">Tabla</h2></header>
+    <div class="ice"><div class="sh-table"><table>
+      <tr><th>Token</th><th>Pelágica</th><th>Abisal</th><th>Semántica</th></tr>
+      <tr><td><code>--stream</code></td><td>#20D0C0</td><td>#C040FF</td><td>Flujo de datos en tiempo real</td></tr>
+      <tr><td><code>--cache</code></td><td>#40E0E0</td><td>#FF40A0</td><td>Caché en memoria · acceso rápido</td></tr>
+      <tr><td><code>--query</code></td><td>#A0D8F8</td><td>#00E8D8</td><td>Consulta · búsqueda</td></tr>
+      <tr><td><code>--index</code></td><td>#60A8E8</td><td>#40FF80</td><td>Índice · estructura de búsqueda</td></tr>
+      <tr><td><code>--schema</code></td><td>#8888F8</td><td>#8040FF</td><td>Esquema · definición de datos</td></tr>
+      <tr><td><code>--scrape</code></td><td>#F08050</td><td>#FF6040</td><td>Scraper · extracción web</td></tr>
+      <tr><td><code>--store</code></td><td>#20A080</td><td>#00C8B0</td><td>Almacenamiento persistente</td></tr>
+    </table></div></div>
+  </section>
+
+  <!-- Desembocadura -->
+  <section class="sh-sec" id="log" data-group="desembocadura">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--store)"></i>Desembocadura</span><h2 class="sh-h2 blur-text" data-blur="words">Pipeline log</h2></header>
+    <div class="ice">
+      <div class="log-entry"><div class="log-dot ok" aria-label="Correcto">✓</div><div><h4>Conexión establecida</h4><p class="muted" style="margin:0">PostgreSQL 16 · pool de 24 conexiones · latencia 2ms</p></div></div>
+      <div class="log-entry"><div class="log-dot stream" aria-label="En curso">▶</div><div><h4>Stream activo</h4><p class="muted" style="margin:0">Kafka topic ocean.events · 14,200 msgs/s · lag 0</p></div></div>
+      <div class="log-entry"><div class="log-dot schema" aria-label="Migración">≡</div><div><h4>Migración aplicada</h4><p class="muted" style="margin:0">0042_add_bioluminescence · 2.1M filas actualizadas</p></div></div>
+      <div class="log-entry"><div class="log-dot warn" aria-label="Aviso">!</div><div><h4>Cache pressure</h4><p class="muted" style="margin:0">Redis 87% memoria · eviction policy: allkeys-lru</p></div></div>
+      <div class="log-entry"><div class="log-dot danger" aria-label="Error">✕</div><div><h4>Spider timeout</h4><p class="muted" style="margin:0">Host oceandata.io · 30s sin respuesta · retry 3/5</p></div></div>
+    </div>
+  </section>
+
+  <section class="sh-sec" id="pipeline" data-group="desembocadura">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--store)"></i>Desembocadura</span><h2 class="sh-h2 blur-text" data-blur="words">Pipeline</h2></header>
+    <div class="ice">
+      <div class="pipe"><div class="pipe-num">01</div><div><h4>Scrape</h4><p class="muted" style="margin:0">Spider extrae datos crudos de 12 fuentes. Rate limit 2 req/s.</p></div></div>
+      <div class="pipe" style="border-left-color:var(--query)"><div class="pipe-num" style="color:var(--query)">02</div><div><h4>Parse y validación</h4><p class="muted" style="margin:0">Pydantic valida cada registro. Rechazos a la cola de descarte.</p></div></div>
+      <div class="pipe" style="border-left-color:var(--cache)"><div class="pipe-num" style="color:var(--cache)">03</div><div><h4>Cache</h4><p class="muted" style="margin:0">Redis deduplica por hash. Los duplicados no pasan.</p></div></div>
+      <div class="pipe" style="border-left-color:var(--store-ink)"><div class="pipe-num" style="color:var(--store-ink)">04</div><div><h4>Store</h4><p class="muted" style="margin:0">Parquet comprimido. Particionado por fecha y zona oceánica.</p></div></div>
+    </div>
+  </section>
+
+  <section class="sh-sec" id="cards" data-group="desembocadura">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--store)"></i>Desembocadura</span><h2 class="sh-h2 blur-text" data-blur="words">Cards</h2></header>
+    <div class="ice-grid">
+      <div class="ice card"><strong style="color:var(--stream)">PostgreSQL</strong><span class="badge store">OLTP</span><p class="muted" style="margin:6px 0 0">Transaccional · ACID · 2ms de latencia · pool de 24 conexiones.</p></div>
+      <div class="ice card"><strong style="color:var(--cache)">Redis</strong><span class="badge cache">in-memory</span><p class="muted" style="margin:6px 0 0">Caché L1 · 94% de aciertos · LRU al 87% de memoria.</p></div>
+    </div>
+  </section>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="sh-footer">shui_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Fluidos de Pavel Dobryakov (<a href="https://github.com/PavelDoGreat">@PavelDoGreat</a>) · Radiografías de Sandra Raredon, Smithsonian NMNH · Hielo inspirado en <a href="https://www.figma.com/@helorebyron">@helorebyron</a> · Título en Y2KBUG de Ray Larabie</footer>
+
+<script type="application/json" id="sh-fish">[{"src":"../assets/img/shui/2a818138bb.webp","light":"../assets/img/shui/6353fdb2c7.webp","name":"Eusphyra blochii","common":"winghead shark"},{"src":"../assets/img/shui/c87a17ed6f.webp","light":"../assets/img/shui/9b2c694d1d.webp","name":"Centriscus scutatus","common":"grooved razorfish"},{"src":"../assets/img/shui/39a93c59ca.webp","light":"../assets/img/shui/8a75a6a1ad.webp","name":"Enchelynassa canina","common":"viper moray"},{"src":"../assets/img/shui/72447ce34e.webp","light":"../assets/img/shui/9419aa9bd9.webp","name":"Nemichthys scolopaceus","common":"slender snipe eel"}]</script>
+<script type="module">
+import { mount as m0 } from '../shared/components/shui/kit.js';
+import { mount as m1 } from '../shared/components/shui/blur-text.js';
+import { mount as m2 } from '../shared/components/shui/ferrofluid-water.js';
+import { mount as m3 } from '../shared/components/shui/swarm-cursor.js';
+import { mount as m4 } from '../shared/components/shui/current-graph.js';
+import { mount as m5 } from '../shared/components/shui/morph-gallery.js';
+import { mount as m6 } from '../shared/components/shui/bio-particles.js';
+import { mount as m7 } from '../shared/components/shui/module-tabs.js';
+m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7();
+</script>
+</body>
+</html>

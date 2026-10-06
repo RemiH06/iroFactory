@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!--
+metro_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: Border Glow, Cursor Grid, Dock, Dome Gallery, Lattice Loader, Warp Text.
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>metro_theme · Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=space-mono:400,700&family=dm-sans:300,400,500,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="metro.css">
+</head>
+<body class="metro">
+
+<canvas id="metro-bg"></canvas>
+<canvas id="metro-grid"></canvas>
+
+<div class="metro-controls">
+  <button class="theme-btn" id="metro-toggle" onclick="metroToggle()">☾ Dark</button>
+</div>
+
+<!-- Imágenes WebP en assets/img/metro; prouned_metro / _dark vienen de src/img. -->
+<div class="metro-hero-pin" id="metro-hero-pin">
+  <header class="metro-hero">
+    <div class="metro-hero-media" aria-hidden="true">
+      <img id="metro-hero-img" alt="" src="../assets/img/metro/0d2ad5a2d2.webp" data-dark="../assets/img/metro/7567d1790a.webp">
+    </div>
+    <div class="metro-hero-scrim"></div>
+    <div class="metro-hero-text" id="metro-hero-text">
+      <div class="metro-warp" id="metro-warp">
+        <h1 class="metro-warp-fallback">metro</h1>
+      </div>
+      <div class="metro-hero-sub"><span class="metro-title-anim">_theme</span> · iroFactory</div>
+    </div>
+    <span class="metro-hero-credit">by RemiH06</span>
+  </header>
+</div>
+
+<main class="metro-page">
+
+<section class="metro-intro">
+  <div class="wrap metro-intro-grid">
+    <div class="metro-intro-card card">
+      <h1>Documentación con señalética de metro</h1>
+      <p>La página solo compone piezas compartidas de iroFactory, sin dependencias más allá de las fuentes. El fondo es una cuadrícula con nodos que flotan y se conectan entre sí, y la cuadrícula se ilumina bajo el cursor.</p>
+      <p class="muted">Las secciones de abajo se recorren desde el dock: cada ícono es una estación, y cada panel se carga la primera vez que se visita.</p>
+    </div>
+    <div>
+      <div class="callout ok"><div class="callout-title">Semáforo</div><p>Rojo, amarillo y verde son la única semántica de color del tema. El resto de la paleta es de apoyo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="metro-stage" id="detalles">
+  <div class="wrap">
+    <div class="metro-dock-outer">
+      <div class="metro-dock-panel" id="metro-dock" role="tablist" aria-label="Secciones del tema">
+        <button class="metro-dock-item" role="tab" id="tab-paleta" aria-controls="panel-paleta" aria-selected="true"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="19" r="3"/></svg></span><span class="metro-dock-label" role="tooltip">Paleta</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-componentes" aria-controls="panel-componentes" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="10" height="6" rx="1"/><path d="M16 17h5"/></svg></span><span class="metro-dock-label" role="tooltip">Componentes</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-metricas" aria-controls="panel-metricas" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V13M10 20V6M16 20v-9M22 20H2"/></svg></span><span class="metro-dock-label" role="tooltip">Métricas</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-codigo" aria-controls="panel-codigo" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6l-6 6 6 6M16 6l6 6-6 6"/></svg></span><span class="metro-dock-label" role="tooltip">Código</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-tabla" aria-controls="panel-tabla" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10h18M3 15h18M10 4v16"/></svg></span><span class="metro-dock-label" role="tooltip">Tabla</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-proceso" aria-controls="panel-proceso" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12h20"/><circle cx="5" cy="12" r="2.5" fill="currentColor"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/></svg></span><span class="metro-dock-label" role="tooltip">Proceso</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="13" height="13" rx="1"/><path d="M8 4h13v13"/></svg></span><span class="metro-dock-label" role="tooltip">Cards</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-galeria" aria-controls="panel-galeria" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 18a9 9 0 0 1 18 0M3 18h18"/><path d="M7.5 18a4.5 9 0 0 1 9 0M12 9v9"/></svg></span><span class="metro-dock-label" role="tooltip">Galería</span></button>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-paleta" role="tabpanel" aria-labelledby="tab-paleta" data-pattern="orbit">
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Paleta de colores</h2>
+        <p class="muted">Tokens disponibles como variables CSS. Cambian automáticamente con el tema.</p>
+        <h3>Semáforo</h3>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-box" style="background:var(--red)"><span class="swatch-hex" id="hex-red"></span></div>--red</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--yellow)"><span class="swatch-hex" id="hex-yellow"></span></div>--yellow</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--green)"><span class="swatch-hex" id="hex-green"></span></div>--green</div>
+        </div>
+        <h3>Paleta extendida</h3>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-box" style="background:var(--blue)"><span class="swatch-hex" id="hex-blue"></span></div>--blue</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--purple)"><span class="swatch-hex" id="hex-purple"></span></div>--purple</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--orange)"><span class="swatch-hex" id="hex-orange"></span></div>--orange</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--pink)"><span class="swatch-hex" id="hex-pink"></span></div>--pink</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--brown)"><span class="swatch-hex" id="hex-brown"></span></div>--brown</div>
+        </div>
+        <h3>Neutros y semánticos</h3>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+          <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-componentes" role="tabpanel" aria-labelledby="tab-componentes" data-pattern="sweep" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Callouts</h2>
+        <div class="callout"><div class="callout-title">Acento (default)</div><p>Notas generales e información importante.</p></div>
+        <div class="callout ok"><div class="callout-title">OK · Verde</div><p>Confirmaciones, resultados exitosos, pasos completados.</p></div>
+        <div class="callout warn"><div class="callout-title">Warn · Amarillo</div><p>Advertencias, pendientes, cosas a revisar.</p></div>
+        <div class="callout danger"><div class="callout-title">Danger · Rojo</div><p>Errores, restricciones críticas, cosas que no hacer.</p></div>
+        <div class="callout blue"><div class="callout-title">Blue</div><p>Información técnica, referencias, documentación.</p></div>
+        <div class="callout purple"><div class="callout-title">Purple</div><p>Experimental, features en desarrollo, ideas.</p></div>
+        <div class="callout orange"><div class="callout-title">Orange</div><p>Rendimiento, optimizaciones, métricas clave.</p></div>
+        <div class="callout pink"><div class="callout-title">Pink</div><p>Diseño, UI, experiencia de usuario.</p></div>
+        <div class="callout brown"><div class="callout-title">Brown</div><p>Histórico, legado, contexto del proyecto.</p></div>
+        <div class="callout gray"><div class="callout-title">Gray</div><p>Notas secundarias, información opcional.</p></div>
+        <h2>Badges</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0">
+          <span class="badge accent">accent</span><span class="badge ok">ok</span><span class="badge warn">warn</span><span class="badge danger">danger</span>
+          <span class="badge blue">blue</span><span class="badge purple">purple</span><span class="badge orange">orange</span><span class="badge pink">pink</span><span class="badge brown">brown</span><span class="badge gray">gray</span><span class="badge">default</span>
+        </div>
+        <h2>Botones</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0">
+          <button class="btn primary">Primary</button><button class="btn">Default</button>
+          <button class="btn ok">OK</button><button class="btn warn">Warn</button><button class="btn danger">Danger</button>
+          <button class="btn blue">Blue</button><button class="btn purple">Purple</button><button class="btn orange">Orange</button><button class="btn pink">Pink</button>
+        </div>
+        <h2>Carga</h2>
+        <p class="muted">Indicador para procesos con espera. En esta demo la carga es simulada.</p>
+        <div class="metro-loader-row" id="metro-loader-demo"></div>
+        <button class="btn primary" id="metro-loader-run">Simular carga</button>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-metricas" role="tabpanel" aria-labelledby="tab-metricas" data-pattern="pulse" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Métricas</h2>
+        <div class="metrics-row">
+          <div class="metric"><div class="metric-val">354</div><div class="metric-lbl">Nodos</div></div>
+          <div class="metric"><div class="metric-val green">1,036</div><div class="metric-lbl">Llegadas</div></div>
+          <div class="metric"><div class="metric-val red">367</div><div class="metric-lbl">Detenidos</div></div>
+          <div class="metric"><div class="metric-val blue">672</div><div class="metric-lbl">Aristas</div></div>
+          <div class="metric"><div class="metric-val purple">550</div><div class="metric-lbl">Episodios</div></div>
+          <div class="metric"><div class="metric-val yellow">15×</div><div class="metric-lbl">Mejora</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-codigo" role="tabpanel" aria-labelledby="tab-codigo" data-pattern="snake" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Código</h2>
+        <p>Inline: <code>metroToggle()</code> alterna entre modo claro y oscuro.</p>
+<pre><span class="cm"># Ejemplo de uso</span>
+<span class="kw">import</span> metro_theme
+
+<span class="fn">def</span> <span class="kw">setup</span>():
+    theme = metro_theme.getTheme()  <span class="cm"># 'dark' | 'light'</span>
+    colors = {
+        <span class="str">'accent'</span>: <span class="str">'#00e5a0'</span>,
+        <span class="str">'danger'</span>: <span class="str">'#ff4560'</span>,
+        <span class="str">'value'</span>:  <span class="num">42</span>,
+    }
+    <span class="kw">return</span> colors</pre>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-tabla" role="tabpanel" aria-labelledby="tab-tabla" data-pattern="rain" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Tabla</h2>
+        <table>
+          <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Uso</th></tr>
+          <tr><td><code>--accent</code></td><td>#6B1A2A</td><td>#00e5a0</td><td>Color principal de la UI</td></tr>
+          <tr><td><code>--red</code></td><td>#8B1A1A</td><td>#ff4560</td><td>Semáforo rojo · peligro</td></tr>
+          <tr><td><code>--yellow</code></td><td>#C4691A</td><td>#f5a623</td><td>Semáforo amarillo · advertencia</td></tr>
+          <tr><td><code>--green</code></td><td>#2A6B3A</td><td>#00e5a0</td><td>Semáforo verde · OK</td></tr>
+          <tr><td><code>--blue</code></td><td>#1A3A6B</td><td>#457BFF</td><td>Info técnica · links</td></tr>
+          <tr><td><code>--purple</code></td><td>#4A1A6B</td><td>#9B6DFF</td><td>Experimental · RL</td></tr>
+          <tr><td><code>--orange</code></td><td>#A34310</td><td>#FF7A30</td><td>Rendimiento · alertas</td></tr>
+          <tr><td><code>--pink</code></td><td>#8B1A4A</td><td>#FF4D8F</td><td>Diseño · UI</td></tr>
+          <tr><td><code>--brown</code></td><td>#5C3317</td><td>#C4855A</td><td>Histórico · contexto</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-proceso" role="tabpanel" aria-labelledby="tab-proceso" data-pattern="spin" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Timeline</h2>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-dot done">✓</div><div><h4>Paso completado</h4><p style="font-size:12px;color:var(--text2)">Hito finalizado y verificado.</p></div></div>
+          <div class="timeline-item"><div class="timeline-dot warn">!</div><div><h4>En progreso</h4><p style="font-size:12px;color:var(--text2)">Trabajo en curso, pendiente de revisión.</p></div></div>
+          <div class="timeline-item"><div class="timeline-dot pending">·</div><div><h4>Pendiente</h4><p style="font-size:12px;color:var(--text2)">Aún no iniciado.</p></div></div>
+          <div class="timeline-item"><div class="timeline-dot danger">✕</div><div><h4>Bloqueado</h4><p style="font-size:12px;color:var(--text2)">Requiere resolución de dependencia.</p></div></div>
+        </div>
+        <h2>Pasos de proceso</h2>
+        <div class="step-row"><div class="step-num">1</div><div><h4>Primer paso</h4><p style="font-size:13px;color:var(--text2);margin:0">Descripción del primer paso del proceso.</p></div></div>
+        <div class="step-row"><div class="step-num">2</div><div><h4>Segundo paso</h4><p style="font-size:13px;color:var(--text2);margin:0">Descripción del segundo paso del proceso.</p></div></div>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-cards" role="tabpanel" aria-labelledby="tab-cards" data-pattern="sweep" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Cards</h2>
+        <div class="grid-2">
+          <div class="card"><strong>Card básica</strong><p style="font-size:13px;margin:8px 0 0;color:var(--text2)">Contenido libre dentro de un card con borde y fondo bg2.</p></div>
+          <div class="card"><strong>Card con badge</strong><span class="badge ok" style="margin-left:8px">activo</span><p style="font-size:13px;margin:8px 0 0;color:var(--text2)">Cards con cualquier contenido interno.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-galeria" role="tabpanel" aria-labelledby="tab-galeria" data-pattern="orbit" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Galería</h2>
+        <p class="muted">Arrastra para girar la cúpula; clic en un mosaico para abrirlo, Esc o clic fuera para cerrarlo.</p>
+        <div class="dg-root" id="metro-dome"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="metro-footer">metro_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>)</footer>
+
+</main>
+
+<script type="module">
+import { mount as m0 } from '../shared/components/metro/kit.js';
+import { mount as m1 } from '../shared/components/metro/dome-gallery.js';
+import { metroToggle } from '../shared/components/metro/kit.js';
+// El marcado llama estas funciones con on…="": van en window.
+Object.assign(window, { metroToggle });
+m0(); m1();
+</script>
+</body>
+</html>

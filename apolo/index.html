@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<!--
+apolo_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: Circular Gallery, LightRays, Ripple Distortion.
+· Motion v11.18.2 (build mini, incrustado) · https://motion.dev · https://github.com/motiondivision/motion (@motiondivision)
+· Tilt card y Shader Lens reconstruidos desde el concepto de los ejemplos de motion.dev (sin código copiado).
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+──── Motion ────
+The MIT License (MIT)
+
+Copyright (c) 2024 Motion B.V.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>apolo_theme · Demo</title>
+<meta name="description" content="apolo: tema griego enmarcado por columnas jónicas dibujadas en SVG (éntasis, estrías, volutas) y rosetas, con pétalos derivando sobre un cielo Egeo de día o un atardecer púrpura y naranja de noche.">
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css2?family=Cinzel:wght@400;700&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="apolo.css">
+</head>
+<body>
+
+<!-- Capas de escena -->
+<canvas id="ap-sky"></canvas>
+<div id="ap-texture"></div>
+<div id="ap-back-stripes"></div>
+<div id="ap-tilt-layer"></div>
+<canvas id="ap-rays"></canvas>
+<canvas id="ap-petals"></canvas>
+
+<div id="ap-toggle-wrap">
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()" aria-label="Cambiar a atardecer"><span id="toggle-icon" style="display:inline-block">☽</span> <span id="toggle-label">Atardecer</span></button>
+</div>
+
+<!-- Hero: imagen de bienvenida (prouned_apolo.webp, collage estilo
+     Proun) con pin de scroll (blur/zoom) y Ripple Distortion sutil
+     (strength=0.01) siguiendo el puntero. Ver initHero()/initRipple().
+     La imagen va en base64 inline (src/img/prouned_apolo.webp es el
+     original, se re-genera con
+     ffmpeg -i prouned_apolo.png -vf scale=2400:-1 -q:v 82 prouned_apolo.webp
+     si hace falta editarla) · no una referencia externa: Ripple
+     Distortion necesita subir la imagen como textura WebGL, y
+     Chromium bloquea eso por seguridad de origen cuando el archivo se
+     abre por file:// (doble clic), aunque la imagen esté en la misma
+     carpeta · confirmado con SecurityError real, no hipotético. Como
+     el usuario previsualiza casi siempre por file://, vale la pena
+     el salto de ~30KB a ~0.45MB en vez de dejarlo roto ahí. -->
+<div class="ap-hero-pin">
+  <header class="ap-hero">
+    <div class="ap-hero-media">
+      <img id="ap-hero-img" src="../assets/img/apolo/e86aa538cd.webp" data-dark="../assets/img/apolo/ac7a5f1e1f.webp" alt="" width="2400" height="1350">
+      <canvas id="ap-hero-ripple"></canvas>
+    </div>
+    <div class="ap-hero-scrim"></div>
+    <div class="ap-hero-text">
+      <h1 class="page-title">APOLO</h1>
+      <div class="page-subtitle">_theme · iroFactory</div>
+    </div>
+  </header>
+</div>
+
+<div class="page">
+
+<!-- ── Presentación ── -->
+<section class="ap-presentacion">
+  <div class="wrap ap-presentacion-grid">
+    <div>
+      <h1>Un tema de documentación hecho de componentes</h1>
+      <p>La página solo compone piezas compartidas de iroFactory, sin dependencias externas más allá de las fuentes. El fondo combina columnas generadas en SVG, dos shaders en WebGL crudo (sin Three.js) y una fotografía que se reordena en tiras para formar cada columna.</p>
+      <p>El tema alterna entre paleta clara y oscura. Ambas reconstruyen el fondo completo · degradado, columnas y tipografía · a partir de los mismos tokens de color que se listan más abajo.</p>
+    </div>
+    <div class="ap-presentacion-aside">
+      <blockquote class="ap-quote">
+        «Ningún color puro #000 o #fff en ningún token · hasta el negro y el blanco de este tema son un matiz.»
+        <cite>Regla de diseño de iroFactory</cite>
+      </blockquote>
+      <figure class="ap-statue ap-statue-aphrodite">
+        <div class="ap-statue-media">
+          <img src="../assets/img/apolo/a7c89a4e40.webp" alt="Cabeza de Afrodita en mármol">
+          <canvas aria-hidden="true"></canvas>
+        </div>
+        <figcaption>Cabeza de Afrodita · Museo Arqueológico Nacional de Atenas</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ── Ejemplos ── -->
+<section class="ap-ejemplos">
+  <p class="ap-ejemplos-heading">Cuatro vistas del mismo tema</p>
+  <div class="ap-gallery">
+    <figure class="ap-gallery-card g1">
+      <div class="swatch-row" style="margin:0">
+        <div class="swatch-box" style="background:var(--gold);height:36px;width:36px"></div>
+        <div class="swatch-box" style="background:var(--aegean);height:36px;width:36px"></div>
+        <div class="swatch-box" style="background:var(--rose);height:36px;width:36px"></div>
+        <div class="swatch-box" style="background:var(--marble);height:36px;width:36px"></div>
+      </div>
+      <div class="ap-gallery-caption">Paleta · tokens de color</div>
+    </figure>
+    <figure class="ap-gallery-card g2">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <span class="badge gold">oro</span><span class="badge aegean">egeo</span><span class="badge rose">rosa</span>
+        <button class="btn primary">primary</button>
+      </div>
+      <div class="ap-gallery-caption">Componentes · badges y botones</div>
+    </figure>
+    <figure class="ap-gallery-card g3">
+      <pre data-lang="python" style="margin:0;font-size:10px"><span class="cm"># Ejemplo de resaltado</span>
+<span class="kw">class</span> Config:
+    <span class="fn">def</span> <span class="kw">describir</span>(self):
+        <span class="kw">return</span> <span class="str">f"{self.tema}"</span></pre>
+      <div class="ap-gallery-caption">Código · resaltado de sintaxis</div>
+    </figure>
+    <figure class="ap-gallery-card g4">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div class="ode-dot gold">I</div>
+        <div><h4>Primer trazo</h4><p class="muted" style="font-size:12px">La paleta nace de dos referencias: mármol claro, mar profundo.</p></div>
+      </div>
+      <div class="ap-gallery-caption">Narrativa · Ode Log</div>
+    </figure>
+  </div>
+</section>
+
+<!-- ── Motivo ── -->
+<section class="ap-motivo">
+  <div class="wrap">
+    <div>
+      <h2>Sobre este tema</h2>
+      <p>La paleta parte de dos referencias concretas: mármol claro y un azul profundo de mar. De ahí salen los nombres de los tokens, no al revés · la idea vino primero de qué colores se veían bien juntos, la referencia clásica se sumó después.</p>
+      <p>La portada usa fragmentos de una sola fotografía reordenados en tiras, en vez de una imagen o un degradado continuo, para que el fondo tenga textura sin depender de una imagen externa pesada.</p>
+    </div>
+    <div>
+      <h2>Cómo funciona</h2>
+      <p>Sin Three.js · WebGL crudo para Light Rays y Ripple Distortion, SVG procedural para columnas y estrías. El toggle de tema no cambia una imagen por otra al azar: reconstruye el fondo entero, gradiente incluido, desde los mismos tokens que colorean cada swatch de abajo.</p>
+      <p>Una serif de lectura larga para el cuerpo, una serif más geométrica y en mayúsculas para títulos. Ningún color puro #000 o #fff en ningún token.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pestañas de información y detalles ── -->
+<section class="ap-stage-section" id="detalles">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="ap-decay-filter" x="-60%" y="-60%" width="220%" height="220%">
+        <feTurbulence type="turbulence" baseFrequency="0.012" numOctaves="2" seed="7" stitchTiles="stitch" result="ap-decay-noise"/>
+        <feDisplacementMap id="ap-decay-displace" in="SourceGraphic" in2="ap-decay-noise" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+  <div class="ap-gallery-tabs" id="ap-gallery-tabs">
+    <div class="ap-gallery-track" id="ap-gallery-track" role="tablist" aria-label="Detalles del tema">
+      <button class="ap-tab" role="tab" id="tab-paleta" aria-controls="panel-paleta" aria-selected="true" data-index="0">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;gap:4px">
+          <span style="width:14px;height:14px;border-radius:3px;background:var(--gold)"></span>
+          <span style="width:14px;height:14px;border-radius:3px;background:var(--aegean)"></span>
+          <span style="width:14px;height:14px;border-radius:3px;background:var(--rose)"></span>
+        </span>
+        <span class="ap-tab-label">Paleta</span>
+      </button>
+      <button class="ap-tab" role="tab" id="tab-componentes" aria-controls="panel-componentes" aria-selected="false" tabindex="-1" data-index="1">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;gap:5px;align-items:center">
+          <span style="font-family:var(--display);font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border:1px solid var(--gold);border-radius:var(--radius);color:var(--gold-ink)">oro</span>
+          <span style="width:26px;height:14px;border-radius:var(--radius);background:var(--gold);opacity:.85"></span>
+        </span>
+        <span class="ap-tab-label">Componentes</span>
+      </button>
+      <button class="ap-tab" role="tab" id="tab-codigo" aria-controls="panel-codigo" aria-selected="false" tabindex="-1" data-index="2">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;flex-direction:column;gap:3px;width:56px">
+          <span style="height:4px;border-radius:2px;width:70%;background:var(--gold)"></span>
+          <span style="height:4px;border-radius:2px;width:100%;background:var(--text2)"></span>
+          <span style="height:4px;border-radius:2px;width:45%;background:var(--aegean)"></span>
+        </span>
+        <span class="ap-tab-label">Código</span>
+      </button>
+      <button class="ap-tab" role="tab" id="tab-narrativa" aria-controls="panel-narrativa" aria-selected="false" tabindex="-1" data-index="3">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;align-items:center;gap:6px">
+          <span style="width:18px;height:18px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:8px;color:var(--gold-ink)">I</span>
+          <span style="width:34px;height:4px;border-radius:2px;background:var(--text2)"></span>
+        </span>
+        <span class="ap-tab-label">Narrativa</span>
+      </button>
+      <button class="ap-tab" role="tab" id="tab-mapa" aria-controls="panel-mapa" aria-selected="false" tabindex="-1" data-index="4">
+        <span class="ap-tab-preview" aria-hidden="true" style="width:40px;height:26px">
+          <svg viewBox="0 0 40 26" width="40" height="26" aria-hidden="true">
+            <line x1="6" y1="20" x2="20" y2="6" stroke="var(--border)" stroke-width="1"/>
+            <line x1="20" y1="6" x2="34" y2="18" stroke="var(--border)" stroke-width="1"/>
+            <line x1="6" y1="20" x2="34" y2="18" stroke="var(--border)" stroke-width="1"/>
+            <circle cx="6" cy="20" r="3" fill="var(--aegean)"/>
+            <circle cx="20" cy="6" r="3" fill="var(--gold)"/>
+            <circle cx="34" cy="18" r="3" fill="var(--rose)"/>
+          </svg>
+        </span>
+        <span class="ap-tab-label">Mapa del código</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="ap-stage wrap">
+    <div class="ap-stage-main">
+
+    <div class="ap-panel" id="panel-paleta" role="tabpanel" aria-labelledby="tab-paleta">
+      <p class="muted">Mármol, oro y azul Egeo · El Mediterráneo en dos luces.</p>
+
+      <h3>Cielo y mar</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--aegean)"><span class="swatch-hex" id="hex-aegean"></span></div>--aegean</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--aegean-lt)"><span class="swatch-hex" id="hex-aegean-lt"></span></div>--aegean-lt</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--sky)"><span class="swatch-hex" id="hex-sky"></span></div>--sky</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--sea)"><span class="swatch-hex" id="hex-sea"></span></div>--sea</div>
+      </div>
+
+      <h3>Mármol y oro</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--marble)"><span class="swatch-hex" id="hex-marble"></span></div>--marble</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--gold-lt)"><span class="swatch-hex" id="hex-gold-lt"></span></div>--gold-lt</div>
+      </div>
+
+      <h3>Flora</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--rose)"><span class="swatch-hex" id="hex-rose"></span></div>--rose</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--rose-dark)"><span class="swatch-hex" id="hex-rose-dark"></span></div>--rose-dark</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--petal)"><span class="swatch-hex" id="hex-petal"></span></div>--petal</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--petal-dark)"><span class="swatch-hex" id="hex-petal-dark"></span></div>--petal-dark</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--yellow)"><span class="swatch-hex" id="hex-yellow"></span></div>--yellow</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--yellow-dark)"><span class="swatch-hex" id="hex-yellow-dark"></span></div>--yellow-dark</div>
+      </div>
+
+      <h3>Semánticos</h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+      </div>
+
+      <hr class="divider">
+      <table>
+        <tr><th>Token</th><th>Día</th><th>Atardecer</th><th>Evocación</th></tr>
+        <tr><td><code>--gold</code></td><td>#C8900A</td><td>#E8A820</td><td>Oro · el sol · Apolo</td></tr>
+        <tr><td><code>--aegean</code></td><td>#0F4FA8</td><td>#DA5B24</td><td>Egeo · el mar · Poseidón</td></tr>
+        <tr><td><code>--marble</code></td><td>#F8F4EC</td><td>#E8D8B8</td><td>Mármol · los templos</td></tr>
+        <tr><td><code>--olive</code></td><td>#607830</td><td>#405820</td><td>Olivo · Atenea</td></tr>
+        <tr><td><code>--rose</code></td><td>#E87080</td><td>#D06070</td><td>Rosa · Afrodita · pétalos</td></tr>
+        <tr><td><code>--yellow</code></td><td>#F0C840</td><td>#E0A820</td><td>Amarillo · flores del campo</td></tr>
+      </table>
+    </div>
+
+    <div class="ap-panel" id="panel-componentes" role="tabpanel" aria-labelledby="tab-componentes" hidden>
+      <h3>Callouts</h3>
+      <div class="callout"><div class="callout-title">Acento · Oro</div><p>Un trazo de oro para lo que no debería pasar desapercibido.</p></div>
+      <div class="callout ok"><div class="callout-title">OK · Olivo</div><p>Confirmado, sin complicaciones.</p></div>
+      <div class="callout warn"><div class="callout-title">Warn · Oro</div><p>El plazo se acerca, todavía hay tiempo.</p></div>
+      <div class="callout danger"><div class="callout-title">Danger</div><p>Una acción que no tiene vuelta atrás.</p></div>
+      <div class="callout aegean"><div class="callout-title">Aegean</div><p>Un aviso que llega desde otra parte del sistema.</p></div>
+      <div class="callout olive"><div class="callout-title">Olive</div><p>Contexto de fondo, nada que resolver ahora.</p></div>
+      <div class="callout rose"><div class="callout-title">Rose</div><p>Un matiz suave, más decorativo que urgente.</p></div>
+      <div class="callout marble"><div class="callout-title">Marble</div><p>Neutro por diseño, la base sobre la que va todo lo demás.</p></div>
+
+      <hr class="divider">
+      <h3>Badges</h3>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+        <span class="badge gold">oro</span>
+        <span class="badge aegean">egeo</span>
+        <span class="badge olive">olivo</span>
+        <span class="badge rose">rosa</span>
+        <span class="badge yellow">amarillo</span>
+        <span class="badge ok">ok</span>
+        <span class="badge warn">warn</span>
+        <span class="badge danger">danger</span>
+        <span class="badge">default</span>
+      </div>
+
+      <hr class="divider">
+      <h3>Botones</h3>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0">
+        <button class="btn primary">primary</button>
+        <button class="btn">default</button>
+        <button class="btn aegean">egeo</button>
+        <button class="btn olive">olivo</button>
+        <button class="btn rose">rosa</button>
+        <button class="btn ok">ok</button>
+        <button class="btn warn">warn</button>
+        <button class="btn danger">danger</button>
+      </div>
+
+      <hr class="divider">
+      <h3>Métricas</h3>
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">12</div><div class="metric-lbl">temas en iroFactory</div></div>
+        <div class="metric"><div class="metric-val aegean">∞</div><div class="metric-lbl">combinaciones de paleta</div></div>
+        <div class="metric"><div class="metric-val olive">2</div><div class="metric-lbl">modos, claro y oscuro</div></div>
+        <div class="metric"><div class="metric-val rose">0</div><div class="metric-lbl">dependencias externas</div></div>
+      </div>
+
+      <hr class="divider">
+      <h3>Cards</h3>
+      <div class="grid-2">
+        <div class="card"><strong>La Ilíada</strong><span class="badge gold" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">Poema épico griego · c. siglo VIII a.C.</p></div>
+        <div class="card"><strong>La Odisea</strong><span class="badge aegean" style="margin-left:8px">Homero</span><p class="muted" style="margin-top:6px">Poema épico griego · secuela de la Ilíada.</p></div>
+      </div>
+    </div>
+
+    <div class="ap-panel" id="panel-codigo" role="tabpanel" aria-labelledby="tab-codigo" hidden>
+      <pre data-lang="python"><span class="cm"># Ejemplo de resaltado de sintaxis</span>
+<span class="kw">class</span> Config:
+    <span class="fn">def</span> <span class="kw">__init__</span>(self, tema):
+        self.tema    = tema
+        self.activo  = <span class="kw">True</span>
+
+    <span class="fn">def</span> <span class="kw">describir</span>(self):
+        <span class="kw">return</span> <span class="str">f"Tema activo: {self.tema}"</span>
+
+config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
+<span class="fn">print</span>(config.<span class="fn">describir</span>())</pre>
+    </div>
+
+    <div class="ap-panel" id="panel-narrativa" role="tabpanel" aria-labelledby="tab-narrativa" hidden>
+      <h3>Ode Log</h3>
+      <div class="ode-log">
+        <div class="ode-entry"><div class="ode-dot gold">I</div><div><h4>Primer trazo</h4><p class="muted">La paleta nace de dos referencias: mármol claro, mar profundo.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>El fondo se mueve</h4><p class="muted">Cada columna muestra una tira distinta de la misma fotografía.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot rose">III</div><div><h4>Dos luces</h4><p class="muted">El tema completo se reconstruye al alternar claro y oscuro.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot olive">IV</div><div><h4>Sin contorno</h4><p class="muted">El contraste del texto viene del fondo, no de un borde alrededor.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot gold">V</div><div><h4>Ningún blanco puro</h4><p class="muted">Hasta el negro y el blanco de esta paleta son un matiz.</p></div></div>
+      </div>
+
+      <hr class="divider">
+      <h3>Estrofas</h3>
+      <div class="strophe" id="strophe-1"><div class="strophe-num">I</div><div><h4>Estrofa</h4><p class="muted">Este párrafo entra desde la derecha.</p></div></div>
+      <div class="strophe" id="strophe-2" style="border-left-color:var(--aegean)"><div class="strophe-num" style="color:var(--aegean)">II</div><div><h4>Antistrofa</h4><p class="muted">Este retrocede, entra desde la izquierda.</p></div></div>
+      <div class="strophe" id="strophe-3" style="border-left-color:var(--olive-ink)"><div class="strophe-num" style="color:var(--olive-ink)">III</div><div><h4>Épodo</h4><p class="muted">Y este se queda quieto, sin desplazarse.</p></div></div>
+    </div>
+
+    <div class="ap-panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" hidden>
+      <p class="muted">Árbol de archivos, dependencias reales entre ellos, y clases/métodos de iroFactory completo, generado con <a href="https://github.com/RemiH06/iroFactory">Ariadne</a> directamente del código de este repositorio. Arrastra para moverte, gira la rueda para acercar, haz clic en un nodo para ver su detalle.</p>
+      <div class="ap-graph-frame">
+        <iframe src="../ariadne/irofactory.html" title="Mapa del código de iroFactory" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    </div>
+    <aside class="ap-stage-statue">
+      <figure class="ap-statue ap-statue-apollo">
+        <div class="ap-statue-media">
+          <img src="../assets/img/apolo/56aedbd715.webp" alt="Estatua de Apolo con lira, en mármol">
+          <canvas aria-hidden="true"></canvas>
+        </div>
+      </figure>
+    </aside>
+  </div>
+</section>
+
+<footer class="ap-footer">
+  <div class="ap-footer-row">apolo_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Animación con <a href="https://motion.dev">Motion</a> (<a href="https://github.com/motiondivision">@motiondivision</a>)</div>
+</footer>
+
+</div>
+
+<script type="module">
+import { mount as m0 } from '../shared/components/apolo/statues.js';
+import { mount as m1 } from '../shared/components/apolo/circular-gallery-tabs.js';
+import { toggleTheme } from '../shared/components/apolo/kit.js';
+// El marcado llama estas funciones con on…="": van en window.
+Object.assign(window, { toggleTheme });
+m0(); m1();
+</script>
+</body>
+</html>

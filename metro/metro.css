@@ -1,0 +1,300 @@
+/* ── PALETA (skill colorimetría) ──
+   Concepto: señalética de transporte. Regla: Custom por convención, no
+   por la rueda · el semáforo (rojo ~0°, ámbar ~30°, verde ~140°) es la
+   única semántica y viene del estándar vial, no de una armonía. La
+   paleta extendida (azul, púrpura, naranja, rosa, café) son colores de
+   línea de metro: distinguibles entre sí, sin carga semántica. Claro:
+   tintas oscuras sobre papel; oscuro: los mismos roles en neón sobre
+   casi negro. Las --*-ink ajustan solo luminosidad para texto WCAG AA.
+   Sin #000 ni #fff puros (regla dura de iroFactory). */
+.metro{--bg:#F5F0E8;--bg2:#EDE8DC;--bg3:#E4DDD0;--text:#1A1410;--text2:#6B5E50;--border:#C8BFB0;--red:#8B1A1A;--yellow:#C4691A;--green:#2A6B3A;--blue:#1A3A6B;--purple:#4A1A6B;--orange:#A34310;--pink:#8B1A4A;--brown:#5C3317;--black:#0D0A08;--white:#FAF7F2;--gray:#9A8E82;--accent:#6B1A2A;--accent2:#C4691A;--ok:#2A6B3A;--warn:#C4691A;--danger:#8B1A1A;--mono:'Space Mono','Courier New',monospace;--sans:'DM Sans',system-ui,sans-serif;--radius:4px;--radius-lg:8px;--hero-ink:var(--black);--yellow-ink:#924E13;--warn-ink:#924E13;--gray-ink:#6A5F55}
+.metro.dark{--bg:#0a0c10;--bg2:#0f1219;--bg3:#161b26;--text:#e8eaf0;--text2:#7E839C;--border:#1e2535;--red:#ff4560;--yellow:#f5a623;--green:#00e5a0;--blue:#457BFF;--purple:#9B6DFF;--orange:#FF7A30;--pink:#FF4D8F;--brown:#C4855A;--black:#050608;--white:#F2F4F8;--gray:#4a5568;--accent:#00e5a0;--accent2:#457BFF;--ok:#00e5a0;--warn:#f5a623;--danger:#ff4560;--hero-ink:var(--white);--yellow-ink:var(--yellow);--warn-ink:var(--warn);--gray-ink:#76859E}
+.metro *,.metro *::before,.metro *::after{box-sizing:border-box;margin:0;padding:0}
+.metro{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;transition:background .3s,color .3s}
+.metro ::-webkit-scrollbar{width:5px}.metro ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.metro h2{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text);margin:40px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:-.5px}
+.metro h3{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);margin:24px 0 10px}
+.metro h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.metro p{margin-bottom:14px;line-height:1.8}.metro p.muted{color:var(--text2);font-size:13px}
+.metro strong{font-weight:600;color:var(--text)}.metro a{color:var(--accent);text-decoration:none}.metro a:hover{text-decoration:underline}
+.metro code{font-family:var(--mono);font-size:12px;background:var(--bg3);border:1px solid var(--border);padding:1px 6px;border-radius:var(--radius);color:var(--accent)}
+.metro pre{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:16px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--text)}
+.metro pre code{background:none;border:none;padding:0;color:inherit}
+.metro pre .kw{color:var(--blue)}.metro pre .cm{color:var(--text2);font-style:italic}.metro pre .str{color:var(--green)}.metro pre .num{color:var(--yellow-ink)}.metro pre .fn{color:var(--purple)}
+.metro .callout{border-left:3px solid var(--accent);background:var(--bg2);padding:14px 18px;margin:20px 0;border-radius:0 var(--radius) var(--radius) 0}
+.metro .callout-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.metro .callout p{margin-bottom:0;font-size:13px}
+.metro .callout.ok{border-color:var(--ok);--mg-color:var(--ok)}.metro .callout.ok .callout-title{color:var(--ok)}
+.metro .callout.warn{border-color:var(--warn-ink);--mg-color:var(--warn-ink)}.metro .callout.warn .callout-title{color:var(--warn-ink)}
+.metro .callout.danger{border-color:var(--danger);--mg-color:var(--danger)}.metro .callout.danger .callout-title{color:var(--danger)}
+.metro .callout.blue{border-color:var(--blue);--mg-color:var(--blue)}.metro .callout.blue .callout-title{color:var(--blue)}
+.metro .callout.purple{border-color:var(--purple);--mg-color:var(--purple)}.metro .callout.purple .callout-title{color:var(--purple)}
+.metro .callout.orange{border-color:var(--orange);--mg-color:var(--orange)}.metro .callout.orange .callout-title{color:var(--orange)}
+.metro .callout.pink{border-color:var(--pink);--mg-color:var(--pink)}.metro .callout.pink .callout-title{color:var(--pink)}
+.metro .callout.brown{border-color:var(--brown);--mg-color:var(--brown)}.metro .callout.brown .callout-title{color:var(--brown)}
+.metro .callout.gray{border-color:var(--gray-ink);--mg-color:var(--gray-ink)}.metro .callout.gray .callout-title{color:var(--gray-ink)}
+.metro table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.metro th{background:var(--bg3);padding:8px 12px;text-align:left;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--text2);border-bottom:1px solid var(--border)}
+.metro td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;background:color-mix(in srgb,var(--bg) 85%,transparent)}
+.metro tr:hover td{background:var(--bg3)}
+.metro .btn{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;padding:6px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text);cursor:pointer;transition:color .15s ease-out,border-color .15s ease-out,background-color .15s ease-out,transform .16s ease-out;text-decoration:none}
+.metro .btn:hover{border-color:var(--accent);color:var(--accent)}
+.metro .btn.primary{background:color-mix(in srgb,var(--accent) 15%,transparent);border-color:var(--accent);color:var(--accent)}
+.metro .btn.ok{border-color:var(--ok);color:var(--ok)}.metro .btn.warn{border-color:var(--warn-ink);color:var(--warn-ink)}.metro .btn.danger{border-color:var(--danger);color:var(--danger)}
+.metro .btn.blue{border-color:var(--blue);color:var(--blue)}.metro .btn.purple{border-color:var(--purple);color:var(--purple)}.metro .btn.orange{border-color:var(--orange);color:var(--orange)}.metro .btn.pink{border-color:var(--pink);color:var(--pink)}
+.metro .badge{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);background:var(--bg)}
+.metro .badge.accent{border-color:var(--accent);color:var(--accent)}.metro .badge.ok{border-color:var(--ok);color:var(--ok)}.metro .badge.warn{border-color:var(--warn-ink);color:var(--warn-ink)}.metro .badge.danger{border-color:var(--danger);color:var(--danger)}
+.metro .badge.blue{border-color:var(--blue);color:var(--blue)}.metro .badge.purple{border-color:var(--purple);color:var(--purple)}.metro .badge.orange{border-color:var(--orange);color:var(--orange)}.metro .badge.pink{border-color:var(--pink);color:var(--pink)}.metro .badge.brown{border-color:var(--brown);color:var(--brown)}.metro .badge.gray{border-color:var(--gray-ink);color:var(--gray-ink)}
+.metro .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px}
+.metro .metrics-row{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.metro .metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;flex:1;min-width:100px}
+.metro .metric-val{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent)}
+.metro .metric-lbl{font-size:11px;color:var(--text2);margin-top:2px}
+.metro .metric-val.red{color:var(--red)}.metro .metric-val.yellow{color:var(--yellow-ink)}.metro .metric-val.green{color:var(--green)}.metro .metric-val.blue{color:var(--blue)}.metro .metric-val.purple{color:var(--purple)}
+.metro .metric:has(.metric-val.red){--mg-color:var(--red)}.metro .metric:has(.metric-val.yellow){--mg-color:var(--yellow-ink)}.metro .metric:has(.metric-val.green){--mg-color:var(--green)}.metro .metric:has(.metric-val.blue){--mg-color:var(--blue)}.metro .metric:has(.metric-val.purple){--mg-color:var(--purple)}
+.metro .divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.metro .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.metro .grid-2{grid-template-columns:1fr}}
+.metro .step-row{display:flex;gap:16px;align-items:flex-start;margin:16px 0;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)}
+.metro .step-num{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);min-width:32px;line-height:1;margin-top:2px}
+.metro .timeline{margin:16px 0;display:flex;flex-direction:column;gap:10px}
+.metro .timeline-item{display:flex;gap:16px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)}
+.metro .timeline-item p{margin-bottom:0}
+.metro .timeline-item:has(.done){--mg-color:var(--ok)}.metro .timeline-item:has(.warn){--mg-color:var(--warn-ink)}.metro .timeline-item:has(.danger){--mg-color:var(--danger)}.metro .timeline-item:has(.pending){--mg-color:var(--gray-ink)}
+.metro .timeline-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;margin-top:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3)}
+/* Tinte de 8% (antes 15%): con 15% el verde y el ámbar sobre su propio
+   tinte quedaban en 4.3-4.4:1 en modo claro. */
+.metro .timeline-dot.done{background:color-mix(in srgb,var(--ok) 8%,transparent);border-color:var(--ok);color:var(--ok)}
+.metro .timeline-dot.pending{background:var(--bg3);border-color:var(--border);color:var(--text2)}
+.metro .timeline-dot.warn{background:color-mix(in srgb,var(--warn) 8%,transparent);border-color:var(--warn-ink);color:var(--warn-ink)}
+.metro .timeline-dot.danger{background:color-mix(in srgb,var(--danger) 8%,transparent);border-color:var(--danger);color:var(--danger)}
+.metro .theme-btn{font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:color .15s ease-out,border-color .15s ease-out,background-color .15s ease-out,transform .16s ease-out}
+.metro .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.swatch{width:80px;font-family:var(--mono);font-size:9px;color:var(--text2);text-align:center}
+.swatch-box{height:48px;border-radius:4px;margin-bottom:6px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:4px;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text);padding:1px 2px;border-radius:2px;letter-spacing:0;line-height:1;pointer-events:none}
+.swatch-hex.is-chip{background:var(--bg)}
+.metro-title-anim{transition:color .6s ease}
+
+/* ── Radios ── una sola escala: --radius (4px) para controles e
+   insignias (botones, ítems del dock, tooltip, celdas), --radius-lg
+   (8px) para contenedores (tarjeta de intro, panel del dock, mosaicos
+   de la galería). Antes convivían 4/6/8/10/12/14px sin regla. */
+/* ── Layout por niveles ── */
+html,body.metro{margin:0}
+body.metro{min-height:100vh}
+#metro-bg,#metro-grid{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.metro-page{position:relative;z-index:1;overflow-x:clip}
+.wrap{max-width:900px;margin:0 auto;padding:0 32px}
+@media(max-width:600px){.wrap{padding:0 18px}}
+.metro-controls{position:fixed;top:18px;right:20px;z-index:1200}
+
+/* ══════════════════════════════════════════════════════
+   HERO · mismo esquema que Proun (docs/index.html): envoltorio
+   alto con el header sticky adentro y tres fases por scroll ·
+   el título sube y se desvanece mientras la imagen se desenfoca,
+   se sostiene, y al final la imagen se aleja un poco. 200vh en
+   vez de los 300vh de Proun (en apolo 300vh resultó demasiado
+   scroll detenido). Sin JS o con reduced-motion, bloque estático.
+══════════════════════════════════════════════════════ */
+.metro-hero-pin{position:relative;z-index:2}
+html.js-pin .metro-hero-pin{height:200vh}
+.metro-hero{position:relative;height:100vh;min-height:520px;max-height:980px;overflow:hidden;isolation:isolate;border-bottom:1px solid var(--border)}
+html.js-pin .metro-hero{position:sticky;top:0}
+.metro-hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--bg2)}
+.metro-hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:filter,transform}
+.metro-hero-scrim{position:absolute;inset:0;z-index:1;background:color-mix(in srgb,var(--bg) 28%,transparent)}
+.metro.dark .metro-hero-scrim{background:color-mix(in srgb,var(--black) 42%,transparent)}
+.metro-hero-text{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;will-change:opacity,transform}
+.metro-warp{position:relative;width:min(92vw,1100px);height:clamp(150px,24vw,300px)}
+.metro-warp canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.metro-warp-fallback{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:clamp(3rem,10vw,9rem);letter-spacing:-.06em;line-height:.9;color:var(--hero-ink)}
+.metro-warp.is-gl .metro-warp-fallback{opacity:0}
+/* Placas: sobre el collage claro del modo oscuro el subtítulo y el
+   crédito quedaban en 3.0 y 2.4:1 (medido en píxeles). */
+.metro-hero-sub{font-family:var(--mono);font-size:13px;color:var(--hero-ink);margin-top:6px;letter-spacing:.02em;background:color-mix(in srgb,var(--bg) 82%,transparent);padding:3px 10px;border-radius:var(--radius)}
+.metro-hero-credit{position:absolute;z-index:2;right:24px;bottom:20px;font-family:var(--mono);font-size:11px;color:var(--hero-ink);background:color-mix(in srgb,var(--bg) 82%,transparent);padding:3px 8px;border-radius:var(--radius)}
+
+
+/* ══════════════════════════════════════════════════════
+   BORDER GLOW (React Bits) · port directo del CSS real. El
+   mesh-gradient del borde usa los tres colores del semáforo por
+   token (rojo, amarillo, verde, en el orden COLOR_MAP del
+   original) y el brillo exterior toma el color propio de cada
+   contenedor (--mg-color), así todo sigue al modo claro/oscuro
+   sin JS. El JS solo escribe --edge-proximity y --cursor-angle.
+══════════════════════════════════════════════════════ */
+.mg{
+  --edge-proximity:0;--cursor-angle:45deg;--edge-sensitivity:30;--color-sensitivity:calc(var(--edge-sensitivity) + 20);
+  --glow-padding:40px;--cone-spread:25;--fill-opacity:.5;--card-bg:var(--bg2);
+  --gradient-one:radial-gradient(at 80% 55%,var(--red) 0px,transparent 50%);
+  --gradient-two:radial-gradient(at 69% 34%,var(--yellow) 0px,transparent 50%);
+  --gradient-three:radial-gradient(at 8% 6%,var(--green) 0px,transparent 50%);
+  --gradient-four:radial-gradient(at 41% 38%,var(--red) 0px,transparent 50%);
+  --gradient-five:radial-gradient(at 86% 85%,var(--yellow) 0px,transparent 50%);
+  --gradient-six:radial-gradient(at 82% 18%,var(--green) 0px,transparent 50%);
+  --gradient-seven:radial-gradient(at 51% 4%,var(--yellow) 0px,transparent 50%);
+  --gradient-base:linear-gradient(var(--red) 0 100%);
+  --glow-color:var(--mg-color);
+  --glow-color-60:color-mix(in srgb,var(--mg-color) 60%,transparent);
+  --glow-color-50:color-mix(in srgb,var(--mg-color) 50%,transparent);
+  --glow-color-40:color-mix(in srgb,var(--mg-color) 40%,transparent);
+  --glow-color-30:color-mix(in srgb,var(--mg-color) 30%,transparent);
+  --glow-color-20:color-mix(in srgb,var(--mg-color) 20%,transparent);
+  --glow-color-10:color-mix(in srgb,var(--mg-color) 10%,transparent);
+  position:relative;isolation:isolate;transform:translate3d(0,0,.01px);
+}
+.metro .mg{--mg-color:var(--accent)}
+.mg::before,.mg::after,.mg>.mg-edge{content:"";position:absolute;inset:-1px;border-radius:inherit;transition:opacity .25s ease-out;z-index:-1;pointer-events:none}
+.mg:not(:hover)::before,.mg:not(:hover)::after,.mg:not(:hover)>.mg-edge{opacity:0;transition:opacity .75s ease-in-out}
+.mg::before{
+  border:1px solid transparent;
+  background:linear-gradient(var(--card-bg) 0 100%) padding-box,var(--gradient-one) border-box,var(--gradient-two) border-box,var(--gradient-three) border-box,var(--gradient-four) border-box,var(--gradient-five) border-box,var(--gradient-six) border-box,var(--gradient-seven) border-box,var(--gradient-base) border-box;
+  opacity:calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mask-image:conic-gradient(from var(--cursor-angle) at center,black calc(var(--cone-spread) * 1%),transparent calc((var(--cone-spread) + 15) * 1%),transparent calc((100 - var(--cone-spread) - 15) * 1%),black calc((100 - var(--cone-spread)) * 1%));
+}
+.mg::after{
+  border:1px solid transparent;
+  background:var(--gradient-one) padding-box,var(--gradient-two) padding-box,var(--gradient-three) padding-box,var(--gradient-four) padding-box,var(--gradient-five) padding-box,var(--gradient-six) padding-box,var(--gradient-seven) padding-box,var(--gradient-base) padding-box;
+  mask-image:linear-gradient(to bottom,black,black),radial-gradient(ellipse at 50% 50%,black 40%,transparent 65%),radial-gradient(ellipse at 66% 66%,black 5%,transparent 40%),radial-gradient(ellipse at 33% 33%,black 5%,transparent 40%),radial-gradient(ellipse at 66% 33%,black 5%,transparent 40%),radial-gradient(ellipse at 33% 66%,black 5%,transparent 40%),conic-gradient(from var(--cursor-angle) at center,transparent 5%,black 15%,black 85%,transparent 95%);
+  mask-composite:subtract,add,add,add,add,add;
+  opacity:calc(var(--fill-opacity) * (var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mix-blend-mode:soft-light;
+}
+.mg>.mg-edge{
+  inset:calc(var(--glow-padding) * -1);z-index:1;
+  mask-image:conic-gradient(from var(--cursor-angle) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%);
+  opacity:calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+  mix-blend-mode:plus-lighter;
+}
+.mg>.mg-edge::before{
+  content:"";position:absolute;inset:var(--glow-padding);border-radius:inherit;
+  box-shadow:inset 0 0 0 1px var(--glow-color),inset 0 0 1px 0 var(--glow-color-60),inset 0 0 3px 0 var(--glow-color-50),inset 0 0 6px 0 var(--glow-color-40),inset 0 0 15px 0 var(--glow-color-30),inset 0 0 25px 2px var(--glow-color-20),inset 0 0 50px 2px var(--glow-color-10),0 0 1px 0 var(--glow-color-60),0 0 3px 0 var(--glow-color-50),0 0 6px 0 var(--glow-color-40),0 0 15px 0 var(--glow-color-30),0 0 25px 2px var(--glow-color-20),0 0 50px 2px var(--glow-color-10);
+}
+/* Superficie clara: el original cambia plus-lighter/soft-light por normal.
+   Sin soft-light, el relleno del mesh al 50% se veía como una mancha
+   turbia sobre el beige; en claro baja a 15%. */
+.metro:not(.dark) .mg::after,.metro:not(.dark) .mg>.mg-edge{mix-blend-mode:normal}
+.metro:not(.dark) .mg{--fill-opacity:.15}
+.mg>:not(.mg-edge){position:relative;z-index:2}
+
+/* ── Niveles ── */
+.metro-intro{padding:72px 0 40px}
+.metro-intro-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:start}
+.metro-intro-card{padding:28px 32px;border-radius:var(--radius-lg)}
+.metro-intro h1{font-family:var(--mono);font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-1px;line-height:1.2;margin-bottom:16px}
+.metro-intro .callout{margin:0}
+@media(max-width:760px){.metro-intro-grid{grid-template-columns:1fr}}
+.metro-stage{padding:24px 0 80px}
+.metro-panel[hidden]{display:none}
+.metro-panel>h2:first-child{margin-top:8px}
+.metro-panel-loader{display:none;min-height:240px;align-items:center;justify-content:center;color:var(--text2)}
+.metro-panel.is-loading .metro-panel-loader{display:flex}
+.metro-panel.is-loading .metro-panel-body{display:none}
+.metro-footer{padding:22px 0 30px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--text2);background:color-mix(in srgb,var(--bg) 92%,transparent);border-top:1px solid var(--border)}
+.metro-footer a{text-underline-offset:3px}
+
+/* ══════════════════════════════════════════════════════
+   DOCK (React Bits) · mismos números del original: ítem base
+   50px, magnificación 70, distancia 200, resorte masa 0.1 ·
+   rigidez 150 · amortiguación 12. Diferencia: el contenedor
+   exterior tiene alto fijo en vez de crecer con el hover (acá
+   hay contenido debajo que brincaría). Roles de tablist/tab.
+══════════════════════════════════════════════════════ */
+.metro-dock-outer{position:relative;height:124px;margin:0 auto 12px;max-width:100%}
+.metro-dock-panel{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:var(--dock-gap,12px);width:max-content;height:68px;padding:0 8px 8px;border-radius:var(--radius-lg);background:color-mix(in srgb,var(--bg2) 92%,transparent);border:1px solid var(--border)}
+.metro-dock-item{position:relative;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:var(--radius);background:var(--bg);border:1px solid var(--border);box-shadow:0 4px 6px -1px color-mix(in srgb,var(--black) 12%,transparent),0 2px 4px -1px color-mix(in srgb,var(--black) 8%,transparent);color:var(--text2);cursor:pointer;outline:none;font:inherit;padding:0;transition:color .2s,border-color .2s}
+.metro-dock-item:hover{color:var(--text)}
+.metro-dock-item[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
+.metro-dock-item[aria-selected="true"]::after{content:"";position:absolute;bottom:-7px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--accent)}
+.metro-dock-item:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+/* Presión: escala sutil (skill frontend-design). El dock no la lleva:
+   su tamaño ya lo mueve el resorte de magnificación. */
+.metro .btn:active,.metro .theme-btn:active{transform:scale(.97)}
+/* Foco visible con el acento en todo lo interactivo (antes el botón de
+   tema y .btn quedaban con el anillo por defecto del navegador). */
+.metro a:focus-visible,.metro button:not(.metro-dock-item):focus-visible,.metro [tabindex]:not(.metro-dock-item):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.metro-dock-icon{display:flex;align-items:center;justify-content:center;width:46%;height:46%;pointer-events:none}
+.metro-dock-icon svg{width:100%;height:100%;display:block}
+.metro-dock-label{position:absolute;top:-1.6rem;left:50%;white-space:pre;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);padding:2px 8px;font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--text);pointer-events:none;opacity:0;transform:translate(-50%,0);transition:opacity .2s,transform .2s}
+.metro-dock-item.is-hover .metro-dock-label{opacity:1;transform:translate(-50%,-10px)}
+
+/* ── Lattice Loader (React Bits) · CSS del original ── */
+.ll{--ll-n:3;--ll-cell:6px;--ll-gap:2px;--ll-font:14px;--ll-color:currentColor;--ll-mark:var(--ok);--ll-idle:.15;--ll-peak:1;--ll-cycle:864ms;--ll-ease-out:cubic-bezier(.23,1,.32,1);--ll-ease-in-out:cubic-bezier(.77,0,.175,1);position:relative;display:inline-flex;align-items:center;gap:calc(var(--ll-font) * .625);font-size:var(--ll-font);line-height:1;font-family:var(--mono)}
+.ll[data-status="error"]{--ll-mark:var(--danger)}
+.ll__grid{display:grid;flex:none}
+.ll__layer{grid-area:1/1;display:grid;grid-template-columns:repeat(var(--ll-n),var(--ll-cell));gap:var(--ll-gap)}
+.ll__cell{width:var(--ll-cell);height:var(--ll-cell);border-radius:max(1px,calc(var(--ll-cell) * .25));background:var(--ll-color);opacity:var(--ll-idle)}
+.ll[data-shape="round"] .ll__cell{border-radius:50%}
+.ll__run{transition:opacity .2s ease}
+.ll__run .ll__cell{animation:ll-on var(--ll-cycle) var(--ll-ease-in-out) infinite}
+.ll__run .ll__cell[data-lit="45"]{animation-name:ll-on-45}
+.ll__run .ll__cell[data-lit="35"]{animation-name:ll-on-35}
+.ll__run .ll__cell[data-lit="25"]{animation-name:ll-on-25}
+.ll__run .ll__cell[data-hole]{animation:none;opacity:calc(var(--ll-idle) * .47)}
+.ll__mark{opacity:0;transform:scale(.9);transform-origin:center;transition:opacity .16s var(--ll-ease-out),transform .16s var(--ll-ease-out)}
+.ll__mark .ll__cell{transition:opacity .2s ease,background-color .2s ease}
+.ll__mark .ll__cell[data-on]{background:var(--ll-mark);opacity:var(--ll-peak)}
+.ll:not([data-status="working"]) .ll__run{opacity:0}
+.ll:not([data-status="working"]) .ll__run .ll__cell{animation-play-state:paused}
+.ll:not([data-status="working"]) .ll__mark{opacity:1;transform:none;transition:opacity .2s ease,transform .2s var(--ll-ease-out)}
+.ll__label{position:relative;display:inline-block;font-weight:700}
+.ll__text{position:absolute;top:0;left:0;white-space:nowrap;opacity:0;filter:blur(2px);transition:opacity .2s ease,filter .2s ease}
+.ll__text[data-active]{position:static;opacity:1;filter:blur(0)}
+.ll__timer{font-size:calc(var(--ll-font) * .875);font-variant-numeric:tabular-nums;opacity:.6}
+.ll__sr{position:absolute;width:1px;height:1px;margin:-1px;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@keyframes ll-on{0%,100%{opacity:var(--ll-idle)}18%,42%{opacity:var(--ll-peak)}62%{opacity:var(--ll-idle)}}
+@keyframes ll-on-45{0%,100%{opacity:var(--ll-idle)}13%,31%{opacity:var(--ll-peak)}45%{opacity:var(--ll-idle)}}
+@keyframes ll-on-35{0%,100%{opacity:var(--ll-idle)}10%,24%{opacity:var(--ll-peak)}35%{opacity:var(--ll-idle)}}
+@keyframes ll-on-25{0%,100%{opacity:var(--ll-idle)}7%,17%{opacity:var(--ll-peak)}25%{opacity:var(--ll-idle)}}
+@media (prefers-reduced-motion:reduce){.ll__run{--ll-peak:.7}.ll__run .ll__cell{animation-delay:0ms!important;animation-duration:1400ms!important}.ll .ll__mark{transform:none}.ll .ll__text{filter:none}}
+.metro-loader-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:16px 0}
+.metro-loader-row .card{margin:0;display:flex;align-items:center;min-height:52px}
+
+/* ══════════════════════════════════════════════════════
+   DOME GALLERY (React Bits) · CSS 3D del original: cada
+   mosaico rota en Y/X sobre la esfera y se empuja con
+   translateZ(radio); la esfera entera rota al arrastrar.
+══════════════════════════════════════════════════════ */
+.dg-root{position:relative;width:100%;height:620px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);--radius:520px;--viewer-pad:72px;--circ:calc(var(--radius) * 3.14);--rot-y:calc((360deg / var(--segments-x)) / 2);--rot-x:calc((360deg / var(--segments-y)) / 2);--item-width:calc(var(--circ) / var(--segments-x));--item-height:calc(var(--circ) / var(--segments-y));--overlay-blur-color:var(--bg);--tile-radius:var(--radius-lg);--enlarge-radius:var(--radius-lg);--image-filter:none}
+@media(max-width:600px){.dg-root{height:440px}}
+/* A todo el ancho: se sale de .wrap hasta los bordes del viewport
+   (el clip horizontal de .metro-page absorbe la barra de scroll).
+   Para que la esfera llene ese ancho, el radio sube de 0.5 a 0.75
+   del ancho y el tope por alto pasa de 1.35 a 2.2 veces el alto;
+   con 0.5 la silueta cubría solo ~2/3 del contenedor. */
+.dg-root{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;border-left:0;border-right:0}
+.dg-sphere,.dg-item,.dg-item-image{transform-style:preserve-3d}
+.dg-main{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;background:var(--overlay-blur-color);cursor:grab}
+.dg-main.is-dragging{cursor:grabbing}
+.dg-stage{width:100%;height:100%;display:grid;place-items:center;perspective:calc(var(--radius) * 2);perspective-origin:50% 50%;contain:layout paint size}
+.dg-sphere{transform:translateZ(calc(var(--radius) * -1));will-change:transform}
+.dg-overlay,.dg-overlay-blur{position:absolute;inset:0;margin:auto;z-index:3;pointer-events:none}
+.dg-overlay{background-image:radial-gradient(transparent 65%,var(--overlay-blur-color) 100%)}
+.dg-overlay-blur{mask-image:radial-gradient(transparent 70%,var(--overlay-blur-color) 90%);backdrop-filter:blur(3px)}
+.dg-item{width:calc(var(--item-width) * var(--item-size-x));height:calc(var(--item-height) * var(--item-size-y));position:absolute;top:-999px;bottom:-999px;left:-999px;right:-999px;margin:auto;transform-origin:50% 50%;backface-visibility:hidden;transition:transform .3s;transform:rotateY(calc(var(--rot-y) * (var(--offset-x) + ((var(--item-size-x) - 1) / 2)) + var(--rot-y-delta,0deg))) rotateX(calc(var(--rot-x) * (var(--offset-y) - ((var(--item-size-y) - 1) / 2)) + var(--rot-x-delta,0deg))) translateZ(var(--radius))}
+.dg-item-image{position:absolute;display:block;inset:10px;border-radius:var(--tile-radius);background:var(--bg2);overflow:hidden;backface-visibility:hidden;transition:transform .3s;cursor:pointer;touch-action:manipulation;pointer-events:auto;transform:translateZ(0)}
+.dg-item-image:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dg-item-image img{width:100%;height:100%;object-fit:cover;pointer-events:none;backface-visibility:hidden;filter:var(--image-filter)}
+.dg-viewer{position:absolute;inset:0;z-index:20;pointer-events:none;display:flex;align-items:center;justify-content:center;padding:var(--viewer-pad)}
+.dg-frame{height:100%;aspect-ratio:1;border-radius:var(--enlarge-radius);display:flex}
+@media(max-aspect-ratio:1/1){.dg-frame{height:auto;width:100%}}
+.dg-scrim{position:absolute;inset:0;z-index:10;background:color-mix(in srgb,var(--black) 40%,transparent);pointer-events:none;opacity:0;transition:opacity .5s ease;backdrop-filter:blur(3px)}
+.dg-root[data-enlarging="true"] .dg-scrim{opacity:1;pointer-events:all}
+.dg-enlarge{position:absolute;z-index:30;border-radius:var(--enlarge-radius);overflow:hidden;transform-origin:top left;box-shadow:0 10px 30px color-mix(in srgb,var(--black) 35%,transparent)}
+.dg-enlarge img,.dg-enlarge-closing img{width:100%;height:100%;object-fit:cover;filter:var(--image-filter);display:block}
+.dg-edge-fade{position:absolute;left:0;right:0;height:120px;z-index:5;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--overlay-blur-color))}
+.dg-edge-fade.top{top:0;transform:rotate(180deg)}
+.dg-edge-fade.bottom{bottom:0}
+/* ── Vertical (celular) · frontend-design/references/responsive-portrait.md
+   Revisión del 2026-10-03: el layout ya se apilaba bien; solo quedaba
+   texto de 9 a 11px (muestras, etiquetas hex, títulos de aviso, toggle).
+   También en táctil ancho (teléfono acostado, tablet). */
+@media(max-width:760px),(pointer:coarse){
+  .metro .theme-btn,.metro-hero-credit,.metro .callout-title{font-size:12px}
+  .swatch,.swatch-hex{font-size:12px}
+  .swatch{width:auto;min-width:80px}
+  table{display:block;overflow-x:auto}
+  td code{white-space:nowrap}
+}

@@ -1,0 +1,339 @@
+/* Lambda: un libro de texto dictado en el pizarrón. Tiza sobre pizarra verde
+   de noche (default), marcador sobre pintarrón de día. */
+body {
+  --bg:#1A2420;--bg2:#202C28;--bg3:#283830;
+  --text:#EEE8DC;--text2:#A59E87;--border:#304038;
+  --theorem:#A8C8E8;--proof:#E8D880;--qed:#A8E8C0;
+  --chalk-blue:#A8C8E8;--chalk-yellow:#E8D880;--chalk-green:#A8E8C0;
+  --chalk-pink:#E8A8C0;--chalk-violet:#C8A8E8;--chalk-orange:#E8C0A8;
+  --chalk-red:#E8A8A8;--chalk-cyan:#A8E8E8;
+  --black:#101814;--white:#F0EAE0;--gray:#607068;
+  --accent:#A8C8E8;--accent2:#E8D880;
+  --ok:#A8E8C0;--warn:#E8D880;--danger:#E8A8A8;
+  --glass:#4F8EF7;--glass-core:#D8F0FF;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --mono:'Fira Code',ui-monospace,monospace;
+  --radius:4px;--gutter:clamp(16px,4vw,40px);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --chalk-yellow-ink: var(--chalk-yellow);
+  --proof-ink: var(--proof);
+  --qed-ink: var(--qed);
+  --ok-ink: var(--ok);
+  --warn-ink: var(--warn);
+  --chalk-cyan-ink: var(--chalk-cyan);
+  --chalk-green-ink: var(--chalk-green);
+}
+body.light {
+  --bg:#F8F8F4;--bg2:#F0F0E8;--bg3:#E4E4D8;
+  --text:#141410;--text2:#585848;--border:#C8C8B8;
+  --theorem:#1A60C0;--proof:#C08010;--qed:#1A9050;
+  --chalk-blue:#1A60C0;--chalk-yellow:#C08010;--chalk-green:#1A9050;
+  --chalk-pink:#C01A60;--chalk-violet:#6010C0;--chalk-orange:#B23B0F;
+  --chalk-red:#C01A1A;--chalk-cyan:#1A90A0;
+  --black:#080808;--white:#FEFEFC;--gray:#909080;
+  --accent:#1A60C0;--accent2:#C08010;
+  --ok:#1A9050;--warn:#C08010;--danger:#C01A1A;
+  --glass:#1A60C0;--glass-core:#3A2A9A;
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --chalk-yellow-ink: #885A0B;
+  --proof-ink: #885A0B;
+  --qed-ink: #157340;
+  --ok-ink: #157340;
+  --warn-ink: #885A0B;
+  --chalk-cyan-ink: #146E7B;
+  --chalk-green-ink: #157340;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:18px;line-height:1.75;transition:background .3s,color .3s;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ── Pizarrón de base: rejilla hexagonal + objetos en gis (de siempre) ── */
+#lambda-hex{position:fixed;inset:0;pointer-events:none;z-index:0}
+#lambda-bg{position:fixed;inset:0;pointer-events:none;z-index:1}
+main,.lm-foot{position:relative;z-index:2}
+.lm-wrap{width:min(1040px,calc(100% - 2 * var(--gutter)));margin-inline:auto}
+
+/* ── Cabecera fija: marca, tema y Staggered Menu ── */
+.lm-top{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px var(--gutter);pointer-events:none}
+.lm-top > *{pointer-events:auto}
+/* Al bajar, la cabecera gana una franja para no quedar encima del texto. */
+.lm-top::before{content:'';position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--bg) 95%,transparent);border-bottom:1px solid var(--border);opacity:0;transition:opacity .25s ease-out}
+.lm-top.is-scrolled::before{opacity:1}
+.lm-brand{font-family:var(--serif);font-style:italic;font-weight:700;font-size:28px;line-height:1;color:var(--text);text-decoration:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--bg) 82%,transparent);border:1px solid var(--border)}
+.lm-top-right{display:flex;gap:10px;align-items:center}
+.lm-pill{font-family:var(--mono);font-size:13px;font-weight:500;min-height:44px;padding:0 16px;display:inline-flex;align-items:center;gap:8px;border-radius:999px;border:1px solid var(--border);background:color-mix(in srgb,var(--bg) 90%,transparent);color:var(--text);cursor:pointer;transition:border-color .2s ease-out,transform .16s ease-out}
+.lm-pill:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.lm-pill:hover{border-color:var(--accent)}}
+
+/* Staggered Menu (React Bits): capas de color que entran en cascada y el
+   panel con los capítulos. GSAP → Web Animations. */
+/* Registrada para que Web Animations pueda interpolarla (el original la anima con GSAP). */
+@property --sm-num-opacity{syntax:'<number>';inherits:true;initial-value:0}
+.sm-toggle-textWrap{position:relative;display:inline-block;height:1em;overflow:hidden;white-space:nowrap;line-height:1}
+.sm-toggle-textInner{display:flex;flex-direction:column;line-height:1}
+.sm-toggle-line{display:block;height:1em;line-height:1}
+.sm-icon{position:relative;width:14px;height:14px;flex:0 0 14px;display:inline-flex;align-items:center;justify-content:center}
+.sm-icon-line{position:absolute;left:50%;top:50%;width:100%;height:2px;background:currentColor;border-radius:2px;transform:translate(-50%,-50%)}
+.sm-icon-line-v{transform:translate(-50%,-50%) rotate(90deg)}
+.sm-layer-host{position:fixed;inset:0;z-index:55;pointer-events:none;overflow:hidden}
+.sm-prelayers,.staggered-menu-panel{position:absolute;top:0;right:0;bottom:0;width:clamp(300px,40vw,480px)}
+.sm-prelayer{position:absolute;inset:0;transform:translateX(100%)}
+.staggered-menu-panel{transform:translateX(100%);background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:96px 36px 32px;overflow-y:auto;pointer-events:auto;visibility:hidden}
+.staggered-menu-panel.is-open{visibility:visible}
+.sm-panel-list{list-style:none;display:flex;flex-direction:column;gap:6px;counter-reset:smItem}
+.sm-panel-itemWrap{position:relative;overflow:hidden;line-height:1}
+.sm-panel-item{position:relative;display:inline-flex;align-items:baseline;gap:14px;color:var(--text);text-decoration:none;font-family:var(--serif);font-weight:700;font-size:clamp(30px,3.4vw,44px);line-height:1.1;letter-spacing:-.01em;padding:4px 2.4em 4px 0;white-space:nowrap;width:100%;transition:color .25s}
+.sm-panel-item .sm-sec{display:inline-block;min-width:2.4em;font-family:var(--mono);font-size:14px;font-weight:500;color:var(--accent);letter-spacing:0}
+.sm-panel-itemLabel{display:inline-block;transform-origin:50% 100%}
+@media (hover:hover) and (pointer:fine){.sm-panel-item:hover{color:var(--accent)}}
+.sm-panel-item::after{counter-increment:smItem;content:counter(smItem,decimal-leading-zero);position:absolute;top:.3em;right:0;font-family:var(--mono);font-size:14px;font-weight:400;color:var(--text2);opacity:var(--sm-num-opacity,0)}
+.sm-extras{margin-top:auto;padding-top:32px;display:flex;flex-direction:column;gap:12px}
+.sm-extras-title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.sm-extras-row{display:flex;flex-wrap:wrap;gap:10px}
+.sm-extras a{font-family:var(--mono);font-size:14px;color:var(--text);text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+@media (max-width:760px){.sm-prelayers,.staggered-menu-panel{width:100%}.staggered-menu-panel{padding:88px 24px 28px}}
+
+/* ── Portada: Stroke Text + hélice de vidrio ── */
+.lm-hero{position:relative;min-height:100vh;min-height:100svh;display:grid;align-items:center;padding:96px 0 64px;overflow:hidden}
+/* Wallpaper del hero (temporal: proun de sherry). */
+.lm-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,var(--bg) 70%,transparent);mask-image:linear-gradient(to bottom,var(--bg) 70%,transparent)}
+body.light .lm-hero-img{opacity:.4}
+#lm-helix{position:absolute;top:0;right:0;width:58%;height:100%;display:block;pointer-events:none}
+.lm-hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 50% 60% at 26% 50%,color-mix(in srgb,var(--bg) 78%,transparent),transparent 72%);z-index:0}
+.lm-hero .lm-wrap{position:relative;z-index:1}
+.lm-kicker{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:inline-block;padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--bg) 84%,transparent)}
+.lm-title{margin:14px 0 4px;max-width:min(540px,100%)}
+.stroke-text{display:block;width:100%;line-height:0}
+.stroke-text__stroke{stroke:var(--accent)}.stroke-text__fill{fill:var(--text)}
+.stroke-text__svg{display:block;width:100%;height:auto;overflow:visible}
+.stroke-text__stroke,.stroke-text__fill{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:700;font-size:200px;letter-spacing:-4px}
+.lm-sub{font-family:var(--mono);font-size:14px;color:var(--text2);display:inline-block;padding:2px 10px;border-radius:999px;background:color-mix(in srgb,var(--bg) 84%,transparent)}
+.lm-sub b{color:var(--accent);font-weight:500}
+.lm-lede{font-size:22px;max-width:36ch;margin-top:18px;text-wrap:balance}
+.lm-cta{display:inline-flex;align-items:center;gap:8px;margin-top:28px;font-family:var(--mono);font-size:14px;color:var(--text);text-decoration:none;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--border);background:color-mix(in srgb,var(--bg) 84%,transparent);transition:border-color .2s ease-out}
+@media (hover:hover) and (pointer:fine){.lm-cta:hover{border-color:var(--accent)}}
+/* Graficador: la hélice dibuja la curva que se escriba aquí. */
+.lm-curve{position:relative;width:100%;display:grid;gap:8px;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:color-mix(in srgb,var(--bg) 92%,transparent);font-family:var(--mono);font-size:13px;color:var(--text)}
+.lm-curve-row{display:flex;align-items:center;gap:8px}
+.lm-curve label{color:var(--text2);white-space:nowrap}
+.lm-curve input{flex:1;min-width:0;font:inherit;color:var(--text);background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:6px 8px;min-height:36px}
+.lm-curve input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lm-curve input.lm-range{flex:0 0 7.5em}
+.lm-curve-presets{display:flex;flex-wrap:wrap;gap:6px}
+.lm-curve-presets button{font:inherit;font-size:12px;min-height:32px;padding:0 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer}
+.lm-curve-presets button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.lm-curve-msg{flex:1;min-width:0;font-size:12px;line-height:1.35;color:var(--text2);min-height:1.2em}
+.lm-curve-msg.is-error{color:var(--danger)}
+html:not(.js) .lm-curve,html:not(.js) .lm-lab{display:none}
+
+@media (max-width:860px){
+  .lm-hero{align-items:start;padding-top:110px}
+  #lm-helix{top:auto;bottom:0;width:100%;height:46%}
+  .lm-hero::before{background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 70%,transparent),transparent 62%)}
+}
+
+/* ── Capítulos ── */
+.lm-chap{position:relative;padding:112px 0 96px}
+.lm-chap-head{margin-bottom:40px;max-width:720px}
+.lm-chap > .lm-wrap{position:relative}
+/* Curva de vidrio tenue por capítulo (decorativa). */
+.lm-curio{position:absolute;top:-36px;right:-12px;width:min(320px,28vw);height:300px;pointer-events:none;opacity:.7;z-index:0}
+.lm-chap-head{position:relative;z-index:1}
+@media (max-width:860px){.lm-curio{display:none}}
+.lm-chap-num{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--accent);letter-spacing:.08em;display:inline-block;padding:2px 10px;border-radius:999px;background:color-mix(in srgb,var(--bg) 84%,transparent)}
+.lm-chap h2{font-family:var(--serif);font-weight:700;font-size:clamp(44px,7vw,84px);line-height:1;letter-spacing:-.015em;margin:10px 0 12px;text-shadow:1.5px 1px 0 color-mix(in srgb,var(--text) 30%,transparent)}
+.lm-chap-lede{font-size:20px;color:var(--text);max-width:52ch;display:inline;padding:2px 8px;line-height:1.9;-webkit-box-decoration-break:clone;box-decoration-break:clone;background:color-mix(in srgb,var(--bg) 84%,transparent)}
+.lm-chap h3{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);margin:36px 0 12px;letter-spacing:.1em;text-transform:uppercase;display:table;padding:2px 8px;margin-left:-8px;border-radius:4px;background:color-mix(in srgb,var(--bg) 86%,transparent)}
+/* Capítulos sobre Waves: otra hoja del pizarrón, con las ondas de React Bits. */
+.lm-chap--waves{background:var(--bg2);border-block:1px solid var(--border)}
+.lm-waves{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
+.lm-chap--waves .lm-wrap{position:relative;z-index:1}
+
+h4{font-size:19px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3}
+p{margin-bottom:14px}
+p.muted{color:var(--text2);font-size:16px}
+.math{font-family:var(--mono);font-size:15px;color:var(--chalk-yellow-ink);padding:0 3px}
+.lm-panel{background:color-mix(in srgb,var(--bg2) 92%,transparent);border:1px solid var(--border);border-radius:6px;padding:20px 22px}
+
+/* Paleta */
+.swatch-row{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.swatch{width:96px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--text2)}
+.swatch-box{height:52px;border-radius:var(--radius);margin-bottom:6px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:5px;font-family:var(--mono);font-size:12px;letter-spacing:-.3px;line-height:1;pointer-events:none}
+.swatch-hex.is-chip{background:var(--bg);padding:2px 3px;border-radius:2px}
+
+/* Teoremas */
+.theorem-box{border:1px solid var(--theorem);border-left:3px solid var(--theorem);background:color-mix(in srgb,var(--theorem) 7%,var(--bg));padding:18px 22px;margin:18px 0;border-radius:0 var(--radius) var(--radius) 0}
+.theorem-box .theorem-label{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--theorem);margin-bottom:8px}
+.theorem-box .theorem-body{font-style:italic;font-size:19px;line-height:1.85;color:var(--text)}
+.theorem-box.proof{border-color:var(--proof-ink);background:color-mix(in srgb,var(--proof) 7%,var(--bg))}.theorem-box.proof .theorem-label{color:var(--proof-ink)}
+.theorem-box.qed{border-color:var(--qed-ink);background:color-mix(in srgb,var(--qed) 7%,var(--bg))}.theorem-box.qed .theorem-label{color:var(--qed-ink)}
+.callout-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
+.callout{border-left:2px solid var(--accent);background:var(--bg2);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0}
+.callout-title{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.callout p{margin-bottom:0;font-size:16px}
+.callout.ok{border-color:var(--ok-ink)}.callout.ok .callout-title{color:var(--ok-ink)}
+.callout.warn{border-color:var(--warn-ink)}.callout.warn .callout-title{color:var(--warn-ink)}
+.callout.danger{border-color:var(--danger)}.callout.danger .callout-title{color:var(--danger)}
+.callout.theorem{border-color:var(--theorem)}.callout.theorem .callout-title{color:var(--theorem)}
+.callout.proof{border-color:var(--proof-ink)}.callout.proof .callout-title{color:var(--proof-ink)}
+.callout.qed{border-color:var(--qed-ink)}.callout.qed .callout-title{color:var(--qed-ink)}
+.callout.chalk-violet{border-color:var(--chalk-violet)}.callout.chalk-violet .callout-title{color:var(--chalk-violet)}
+.callout.chalk-pink{border-color:var(--chalk-pink)}.callout.chalk-pink .callout-title{color:var(--chalk-pink)}
+.callout.chalk-cyan{border-color:var(--chalk-cyan-ink)}.callout.chalk-cyan .callout-title{color:var(--chalk-cyan-ink)}
+.callout.chalk-orange{border-color:var(--chalk-orange)}.callout.chalk-orange .callout-title{color:var(--chalk-orange)}
+
+/* Badges y botones */
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.badge{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:500;padding:2px 9px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);background:var(--bg);letter-spacing:.04em;text-transform:uppercase}
+.badge.accent{border-color:var(--accent);color:var(--accent)}.badge.ok{border-color:var(--ok-ink);color:var(--ok-ink)}.badge.warn{border-color:var(--warn-ink);color:var(--warn-ink)}.badge.danger{border-color:var(--danger);color:var(--danger)}
+.badge.theorem{border-color:var(--theorem);color:var(--theorem)}.badge.proof{border-color:var(--proof-ink);color:var(--proof-ink)}.badge.qed{border-color:var(--qed-ink);color:var(--qed-ink)}
+.badge.chalk-blue{border-color:var(--chalk-blue);color:var(--chalk-blue)}.badge.chalk-yellow{border-color:var(--chalk-yellow-ink);color:var(--chalk-yellow-ink)}
+.badge.chalk-green{border-color:var(--chalk-green-ink);color:var(--chalk-green-ink)}.badge.chalk-pink{border-color:var(--chalk-pink);color:var(--chalk-pink)}
+.badge.chalk-violet{border-color:var(--chalk-violet);color:var(--chalk-violet)}.badge.chalk-orange{border-color:var(--chalk-orange);color:var(--chalk-orange)}
+.badge.chalk-red{border-color:var(--chalk-red);color:var(--chalk-red)}.badge.chalk-cyan{border-color:var(--chalk-cyan-ink);color:var(--chalk-cyan-ink)}
+.btn{display:inline-flex;align-items:center;min-height:40px;font-family:var(--mono);font-size:13px;font-weight:500;padding:0 16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text2);cursor:pointer;transition:border-color .15s ease-out,color .15s ease-out,transform .16s ease-out;letter-spacing:.03em}
+.btn:active{transform:scale(.97)}
+.btn.primary{border-color:var(--accent);color:var(--accent)}
+@media (hover:hover) and (pointer:fine){.btn:hover{border-color:var(--accent);color:var(--accent)}}
+.btn.ok{border-color:var(--ok-ink);color:var(--ok-ink)}.btn.warn{border-color:var(--warn-ink);color:var(--warn-ink)}.btn.danger{border-color:var(--danger);color:var(--danger)}
+.btn.theorem{border-color:var(--theorem);color:var(--theorem)}.btn.proof{border-color:var(--proof-ink);color:var(--proof-ink)}
+.btn.chalk-pink{border-color:var(--chalk-pink);color:var(--chalk-pink)}.btn.chalk-violet{border-color:var(--chalk-violet);color:var(--chalk-violet)}.btn.chalk-cyan{border-color:var(--chalk-cyan-ink);color:var(--chalk-cyan-ink)}
+
+/* §3 · Raimei Hakke: Magnet Lines con los 64 hexagramas */
+.lm-raimei{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;margin-bottom:56px}
+.lm-raimei-text h3{margin-top:0}
+.hakke{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);justify-items:center;align-items:center;width:min(100%,520px);aspect-ratio:1;margin-inline:auto;padding:4px;border-radius:8px;background:color-mix(in srgb,var(--bg) 70%,transparent)}
+.hakke svg{width:68%;height:68%;display:block;transform:rotate(var(--rotate,-10deg));opacity:var(--hk-o,.55);transition:opacity .25s ease-out}
+.hakke rect{fill:currentColor}
+.hakke-legend{font-family:var(--mono);font-size:12px;color:var(--text2);margin-top:10px;text-align:center}
+@media (max-width:860px){.lm-raimei{grid-template-columns:1fr}}
+
+/* Pasos, derivación y código */
+.proof-step{display:flex;gap:16px;align-items:flex-start;margin:10px 0;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--radius)}
+.proof-num{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--accent);min-width:48px;line-height:1;margin-top:5px;letter-spacing:.06em}
+.proof-step p{margin:0}
+.deriv-log{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:4px 16px}
+.deriv-entry{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.deriv-entry:last-child{border-bottom:none}
+.deriv-entry p{margin:0}
+.deriv-dot{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:500;margin-top:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.deriv-dot.theorem{color:var(--theorem);background:color-mix(in srgb,var(--theorem) 14%,var(--bg))}
+.deriv-dot.proof{color:var(--proof-ink);background:color-mix(in srgb,var(--proof) 14%,var(--bg))}
+.deriv-dot.qed{color:var(--qed-ink);background:color-mix(in srgb,var(--qed) 14%,var(--bg))}
+.deriv-dot.warn{color:var(--warn-ink);background:color-mix(in srgb,var(--warn) 14%,var(--bg))}
+.lm-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.lm-two{grid-template-columns:1fr}}
+code{font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border);padding:1px 6px;border-radius:var(--radius);color:var(--accent)}
+pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--radius);padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:var(--mono);font-size:14px;line-height:1.75;color:var(--text);position:relative}
+pre::before{content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:12px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw{color:var(--chalk-blue)}pre .fn{color:var(--chalk-cyan-ink)}pre .str{color:var(--chalk-green-ink)}
+pre .num{color:var(--chalk-yellow-ink)}pre .cm{color:var(--text2);font-style:italic}
+pre .tp{color:var(--chalk-violet)}pre .op{color:var(--chalk-pink)}
+
+/* §4 Resultados */
+.metrics-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:14px 0}
+.metric{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.metric-val{font-family:var(--mono);font-size:24px;font-weight:500;color:var(--accent);letter-spacing:-.5px;white-space:nowrap}
+.metric-lbl{font-family:var(--mono);font-size:12px;color:var(--text2);margin-top:3px;letter-spacing:.04em}
+.metric-val.theorem{color:var(--theorem)}.metric-val.proof{color:var(--proof-ink)}.metric-val.qed{color:var(--qed-ink)}
+.metric-val.chalk-violet{color:var(--chalk-violet)}.metric-val.chalk-pink{color:var(--chalk-pink)}.metric-val.chalk-cyan{color:var(--chalk-cyan-ink)}
+.lm-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg)}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th{background:var(--bg3);padding:10px 14px;text-align:left;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+td:nth-child(-n+3){white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-top:14px}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;transition:border-color .2s ease-out}
+@media (hover:hover) and (pointer:fine){.card:hover{border-color:var(--accent)}}
+.card p{margin:8px 0 0}
+
+/* §5 Formulario: el muro de fórmulas y el lente de Fluid Glass */
+.lm-formula-stage{position:relative;height:min(88svh,880px);min-height:520px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:color-mix(in srgb,var(--bg) 55%,transparent);touch-action:pan-y}
+.lm-formula-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.lm-formula-hint{font-family:var(--mono);font-size:12px;color:var(--text2);margin-top:10px}
+.lm-formula-open{position:absolute;top:12px;right:12px;z-index:2;font-family:var(--mono);font-size:13px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:color-mix(in srgb,var(--bg) 88%,transparent);color:var(--text);cursor:pointer;transition:border-color .2s ease-out,transform .16s ease-out}
+.lm-formula-open:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.lm-formula-open:hover{border-color:var(--accent)}.lm-formula-stage{cursor:zoom-in}}
+/* Formulario a pantalla completa: todas las fórmulas, filtrables con los gises de abajo. */
+.lm-fs{position:fixed;inset:0;z-index:80;background:var(--bg);display:flex;flex-direction:column;overscroll-behavior:contain}
+.lm-fs[hidden]{display:none}
+.lm-fs::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% 30%,color-mix(in srgb,var(--text) 4%,transparent),transparent 70%)}
+.lm-fs-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px var(--gutter);border-bottom:1px solid var(--border)}
+.lm-fs-head h2{font-family:var(--serif);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1}
+.lm-fs-count{font-family:var(--mono);font-size:13px;color:var(--text2);margin-left:10px}
+.lm-fs-body{position:relative;flex:1;overflow-y:auto;padding:24px var(--gutter) 40px}
+.lm-fs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:22px 32px;max-width:1400px;margin-inline:auto}
+.lm-fx{margin:0;transition:opacity .25s ease-out,transform .25s ease-out}
+.lm-fx[hidden]{display:none}
+.lm-fx-f{font-family:var(--serif);font-style:italic;font-size:26px;line-height:1.35;text-shadow:1.2px .8px 0 color-mix(in srgb,currentColor 30%,transparent)}
+.lm-fx-f sup,.lm-fx-f sub{font-size:.68em}
+.lm-fx figcaption{font-family:var(--mono);font-size:12px;color:var(--text2);margin-top:2px}
+.lm-fx.a-calc{color:var(--chalk-blue)}.lm-fx.a-alg{color:var(--chalk-violet)}.lm-fx.a-prob{color:var(--chalk-green-ink)}.lm-fx.a-datos{color:var(--chalk-cyan-ink)}
+.lm-fx.a-elec{color:var(--chalk-yellow-ink)}.lm-fx.a-dig{color:var(--chalk-orange)}.lm-fx.a-fis{color:var(--chalk-red)}.lm-fx.a-log{color:var(--chalk-pink)}
+/* Repisa del pizarrón con un gis por área (de día, marcadores). */
+.lm-chalkbar{position:relative;display:flex;gap:6px;justify-content:center;align-items:flex-end;overflow-x:auto;scrollbar-width:none;padding:14px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);background:var(--bg2)}
+.lm-chalkbar::-webkit-scrollbar{display:none}
+.lm-chalk{flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:76px;padding:4px 4px 2px;border:0;background:none;color:var(--text);font-family:var(--mono);font-size:12px;cursor:pointer}
+.lm-chalk i{display:block;width:62px;height:16px;border-radius:5px 7px 6px 4px;background:var(--c);box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--black) 22%,transparent),inset 0 2px 0 color-mix(in srgb,var(--white) 30%,transparent);transform:rotate(var(--tilt,-3deg));transition:transform .22s cubic-bezier(.2,.7,.2,1)}
+body.light .lm-chalk i{width:66px;height:14px;border-radius:3px;box-shadow:inset -14px 0 0 color-mix(in srgb,var(--black) 35%,var(--c))}
+.lm-chalk[aria-pressed="true"] i{transform:translateY(-8px) rotate(0deg)}
+.lm-chalk[aria-pressed="true"] span{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+.lm-chalk span{color:var(--text2);white-space:nowrap}
+@media (hover:hover) and (pointer:fine){.lm-chalk:hover i{transform:translateY(-4px) rotate(var(--tilt,-3deg))}}
+@media (max-width:760px){.lm-chalkbar{justify-content:flex-start}}
+@media (prefers-reduced-motion:reduce){.lm-chalk i,.lm-fx{transition:none}}
+html:not(.js) .lm-formula-stage{display:none}
+.lm-formula-list{columns:2 300px;column-gap:32px;margin-top:20px}
+html.js .lm-formula-list{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.lm-formula-list li{break-inside:avoid;list-style:none;margin-bottom:6px;font-style:italic}
+.lm-formula-list small{display:block;font-family:var(--mono);font-style:normal;font-size:12px;color:var(--text2)}
+
+/* Colofón: Logo Loop con las herramientas */
+.lm-colofon{padding:96px 0 40px}
+/* Bandas cruzadas: cada tira va levemente inclinada, alternando el sentido,
+   y se enciman en los extremos como cintas que se cruzan. */
+.lm-colofon-grid{width:min(1320px,calc(100% - 2 * var(--gutter)));margin:28px auto 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,400px);gap:clamp(20px,3vw,44px);align-items:center}
+.lm-bands{min-width:0;padding-block:10px}
+.lm-strip{position:relative;margin-top:3px;transform:rotate(var(--tilt,-1deg))}
+.lm-strip:nth-child(even){--tilt:1deg}
+.lm-strip .logoloop{padding:8px 0;border-block:1px solid color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--bg) 86%,transparent);--logoloop-logoHeight:22px;--logoloop-gap:30px}
+.lm-strip .logoloop__item{flex-direction:row;gap:6px}
+.lm-strip-tag{position:absolute;left:0;top:50%;z-index:2;transform:translateY(-50%);display:flex;align-items:baseline;gap:6px;padding:4px 10px;border:1px solid color-mix(in srgb,var(--c) 60%,transparent);border-radius:0 999px 999px 0;background:var(--bg2);font-family:var(--mono);font-size:12px;color:var(--text);white-space:nowrap}
+.lm-strip-tag b{font-weight:500;color:var(--text);display:inline-flex;align-items:center;gap:6px}.lm-strip-tag b::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.lm-strip-tag span{color:var(--text2)}
+.lm-lab{display:grid;gap:10px}
+#lm-lab-canvas{width:100%;height:min(380px,48svh);display:block}
+@media (max-width:960px){.lm-colofon-grid{grid-template-columns:1fr}.lm-strip-tag span{display:none}}
+@media (prefers-reduced-motion:reduce){.lm-strip{transform:none;margin-top:8px}}
+.lm-strip-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.lm-strip-head h3{margin:0}
+.lm-strip-head span{font-family:var(--mono);font-size:12px;color:var(--text2)}
+.logoloop__mono{display:grid;place-items:center;height:var(--logoloop-logoHeight);min-width:var(--logoloop-logoHeight);padding:0 6px;border:1.5px solid currentColor;border-radius:6px;font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:-.02em}
+.logoloop{position:relative;overflow:hidden;--logoloop-gap:44px;--logoloop-logoHeight:30px;-webkit-mask-image:linear-gradient(to right,transparent,var(--bg) 9%,var(--bg) 91%,transparent);mask-image:linear-gradient(to right,transparent,var(--bg) 9%,var(--bg) 91%,transparent)}
+.logoloop__track{display:flex;width:max-content;will-change:transform;user-select:none}
+.logoloop__list{display:flex;align-items:center;list-style:none}
+.logoloop__item{flex:0 0 auto;margin-right:var(--logoloop-gap);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--c,var(--text));transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.logoloop__item svg{height:var(--logoloop-logoHeight);width:auto;fill:currentColor;display:block}
+.logoloop__item span{font-family:var(--mono);font-size:12px;color:var(--text2);white-space:nowrap}
+@media (hover:hover) and (pointer:fine){.logoloop__item:hover{transform:scale(1.18)}}
+@media (prefers-reduced-motion:reduce){.logoloop{-webkit-mask-image:none;mask-image:none}.logoloop__track{width:auto;flex-wrap:wrap}.logoloop__list{flex-wrap:wrap;row-gap:20px}.logoloop__list[aria-hidden="true"]{display:none}}
+.lm-tools-note{font-family:var(--mono);font-size:12px;color:var(--text2);margin-top:14px}
+.lm-foot{padding:40px var(--gutter) 48px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--text2);line-height:1.9}
+.lm-foot a{color:var(--text)}
+
+@media (max-width:760px),(pointer:coarse){
+  body{font-size:17px}
+  .lm-chap{padding:88px 0 72px}
+  .lm-lede{font-size:20px}
+}

@@ -1,0 +1,393 @@
+/* Fuentes de ffonts.net incrustadas sin modificar (ver THIRD_PARTY_NOTICES.md):
+   Debonair Inline NF (Nick Curtis · Nick's Fonts) en los títulos de cada
+   puerto, como cartel de agencia de viajes de los treinta; Cabaret Voltaire
+   (Haimeluna, con crédito obligatorio) en los códigos del pase de abordar y
+   en las etiquetas del mapa. Cabaret no trae vocales acentuadas: el mapa
+   dibuja la tilde a mano sobre la letra base. */
+@font-face { font-family: 'Debonair Inline'; src: url(../assets/fonts/DebonairInline.ttf) format('truetype'); font-display: swap; }
+@font-face { font-family: 'Cabaret Voltaire'; src: url(../assets/fonts/CabaretVoltaire.ttf) format('truetype'); font-display: swap; }
+/* ══════════════════════════════════════════════════════
+   TOKENS · CLARO (default) · mapa de día
+══════════════════════════════════════════════════════ */
+body {
+  --bg:        #F2E8D0;
+  --bg2:       #EAE0C4;
+  --bg3:       #DED4B4;
+  --text:      #1C1008;
+  --text2:     #6A4E28;
+  --border:    #C8A868;
+
+  /* Mapa */
+  --parchment: #F2E8D0;
+  --land:      #D8C898;
+  --land-dk:   #C0A870;
+  --sea:       #B8D0E8;
+  --sea-dk:    #90B0D0;
+  --ink:       #3A2808;
+  --rust:      #884B22;
+  --stain:     #C89040;
+
+  /* Semántico viajero */
+  --route:     #A82018;
+  --must:      #C83020;
+  --wonder:    #603890;
+  --fey:       #D070A0;
+  --visited:   #466238;
+  --unvisited: #8A6840;
+  --compass:   #C89030;
+
+  --accent:    #A82018;
+  --accent2:   #603890;
+  --ok:        #466238;
+  --warn:      #C89030;
+  --danger:    #A82018;
+
+  --black:     #100804;
+  --white:     #FDF8F0;
+  --gray:      #907858;
+  /* Mesa: los colores de la madera de siempre, ahora para Line Waves. */
+  --desk:      #B8864A;
+  --desk-dk:   #9A6E38;
+  --desk-lt:   #D09A5E;
+  --desk-glow: #F0DCB0;
+
+  /* Título Gradient Text: tintas que pasan 3:1 sobre --bg de cada modo. */
+  --gt1:       #A05828;
+  --gt2:       #A82018;
+  --gt3:       #603890;
+  --gt4:       #3A2808;
+
+  --display: 'IM Fell English', serif;
+  --mono:    'Fira Code', monospace;
+  --radius:  2px;
+  --gutter:  clamp(16px, 4vw, 40px);
+  --glass:      color-mix(in srgb, var(--bg) 92%, transparent);
+  --glass-edge: color-mix(in srgb, var(--ink) 22%, transparent);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --route-ink: var(--route);
+  --wonder-ink: var(--wonder);
+  --compass-ink: #75541C;
+  --accent-ink: var(--accent);
+  --warn-ink: #75541C;
+  --danger-ink: var(--danger);
+  --must-ink: #AB291B;
+  --fey-ink: #9B3367;
+  --unvisited-ink: #715534;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS · OSCURO · carta estelar
+══════════════════════════════════════════════════════ */
+body.dark {
+  --bg:        #0E0C18;
+  --bg2:       #161424;
+  --bg3:       #201C30;
+  --text:      #E8D8B8;
+  --text2:     #A08860;
+  --border:    #3A2C18;
+
+  /* Antes iban entre comillas ('#1A1410'): CSS inválido, las muestras
+     de noche salían vacías. */
+  --parchment: #1A1428;
+  --land:      #2A2018;
+  --land-dk:   #1A1410;
+  --sea:       #101828;
+  --sea-dk:    #080C18;
+  --ink:       #D8C898;
+  --rust:      #C27445;
+  --stain:     #806030;
+
+  --route:     #D04030;
+  --must:      #E05040;
+  --wonder:    #8050C0;
+  --fey:       #E090C0;
+  --visited:   #6D915B;
+  --unvisited: #A08050;
+  --compass:   #E0A830;
+
+  --accent:    #D04030;
+  --accent2:   #8050C0;
+  --ok:        #6D915B;
+  --warn:      #E0A830;
+  --danger:    #D04030;
+
+  --black:     #060408;
+  --white:     #F0E8D0;
+  --gray:      #706050;
+  --desk:      #1E150A;
+  --desk-dk:   #150E06;
+  --desk-lt:   #5A3A18;
+  --desk-glow: #E0A830;
+
+  --gt1:       #E0A830;
+  --gt2:       #E05040;
+  --gt3:       #E090C0;
+  --gt4:       #E8D8B8;
+
+  --glass:      color-mix(in srgb, var(--bg) 90%, transparent);
+  --glass-edge: color-mix(in srgb, var(--ink) 18%, transparent);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --route-ink: #D96356;
+  --wonder-ink: #9C76CE;
+  --compass-ink: var(--compass);
+  --accent-ink: #D96356;
+  --warn-ink: var(--warn);
+  --danger-ink: #D96356;
+  --must-ink: #E25C4D;
+  --fey-ink: var(--fey);
+  --unvisited-ink: #A38251;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--bg); color: var(--text); font-family: var(--display); font-size: 15px; line-height: 1.75; overflow-x: clip; transition: background-color .4s ease, color .4s ease; }
+a { color: var(--route-ink); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--route); outline-offset: 2px; }
+.od-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ══════════════════════════════════════════════════════
+   HERO · imagen a pantalla completa + Gradient Text
+══════════════════════════════════════════════════════ */
+.od-hero { position: relative; isolation: isolate; overflow: hidden; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: 88px 0 72px; }
+.od-hero-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.od-hero-scrim {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 92%, transparent) 34%, color-mix(in srgb, var(--bg) 66%, transparent) 52%, color-mix(in srgb, var(--bg) 28%, transparent) 68%, transparent 86%),
+    linear-gradient(0deg, var(--bg) 0%, transparent 18%);
+}
+.od-wrap { width: min(1160px, calc(100% - 2 * var(--gutter))); margin-inline: auto; }
+.od-hero-copy { max-width: 600px; }
+/* Gradient Text (React Bits, motion → CSS): degradado que va y viene. */
+.gradient-text {
+  display: inline-block; font-family: var(--display); font-style: italic; font-weight: 400; line-height: 1.02;
+  font-size: clamp(64px, 11vw, 150px); letter-spacing: -.01em; padding-right: .08em;
+  background-image: linear-gradient(to right, var(--gt1), var(--gt2), var(--gt3), var(--gt4), var(--gt1));
+  background-size: 300% 100%; background-position: 0% 50%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: od-gradient 8s linear infinite alternate;
+}
+@keyframes od-gradient { to { background-position: 100% 50%; } }
+@media (prefers-reduced-motion: reduce) { .gradient-text { animation: none; } }
+.od-hero-sub { font-family: var(--mono); font-size: 13px; color: var(--text); margin-top: 6px; }
+.od-hero-sub b { color: var(--route-ink); font-weight: 400; }
+.od-hero-lede { font-size: 18px; max-width: 46ch; margin-top: 18px; color: var(--text); }
+.od-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; align-items: center; }
+.od-go {
+  font-family: var(--display); font-style: italic; font-size: 18px; color: var(--bg); background: var(--route-ink);
+  padding: 10px 28px; border-radius: 999px; text-decoration: none; border: 1px solid var(--route-ink); /* --route-ink: con --route de noche el texto quedaba en 4.1:1 */
+  transition: transform .16s ease-out, background-color .2s ease-out;
+}
+.od-go:active { transform: scale(.97); }
+.od-hero-credit { position: absolute; right: 18px; bottom: 16px; font-family: var(--mono); font-size: 12px; color: var(--text2); background: color-mix(in srgb, var(--bg) 82%, transparent); padding: 2px 8px; border-radius: var(--radius); }
+.od-toggle {
+  font-family: var(--display); font-style: italic; font-size: 14px; padding: 6px 16px; min-height: 36px;
+  background: var(--glass); border: 1px solid var(--glass-edge); border-radius: 999px; color: var(--text); cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: border-color .2s ease-out, transform .16s ease-out;
+}
+.od-toggle:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .od-toggle:hover { border-color: var(--route-ink); } .od-go:hover { background: color-mix(in srgb, var(--route) 86%, var(--black)); } }
+.od-hero .od-toggle { position: absolute; top: 18px; right: 18px; }
+@media (max-width: 900px) and (orientation: portrait) {
+  .od-hero { align-items: flex-end; padding: 72px 0 56px; }
+  .od-hero-scrim { background: linear-gradient(0deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 92%, transparent) 42%, color-mix(in srgb, var(--bg) 45%, transparent) 64%, transparent 82%); }
+}
+
+/* ══════════════════════════════════════════════════════
+   VIAJE · mesa, mapa, puertos y carta
+══════════════════════════════════════════════════════ */
+.od-voyage {
+  position: relative; isolation: isolate; height: 100vh; height: 100svh; min-height: 620px;
+  display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(340px, 1fr); grid-template-rows: minmax(0, 1fr) auto;
+}
+/* Mesa: base y luz de sol (día) o de lámpara (noche) en CSS; encima, las
+   ondas de Line Waves con las vetas de la madera. */
+.od-voyage { background:
+  radial-gradient(70% 60% at 0% 0%, color-mix(in srgb, var(--desk-glow) 32%, transparent), transparent 70%),
+  radial-gradient(45% 45% at 82% 6%, color-mix(in srgb, var(--desk-glow) 18%, transparent), transparent 70%),
+  radial-gradient(60% 50% at 50% 100%, color-mix(in srgb, var(--desk-dk) 55%, transparent), transparent 75%),
+  var(--desk); }
+#od-desk { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; display: block; }
+.od-stage { grid-column: 1; grid-row: 1; position: relative; min-height: 0; }
+.od-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: manipulation; }
+.od-stage-bar { position: absolute; top: 16px; left: 18px; z-index: 2; display: flex; gap: 8px; align-items: center; }
+.od-chip { font-family: var(--display); font-style: italic; font-size: 14px; color: var(--text); background: var(--glass); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 4px 14px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+button.od-chip { cursor: pointer; min-height: 34px; transition: border-color .2s ease-out, transform .16s ease-out; }
+button.od-chip:active { transform: scale(.97); }
+button.od-chip[hidden] { display: none; }
+@media (hover: hover) and (pointer: fine) { button.od-chip:hover { border-color: var(--route-ink); } }
+
+/* Puertos: carrusel 3D de tarjetas (riff "Iconic Cities" de Figma, en CSS). */
+.od-ports { grid-column: 1; grid-row: 2; position: relative; padding: 4px 0 14px; }
+.od-ports-stage { position: relative; height: 268px; perspective: 900px; overflow: hidden; contain: paint; } /* recorte en el elemento con perspectiva: en un ancestro, Chrome no recorta el desborde de las tarjetas 3D */
+.od-ports-stage { touch-action: pan-y; cursor: grab; }
+/* El plano del track queda delante de las tarjetas con translateZ negativo y se comía
+   los clics: el track no recibe eventos, las tarjetas sí. */
+.od-ports-track { position: absolute; inset: 0 0 54px 0; transform-style: preserve-3d; pointer-events: none; }
+.od-card { pointer-events: auto; }
+.od-card {
+  position: absolute; top: 6px; left: 50%; width: 148px; height: 200px; margin-left: -74px;
+  display: flex; flex-direction: column; align-items: stretch; text-align: left; gap: 0;
+  font: inherit; color: var(--text); background: var(--bg2); border: 1px solid var(--glass-edge); border-radius: 12px; padding: 10px;
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--black) 26%, transparent); cursor: pointer;
+  transition: transform .5s cubic-bezier(.23, 1, .32, 1), opacity .4s ease, border-color .2s ease;
+  backface-visibility: hidden;
+}
+.od-card[aria-current="true"] { border-color: var(--route-ink); }
+/* Primera colocación sin transición: animada desde el centro, Chrome dejaba un
+   desborde horizontal fantasma hasta el siguiente relayout. */
+.od-ports-track.is-init .od-card { transition: none; }
+.od-card-top { display: flex; justify-content: space-between; align-items: center; }
+.od-pill { font-family: var(--mono); font-size: 12px; color: var(--text2); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 0 8px; }
+.od-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--unvisited); box-shadow: 0 0 8px var(--unvisited); }
+.od-dot.is-visited { background: var(--visited); box-shadow: 0 0 8px var(--visited); }
+.od-ill { display: block; width: 100%; height: 92px; margin: 8px 0 6px; border-radius: 8px; background: var(--bg3); }
+.od-ill .i-a { fill: var(--wonder); } .od-ill .i-b { fill: var(--rust); } .od-ill .i-c { fill: var(--land-dk); }
+.od-ill .i-d { fill: var(--sea-dk); } .od-ill .i-h { fill: var(--bg3); } .od-ill .i-sun { fill: var(--compass); }
+.od-ill .s-b { fill: none; stroke: var(--rust); } .od-ill .s-a { fill: none; stroke: var(--wonder); }
+.od-card-name { font-family: 'Debonair Inline', var(--display); font-size: 20px; line-height: 1.1; font-style: normal; font-synthesis: none; word-spacing: -.22em; }
+.od-card-sub { font-family: var(--mono); font-size: 12px; color: var(--text2); line-height: 1.3; margin-top: 2px; }
+.od-ports-nav { position: absolute; bottom: 6px; z-index: 5; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; line-height: 1; color: var(--text); background: var(--glass); border: 1px solid var(--glass-edge); cursor: pointer; }
+/* Bajo la tarjeta central, como en el riff: a los lados tapaban las tarjetas de las orillas. */
+.od-ports-nav.prev { left: calc(50% - 48px); } .od-ports-nav.next { left: calc(50% + 8px); }
+.od-ports-nav:active { transform: scale(.95); }
+.od-ports-hint { text-align: center; font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.od-ports-hint span { background: color-mix(in srgb, var(--bg) 80%, transparent); padding: 1px 8px; border-radius: var(--radius); }
+html:not(.js) .od-ports-stage { height: auto; perspective: none; overflow: visible; }
+html:not(.js) .od-ports-track { position: static; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+html:not(.js) .od-card { position: static; margin: 0; }
+html:not(.js) .od-ports-nav, html:not(.js) .od-ports-hint { display: none; }
+
+/* Carta: la sección del puerto, con su pase de abordar. */
+.od-carta {
+  grid-column: 2; grid-row: 1 / span 2; margin: 18px 18px 18px 0; min-height: 0; overflow: auto; overscroll-behavior: contain;
+  background: var(--glass); border: 1px solid var(--glass-edge); border-radius: 6px; padding: 18px clamp(16px, 2.4vw, 28px) 28px;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--black) 30%, transparent);
+}
+.od-carta-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+.od-carta-kicker { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.od-doc[hidden] { display: none; }
+.od-doc-head { margin: 16px 0 6px; }
+.od-doc-place { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.od-doc-title { font-family: 'Debonair Inline', var(--display); font-size: clamp(30px, 3.6vw, 42px); font-style: normal; font-weight: 400; font-synthesis: none; line-height: 1.1; word-spacing: -.22em; color: var(--text); }
+.od-doc-section { font-size: 15px; color: var(--route-ink); font-style: italic; }
+.od-osm { font-family: var(--mono); font-size: 12px; color: var(--text2); margin-top: 22px; }
+
+/* Vertical y tablet: mapa arriba, puertos, carta en el flujo de la página. */
+@media (max-width: 999px) {
+  .od-voyage { height: auto; min-height: 0; grid-template-columns: 1fr; grid-template-rows: auto auto auto; }
+  .od-stage { height: 58svh; min-height: 340px; }
+  /* clip: el talón que cae no puede ensanchar la página en el teléfono. */
+  .od-carta { grid-column: 1; grid-row: 3; margin: 0 var(--gutter) 28px; overflow: visible; overflow-x: clip; }
+}
+@media (max-width: 999px) and (orientation: landscape) { .od-stage { height: 86svh; } }
+
+/* Tear Ticket (React Bits, motion → vanilla): pase de abordar por puerto. */
+.tear-ticket {
+  --tt-w: 440px; --tt-h: 170px; --tt-stub: 120px; --tt-fit: 1;
+  --tt-bg: var(--bg2); --tt-stub-bg: var(--bg3); --tt-ink: var(--text); --tt-edge: var(--border);
+  position: relative; width: min(var(--tt-w), 100%); height: calc(var(--tt-h) * var(--tt-fit)); color: var(--tt-ink);
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; margin-bottom: 6px;
+}
+/* Sin JS el pase no se puede usar: fuera. (Además, antes de que corra el JS,
+   su escenario de 440px ensanchaba el viewport en el teléfono.) */
+html:not(.js) .tear-ticket { display: none; }
+.tear-ticket__stage { position: absolute; top: 0; left: 0; width: var(--tt-w); height: var(--tt-h); transform: scale(var(--tt-fit)); transform-origin: top left; transition: transform 650ms cubic-bezier(.22, 1, .36, 1); }
+.tear-ticket[data-used] .tear-ticket__stage { transform: translateX(calc(var(--tt-stub) * var(--tt-fit) / 2)) scale(var(--tt-fit)); }
+.tear-ticket__piece { position: absolute; inset: 0; pointer-events: none; }
+.tear-ticket__piece--stub { outline: none; will-change: transform; }
+.tear-ticket__edge { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.tear-ticket__edge path { fill: none; stroke: var(--tt-edge); stroke-width: 1; }
+.tear-ticket__paper { position: absolute; inset: 0; background: var(--tt-bg); pointer-events: auto; }
+.tear-ticket__paper--stub { background: var(--tt-stub-bg); cursor: grab; touch-action: none; }
+.tear-ticket[data-grabbing] .tear-ticket__paper--stub { cursor: grabbing; }
+.tear-ticket__content { position: absolute; top: 0; bottom: 0; left: 0; width: calc(var(--tt-w) - var(--tt-stub)); padding: 14px 18px; transition: opacity 500ms ease; }
+.tear-ticket[data-used] .tear-ticket__content { opacity: .55; }
+.tear-ticket__stub { position: absolute; top: 0; right: 0; bottom: 0; width: var(--tt-stub); padding: 14px 12px 12px 22px; display: flex; flex-direction: column; justify-content: space-between; }
+.tear-ticket__fibres { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.tear-ticket__fibres path { fill: none; stroke: var(--tt-bg); stroke-linecap: round; opacity: 0; }
+.tear-ticket[data-instant] .tear-ticket__stage, .tear-ticket[data-instant] .tear-ticket__content { transition-duration: 0ms; }
+.tt-kicker { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.tt-route { font-size: 40px; line-height: 1.05; font-style: italic; margin-top: 4px; letter-spacing: .02em; }
+.tt-route .tt-from, .tt-route .tt-to, .tt-stub-code { font-family: 'Cabaret Voltaire', var(--display); font-style: normal; font-synthesis: none; letter-spacing: .04em; }
+.tt-route b { font-weight: 400; color: var(--route-ink); }
+.tt-cities { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--text); margin-top: 4px; gap: 10px; }
+.tt-meta { font-family: var(--mono); font-size: 12px; color: var(--text2); margin-top: 10px; }
+.tt-stub-code { font-size: 30px; font-style: italic; line-height: 1; color: var(--route-ink); }
+.tt-stub-hint { font-family: var(--mono); font-size: 12px; color: var(--text2); line-height: 1.3; }
+@media (prefers-reduced-motion: reduce) { .tear-ticket__stage { transition: none; } }
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA Y COMPONENTES DE CONTENIDO
+══════════════════════════════════════════════════════ */
+h3 { font-size: 16px; font-weight: 400; font-style: italic; color: var(--rust); margin: 20px 0 8px; }
+h4 { font-size: 15px; font-weight: 400; color: var(--text); margin-bottom: 4px; }
+p { margin-bottom: 12px; font-size: 15px; }
+p.muted { color: var(--text2); font-size: 14px; font-style: italic; }
+em { font-style: italic; color: var(--rust); }
+code { font-family: var(--mono); font-size: 13px; background: var(--bg3); border: 1px solid var(--border); padding: 1px 5px; border-radius: var(--radius); color: var(--rust); white-space: nowrap; }
+pre { background: var(--bg2); border: 1px solid var(--border); border-left: 2px solid var(--rust); border-radius: var(--radius); padding: 28px 16px 14px; margin: 12px 0; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.75; color: var(--text); position: relative; }
+pre::before { content: attr(data-lang); position: absolute; top: 6px; right: 10px; font-size: 12px; color: var(--text2); }
+pre code { background: none; border: none; padding: 0; color: inherit; white-space: pre; }
+pre .kw { color: var(--route-ink); } pre .fn { color: var(--wonder-ink); } pre .str { color: var(--visited); } pre .num { color: var(--compass-ink); } pre .cm { color: var(--text2); font-style: italic; }
+.callout { border-left: 2px solid var(--accent); background: var(--bg2); padding: 11px 16px; margin: 8px 0; border-radius: 0 var(--radius) var(--radius) 0; }
+.callout-title { font-size: 14px; font-style: italic; color: var(--accent-ink); margin-bottom: 2px; }
+.callout p { margin-bottom: 0; font-size: 14px; }
+.callout.ok { border-color: var(--ok); } .callout.ok .callout-title { color: var(--ok); }
+.callout.warn { border-color: var(--warn-ink); } .callout.warn .callout-title { color: var(--warn-ink); }
+.callout.danger { border-color: var(--danger-ink); } .callout.danger .callout-title { color: var(--danger-ink); }
+.callout.route { border-color: var(--route-ink); } .callout.route .callout-title { color: var(--route-ink); }
+.callout.must { border-color: var(--must-ink); } .callout.must .callout-title { color: var(--must-ink); }
+.callout.wonder { border-color: var(--wonder-ink); } .callout.wonder .callout-title { color: var(--wonder-ink); }
+.callout.fey { border-color: var(--fey-ink); } .callout.fey .callout-title { color: var(--fey-ink); }
+.callout.visited { border-color: var(--visited); } .callout.visited .callout-title { color: var(--visited); }
+.callout.unvisited { border-color: var(--unvisited-ink); } .callout.unvisited .callout-title { color: var(--unvisited-ink); }
+.callout.compass { border-color: var(--compass-ink); } .callout.compass .callout-title { color: var(--compass-ink); }
+.od-table { overflow-x: auto; margin: 12px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { background: var(--bg3); padding: 7px 12px; text-align: left; font-size: 14px; font-style: italic; font-weight: 400; color: var(--rust); border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+@media (hover: hover) and (pointer: fine) { tr:hover td { background: var(--bg3); } }
+.btn-row, .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.btn { display: inline-block; font-family: var(--display); font-size: 14px; font-style: italic; padding: 6px 16px; min-height: 34px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg2); color: var(--text2); cursor: pointer; transition: border-color .2s ease-out, color .2s ease-out, transform .16s ease-out; }
+.btn:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .btn:hover { border-color: var(--route-ink); color: var(--route-ink); } .card:hover { border-color: var(--route-ink); } }
+.btn.primary { border-color: var(--route-ink); color: var(--route-ink); }
+.btn.ok { border-color: var(--ok); color: var(--ok); } .btn.warn { border-color: var(--warn-ink); color: var(--warn-ink); } .btn.danger { border-color: var(--danger-ink); color: var(--danger-ink); }
+.btn.route { border-color: var(--route-ink); color: var(--route-ink); } .btn.wonder { border-color: var(--wonder-ink); color: var(--wonder-ink); } .btn.fey { border-color: var(--fey-ink); color: var(--fey-ink); }
+.btn.visited { border-color: var(--visited); color: var(--visited); } .btn.compass { border-color: var(--compass-ink); color: var(--compass-ink); }
+.badge { display: inline-block; font-size: 13px; font-style: italic; padding: 1px 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text2); }
+.badge.route { border-color: var(--route-ink); color: var(--route-ink); } .badge.must { border-color: var(--must-ink); color: var(--must-ink); } .badge.wonder { border-color: var(--wonder-ink); color: var(--wonder-ink); }
+.badge.fey { border-color: var(--fey-ink); color: var(--fey-ink); } .badge.visited { border-color: var(--visited); color: var(--visited); } .badge.unvisited { border-color: var(--unvisited-ink); color: var(--unvisited-ink); }
+.badge.compass { border-color: var(--compass-ink); color: var(--compass-ink); } .badge.ok { border-color: var(--ok); color: var(--ok); } .badge.warn { border-color: var(--warn-ink); color: var(--warn-ink); } .badge.danger { border-color: var(--danger-ink); color: var(--danger-ink); }
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; transition: border-color .2s ease-out; }
+.card .badge { margin-left: 8px; }
+.metrics-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0; }
+.metric { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; }
+.metric-val { font-size: 28px; font-style: italic; color: var(--route-ink); line-height: 1.2; }
+.metric-lbl { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.metric-val.wonder { color: var(--wonder-ink); } .metric-val.fey { color: var(--fey-ink); } .metric-val.visited { color: var(--visited); } .metric-val.compass { color: var(--compass-ink); }
+.journey-log { margin: 10px 0; }
+.journey-entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.journey-entry:last-child { border-bottom: none; }
+.journey-pin { width: 28px; height: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 1px solid var(--border); border-radius: 50%; background: var(--bg3); color: var(--text2); }
+.journey-pin.route { border-color: var(--route-ink); color: var(--route-ink); } .journey-pin.wonder { border-color: var(--wonder-ink); color: var(--wonder-ink); }
+.journey-pin.unvisited { border-color: var(--unvisited-ink); color: var(--unvisited-ink); } .journey-pin.visited { border-color: var(--visited); color: var(--visited); }
+.leg { display: flex; gap: 14px; align-items: flex-start; margin: 8px 0; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-left: 2px solid var(--route); border-radius: var(--radius); }
+.leg-num { font-size: 20px; font-style: italic; color: var(--route-ink); min-width: 28px; line-height: 1; margin-top: 2px; }
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.swatch-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.swatch { min-width: 78px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.swatch-box { height: 44px; border-radius: var(--radius); margin-bottom: 4px; border: 1px solid var(--border); position: relative; }
+.swatch-hex { position: absolute; bottom: 3px; left: 4px; font-family: var(--mono); font-size: 12px; line-height: 1; pointer-events: none; padding: 1px 2px; border-radius: 2px; }
+.swatch-hex.is-chip { background: var(--bg); }
+.ornament { text-align: center; color: var(--compass-ink); font-size: 18px; letter-spacing: .3em; margin: 6px 0; opacity: .7; }
+
+.od-footer { position: relative; z-index: 2; padding: 22px var(--gutter) 30px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--text2); background: color-mix(in srgb, var(--bg) 92%, transparent); border-top: 1px solid var(--border); }
+@media (max-width: 760px) { body { font-size: 16px; } p { font-size: 16px; } }

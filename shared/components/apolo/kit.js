@@ -1,0 +1,86 @@
+// apolo · base del tema: modo, lectura de tokens y utilidades que usan sus componentes.
+import { buildSky } from './sky.js';
+import { buildTexture } from './single-canvas.js';
+import { buildBackStripes } from './strip-layer.js';
+import { buildTiltColumns } from './tilt-card.js';
+import { statueFx } from './statues.js';
+
+// ── Motion (motion.dev) v11.18.2, build "mini" ──────────
+// Vendorizado inline (MIT license, https://motion.dev), no se importa por
+// CDN: iroFactory es autocontenido. Expone solo animate/animateSequence.
+export const { animate, animateSequence } = (function () {
+const J=e=>e;let yt=J;function $(e){let t;return()=>(t===void 0&&(t=e()),t)}const At=$(()=>window.ScrollTimeline!==void 0);class bt{constructor(t){this.stop=()=>this.runAll("stop"),this.animations=t.filter(Boolean)}get finished(){return Promise.all(this.animations.map(t=>"finished"in t?t.finished:t))}getAll(t){return this.animations[0][t]}setAll(t,n){for(let i=0;i<this.animations.length;i++)this.animations[i][t]=n}attachTimeline(t,n){const i=this.animations.map(r=>{if(At()&&r.attachTimeline)return r.attachTimeline(t);if(typeof n=="function")return n(r)});return()=>{i.forEach((r,a)=>{r&&r(),this.animations[a].stop()})}}get time(){return this.getAll("time")}set time(t){this.setAll("time",t)}get speed(){return this.getAll("speed")}set speed(t){this.setAll("speed",t)}get startTime(){return this.getAll("startTime")}get duration(){let t=0;for(let n=0;n<this.animations.length;n++)t=Math.max(t,this.animations[n].duration);return t}runAll(t){this.animations.forEach(n=>n[t]())}flatten(){this.runAll("flatten")}play(){this.runAll("play")}pause(){this.runAll("pause")}cancel(){this.runAll("cancel")}complete(){this.runAll("complete")}}class Q extends bt{then(t,n){return Promise.all(this.animations).then(t).catch(n)}}const K=(e,t,n)=>{const i=t-e;return i===0?1:(n-e)/i},R=e=>e*1e3,z=e=>e/1e3,C=2e4;function vt(e){let t=0;const n=50;let i=e.next(t);for(;!i.done&&t<C;)t+=n,i=e.next(t);return t>=C?1/0:t}function Z(e,t=100,n){const i=n({...e,keyframes:[0,t]}),r=Math.min(vt(i),C);return{type:"keyframes",ease:a=>i.next(r*a).value/t,duration:z(r)}}function tt(e){return typeof e=="function"}const Tt=(e,t,n)=>{const i=t-e;return((n-e)%i+i)%i+e},St=e=>Array.isArray(e)&&typeof e[0]!="number";function et(e,t){return St(e)?e[Tt(0,e.length,t)]:e}const nt=(e,t,n)=>e+(t-e)*n;function it(e,t){const n=e[e.length-1];for(let i=1;i<=t;i++){const r=K(0,t,i);e.push(nt(n,1,r))}}function Et(e){const t=[0];return it(t,e.length-1),t}const xt=e=>!!(e&&e.getVelocity);function rt(e,t,n){var i;if(e instanceof Element)return[e];if(typeof e=="string"){let r=document;const a=(i=n?.[e])!==null&&i!==void 0?i:r.querySelectorAll(e);return a?Array.from(a):[]}return Array.from(e)}function Pt(e){return typeof e=="object"&&!Array.isArray(e)}function wt(e,t,n,i){return typeof e=="string"&&Pt(t)?rt(e,n,i):e instanceof NodeList?Array.from(e):Array.isArray(e)?e:[e]}function Mt(e,t,n){return e*(t+1)}function st(e,t,n,i){var r;return typeof t=="number"?t:t.startsWith("-")||t.startsWith("+")?Math.max(0,e+parseFloat(t)):t==="<"?n:(r=i.get(t))!==null&&r!==void 0?r:e}function Wt(e,t){const n=e.indexOf(t);n>-1&&e.splice(n,1)}function Ft(e,t,n){for(let i=0;i<e.length;i++){const r=e[i];r.at>t&&r.at<n&&(Wt(e,r),i--)}}function Ot(e,t,n,i,r,a){Ft(e,r,a);for(let o=0;o<t.length;o++)e.push({value:t[o],at:nt(r,a,i[o]),easing:et(n,o)})}function Dt(e,t){for(let n=0;n<e.length;n++)e[n]=e[n]/(t+1)}function It(e,t){return e.at===t.at?e.value===null?1:t.value===null?-1:0:e.at-t.at}const Rt="easeInOut";function Vt(e,{defaultTransition:t={},...n}={},i,r){const a=t.duration||.3,o=new Map,f=new Map,A={},l=new Map;let u=0,b=0,h=0;for(let w=0;w<e.length;w++){const g=e[w];if(typeof g=="string"){l.set(g,b);continue}else if(!Array.isArray(g)){l.set(g.name,st(b,g.at,u,l));continue}let[P,y,m={}]=g;m.at!==void 0&&(b=st(b,m.at,u,l));let d=0;const M=(v,T,E,W=0,F=0)=>{const c=Bt(v),{delay:G=0,times:S=Et(c),type:j="keyframes",repeat:B,repeatType:se,repeatDelay:ae=0,...gt}=T;let{ease:x=t.ease||"easeOut",duration:p}=T;const N=typeof G=="function"?G(W,F):G,q=c.length,H=tt(j)?j:void 0;if(q<=2&&H){let O=100;if(q===2&&$t(c)){const D=c[1]-c[0];O=Math.abs(D)}const L={...gt};p!==void 0&&(L.duration=R(p));const _=Z(L,O,H);x=_.ease,p=_.duration}p??(p=a);const U=b+N;S.length===1&&S[0]===0&&(S[1]=1);const X=S.length-c.length;if(X>0&&it(S,X),c.length===1&&c.unshift(null),B){p=Mt(p,B);const O=[...c],L=[...S];x=Array.isArray(x)?[...x]:[x];const _=[...x];for(let D=0;D<B;D++){c.push(...O);for(let I=0;I<O.length;I++)S.push(L[I]+(D+1)),x.push(I===0?"linear":et(_,I-1))}Dt(S,B)}const Y=U+p;Ot(E,c,x,S,U,Y),d=Math.max(N+p,d),h=Math.max(Y,h)};if(xt(P)){const v=at(P,f);M(y,m,ot("default",v))}else{const v=wt(P,y,i,A),T=v.length;for(let E=0;E<T;E++){y=y,m=m;const W=v[E],F=at(W,f);for(const c in y)M(y[c],Lt(m,c),ot(c,F),E,T)}}u=b,b+=d}return f.forEach((w,g)=>{for(const P in w){const y=w[P];y.sort(It);const m=[],d=[],M=[];for(let T=0;T<y.length;T++){const{at:E,value:W,easing:F}=y[T];m.push(W),d.push(K(0,h,E)),M.push(F||"easeOut")}d[0]!==0&&(d.unshift(0),m.unshift(m[0]),M.unshift(Rt)),d[d.length-1]!==1&&(d.push(1),m.push(null)),o.has(g)||o.set(g,{keyframes:{},transition:{}});const v=o.get(g);v.keyframes[P]=m,v.transition[P]={...t,duration:h,ease:M,times:d,...n}}}),o}function at(e,t){return!t.has(e)&&t.set(e,{}),t.get(e)}function ot(e,t){return t[e]||(t[e]=[]),t[e]}function Bt(e){return Array.isArray(e)?e:[e]}function Lt(e,t){return e&&e[t]?{...e,...e[t]}:{...e}}const _t=e=>typeof e=="number",$t=e=>e.every(_t);function kt(e,t){return e?e[t]||e.default||e:void 0}function Gt(e,t){e.timeline=t,e.onfinish=null}class Kt{constructor(t){this.animation=t}get duration(){var t,n,i;const r=((n=(t=this.animation)===null||t===void 0?void 0:t.effect)===null||n===void 0?void 0:n.getComputedTiming().duration)||((i=this.options)===null||i===void 0?void 0:i.duration)||300;return z(Number(r))}get time(){var t;return this.animation?z(((t=this.animation)===null||t===void 0?void 0:t.currentTime)||0):0}set time(t){this.animation&&(this.animation.currentTime=R(t))}get speed(){return this.animation?this.animation.playbackRate:1}set speed(t){this.animation&&(this.animation.playbackRate=t)}get state(){return this.animation?this.animation.playState:"finished"}get startTime(){return this.animation?this.animation.startTime:null}get finished(){return this.animation?this.animation.finished:Promise.resolve()}play(){this.animation&&this.animation.play()}pause(){this.animation&&this.animation.pause()}stop(){!this.animation||this.state==="idle"||this.state==="finished"||(this.animation.commitStyles&&this.animation.commitStyles(),this.cancel())}flatten(){var t;this.animation&&((t=this.animation.effect)===null||t===void 0||t.updateTiming({easing:"linear"}))}attachTimeline(t){return this.animation&&Gt(this.animation,t),J}complete(){this.animation&&this.animation.finish()}cancel(){try{this.animation&&this.animation.cancel()}catch{}}}const zt={linearEasing:void 0};function Ct(e,t){const n=$(e);return()=>{var i;return(i=zt[t])!==null&&i!==void 0?i:n()}}const ut=Ct(()=>{try{document.createElement("div").animate({opacity:0},{easing:"linear(0, 1)"})}catch{return!1}return!0},"linearEasing"),jt=e=>Array.isArray(e)&&typeof e[0]=="number",Nt=(e,t,n=10)=>{let i="";const r=Math.max(Math.round(t/n),2);for(let a=0;a<r;a++)i+=e(K(0,r-1,a))+", ";return`linear(${i.substring(0,i.length-2)})`},V=([e,t,n,i])=>`cubic-bezier(${e}, ${t}, ${n}, ${i})`,lt={linear:"linear",ease:"ease",easeIn:"ease-in",easeOut:"ease-out",easeInOut:"ease-in-out",circIn:V([0,.65,.55,1]),circOut:V([.55,0,1,.45]),backIn:V([.31,.01,.66,-.59]),backOut:V([.33,1.53,.69,.99])};function ct(e,t){if(e)return typeof e=="function"&&ut()?Nt(e,t):jt(e)?V(e):Array.isArray(e)?e.map(n=>ct(n,t)||lt.easeOut):lt[e]}function qt(e,t,n,{delay:i=0,duration:r=300,repeat:a=0,repeatType:o="loop",ease:f="easeInOut",times:A}={}){const l={[t]:n};A&&(l.offset=A);const u=ct(f,r);return Array.isArray(u)&&(l.easing=u),e.animate(l,{delay:i,duration:r,easing:Array.isArray(u)?"linear":u,fill:"both",iterations:a+1,direction:o==="reverse"?"alternate":"normal"})}const ft=e=>({test:t=>typeof t=="string"&&t.endsWith(e)&&t.split(" ").length===1,parse:parseFloat,transform:t=>`${t}${e}`}),Ht=ft("%"),s=ft("px");({...Ht});const ht={borderWidth:s,borderTopWidth:s,borderRightWidth:s,borderBottomWidth:s,borderLeftWidth:s,borderRadius:s,radius:s,borderTopLeftRadius:s,borderTopRightRadius:s,borderBottomRightRadius:s,borderBottomLeftRadius:s,width:s,maxWidth:s,height:s,maxHeight:s,top:s,right:s,bottom:s,left:s,padding:s,paddingTop:s,paddingRight:s,paddingBottom:s,paddingLeft:s,margin:s,marginTop:s,marginRight:s,marginBottom:s,marginLeft:s,backgroundPositionX:s,backgroundPositionY:s},Ut=e=>e!==null;function Xt(e,{repeat:t,repeatType:n="loop"},i){const r=e.filter(Ut),a=t&&n!=="loop"&&t%2===1?0:r.length-1;return!a||i===void 0?r[a]:i}function Yt(e,t,n){e.style.setProperty(`--${t}`,n)}function Jt(e,t,n){e.style[t]=n}const Qt=$(()=>{try{document.createElement("div").animate({opacity:[1]})}catch{return!1}return!0}),Zt=$(()=>Object.hasOwnProperty.call(Element.prototype,"animate")),k=new WeakMap;function te(e,t,n){for(let i=0;i<t.length;i++)t[i]===null&&(t[i]=i===0?n():t[i-1]),typeof t[i]=="number"&&ht[e]&&(t[i]=ht[e].transform(t[i]));!Qt()&&t.length<2&&t.unshift(n())}const mt="easeOut";function dt(e){const t=k.get(e)||new Map;return k.set(e,t),k.get(e)}class ee extends Kt{constructor(t,n,i,r){const a=n.startsWith("--");yt(typeof r.type!="string");const o=dt(t).get(n);o&&o.stop();const f=()=>n.startsWith("--")?t.style.getPropertyValue(n):window.getComputedStyle(t)[n];if(Array.isArray(i)||(i=[i]),te(n,i,f),tt(r.type)){const u=Z(r,100,r.type);r.ease=ut()?u.ease:mt,r.duration=R(u.duration),r.type="keyframes"}else r.ease=r.ease||mt;const A=()=>{this.setValue(t,n,Xt(i,r)),this.cancel(),this.resolveFinishedPromise()},l=()=>{this.setValue=a?Yt:Jt,this.options=r,this.updateFinishedPromise(),this.removeAnimation=()=>{const u=k.get(t);u&&u.delete(n)}};Zt()?(super(qt(t,n,i,r)),l(),r.autoplay===!1&&this.animation.pause(),this.animation.onfinish=A,dt(t).set(n,this)):(super(),l(),A())}then(t,n){return this.currentFinishedPromise.then(t,n)}updateFinishedPromise(){this.currentFinishedPromise=new Promise(t=>{this.resolveFinishedPromise=t})}play(){this.state==="finished"&&this.updateFinishedPromise(),super.play()}cancel(){this.removeAnimation(),super.cancel()}}function pt(e,t,n,i){const r=rt(e),a=r.length,o=[];for(let f=0;f<a;f++){const A=r[f],l={...n};typeof l.delay=="function"&&(l.delay=l.delay(f,a));for(const u in t){const b=t[u],h={...kt(l,u)};h.duration=h.duration?R(h.duration):h.duration,h.delay=R(h.delay||0),o.push(new ee(A,u,b,h))}}return o}function ne(e,t){const n=[];return Vt(e,t).forEach(({keyframes:i,transition:r},a)=>{n.push(...pt(a,i,r))}),new Q(n)}const ie=e=>{function t(n,i,r){return new Q(pt(n,i,r))}return t},re=ie();
+return { animate: re, animateSequence: ne };
+})();
+// ── Toggle ─────────────────────────────────────────────
+export let isDark = false;
+export const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+export function sunArc() {
+  if (reduceMotion.matches) return;
+  animate(document.getElementById('toggle-icon'),
+    { transform: ['rotate(0deg) translateY(0)', 'rotate(180deg) translateY(-6px)', 'rotate(360deg) translateY(0)'] },
+    { duration: 0.7, easing: 'circOut' }
+  );
+}
+export function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('dark', isDark);
+  const btn = document.getElementById('toggle-btn');
+  document.getElementById('toggle-icon').textContent = isDark ? '☀' : '☽';
+  document.getElementById('toggle-label').textContent = isDark ? 'Amanecer' : 'Atardecer';
+  btn.setAttribute('aria-label', isDark ? 'Cambiar a amanecer' : 'Cambiar a atardecer');
+  updateHexes();
+  updateHeroImage();
+  buildSky();
+  buildTexture();
+  buildBackStripes();
+  buildTiltColumns(); // las tiras de imagen viven acá ahora, no en buildTexture()
+  sunArc();
+  statueFx.forEach(s => s.refresh());
+}
+// prouned_apolo (claro) / prouned_apolo_dark (oscuro) · el usuario
+// hizo una versión en paleta cálida específica para el modo oscuro.
+// heroLightSrc se captura UNA vez del src original en el HTML, antes
+// de que cualquier toggle lo pise · evita duplicar el base64 claro
+// otra vez en un atributo aparte solo para "recordarlo".
+export const heroImgEl = document.getElementById('ap-hero-img');
+export const heroLightSrc = heroImgEl.src;
+export function updateHeroImage() {
+  heroImgEl.src = isDark ? heroImgEl.dataset.dark : heroLightSrc;
+}
+export function cssVar(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+export function updateHexes() {
+  const map = {
+    'hex-aegean':'--aegean','hex-aegean-lt':'--aegean-lt','hex-sky':'--sky','hex-sea':'--sea',
+    'hex-marble':'--marble','hex-gold':'--gold','hex-gold-lt':'--gold-lt',
+    'hex-rose':'--rose','hex-rose-dark':'--rose-dark','hex-petal':'--petal','hex-petal-dark':'--petal-dark',
+    'hex-yellow':'--yellow','hex-yellow-dark':'--yellow-dark',
+    'hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger',
+  };
+  Object.entries(map).forEach(([id,tok]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = cssVar(tok).toUpperCase();
+  });
+  inkSwatchLabels();
+}
+// ── Etiquetas hex de la paleta ─────────────────────────
+// Antes: color fijo con mix-blend-mode: difference. En medios tonos
+// (naranjas, verdes, el gris) quedaba un gris turbio de 1.1 a 2.5:1.
+// Ahora cada etiqueta usa la tinta del modo vigente (--text o --bg)
+// con mayor contraste WCAG real contra su muestra; si ninguna llega
+// a 4.5:1, va sobre una pastilla --bg con --text (skill colorimetría).
+export function inkSwatchLabels() {
+  const rgbOf = s => { const m = String(s).match(/[\d.]+/g); return m ? m.slice(0, 3).map(Number) : null; };
+  const hexRgb = h => { h = h.trim().replace('#', ''); if (h.length === 3) h = h.replace(/./g, c => c + c); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  const inks = ['--text', '--bg'].map(t => ({ t, c: hexRgb(cssVar(t)) }));
+  document.querySelectorAll('.swatch-hex').forEach(el => {
+    const sw = rgbOf(getComputedStyle(el.parentElement).backgroundColor);
+    if (!sw) return;
+    const best = inks.map(i => ({ t: i.t, r: ratio(i.c, sw) })).sort((a, b) => b.r - a.r)[0];
+    const chip = best.r < 4.5;
+    el.classList.toggle('is-chip', chip);
+    el.style.color = chip ? 'var(--text)' : `var(${best.t})`;
+  });
+}

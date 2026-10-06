@@ -1,0 +1,264 @@
+/* Fuentes de ffonts.net incrustadas sin modificar (ver THIRD_PARTY_NOTICES.md):
+   BPdots Vertical Bold (freeware, George Triantafyllakos · Backpacker) en los
+   títulos y Universe (Vincent Labonne, «Free Font») en los cátodos nixie. */
+@font-face{font-family:'Universe';src:url(../assets/fonts/Universe.ttf) format('truetype');font-display:block}
+@font-face{font-family:'BPdots Vertical';src:url(../assets/fonts/BPdotsVertical.otf) format('opentype');font-weight:700;font-display:swap}
+/* Forge: el taller de hardware y firmware en dos oficios. Forja (lava y
+   metal, default) y taller (electricidad). Los dos viven en la penumbra. */
+body {
+  --bg:#0E0A06;--bg2:#161008;--bg3:#201608;
+  --text:#F0D8B0;--text2:#A08060;--border:#382010;
+  --iron:#1A1410;--coal:#282018;--ash:#504030;--ember:#C84010;--lava:#E86010;--slag:#F0A020;--heat:#FF6820;--smoke:#302820;
+  --voltage:#FF6820;--signal:#F0A020;--current:#E86010;--core:#C84010;--interrupt:#FF4010;--flux:#D06030;--ground:#706050;
+  --ok:#80B040;--warn:#F0A020;--danger:#FF4010;--accent:#E86010;--accent2:#F0A020;
+  --black:#080604;--white:#F8E8D0;--gray:#604830;
+  /* Los nixies son neón: no cambian de color con el modo (como en Nixie hex). */
+  --nixie:#FFB070;--nixie-glow:#FF5A10;--tube:#2A2018;
+  --mono:'Azeret Mono',ui-monospace,monospace;
+  /* Cátodos de alambre: trazo fino y uniforme, cifras altas y angostas (IN-14/IN-15). */
+  --dots:'BPdots Vertical','Azeret Mono',monospace;
+  --radius:3px;--gutter:clamp(16px,4vw,40px);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --current-ink: var(--current);
+  --core-ink: #E94B13;
+  --ground-ink: #937E69;
+}
+body.light {
+  --bg:#12161C;--bg2:#1A2028;--bg3:#232C38;
+  --text:#D0E8F0;--text2:#7A9CB8;--border:#2C3A4A;
+  --iron:#303840;--coal:#202830;--ash:#485860;--ember:#204880;--lava:#2060A0;--slag:#00FF80;--heat:#4593FF;--smoke:#182028;
+  --voltage:#4593FF;--signal:#00FF80;--current:#2080D0;--core:#4090FF;--interrupt:#FF538D;--flux:#00C8A0;--ground:#607080;
+  --ok:#00FF80;--warn:#FFD040;--danger:#FF538D;--accent:#4593FF;--accent2:#00FF80;
+  --black:#0C1018;--white:#D0E8F8;--gray:#405870;
+  --tube:#1E2228;
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --current-ink: #4199E2;
+  --core-ink: #4593FF;
+  --ground-ink: #8695A4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{font-variant-ligatures:none;background:var(--bg);color:var(--text);font-family:var(--mono);font-size:15px;line-height:1.75;overflow-x:hidden;transition:background-color .4s,color .4s}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 60% at 50% 115%,color-mix(in srgb,var(--lava) 22%,transparent),transparent 70%),linear-gradient(to bottom,var(--black),var(--bg) 50%,var(--bg2))}
+body.light::before{background:radial-gradient(ellipse 80% 55% at 50% -10%,color-mix(in srgb,var(--voltage) 16%,transparent),transparent 70%),linear-gradient(to bottom,var(--black),var(--bg) 50%,var(--bg2))}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--border)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+main,.fg-foot{position:relative;z-index:2}
+.fg-wrap{width:min(1000px,calc(100% - 2 * var(--gutter)));margin-inline:auto}
+
+/* Noise (React Bits): grano de humo en la forja, de fósforo en el taller.
+   Una sola baldosa de ruido que salta de lugar (sin pintar ruido cada cuadro). */
+.fg-grain{position:fixed;inset:-50%;z-index:40;pointer-events:none;opacity:.04;background-image:var(--grain);background-size:256px 256px;image-rendering:pixelated;animation:fg-grain .5s steps(1) infinite}
+@keyframes fg-grain{0%{transform:translate(0,0)}25%{transform:translate(-7%,4%)}50%{transform:translate(5%,-6%)}75%{transform:translate(-3%,-9%)}}
+@media (prefers-reduced-motion:reduce){.fg-grain{animation:none}}
+#fg-sparks{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+
+/* ── Cabecera: marca y el interruptor de oficio ── */
+.fg-top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px var(--gutter);pointer-events:none}
+.fg-top > *{pointer-events:auto}
+.fg-top::before{content:'';position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--bg) 94%,transparent);border-bottom:1px solid var(--border);opacity:0;transition:opacity .25s ease-out}
+.fg-top.is-scrolled::before{opacity:1}
+.fg-brand{font-weight:700;font-size:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.fg-brand b{color:var(--accent)}
+.fg-switch{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid var(--border);border-radius:999px;background:color-mix(in srgb,var(--bg) 90%,transparent);color:var(--text2);font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.fg-switch .on{color:var(--text)}
+.fg-switch-track{position:relative;width:40px;height:20px;border-radius:999px;background:var(--bg3);border:1px solid var(--border)}
+.fg-switch-track::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+body.light .fg-switch-track::after{transform:translateX(20px)}
+
+/* ── Tablero de breakers: la navegación ── */
+.fg-panel{position:fixed;left:16px;top:50%;transform:translateY(-50%);z-index:25;display:flex;flex-direction:column;gap:10px;padding:14px 12px;border:1px solid var(--border);border-radius:6px;background:linear-gradient(to bottom,var(--bg3),var(--bg2));box-shadow:inset 0 1px 0 color-mix(in srgb,var(--white) 6%,transparent),0 10px 30px color-mix(in srgb,var(--black) 70%,transparent)}
+.fg-panel-title{font-size:12px;letter-spacing:.14em;color:var(--text2);text-transform:uppercase;text-align:center}
+.breaker{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text2);font-size:12px;letter-spacing:.06em;min-height:44px}
+.breaker-body{position:relative;flex:none;width:26px;height:42px;border-radius:3px;background:var(--black);border:1px solid var(--border);box-shadow:inset 0 2px 6px color-mix(in srgb,var(--black) 80%,transparent)}
+.breaker-lever{position:absolute;left:4px;right:4px;height:18px;bottom:3px;border-radius:2px;background:linear-gradient(to bottom,var(--gray),var(--ash));transition:bottom .22s cubic-bezier(.3,1.4,.5,1),background .22s}
+.breaker-led{position:absolute;top:-6px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--bg3);transition:background .2s,box-shadow .2s}
+.breaker[aria-current="true"] .breaker-lever{bottom:21px;background:linear-gradient(to bottom,var(--slag),var(--accent))}
+.breaker[aria-current="true"] .breaker-led{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.breaker[aria-current="true"]{color:var(--text)}
+.breaker-lbl b{color:var(--accent);font-weight:500}
+/* El tablero ocupa su columna: solo el contenido se recorre; los fondos siguen a todo lo ancho. */
+@media (min-width:1181px){.fg-wrap{width:min(1000px,calc(100% - 224px - 2 * var(--gutter)));margin-left:max(calc(224px + var(--gutter)),calc((100% - 1000px) / 2 + 112px));margin-right:auto}.fg-foot{padding-left:224px}}
+@media (max-width:1180px){
+  .fg-panel{top:auto;bottom:0;left:0;right:0;transform:none;flex-direction:row;justify-content:center;gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));border-radius:0;border-width:1px 0 0}
+  .fg-panel-title{display:none}
+  .breaker{flex-direction:column;gap:2px;min-width:48px}
+  .breaker-body{width:22px;height:32px}.breaker-lever{height:13px}.breaker[aria-current="true"] .breaker-lever{bottom:15px}
+  .breaker-lbl span{display:none}
+  body{padding-bottom:78px}
+}
+
+/* ── Portada: nixies y el ambiente de cada oficio ── */
+.fg-hero{position:relative;min-height:100vh;min-height:100svh;display:grid;align-items:center;padding:96px 0 64px;overflow:hidden}
+.fg-hero canvas{position:absolute;pointer-events:none}
+#fg-beam{top:0;right:0;width:60%;height:100%;mix-blend-mode:screen}
+#fg-bolt{top:0;right:0;width:60%;height:100%;mix-blend-mode:screen}
+#fg-core{right:2%;top:50%;width:min(34vw,440px);height:min(34vw,440px);transform:translateY(-50%)}
+body.light #fg-beam,body:not(.light) #fg-bolt,body:not(.light) #fg-core{visibility:hidden}
+.fg-hero-in{position:relative;z-index:1}
+.fg-kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent2);display:inline-block;padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--bg) 85%,transparent)}
+.fg-lede{font-size:clamp(17px,2vw,20px);max-width:40ch;margin-top:24px;display:inline;padding:2px 8px;line-height:1.9;-webkit-box-decoration-break:clone;box-decoration-break:clone;background:color-mix(in srgb,var(--bg) 85%,transparent)}
+/* Tubo nixie IN-15: vidrio, rejilla del ánodo, cátodos apagados y el encendido. */
+.nixies{display:flex;gap:clamp(6px,1vw,12px);margin:22px 0 0}
+.tube{--w:clamp(52px,9vw,104px);position:relative;width:var(--w);height:calc(var(--w) * 1.62);border-radius:42% 42% 10% 10% / 26% 26% 6% 6%;display:grid;place-items:center;overflow:hidden;
+  background:
+    repeating-linear-gradient(60deg,color-mix(in srgb,var(--nixie-glow) 10%,transparent) 0 1px,transparent 1px 7px),
+    repeating-linear-gradient(-60deg,color-mix(in srgb,var(--nixie-glow) 10%,transparent) 0 1px,transparent 1px 7px),
+    radial-gradient(ellipse 70% 60% at 50% 52%,color-mix(in srgb,var(--nixie-glow) 22%,var(--tube)),var(--tube) 70%,var(--black));
+  border:1px solid color-mix(in srgb,var(--nixie) 18%,var(--border));
+  box-shadow:inset 0 0 18px color-mix(in srgb,var(--black) 90%,transparent),0 0 30px color-mix(in srgb,var(--nixie-glow) 18%,transparent)}
+.tube::after{content:'';position:absolute;left:14%;top:7%;width:16%;height:62%;border-radius:999px;background:linear-gradient(to bottom,color-mix(in srgb,var(--white) 26%,transparent),transparent);opacity:.55}
+.tube-face{position:relative;display:grid;font-family:'Universe',var(--mono);font-size:calc(var(--w) * .9);line-height:1;margin-top:-4%}
+.tube-face>span{grid-area:1/1;text-align:center}
+.tube-face .cath{color:color-mix(in srgb,var(--nixie) 11%,transparent)}
+.tube-face .lit{color:var(--nixie);text-shadow:0 0 1px var(--nixie),0 0 6px var(--nixie-glow),0 0 16px var(--nixie-glow);transition:opacity .05s}
+.tube.is-flip .lit{opacity:.6}
+.tube-base{position:absolute;left:0;right:0;bottom:0;height:9%;background:linear-gradient(to bottom,var(--ash),var(--black))}
+.nixies--sm .tube{--w:clamp(30px,4.6vw,50px)}
+.fg-hex{display:flex;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+.fg-hex .nixies{margin:0}
+.fg-hash{display:inline-flex;width:clamp(22px,3.2vw,36px)}
+.fg-hash svg{width:100%;height:auto;overflow:visible}
+.fg-hash path{fill:none;stroke:var(--nixie);stroke-width:3px;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 6px var(--nixie-glow))}
+.fg-hex-cap{display:table;margin-top:12px;font-size:12px;color:var(--text2);letter-spacing:.06em;padding:2px 8px;border-radius:4px;background:color-mix(in srgb,var(--bg) 88%,transparent)}
+@media (max-width:860px){#fg-beam{width:100%}#fg-core{right:50%;transform:translate(50%,0);top:auto;bottom:4%;width:70vw;height:70vw;opacity:.75}#fg-bolt{width:100%}}
+
+/* ── Secciones: el título es la píldora a la que llega la carga ── */
+.fg-sec{position:relative;padding:96px 0 80px;overflow-x:clip}
+.fg-head{position:relative;height:120px;margin-bottom:28px;display:grid;place-items:center}
+.fg-cables{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fg-cables path{fill:none;stroke:var(--border);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.fg-cables .charge{stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-dasharray:70 1200;stroke-dashoffset:70;filter:drop-shadow(0 0 6px var(--accent));opacity:0}
+.fg-pill{font-family:var(--dots);position:relative;z-index:1;display:inline-flex;align-items:center;gap:12px;padding:12px 26px;border-radius:999px;border:1px solid var(--border);background:var(--bg2);font-size:clamp(16px,2.4vw,22px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);transition:color .5s ease-out,text-shadow .5s ease-out,border-color .5s ease-out,box-shadow .5s ease-out}
+.fg-pill small{font-size:13px;font-weight:500;letter-spacing:.06em;color:var(--accent2)}
+.fg-pill.is-lit{color:var(--text);border-color:var(--accent);text-shadow:0 0 14px color-mix(in srgb,var(--accent) 70%,transparent);box-shadow:0 0 26px color-mix(in srgb,var(--accent) 22%,transparent)}
+.fg-pill.is-lit small{color:var(--accent)}
+.fg-intro{max-width:62ch;margin:0 auto 32px;text-align:center;color:var(--text);display:block}
+.fg-intro span{padding:2px 8px;line-height:1.9;-webkit-box-decoration-break:clone;box-decoration-break:clone;background:color-mix(in srgb,var(--bg) 86%,transparent)}
+h3{font-family:var(--dots);font-size:16px;font-weight:700;color:var(--accent2);margin:32px 0 12px;letter-spacing:.1em;text-transform:uppercase}
+h4{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+p{margin-bottom:12px}
+p.muted{color:var(--text2);font-size:14px}
+
+/* Paleta */
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.swatch{width:96px;text-align:center;font-size:12px;color:var(--text2)}
+.swatch-box{height:48px;border-radius:var(--radius);margin-bottom:5px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:5px;font-size:12px;letter-spacing:-.3px;line-height:1;pointer-events:none}
+.swatch-hex.is-chip{background:var(--bg);padding:2px 3px;border-radius:2px}
+
+/* Señales */
+.callout-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:10px}
+.callout{border-left:2px solid var(--accent);background:var(--bg2);padding:11px 16px;border-radius:0 var(--radius) var(--radius) 0}
+.callout-title{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.callout p{margin-bottom:0;font-size:14px}
+.callout.ok{border-color:var(--ok)}.callout.ok .callout-title{color:var(--ok)}
+.callout.warn{border-color:var(--warn)}.callout.warn .callout-title{color:var(--warn)}
+.callout.danger{border-color:var(--danger)}.callout.danger .callout-title{color:var(--danger)}
+.callout.voltage{border-color:var(--voltage)}.callout.voltage .callout-title{color:var(--voltage)}
+.callout.signal{border-color:var(--signal)}.callout.signal .callout-title{color:var(--signal)}
+.callout.current{border-color:var(--current-ink)}.callout.current .callout-title{color:var(--current-ink)}
+.callout.core{border-color:var(--core-ink)}.callout.core .callout-title{color:var(--core-ink)}
+.callout.interrupt{border-color:var(--interrupt)}.callout.interrupt .callout-title{color:var(--interrupt)}
+.callout.flux{border-color:var(--flux)}.callout.flux .callout-title{color:var(--flux)}
+.callout.ground{border-color:var(--ground-ink)}.callout.ground .callout-title{color:var(--ground-ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);background:var(--bg);letter-spacing:.06em;text-transform:uppercase}
+.badge.voltage{border-color:var(--voltage);color:var(--voltage)}.badge.signal{border-color:var(--signal);color:var(--signal)}.badge.current{border-color:var(--current-ink);color:var(--current-ink)}.badge.core{border-color:var(--core-ink);color:var(--core-ink)}
+.badge.interrupt{border-color:var(--interrupt);color:var(--interrupt)}.badge.flux{border-color:var(--flux);color:var(--flux)}.badge.ground{border-color:var(--ground-ink);color:var(--ground-ink)}.badge.slag{border-color:var(--slag);color:var(--slag)}
+.badge.ok{border-color:var(--ok);color:var(--ok)}.badge.warn{border-color:var(--warn);color:var(--warn)}.badge.danger{border-color:var(--danger);color:var(--danger)}
+.btn{display:inline-flex;align-items:center;min-height:40px;font:700 13px var(--mono);padding:0 16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text2);cursor:pointer;transition:border-color .2s ease-out,color .2s ease-out,transform .16s ease-out;letter-spacing:.06em;text-transform:uppercase}
+.btn:active{transform:scale(.97)}
+.btn.primary{border-color:var(--accent);color:var(--accent)}
+@media (hover:hover) and (pointer:fine){.btn:hover{border-color:var(--accent);color:var(--accent)}}
+.btn.ok{border-color:var(--ok);color:var(--ok)}.btn.warn{border-color:var(--warn);color:var(--warn)}.btn.danger{border-color:var(--danger);color:var(--danger)}
+.btn.voltage{border-color:var(--voltage);color:var(--voltage)}.btn.signal{border-color:var(--signal);color:var(--signal)}.btn.core{border-color:var(--core-ink);color:var(--core-ink)}.btn.interrupt{border-color:var(--interrupt);color:var(--interrupt)}.btn.flux{border-color:var(--flux);color:var(--flux)}
+
+/* Contenedores: metal al rojo en la forja, Electric Border en el taller. */
+.hot{position:relative;border:1px solid var(--border);border-radius:6px;background:var(--bg2)}
+body:not(.light) .hot::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(var(--hot-a,0deg),var(--ember),var(--slag) 30%,var(--ember) 55%,var(--coal) 80%,var(--ember));-webkit-mask:linear-gradient(var(--black) 0 0) content-box,linear-gradient(var(--black) 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:fg-hot 6s linear infinite;pointer-events:none}
+body:not(.light) .hot{box-shadow:0 0 24px color-mix(in srgb,var(--ember) 18%,transparent)}
+@property --hot-a{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes fg-hot{to{--hot-a:360deg}}
+@media (prefers-reduced-motion:reduce){body:not(.light) .hot::before{animation:none}}
+.eb-canvas-container{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:2}
+.eb-canvas{display:block}
+.eb-glow-1,.eb-glow-2,.eb-background-glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.eb-glow-1{border:2px solid color-mix(in srgb,var(--voltage) 60%,transparent);filter:blur(1px)}
+.eb-glow-2{border:2px solid var(--voltage);filter:blur(4px)}
+.eb-background-glow{z-index:-1;transform:scale(1.06);filter:blur(32px);opacity:.25;background:linear-gradient(-30deg,var(--voltage),transparent,var(--flux))}
+body:not(.light) .eb-canvas-container,body:not(.light) .eb-glow-1,body:not(.light) .eb-glow-2,body:not(.light) .eb-background-glow{display:none}
+
+/* §3 Instrumentos */
+.fg-instr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px;padding:24px}
+.np-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px}
+.np{display:grid;gap:6px;justify-items:start}
+.np .nixies{margin:0;gap:4px}
+.np .tube{--w:34px}
+.np-lbl{font-size:12px;color:var(--text2);letter-spacing:.08em;text-transform:uppercase}
+.np-dot{align-self:end;width:6px;height:6px;margin:0 1px 6px;border-radius:50%;background:var(--nixie);box-shadow:0 0 8px var(--nixie-glow)}
+#fg-scope{width:100%;height:260px;display:block;border:1px solid var(--border);border-radius:4px;background:var(--black)}
+.fg-scope-cap{font-size:12px;color:var(--text2);margin-top:6px}
+.fg-instr > *{min-width:0}
+@media (max-width:860px){.fg-instr{grid-template-columns:minmax(0,1fr)}}
+
+/* §4 Firmware */
+.fg-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.fg-two > *{min-width:0}
+@media (max-width:860px){.fg-two{grid-template-columns:minmax(0,1fr)}}
+code{font-size:13px;background:var(--bg3);border:1px solid var(--border);padding:1px 5px;border-radius:var(--radius);color:var(--slag)}
+pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--radius);padding:14px 16px;margin:0;overflow-x:auto;font-size:13px;line-height:1.75;color:var(--text);position:relative}
+pre::before{content:attr(data-lang);position:absolute;top:5px;right:8px;font-size:12px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw{color:var(--voltage)}pre .fn{color:var(--signal)}pre .str{color:var(--ok)}pre .num{color:var(--slag)}pre .cm{color:var(--text2);font-style:italic}pre .tp{color:var(--flux)}
+.fg-ascii-sec{background:var(--black);border-block:1px solid var(--border)}
+.fg-ascii{position:absolute;inset:0;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,transparent,var(--bg) 8%,var(--bg) 92%,transparent);mask-image:linear-gradient(to bottom,transparent,var(--bg) 8%,var(--bg) 92%,transparent)}
+.fg-ascii canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fg-ascii-sec .fg-wrap{position:relative;z-index:1}
+.fg-ascii-sec .fg-intro span{background:color-mix(in srgb,var(--black) 92%,transparent)}
+.fg-ascii-sec h3{display:table;padding:2px 8px;margin-left:-8px;border-radius:3px;background:color-mix(in srgb,var(--black) 88%,transparent)}
+.fg-ascii-sec .fw-step,.fg-ascii-sec .reg-log,.fg-ascii-sec pre{background:color-mix(in srgb,var(--bg2) 94%,transparent)}
+html:not(.js) .fg-ascii{background:center/cover no-repeat;background-image:var(--ascii-img);opacity:.25}
+.reg-log{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2px 14px}
+.reg-entry{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.reg-entry:last-child{border-bottom:none}
+.reg-entry p{margin:0}
+.reg-dot{min-width:40px;height:20px;flex-shrink:0;margin-top:3px;border:1px solid var(--border);border-radius:2px;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2)}
+.reg-dot.voltage{border-color:var(--voltage);color:var(--voltage)}.reg-dot.signal{border-color:var(--signal);color:var(--signal)}.reg-dot.ok{border-color:var(--ok);color:var(--ok)}
+.reg-dot.warn{border-color:var(--warn);color:var(--warn)}.reg-dot.danger{border-color:var(--danger);color:var(--danger)}.reg-dot.interrupt{border-color:var(--interrupt);color:var(--interrupt)}
+.fw-step{display:flex;gap:14px;align-items:flex-start;margin:0 0 8px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--radius)}
+.fw-step p{margin:0}
+.fw-num{font-size:15px;font-weight:700;color:var(--accent);min-width:42px;line-height:1;margin-top:3px}
+
+/* §5 Crisol: Molten Metal en la forja, la tormenta en el taller */
+.fg-crisol{position:relative;overflow:hidden;border-block:1px solid var(--border)}
+.fg-crisol > canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+body.light #fg-molten,body:not(.light) #fg-storm{visibility:hidden}
+#fg-storm{clip-path:inset(var(--wall,0%) calc(var(--wall,0%) * 1.6));transition:clip-path 1.8s cubic-bezier(.2,.7,.2,1)}
+.fg-crisol .fg-wrap{position:relative;z-index:1}
+.fg-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:4px;background:color-mix(in srgb,var(--bg) 92%,transparent)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg3);padding:9px 12px;text-align:left;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+td:nth-child(-n+3){white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:18px;margin-top:20px}
+.card{padding:16px 20px}
+.card p{margin:6px 0 0}
+
+/* Target Cursor (React Bits): mira que gira y se pega a lo que apuntas. */
+.target-cursor-wrapper{position:fixed;top:0;left:0;width:0;height:0;pointer-events:none;z-index:2147483647;will-change:transform}
+.target-cursor-dot{position:absolute;left:0;top:0;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent)}
+.target-cursor-corner{position:absolute;left:0;top:0;width:12px;height:12px;border:3px solid var(--accent);will-change:transform;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--accent) 70%,transparent))}
+.corner-tl{border-right:none;border-bottom:none}.corner-tr{border-left:none;border-bottom:none}.corner-br{border-left:none;border-top:none}.corner-bl{border-right:none;border-top:none}
+html.tc-on,html.tc-on *{cursor:none!important}
+
+.fg-foot{padding:40px var(--gutter) 48px;text-align:center;font-size:12px;color:var(--text2);line-height:1.9}
+.fg-foot a{color:var(--text)}
+@media (max-width:760px),(pointer:coarse){body{font-size:15px}.fg-sec{padding:72px 0 64px}.fg-head{height:96px}}

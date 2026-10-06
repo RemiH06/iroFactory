@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!--
+ludus_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ludus_theme — Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=righteous:400&family=fira-code:400,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ludus.css">
+</head>
+<body>
+
+<canvas id="ludus-tetris"></canvas>
+<div id="ludus-cubes"></div>
+
+<div class="page">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
+  <div style="font-family:var(--display);font-size:38px;letter-spacing:-.5px;line-height:1">
+    <span style="color:var(--piece-t);text-shadow:var(--glow-accent)">lu</span><span style="color:var(--piece-i);text-shadow:var(--glow-cyan)">du</span><span style="color:var(--piece-s);text-shadow:var(--glow-green)">s</span><span style="color:var(--text2)">_theme</span>
+  </div>
+  <button class="theme-btn" id="toggle-btn" onclick="toggleTheme()">☀ light</button>
+</div>
+
+<!-- ── Paleta ── -->
+<h2>Paleta de colores</h2>
+<p class="muted">Colores de carpa — rojo carmesí y dorado en oscuro, pasteles de feria en claro.</p>
+
+<h3>Colores</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-i)"><span class="swatch-hex" id="hex-i"></span></div>--piece-i</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-o)"><span class="swatch-hex" id="hex-o"></span></div>--piece-o</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-t)"><span class="swatch-hex" id="hex-t"></span></div>--piece-t</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-s)"><span class="swatch-hex" id="hex-s"></span></div>--piece-s</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-z)"><span class="swatch-hex" id="hex-z"></span></div>--piece-z</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-j)"><span class="swatch-hex" id="hex-j"></span></div>--piece-j</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--piece-l)"><span class="swatch-hex" id="hex-l"></span></div>--piece-l</div>
+</div>
+
+<h3>Estado de juego</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--play)"><span class="swatch-hex" id="hex-play"></span></div>--play</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--pause)"><span class="swatch-hex" id="hex-pause"></span></div>--pause</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gameover)"><span class="swatch-hex" id="hex-go"></span></div>--gameover</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
+</div>
+
+<h3>Neutros y semánticos</h3>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Callouts ── -->
+<h2>Callouts</h2>
+<div class="callout"><div class="callout-title">Acento (default)</div><p>Notas generales del juego, mecánicas y referencias de diseño.</p></div>
+<div class="callout ok"><div class="callout-title">OK · Dorado</div><p>Número completado. El público aplaude desde las gradas.</p></div>
+<div class="callout warn"><div class="callout-title">Warn · Ámbar</div><p>El equilibrista titubea. La red de seguridad está lista.</p></div>
+<div class="callout danger"><div class="callout-title">Danger · Carmesí</div><p>El cañón humano falló la trayectoria. Evacuar la pista.</p></div>
+<div class="callout play"><div class="callout-title">Play · En escena</div><p>El acto está en curso. Las luces sobre la pista central.</p></div>
+<div class="callout pause"><div class="callout-title">Pause · Intermedio</div><p>Descanso entre actos. El público compra palomitas.</p></div>
+<div class="callout gameover"><div class="callout-title">Telón · Fin de función</div><p>La carpa se cierra. Nos vemos en la próxima parada.</p></div>
+<div class="callout piece-i"><div class="callout-title">Dorado · Spotlight</div><p>La luz del foco. Recae sobre quien merece ser visto.</p></div>
+<div class="callout piece-t"><div class="callout-title">Carmesí · Terciopelo</div><p>Las cortinas de la carpa. Rojo profundo, misterio total.</p></div>
+<div class="callout piece-s"><div class="callout-title">Rojo medio · Pista</div><p>El suelo de la pista central. Alfombra de actos imposibles.</p></div>
+<div class="callout piece-z"><div class="callout-title">Coral · Fuego</div><p>Las antorchas del acto de fuego. Calor y peligro controlado.</p></div>
+<div class="callout piece-l"><div class="callout-title">Ámbar · Resina</div><p>El olor del serrín y la resina. El suelo del circo de toda la vida.</p></div>
+
+<hr class="divider">
+
+<!-- ── Badges ── -->
+<h2>Badges</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <span class="badge accent">accent</span>
+  <span class="badge ok">ok</span>
+  <span class="badge warn">warn</span>
+  <span class="badge danger">danger</span>
+  <span class="badge play">en escena</span>
+  <span class="badge pause">intermedio</span>
+  <span class="badge gameover">telón</span>
+  <span class="badge piece-i">dorado</span>
+  <span class="badge piece-o">oro</span>
+  <span class="badge piece-t">carmesí</span>
+  <span class="badge piece-s">pista</span>
+  <span class="badge piece-z">fuego</span>
+  <span class="badge piece-j">marrón</span>
+  <span class="badge piece-l">ámbar</span>
+  <span class="badge">default</span>
+</div>
+
+<hr class="divider">
+
+<!-- ── Botones ── -->
+<h2>Botones</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
+  <button class="btn primary">primary</button>
+  <button class="btn">default</button>
+  <button class="btn play">en escena</button>
+  <button class="btn pause">intermedio</button>
+  <button class="btn ok">ok</button>
+  <button class="btn warn">warn</button>
+  <button class="btn danger">danger</button>
+  <button class="btn piece-i">spotlight</button>
+  <button class="btn piece-t">carmesí</button>
+  <button class="btn piece-s">pista</button>
+  <button class="btn piece-l">ámbar</button>
+</div>
+
+<hr class="divider">
+
+<!-- ── Métricas ── -->
+<h2>Métricas</h2>
+<div class="metrics-row">
+  <div class="metric"><div class="metric-val">3,200</div><div class="metric-lbl">espectadores</div></div>
+  <div class="metric"><div class="metric-val piece-i">12</div><div class="metric-lbl">actos (dorado)</div></div>
+  <div class="metric"><div class="metric-val piece-o">7</div><div class="metric-lbl">números (oro)</div></div>
+  <div class="metric"><div class="metric-val ok">4</div><div class="metric-lbl">noches (ok)</div></div>
+  <div class="metric"><div class="metric-val danger">0</div><div class="metric-lbl">accidentes</div></div>
+  <div class="metric"><div class="metric-val piece-l">∞</div><div class="metric-lbl">asombro</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Código ── -->
+<h2>Código</h2>
+<p class="muted">Inline: <code>toggleTheme()</code> alterna entre carpa y feria de día.</p>
+<pre data-lang="lua"><span class="cm">-- Programación de actos de la noche</span>
+<span class="kw">local</span> ACTOS = { <span class="str">"malabaristas"</span>, <span class="str">"equilibristas"</span>, <span class="str">"cañón humano"</span> }
+
+<span class="kw">function</span> <span class="fn">programarNoche</span>(actos, pista)
+  <span class="kw">for</span> i, acto <span class="kw">in</span> <span class="fn">ipairs</span>(actos) <span class="kw">do</span>
+    <span class="fn">print</span>(<span class="str">"Pista "</span> .. pista .. <span class="str">": "</span> .. acto)
+  <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="cm">-- La carpa principal tiene 3 pistas simultáneas</span>
+<span class="fn">programarNoche</span>(ACTOS, <span class="num">1</span>)</pre>
+
+<hr class="divider">
+
+<!-- ── Tabla ── -->
+<h2>Tabla</h2>
+<table>
+  <tr><th>Token</th><th>Carpa</th><th>Feria</th><th>Evocación</th></tr>
+  <tr><td><code>--piece-i</code></td><td>#C8901A</td><td>#40C8D8</td><td>Dorado · spotlight · luz de foco</td></tr>
+  <tr><td><code>--piece-o</code></td><td>#E8A820</td><td>#E8C000</td><td>Oro · escoria brillante</td></tr>
+  <tr><td><code>--piece-t</code></td><td>#901828</td><td>#A030D0</td><td>Carmesí · terciopelo de carpa</td></tr>
+  <tr><td><code>--piece-s</code></td><td>#B82030</td><td>#30B030</td><td>Rojo medio · pista central</td></tr>
+  <tr><td><code>--piece-z</code></td><td>#D04838</td><td>#D03030</td><td>Coral · fuego · antorchas</td></tr>
+  <tr><td><code>--piece-j</code></td><td>#784010</td><td>#2060D0</td><td>Marrón · serrín · suelo de circo</td></tr>
+  <tr><td><code>--piece-l</code></td><td>#A86018</td><td>#E07000</td><td>Ámbar · resina · luz cálida</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ── Level Log (timeline) ── -->
+<h2>Registro de la noche</h2>
+<div class="level-log">
+  <div class="level-entry">
+    <div class="level-dot play">▶</div>
+    <div><h4>Primer acto iniciado</h4><p class="muted">Los malabaristas abren la noche. Siete antorchas en el aire.</p></div>
+  </div>
+  <div class="level-entry">
+    <div class="level-dot play">▶</div>
+    <div><h4>Segundo acto — equilibristas</h4><p class="muted">La barra a 12 metros de altura. El público contiene la respiración.</p></div>
+  </div>
+  <div class="level-entry">
+    <div class="level-dot warn">!</div>
+    <div><h4>Intermedio — advertencia</h4><p class="muted">Viento cruzado en la carpa. El acto de trapecio se pospone.</p></div>
+  </div>
+  <div class="level-entry">
+    <div class="level-dot pause">⏸</div>
+    <div><h4>Intermedio</div><p class="muted">Descanso de 15 minutos. El payaso entretiene al público.</p></div>
+  </div>
+  <div class="level-entry">
+    <div class="level-dot gameover">✕</div>
+    <div><h4>Telón — fin de función</h4><p class="muted">3,200 espectadores. Doce actos. Una noche que no se olvida.</p></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Stage steps ── -->
+<h2>Actos de la noche</h2>
+<div class="stage-row">
+  <div class="stage-num">1</div>
+  <div><h4>Apertura</h4><p class="muted">El maestro de ceremonias da la bienvenida. Las luces bajan. La magia comienza.</p></div>
+</div>
+<div class="stage-row" style="border-left-color:var(--piece-o)">
+  <div class="stage-num" style="color:var(--piece-o);text-shadow:var(--glow-yellow)">2</div>
+  <div><h4>Malabaristas</h4><p class="muted">Siete objetos en el aire. Fuego, cuchillos y humor en igual medida.</p></div>
+</div>
+<div class="stage-row" style="border-left-color:var(--piece-i)">
+  <div class="stage-num" style="color:var(--piece-i);text-shadow:var(--glow-cyan)">3</div>
+  <div><h4>Trapecio</h4><p class="muted">A doce metros. Sin red. El silencio es parte del acto.</p></div>
+</div>
+<div class="stage-row" style="border-left-color:var(--piece-s)">
+  <div class="stage-num" style="color:var(--piece-s);text-shadow:var(--glow-green)">4</div>
+  <div><h4>Cañón humano</h4><p class="muted">El clímax de la noche. Cuarenta metros de vuelo. El público de pie.</p></div>
+</div>
+
+<hr class="divider">
+
+<!-- ── Cards ── -->
+<h2>Cards</h2>
+<div class="grid-2">
+  <div class="card">
+    <strong>Circo de la Noche</strong>
+    <span class="badge piece-i" style="margin-left:8px">carpa central</span>
+    <p class="muted" style="margin-top:8px">Fundado en 1887. Doce actos. Una sola noche. Sin repetición.</p>
+  </div>
+  <div class="card">
+    <strong>El Gran Payaso</strong>
+    <span class="badge play" style="margin-left:8px">en escena</span>
+    <p class="muted" style="margin-top:8px">Nunca habla. Solo actúa. Nadie sabe su nombre real.</p>
+  </div>
+</div>
+
+<hr class="divider">
+<p class="muted" style="text-align:center;margin-top:32px;font-family:var(--display);font-size:11px;letter-spacing:.06em;text-transform:uppercase">
+  ludus_theme · by RemiH06 · iroFactory · MIT
+</p>
+
+</div><!-- .page -->
+
+<script type="module">
+import { mount as m0 } from '../shared/components/ludus/tetris-board.js';
+import { mount as m1 } from '../shared/components/ludus/floating-cubes.js';
+import { toggleTheme } from '../shared/components/ludus/kit.js';
+// El marcado llama estas funciones con on…="": van en window.
+Object.assign(window, { toggleTheme });
+m0(); m1();
+</script>
+</body>
+</html>

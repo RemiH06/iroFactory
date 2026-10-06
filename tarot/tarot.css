@@ -1,0 +1,412 @@
+/* ══════════════════════════════════════════════════════
+   TOKENS — CLARO (default) · marfil y oro
+══════════════════════════════════════════════════════ */
+body {
+  --bg:        #F8F2E8;
+  --bg2:       #F0E8D8;
+  --bg3:       #E4D8C0;
+
+  --text:      #1A0A08;
+  --text2:     #6A4030;
+
+  --border:    #C8A870;
+
+  /* ── Paleta art deco ── */
+  --gold:      #C8921A;    /* dorado principal    */
+  --gold-lt:   #E8B830;    /* dorado claro        */
+  --gold-dk:   #8A6010;    /* dorado oscuro       */
+  --silver:    #8090A8;    /* plateado            */
+  --silver-lt: #B0C0D0;    /* plateado claro      */
+  --crimson:   #A81820;    /* rojo carmesí        */
+  --scarlet:   #D02820;    /* rojo escarlata      */
+  --wine:      #701018;    /* rojo vino           */
+  --ivory:     #F8F2E8;    /* marfil              */
+  --ebony:     #180808;    /* ébano               */
+
+  /* ── Palos de cartas ──
+     spades   → plateado · espadas
+     hearts   → carmesí  · corazones
+     diamonds → dorado   · diamantes
+     clubs    → verde musgo (neutral) · tréboles */
+  --spades:    #5060A0;
+  --hearts:    #A81820;
+  --diamonds:  #C8921A;
+  --clubs:     #385840;
+
+  /* ── Arcanos mayores ── */
+  --arcana:    #7030A0;    /* púrpura místico     */
+
+  /* ── Acento ── */
+  --accent:    #C8921A;    /* dorado              */
+  --accent2:   #A81820;    /* carmesí             */
+
+  /* ── Semánticos ── */
+  --ok:        #385840;
+  --warn:      #C8921A;
+  --danger:    #A81820;
+
+  /* ── Neutros ── */
+  --black:     #100408;
+  --white:     #FDF8F0;
+  --gray:      #907060;
+
+  /* Tipografía */
+  --display: 'Josefin Sans', sans-serif;
+  --serif:   'Cinzel', serif;
+  --mono:    'Fira Code', monospace;
+
+  --radius:    2px;
+  --radius-lg: 4px;
+
+  /* Dimensiones de carta (proporción póker estándar 2.5×3.5 in) */
+  --card-w: 120px;
+  --card-h: 168px;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS — OSCURO · terciopelo y oro
+══════════════════════════════════════════════════════ */
+body.dark {
+  --bg:        #0E0608;
+  --bg2:       #180C0A;
+  --bg3:       #241410;
+
+  --text:      #F0E8D8;
+  --text2:     #C0907A;
+
+  --border:    #6A4820;
+
+  --gold:      #E8A820;
+  --gold-lt:   #F8D040;
+  --gold-dk:   #A87010;
+  --silver:    #90A8C0;
+  --silver-lt: #C0D0E0;
+  --crimson:   #D02030;
+  --scarlet:   #F03040;
+  --wine:      #901828;
+  --ivory:     #F0E8D8;
+  --ebony:     #080408;
+
+  --spades:    #7080C0;
+  --hearts:    #D02030;
+  --diamonds:  #E8A820;
+  --clubs:     #50805A;
+
+  --arcana:    #9040C0;
+
+  --accent:    #E8A820;
+  --accent2:   #D02030;
+
+  --ok:        #50805A;
+  --warn:      #E8A820;
+  --danger:    #D02030;
+
+  --black:     #040208;
+  --white:     #F8F0E8;
+  --gray:      #806050;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--display);
+  font-size:14px;
+  line-height:1.75;
+  transition:background .4s,color .4s;
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--gold-dk);border-radius:0}
+
+/* ══════════════════════════════════════════════════════
+   LIENZO ART DECO — canvas de fondo
+══════════════════════════════════════════════════════ */
+#tarot-deco{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:0;
+}
+
+/* ══════════════════════════════════════════════════════
+   CARTAS FLOTANTES
+══════════════════════════════════════════════════════ */
+#tarot-cards{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+  perspective:1200px;
+}
+.tarot-card{
+  position:absolute;
+  width:var(--card-w);
+  height:var(--card-h);
+  border-radius:8px;
+  transform-style:preserve-3d;
+  animation:card-float linear infinite;
+}
+.card-face,.card-back{
+  position:absolute;inset:0;
+  border-radius:8px;
+  backface-visibility:hidden;
+  border:1.5px solid var(--gold);
+  box-shadow:0 0 18px rgba(200,146,26,.35), 0 0 6px rgba(168,24,32,.25);
+}
+.card-back{
+  background:var(--wine, #701018);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;
+  transform:rotateY(180deg);
+}
+.card-face{
+  background:var(--ivory, #F8F2E8);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  font-family:var(--serif);
+  color:var(--crimson, #A81820);
+  font-size:11px;
+  letter-spacing:.1em;
+}
+.card-suit{font-size:32px;line-height:1}
+.card-name{font-size:8px;letter-spacing:.14em;text-transform:uppercase;margin-top:4px;color:var(--gold-dk,#8A6010)}
+
+@keyframes card-float{
+  0%   {transform:translateY(110vh) rotate(var(--rot-start)) rotateY(0deg)}
+  100% {transform:translateY(-30vh) rotate(var(--rot-end))   rotateY(360deg)}
+}
+
+/* ══════════════════════════════════════════════════════
+   PÁGINA
+══════════════════════════════════════════════════════ */
+.page{
+  position:relative;z-index:2;
+  padding:40px;max-width:880px;margin:0 auto;
+}
+
+/* ══════════════════════════════════════════════════════
+   SEPARADOR ORNAMENTAL
+══════════════════════════════════════════════════════ */
+.ornament{
+  text-align:center;
+  color:var(--gold);
+  font-size:18px;
+  letter-spacing:.3em;
+  margin:8px 0 16px;
+  opacity:.7;
+}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+══════════════════════════════════════════════════════ */
+h2{
+  font-family:var(--serif);font-size:15px;font-weight:400;
+  color:var(--gold);letter-spacing:.18em;text-transform:uppercase;
+  margin:40px 0 6px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+h2::before,h2::after{content:' ✦ ';color:var(--gold-lt);font-size:10px;vertical-align:middle}
+
+h3{
+  font-family:var(--display);font-size:11px;font-weight:600;
+  color:var(--accent2);letter-spacing:.14em;text-transform:uppercase;
+  margin:22px 0 10px;
+}
+
+h4{font-family:var(--serif);font-size:14px;font-weight:400;color:var(--text);margin-bottom:5px;letter-spacing:.08em}
+p{margin-bottom:14px;line-height:1.85;font-family:var(--display);font-weight:300}
+p.muted{color:var(--text2);font-size:13px}
+em{font-style:italic;color:var(--gold)}
+
+/* ══════════════════════════════════════════════════════
+   CÓDIGO
+══════════════════════════════════════════════════════ */
+code{
+  font-family:var(--mono);font-size:12px;
+  background:var(--bg3);border:1px solid var(--border);
+  padding:1px 6px;border-radius:var(--radius);
+  color:var(--gold);
+}
+pre{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:2px solid var(--gold);border-radius:var(--radius);
+  padding:14px 18px;margin:14px 0;overflow-x:auto;
+  font-family:var(--mono);font-size:12px;line-height:1.75;
+  color:var(--text);position:relative;
+}
+pre::before{content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;font-family:var(--display)}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw {color:var(--arcana)}
+pre .fn {color:var(--gold)}
+pre .str{color:var(--hearts)}
+pre .num{color:var(--diamonds)}
+pre .cm {color:var(--text2);font-style:italic}
+
+/* ══════════════════════════════════════════════════════
+   CALLOUTS
+══════════════════════════════════════════════════════ */
+.callout{
+  border-left:2px solid var(--gold);background:var(--bg2);
+  padding:12px 18px;margin:10px 0;
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.callout-title{
+  font-family:var(--display);font-size:9px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:5px;
+}
+.callout-title::before{content:'✦ '}
+.callout p{margin-bottom:0;font-size:13px}
+
+.callout.ok       {border-color:var(--ok)      }.callout.ok       .callout-title{color:var(--ok)      }
+.callout.warn     {border-color:var(--warn)    }.callout.warn     .callout-title{color:var(--warn)    }
+.callout.danger   {border-color:var(--danger)  }.callout.danger   .callout-title{color:var(--danger)  }
+.callout.hearts   {border-color:var(--hearts)  }.callout.hearts   .callout-title{color:var(--hearts)  }
+.callout.spades   {border-color:var(--spades)  }.callout.spades   .callout-title{color:var(--spades)  }
+.callout.diamonds {border-color:var(--diamonds)}.callout.diamonds .callout-title{color:var(--diamonds)}
+.callout.clubs    {border-color:var(--clubs)   }.callout.clubs    .callout-title{color:var(--clubs)   }
+.callout.arcana   {border-color:var(--arcana)  }.callout.arcana   .callout-title{color:var(--arcana)  }
+.callout.silver   {border-color:var(--silver)  }.callout.silver   .callout-title{color:var(--silver)  }
+.callout.wine     {border-color:var(--wine)    }.callout.wine     .callout-title{color:var(--wine)    }
+
+/* ══════════════════════════════════════════════════════
+   TABLA
+══════════════════════════════════════════════════════ */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+th{background:var(--bg3);padding:8px 14px;text-align:left;font-family:var(--display);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--border)}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;font-weight:300}
+tr:hover td{background:var(--bg3)}
+
+/* ══════════════════════════════════════════════════════
+   BOTONES
+══════════════════════════════════════════════════════ */
+.btn{
+  display:inline-block;font-family:var(--display);font-size:11px;font-weight:600;
+  padding:7px 20px;border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--bg2);color:var(--text2);cursor:pointer;
+  transition:all .2s;letter-spacing:.1em;text-transform:uppercase;
+}
+.btn:hover,.btn.primary{border-color:var(--gold);color:var(--gold)}
+.btn.ok      {border-color:var(--ok);      color:var(--ok)      }
+.btn.warn    {border-color:var(--warn);    color:var(--warn)    }
+.btn.danger  {border-color:var(--danger);  color:var(--danger)  }
+.btn.hearts  {border-color:var(--hearts);  color:var(--hearts)  }
+.btn.spades  {border-color:var(--spades);  color:var(--spades)  }
+.btn.diamonds{border-color:var(--diamonds);color:var(--diamonds)}
+.btn.clubs   {border-color:var(--clubs);   color:var(--clubs)   }
+.btn.arcana  {border-color:var(--arcana);  color:var(--arcana)  }
+.btn.silver  {border-color:var(--silver);  color:var(--silver)  }
+
+/* ══════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════ */
+.badge{
+  display:inline-block;font-family:var(--display);font-size:9px;font-weight:700;
+  padding:2px 9px;border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text2);letter-spacing:.1em;text-transform:uppercase;
+}
+.badge.gold    {border-color:var(--gold);    color:var(--gold)    }
+.badge.silver  {border-color:var(--silver);  color:var(--silver)  }
+.badge.crimson {border-color:var(--crimson); color:var(--crimson) }
+.badge.hearts  {border-color:var(--hearts);  color:var(--hearts)  }
+.badge.spades  {border-color:var(--spades);  color:var(--spades)  }
+.badge.diamonds{border-color:var(--diamonds);color:var(--diamonds)}
+.badge.clubs   {border-color:var(--clubs);   color:var(--clubs)   }
+.badge.arcana  {border-color:var(--arcana);  color:var(--arcana)  }
+.badge.ok      {border-color:var(--ok);      color:var(--ok)      }
+.badge.warn    {border-color:var(--warn);    color:var(--warn)    }
+.badge.danger  {border-color:var(--danger);  color:var(--danger)  }
+
+/* ══════════════════════════════════════════════════════
+   CARDS UI
+══════════════════════════════════════════════════════ */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 22px;margin-bottom:12px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.card:hover{border-color:var(--gold);box-shadow:0 0 16px rgba(200,146,26,.15)}
+
+/* ══════════════════════════════════════════════════════
+   MÉTRICAS
+══════════════════════════════════════════════════════ */
+.metrics-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.metric{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 16px;flex:1;min-width:100px;
+}
+.metric-val{font-family:var(--serif);font-size:22px;color:var(--gold);letter-spacing:.04em}
+.metric-lbl{font-family:var(--display);font-size:10px;color:var(--text2);margin-top:3px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.metric-val.hearts  {color:var(--hearts)  }
+.metric-val.spades  {color:var(--spades)  }
+.metric-val.diamonds{color:var(--diamonds)}
+.metric-val.clubs   {color:var(--clubs)   }
+.metric-val.silver  {color:var(--silver)  }
+.metric-val.arcana  {color:var(--arcana)  }
+
+/* ══════════════════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════════════════ */
+hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+/* ══════════════════════════════════════════════════════
+   READING LOG — análogo al timeline
+   Indicadores en forma de carta (rectángulo vertical)
+══════════════════════════════════════════════════════ */
+.reading-log{margin:14px 0}
+.reading-entry{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.reading-entry:last-child{border-bottom:none}
+.reading-card{
+  width:24px;height:34px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;margin-top:2px;
+  border:1px solid var(--gold);border-radius:2px;
+  background:var(--bg3);color:var(--gold);
+  box-shadow:0 0 6px rgba(200,146,26,.2);
+}
+.reading-card.hearts  {border-color:var(--hearts);  color:var(--hearts)  }
+.reading-card.spades  {border-color:var(--spades);  color:var(--spades)  }
+.reading-card.diamonds{border-color:var(--diamonds);color:var(--diamonds)}
+.reading-card.clubs   {border-color:var(--clubs);   color:var(--clubs)   }
+.reading-card.arcana  {border-color:var(--arcana);  color:var(--arcana)  }
+.reading-card.warn    {border-color:var(--warn);    color:var(--warn)    }
+
+/* ══════════════════════════════════════════════════════
+   DEAL STEPS — análogo a pipeline/stage
+══════════════════════════════════════════════════════ */
+.deal-row{
+  display:flex;gap:16px;align-items:flex-start;
+  margin:10px 0;padding:14px 18px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:2px solid var(--gold);border-radius:var(--radius);
+  transition:box-shadow .2s;
+}
+.deal-row:hover{box-shadow:0 0 12px rgba(200,146,26,.12)}
+.deal-num{
+  font-family:var(--serif);font-size:18px;
+  color:var(--gold);min-width:28px;line-height:1;margin-top:3px;
+  letter-spacing:.04em;
+}
+
+/* ══════════════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════════════ */
+.theme-btn{
+  font-family:var(--display);font-size:11px;font-weight:600;
+  padding:6px 18px;background:none;
+  border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text2);cursor:pointer;transition:all .2s;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:600px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.swatch{width:84px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--text2)}
+.swatch-box{height:48px;border-radius:var(--radius);margin-bottom:6px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:5px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.75);mix-blend-mode:difference;letter-spacing:-.3px;line-height:1;pointer-events:none}

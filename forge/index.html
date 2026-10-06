@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--
+forge_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: Electric Border, Laser Flow, Lightning, Molten Metal, Noise, Split Flap Text, Strands, Target Cursor.
+· Riffs de Figma (inspiración, sin código copiado): cables de carga de @hardikgondhiya, cintas con tormenta de @nellucci, ASCII con onda de @quanhoangindex.
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>forge_theme · Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=azeret-mono:400,500,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="forge.css">
+</head>
+<body>
+<div class="fg-grain" aria-hidden="true"></div>
+<canvas id="fg-sparks" aria-hidden="true"></canvas>
+
+<div class="fg-top">
+  <a class="fg-brand" href="#portada" aria-label="forge · portada"><b>f</b>orge</a>
+  <button class="fg-switch" type="button" role="switch" aria-checked="false" data-theme-toggle aria-label="Oficio: forja o taller"><span class="on" data-l="forja">Forja</span><span class="fg-switch-track" aria-hidden="true"></span><span data-l="taller">Taller</span></button>
+</div>
+
+<nav class="fg-panel" aria-label="Tablero de secciones">
+  <p class="fg-panel-title" aria-hidden="true">Tablero</p>
+  <a class="breaker" href="#portada" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>0</b> <span>Portada</span></span></a>
+  <a class="breaker" href="#aleacion" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§1</b> <span>Aleación</span></span></a>
+  <a class="breaker" href="#senales" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§2</b> <span>Señales</span></span></a>
+  <a class="breaker" href="#instrumentos" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§3</b> <span>Instrumentos</span></span></a>
+  <a class="breaker" href="#firmware" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§4</b> <span>Firmware</span></span></a>
+  <a class="breaker" href="#crisol" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§5</b> <span>Crisol</span></span></a>
+</nav>
+
+<main>
+<!-- ── PORTADA ── -->
+<header class="fg-hero" id="portada">
+  <canvas id="fg-beam" aria-hidden="true"></canvas>
+  <canvas id="fg-bolt" aria-hidden="true"></canvas>
+  <canvas id="fg-core" aria-hidden="true"></canvas>
+  <div class="fg-wrap fg-hero-in">
+    <p class="fg-kicker">hardware · firmware · iroFactory</p>
+    <h1><span class="sr-only">forge</span><span class="nixies" id="fg-title" aria-hidden="true"><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">F</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">O</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">R</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">G</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">E</span></span><span class="tube-base"></span></span></span></h1>
+    <div class="fg-hex">
+      <span class="fg-hash" aria-hidden="true"><svg viewBox="0 0 10 20"><path d="M3.8 3L2.6 17 M7.4 3L6.2 17 M1 7.4H9 M1 12.6H9"/></svg></span>
+      <span class="nixies nixies--sm" id="fg-hexrow" aria-hidden="true"><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">E</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">8</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">6</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">0</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">1</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">0</span></span><span class="tube-base"></span></span></span>
+    </div>
+    <p class="fg-hex-cap" id="fg-hex-cap">Nixie hex · el color de este oficio en seis tubos IN-15: <span id="fg-hex-text">E86010</span></p>
+    <p style="margin-top:22px"><span class="fg-lede">Documentación para hardware, firmware y todo lo que pasa por el metal.</span></p>
+  </div>
+</header>
+
+<!-- ── §1 ALEACIÓN ── -->
+<section class="fg-sec" id="aleacion" aria-labelledby="h-ale">
+  <div class="fg-wrap">
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-ale"><small>§1</small>Aleación</h2></div>
+    <p class="fg-intro"><span>Hierro, brasa y lava en la forja; acero, arco y fósforo en el taller. Los mismos tokens, dos oficios.</span></p>
+    <h3>// Metal</h3>
+    <div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--iron)"><span class="swatch-hex" id="hex-iron"></span></div>--iron</div><div class="swatch"><div class="swatch-box" style="background:var(--coal)"><span class="swatch-hex" id="hex-coal"></span></div>--coal</div><div class="swatch"><div class="swatch-box" style="background:var(--ash)"><span class="swatch-hex" id="hex-ash"></span></div>--ash</div><div class="swatch"><div class="swatch-box" style="background:var(--ember)"><span class="swatch-hex" id="hex-ember"></span></div>--ember</div><div class="swatch"><div class="swatch-box" style="background:var(--lava)"><span class="swatch-hex" id="hex-lava"></span></div>--lava</div><div class="swatch"><div class="swatch-box" style="background:var(--slag)"><span class="swatch-hex" id="hex-slag"></span></div>--slag</div><div class="swatch"><div class="swatch-box" style="background:var(--heat)"><span class="swatch-hex" id="hex-heat"></span></div>--heat</div></div>
+    <h3>// Embebido</h3>
+    <div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--voltage)"><span class="swatch-hex" id="hex-voltage"></span></div>--voltage</div><div class="swatch"><div class="swatch-box" style="background:var(--signal)"><span class="swatch-hex" id="hex-signal"></span></div>--signal</div><div class="swatch"><div class="swatch-box" style="background:var(--current)"><span class="swatch-hex" id="hex-current"></span></div>--current</div><div class="swatch"><div class="swatch-box" style="background:var(--core)"><span class="swatch-hex" id="hex-core"></span></div>--core</div><div class="swatch"><div class="swatch-box" style="background:var(--interrupt)"><span class="swatch-hex" id="hex-interrupt"></span></div>--interrupt</div><div class="swatch"><div class="swatch-box" style="background:var(--flux)"><span class="swatch-hex" id="hex-flux"></span></div>--flux</div><div class="swatch"><div class="swatch-box" style="background:var(--ground)"><span class="swatch-hex" id="hex-ground"></span></div>--ground</div></div>
+  </div>
+</section>
+
+<!-- ── §2 SEÑALES ── -->
+<section class="fg-sec" id="senales" aria-labelledby="h-sen">
+  <div class="fg-wrap">
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-sen"><small>§2</small>Señales</h2></div>
+    <div class="callout-grid">
+      <div class="callout"><div class="callout-title">Acento</div><p>Notas de arquitectura. El sistema corre sobre metal desnudo.</p></div>
+      <div class="callout ok"><div class="callout-title">OK</div><p>Firmware flasheado correctamente. El MCU responde al ping.</p></div>
+      <div class="callout warn"><div class="callout-title">Warn</div><p>Temperatura del core al 87%. Activar ventilador secundario.</p></div>
+      <div class="callout danger"><div class="callout-title">Danger</div><p>Stack overflow en IRQ_Handler. El sistema se reinició.</p></div>
+      <div class="callout voltage"><div class="callout-title">Voltage</div><p>Rieles de 3.3 V y 12 V, ambos dentro de tolerancia ±5%.</p></div>
+      <div class="callout signal"><div class="callout-title">Signal</div><p>PWM a 50 kHz. Duty cycle 72%. Osciloscopio confirmado.</p></div>
+      <div class="callout current"><div class="callout-title">Current</div><p>Consumo en idle 180 mA. En carga máxima 2.4 A.</p></div>
+      <div class="callout core"><div class="callout-title">Core</div><p>ARM Cortex-M4 a 168 MHz. FPU habilitada. Caché L1 activa.</p></div>
+      <div class="callout interrupt"><div class="callout-title">Interrupt</div><p>IRQ prioridad 0. Non-maskable. El handler debe ser breve.</p></div>
+      <div class="callout flux"><div class="callout-title">Flux</div><p>Campo del motor a pasos. 200 pasos por revolución.</p></div>
+      <div class="callout ground"><div class="callout-title">Ground</div><p>GND común a todos los módulos. Nunca flotante.</p></div>
+    </div>
+    <h3>Badges</h3>
+    <div class="row">
+      <span class="badge voltage">voltage</span><span class="badge signal">signal</span><span class="badge current">current</span><span class="badge core">core</span>
+      <span class="badge interrupt">interrupt</span><span class="badge flux">flux</span><span class="badge ground">ground</span><span class="badge slag">slag</span>
+      <span class="badge ok">ok</span><span class="badge warn">warn</span><span class="badge danger">danger</span><span class="badge">default</span>
+    </div>
+    <h3>Botones</h3>
+    <div class="row">
+      <button class="btn primary" type="button">primary</button><button class="btn" type="button">default</button><button class="btn voltage" type="button">voltage</button>
+      <button class="btn signal" type="button">signal</button><button class="btn core" type="button">core</button><button class="btn interrupt" type="button">interrupt</button>
+      <button class="btn flux" type="button">flux</button><button class="btn ok" type="button">ok</button><button class="btn warn" type="button">warn</button><button class="btn danger" type="button">danger</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── §3 INSTRUMENTOS ── -->
+<section class="fg-sec" id="instrumentos" aria-labelledby="h-ins">
+  <div class="fg-wrap">
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-ins"><small>§3</small>Instrumentos</h2></div>
+    <div class="hot fg-instr" data-eb>
+      <div>
+        <h3 style="margin-top:0">Lecturas</h3>
+        <div class="np-grid"><div class="np"><span class="nixies" data-v="168" aria-hidden="true"><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">1</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">6</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">8</span></span><span class="tube-base"></span></span></span><span class="np-lbl">MHz</span><span class="sr-only">168 MHz</span></div><div class="np"><span class="nixies" data-v="33" aria-hidden="true"><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">3</span></span><span class="tube-base"></span></span><span class="np-dot"></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">3</span></span><span class="tube-base"></span></span></span><span class="np-lbl">V · riel</span><span class="sr-only">3.3 V · riel</span></div><div class="np"><span class="nixies" data-v="87" aria-hidden="true"><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">8</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">7</span></span><span class="tube-base"></span></span></span><span class="np-lbl">°C · core</span><span class="sr-only">87 °C · core</span></div><div class="np"><span class="nixies" data-v="IRQ" aria-hidden="true"><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">I</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">R</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">Q</span></span><span class="tube-base"></span></span></span><span class="np-lbl">pendiente</span><span class="sr-only">IRQ pendiente</span></div><div class="np"><span class="nixies" data-v="200" aria-hidden="true"><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">2</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">0</span></span><span class="tube-base"></span></span><span class="tube"><span class="tube-face" aria-hidden="true"><span class="cath">0</span><span class="cath">1</span><span class="cath">2</span><span class="cath">3</span><span class="cath">4</span><span class="cath">5</span><span class="cath">6</span><span class="cath">7</span><span class="cath">8</span><span class="cath">9</span><span class="lit">0</span></span><span class="tube-base"></span></span></span><span class="np-lbl">pasos/rev</span><span class="sr-only">200 pasos/rev</span></div></div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">Osciloscopio</h3>
+        <canvas id="fg-scope" aria-label="Osciloscopio con tres señales: señal, núcleo e interrupción" role="img"></canvas>
+        <p class="fg-scope-cap">CH1 señal · CH2 núcleo · CH3 interrupción · 5 ms/div</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── §4 FIRMWARE ── -->
+<section class="fg-sec fg-ascii-sec" id="firmware" aria-labelledby="h-fir">
+  <div class="fg-ascii" id="fg-ascii" style="--ascii-img:url(../assets/img/forge/489bb862d5.webp)" aria-hidden="true"><canvas></canvas></div>
+  <div class="fg-wrap">
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-fir"><small>§4</small>Firmware</h2></div>
+    <p class="fg-intro"><span>De fondo, la protoboard en ASCII: cada carácter es la luz de su celda y una onda sube agrandándolos. Toca o pasa el cursor para soltar otra. Imagen temporal: la de sherry.</span></p>
+    <div class="fg-two">
+      <div>
+        <h3 style="margin-top:0">Código</h3>
+<pre data-lang="c"><span class="cm">// ISR del temporizador principal</span>
+<span class="tp">void</span> <span class="fn">TIM2_IRQHandler</span>(<span class="tp">void</span>) {
+  <span class="kw">if</span> (TIM2->SR &amp; TIM_SR_UIF) {
+    TIM2->SR &amp;= ~TIM_SR_UIF;  <span class="cm">// limpia la bandera</span>
+    pwm_duty = <span class="fn">pid_update</span>(setpoint, <span class="fn">adc_read</span>(<span class="num">0</span>));
+    <span class="fn">set_pwm</span>(pwm_duty);
+  }
+}
+
+<span class="tp">uint16_t</span> <span class="fn">adc_read</span>(<span class="tp">uint8_t</span> ch) {
+  ADC1->SQR3 = ch;
+  ADC1->CR2 |= ADC_CR2_SWSTART;
+  <span class="kw">while</span> (!(ADC1->SR &amp; ADC_SR_EOC));
+  <span class="kw">return</span> ADC1->DR;
+}</pre>
+      </div>
+      <div>
+        <h3 style="margin-top:0">Register log</h3>
+        <div class="reg-log">
+          <div class="reg-entry"><div class="reg-dot ok">OK</div><div><h4>Arranque completo</h4><p class="muted">Bootloader 0x08000000 → App 0x08004000 · checksum válido</p></div></div>
+          <div class="reg-entry"><div class="reg-dot voltage">HI</div><div><h4>GPIO PA5 → HIGH</h4><p class="muted">LED_STATUS encendido · sistema operativo</p></div></div>
+          <div class="reg-entry"><div class="reg-dot signal">PWM</div><div><h4>TIM2 configurado</h4><p class="muted">ARR=1679 · PSC=0 · 50 kHz · DMA canal 1</p></div></div>
+          <div class="reg-entry"><div class="reg-dot warn">HOT</div><div><h4>Temperatura elevada</h4><p class="muted">Core 87 °C · límite 105 °C · sin throttling</p></div></div>
+          <div class="reg-entry"><div class="reg-dot interrupt">IRQ</div><div><h4>Hard Fault</h4><p class="muted">PC=0x08002A44 · LR=0xFFFFFFF9 · revisando stack</p></div></div>
+          <div class="reg-entry"><div class="reg-dot danger">ERR</div><div><h4>Watchdog reset</h4><p class="muted">IWDG expiró · loop principal bloqueado · reboot</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:28px">
+      <div>
+        <h3>Firmware pipeline</h3>
+        <div class="fw-step"><div class="fw-num">0x00</div><div><h4>Reset handler</h4><p class="muted">Inicializar el stack pointer. Copiar .data de Flash a RAM. Limpiar .bss.</p></div></div>
+        <div class="fw-step" style="border-left-color:var(--signal)"><div class="fw-num" style="color:var(--signal)">0x01</div><div><h4>HAL Init</h4><p class="muted">PLL a 168 MHz. Clocks de periféricos. Latencia de Flash 5.</p></div></div>
+        <div class="fw-step" style="border-left-color:var(--core-ink)"><div class="fw-num" style="color:var(--core-ink)">0x02</div><div><h4>Periféricos</h4><p class="muted">UART2 a 115200. ADC1 continuo. TIM2 PWM. I2C1 para sensores.</p></div></div>
+        <div class="fw-step" style="border-left-color:var(--interrupt)"><div class="fw-num" style="color:var(--interrupt)">0x03</div><div><h4>Main loop</h4><p class="muted">while(1) · procesar la cola de eventos. WFI si está ocioso. Watchdog cada 500 ms.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── §5 CRISOL ── -->
+<section class="fg-sec fg-crisol" id="crisol" aria-labelledby="h-cri">
+  <canvas id="fg-molten" aria-hidden="true"></canvas>
+  <canvas id="fg-storm" aria-hidden="true"></canvas>
+  <div class="fg-wrap">
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-cri"><small>§5</small>Crisol</h2></div>
+    <div class="fg-table-wrap">
+      <table>
+        <tr><th>Token</th><th>Forja</th><th>Taller</th><th>Semántica</th></tr>
+        <tr><td><code>--voltage</code></td><td>#FF6820</td><td>#4090FF</td><td>Tensión · peligro eléctrico</td></tr>
+        <tr><td><code>--signal</code></td><td>#F0A020</td><td>#00FF80</td><td>Señal analógica · osciloscopio</td></tr>
+        <tr><td><code>--current</code></td><td>#E86010</td><td>#2080D0</td><td>Corriente eléctrica</td></tr>
+        <tr><td><code>--core</code></td><td>#C84010</td><td>#4090FF</td><td>Núcleo del procesador</td></tr>
+        <tr><td><code>--interrupt</code></td><td>#FF4010</td><td>#FF4080</td><td>Interrupción · IRQ</td></tr>
+        <tr><td><code>--flux</code></td><td>#D06030</td><td>#00C8A0</td><td>Flujo magnético</td></tr>
+        <tr><td><code>--ground</code></td><td>#706050</td><td>#607080</td><td>Tierra · GND</td></tr>
+      </table>
+    </div>
+    <div class="grid-2">
+      <div class="card hot" data-eb><strong>STM32F407</strong> <span class="badge core">Cortex-M4</span><p class="muted">168 MHz · 1 MB Flash · 192 KB RAM · FPU · Ethernet</p></div>
+      <div class="card hot" data-eb><strong>ROS 2 Humble</strong> <span class="badge flux">robótica</span><p class="muted">DDS middleware · topics · services · tiempo real</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="fg-foot">forge_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Cables inspirados en <a href="https://www.figma.com/@hardikgondhiya">@hardikgondhiya</a>, tormenta en <a href="https://www.figma.com/@nellucci">@nellucci</a> y ASCII en <a href="https://www.figma.com/@quanhoangindex">@quanhoangindex</a> · Títulos en BPdots de George Triantafyllakos y nixies en Universe de Vincent Labonne</footer>
+
+<script type="module">
+import { mount as m0 } from '../shared/components/forge/kit.js';
+import { mount as m1 } from '../shared/components/forge/noise.js';
+import { mount as m2 } from '../shared/components/forge/sparks.js';
+import { mount as m3 } from '../shared/components/forge/nixie-tubes.js';
+import { mount as m4 } from '../shared/components/forge/breaker-panel.js';
+import { mount as m5 } from '../shared/components/forge/laser-flow.js';
+import { mount as m6 } from '../shared/components/forge/lightning.js';
+import { mount as m7 } from '../shared/components/forge/strands-core.js';
+import { mount as m8 } from '../shared/components/forge/electric-border.js';
+import { mount as m9 } from '../shared/components/forge/oscilloscope.js';
+import { mount as m10 } from '../shared/components/forge/ascii-wave.js';
+import { mount as m11 } from '../shared/components/forge/crucible.js';
+import { mount as m12 } from '../shared/components/forge/target-cursor.js';
+m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7(); m8(); m9(); m10(); m11(); m12();
+</script>
+</body>
+</html>

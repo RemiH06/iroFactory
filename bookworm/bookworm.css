@@ -1,0 +1,379 @@
+/* ── PALETA (skill colorimetría) ──
+   Concepto: un invernadero de lectura · luz que entra por vidrio y
+   agujeros de madera sobre un suelo de bosque. Matiz base: musgo (~105°).
+   Regla: Analogous cálida de bosque (musgo 105°, helecho 90°, liquen 80°,
+   ocre 38°, corteza 28°), con el ámbar como luz. Noche: mismos matices,
+   bosque nocturno con luz de luna fría en los rayos. Las tintas --*-ink
+   ajustan solo luminosidad para texto WCAG AA. */
+/* ══════════════════════════════════════════════════════
+   TOKENS · CLARO (default) · claro del bosque
+══════════════════════════════════════════════════════ */
+body {
+  --bg:       #E8E0D0;
+  --bg2:      #DDD5C0;
+  --bg3:      #CEC4AC;
+  --text:     #1C160C;
+  --text2:    #5A4E38;
+  --border:   #B8A888;
+  --moss:     #4A6040;
+  --fern:     #6A8050;
+  --canopy:   #385030;
+  --bark:     #6A4828;
+  --earth:    #8A6040;
+  --ochre:    #B08030;
+  --amber:    #C89040;
+  --dew:      #789878;
+  --stone:    #788070;
+  --lichen:   #8A9870;
+  --chapter:  #4A6040;
+  --note:     #B08030;
+  --bookmark: #6A4828;
+  --ok:       #4A6040;
+  --warn:     #B08030;
+  --danger:   #8A3020;
+  --accent:   #4A6040;
+  --accent2:  #B08030;
+  --black:    #100C04;
+  --white:    #F8F4EC;
+  --gray:     #907868;
+  --serif:    'Libre Baskerville', Georgia, serif;
+  --mono:     'Fira Code', monospace;
+  --radius:   3px;
+  --radius-lg: 10px;
+  /* Invernadero (fondo compartido por el hero y las ventanas) */
+  --gh-wood:  #D7CDB9;
+  --gh-line:  #8A7858;
+  --gh-ray1:  #E0A030;
+  --gh-ray2:  #F4E2B0;
+  /* Vidrio */
+  --glass:      color-mix(in srgb, var(--bg2) 80%, transparent);
+  --glass-edge: color-mix(in srgb, var(--white) 55%, transparent);
+  --glass-tint: color-mix(in srgb, var(--bg) 22%, transparent);
+  /* Masked heading: la imagen clara es crema/oro sobre beige, se oscurece. */
+  --mh-filter: brightness(.4) saturate(1.2) contrast(1.15);
+  --mh-rim: drop-shadow(0 2px 0 color-mix(in srgb, var(--black) 35%, transparent));
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --moss-ink: #425639;
+  --bark-ink: var(--bark);
+  --ochre-ink: #674B1C;
+  --fern-ink: #465535;
+  --amber-ink: #694A1E;
+  --accent-ink: #425639;
+  --ok-ink: #425639;
+  --warn-ink: #674B1C;
+  --danger-ink: var(--danger);
+  --chapter-ink: #425639;
+  --note-ink: #674B1C;
+  --bookmark-ink: var(--bookmark);
+  --dew-ink: #415641;
+  --stone-ink: #4D5248;
+  --lichen-ink: #4B533C;
+  --earth-ink: #694931;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS · OSCURO · bosque nocturno
+══════════════════════════════════════════════════════ */
+body.dark {
+  --bg:       #0C100A;
+  --bg2:      #121810;
+  --bg3:      #1A2016;
+  --text:     #D8E0C8;
+  --text2:    #8A9878;
+  --border:   #2A3824;
+  --moss:     #5A7850;
+  --fern:     #7A9060;
+  --canopy:   #283820;
+  --bark:     #5A3818;
+  --earth:    #6A4830;
+  --ochre:    #988040;
+  --amber:    #A87830;
+  --dew:      #688868;
+  --stone:    #607060;
+  --lichen:   #708060;
+  --chapter:  #5A7850;
+  --note:     #988040;
+  --bookmark: #5A3818;
+  --ok:       #5A7850;
+  --warn:     #988040;
+  --danger:   #983020;
+  --accent:   #5A7850;
+  --accent2:  #988040;
+  --black:    #040804;
+  --white:    #E8F0D8;
+  --gray:     #506050;
+  --gh-wood:  #090F06;
+  --gh-line:  #2A3824;
+  --gh-ray1:  #7FA0D0;
+  --gh-ray2:  #C8D8F0;
+  --glass:      color-mix(in srgb, var(--bg2) 86%, transparent);
+  --glass-edge: color-mix(in srgb, var(--white) 18%, transparent);
+  /* Noche: el komorebi azul y los rayos aclaran el fondo detrás del texto;
+     con 30% los títulos quedaban en 2.5 a 4.3:1 (medido en píxeles), con 60%
+     en 3.6 a 4.2:1; 74% los pasa y el invernadero sigue visible. */
+  --glass-tint: color-mix(in srgb, var(--bg) 80%, transparent);
+  --mh-filter: brightness(1.8) saturate(1.05);
+  /* Borde claro fino: en las zonas verde oscuro de la foto la letra se
+     perdía contra el fondo nocturno (p25 2.0:1). */
+  --mh-rim: drop-shadow(0 0 1.5px color-mix(in srgb, var(--white) 55%, transparent)) drop-shadow(0 0 1px color-mix(in srgb, var(--white) 40%, transparent));
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --moss-ink: #789D6C;
+  --bark-ink: #BE7633;
+  --ochre-ink: #9D8542;
+  --fern-ink: var(--fern);
+  --amber-ink: #B07E32;
+  --accent-ink: #789D6C;
+  --ok-ink: #789D6C;
+  --warn-ink: #9D8542;
+  --danger-ink: #DA624F;
+  --chapter-ink: #789D6C;
+  --note-ink: #9D8542;
+  --bookmark-ink: #BE7633;
+  --dew-ink: #6E8F6E;
+  --stone-ink: #798C79;
+  --lichen-ink: #7B8D6A;
+  --earth-ink: #B27B55;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:15px;line-height:1.85;transition:background-color .4s,color .4s}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+a{color:var(--moss-ink);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ── Componentes de contenido (los del tema original, con las reglas de
+   las skills aplicadas: sin mayúsculas espaciadas en etiquetas chicas,
+   transiciones con propiedades explícitas, presión con escala) ── */
+h2{font-family:var(--serif);font-size:17px;font-weight:700;font-style:italic;color:var(--moss-ink);margin:28px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:.02em}
+.bw-doc>h2:first-child{margin-top:4px}
+h3{font-family:var(--serif);font-size:14px;font-weight:700;color:var(--bark-ink);margin:20px 0 10px;letter-spacing:.04em}
+h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px}
+p{margin-bottom:14px;line-height:1.9}
+p.muted{color:var(--text2);font-size:13px}
+em{font-style:italic;color:var(--ochre-ink)}
+strong{font-weight:700;color:var(--bark-ink)}
+code{font-family:var(--mono);font-size:12px;background:var(--bg3);border:1px solid var(--border);padding:1px 6px;border-radius:var(--radius);color:var(--moss-ink)}
+pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--moss);border-radius:var(--radius);padding:14px 18px;margin:14px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.75;color:var(--text);position:relative}
+pre::before{content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:10px;color:var(--text2)}
+pre code{background:none;border:none;padding:0;color:inherit}
+pre .kw{color:var(--moss-ink)}pre .fn{color:var(--fern-ink)}pre .str{color:var(--ochre-ink)}
+pre .num{color:var(--amber-ink)}pre .cm{color:var(--text2);font-style:italic}pre .tp{color:var(--bark-ink)}
+.callout{border-left:2px solid var(--accent);background:var(--bg2);padding:12px 18px;margin:10px 0;border-radius:0 var(--radius) var(--radius) 0}
+.callout-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent-ink);margin-bottom:5px}
+.callout p{margin-bottom:0;font-size:13px}
+.callout.ok      {border-color:var(--ok-ink)      }.callout.ok       .callout-title{color:var(--ok-ink)      }
+.callout.warn    {border-color:var(--warn-ink)    }.callout.warn     .callout-title{color:var(--warn-ink)    }
+.callout.danger  {border-color:var(--danger-ink)  }.callout.danger   .callout-title{color:var(--danger-ink)  }
+.callout.chapter {border-color:var(--chapter-ink) }.callout.chapter  .callout-title{color:var(--chapter-ink) }
+.callout.note    {border-color:var(--note-ink)    }.callout.note     .callout-title{color:var(--note-ink)    }
+.callout.bookmark{border-color:var(--bookmark-ink)}.callout.bookmark .callout-title{color:var(--bookmark-ink)}
+.callout.moss    {border-color:var(--moss-ink)    }.callout.moss     .callout-title{color:var(--moss-ink)    }
+.callout.fern    {border-color:var(--fern-ink)    }.callout.fern     .callout-title{color:var(--fern-ink)    }
+.callout.bark    {border-color:var(--bark-ink)    }.callout.bark     .callout-title{color:var(--bark-ink)    }
+.callout.ochre   {border-color:var(--ochre-ink)   }.callout.ochre    .callout-title{color:var(--ochre-ink)   }
+.callout.amber   {border-color:var(--amber-ink)   }.callout.amber    .callout-title{color:var(--amber-ink)   }
+.callout.dew     {border-color:var(--dew-ink)     }.callout.dew      .callout-title{color:var(--dew-ink)     }
+.callout.stone   {border-color:var(--stone-ink)   }.callout.stone    .callout-title{color:var(--stone-ink)   }
+.callout.lichen  {border-color:var(--lichen-ink)  }.callout.lichen   .callout-title{color:var(--lichen-ink)  }
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;background:color-mix(in srgb,var(--bg) 70%,transparent)}
+th{background:var(--bg3);padding:8px 14px;text-align:left;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--moss-ink);border-bottom:1px solid var(--border)}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg3)}
+.btn{display:inline-block;font-family:var(--serif);font-size:13px;font-style:italic;padding:6px 18px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;transition:color .2s ease-out,border-color .2s ease-out,background-color .2s ease-out,transform .16s ease-out;letter-spacing:.02em}
+.btn:hover,.btn.primary{border-color:var(--moss-ink);color:var(--moss-ink)}
+.btn:active{transform:scale(.97)}
+.btn.ok      {border-color:var(--ok-ink);     color:var(--ok-ink)     }
+.btn.warn    {border-color:var(--warn-ink);   color:var(--warn-ink)   }
+.btn.danger  {border-color:var(--danger-ink); color:var(--danger-ink) }
+.btn.chapter {border-color:var(--chapter-ink);color:var(--chapter-ink)}
+.btn.note    {border-color:var(--note-ink);   color:var(--note-ink)   }
+.btn.bark    {border-color:var(--bark-ink);   color:var(--bark-ink)   }
+.btn.ochre   {border-color:var(--ochre-ink);  color:var(--ochre-ink)  }
+.btn.fern    {border-color:var(--fern-ink);   color:var(--fern-ink)   }
+.btn.dew     {border-color:var(--dew-ink);    color:var(--dew-ink)    }
+.badge{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);background:var(--bg2)}
+.badge.moss    {border-color:var(--moss-ink);    color:var(--moss-ink)   }
+.badge.fern    {border-color:var(--fern-ink);    color:var(--fern-ink)   }
+.badge.bark    {border-color:var(--bark-ink);    color:var(--bark-ink)   }
+.badge.earth   {border-color:var(--earth-ink);   color:var(--earth-ink)  }
+.badge.ochre   {border-color:var(--ochre-ink);   color:var(--ochre-ink)  }
+.badge.amber   {border-color:var(--amber-ink);   color:var(--amber-ink)  }
+.badge.dew     {border-color:var(--dew-ink);     color:var(--dew-ink)    }
+.badge.stone   {border-color:var(--stone-ink);   color:var(--stone-ink)  }
+.badge.lichen  {border-color:var(--lichen-ink);  color:var(--lichen-ink) }
+.badge.chapter {border-color:var(--chapter-ink); color:var(--chapter-ink)}
+.badge.note    {border-color:var(--note-ink);    color:var(--note-ink)   }
+.badge.bookmark{border-color:var(--bookmark-ink);color:var(--bookmark-ink)}
+.badge.ok      {border-color:var(--ok-ink);      color:var(--ok-ink)     }
+.badge.warn    {border-color:var(--warn-ink);    color:var(--warn-ink)   }
+.badge.danger  {border-color:var(--danger-ink);  color:var(--danger-ink) }
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin-bottom:12px;transition:border-color .2s ease-out,box-shadow .2s ease-out}
+.card:hover{border-color:var(--moss-ink);box-shadow:0 2px 16px color-mix(in srgb,var(--moss) 14%,transparent)}
+.metrics-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;flex:1;min-width:100px}
+.metric-val{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--moss-ink);letter-spacing:-.5px}
+.metric-lbl{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:3px}
+.metric-val.ochre{color:var(--ochre-ink)}.metric-val.bark{color:var(--bark-ink)}.metric-val.fern{color:var(--fern-ink)}
+.metric-val.amber{color:var(--amber-ink)}.metric-val.dew{color:var(--dew-ink)}.metric-val.lichen{color:var(--lichen-ink)}
+.reading-log{margin:14px 0;background:color-mix(in srgb,var(--bg) 70%,transparent);border:1px solid var(--border);border-radius:var(--radius);padding:0 14px}
+.reading-entry{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.reading-entry:last-child{border-bottom:none}
+.reading-entry p{margin-bottom:0}
+.reading-dot{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:2px;border:1px solid var(--border);border-radius:50%;background:var(--bg3);color:var(--text2)}
+.reading-dot.chapter {border-color:var(--chapter-ink); color:var(--chapter-ink)}
+.reading-dot.note    {border-color:var(--note-ink);    color:var(--note-ink)   }
+.reading-dot.bookmark{border-color:var(--bookmark-ink);color:var(--bookmark-ink)}
+.reading-dot.ok      {border-color:var(--ok-ink);      color:var(--ok-ink)     }
+.reading-dot.warn    {border-color:var(--warn-ink);    color:var(--warn-ink)   }
+.chapter-row{display:flex;gap:16px;align-items:flex-start;margin:10px 0;padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--moss);border-radius:var(--radius);transition:box-shadow .2s ease-out}
+.chapter-row p{margin-bottom:0}
+.chapter-row:hover{box-shadow:0 2px 12px color-mix(in srgb,var(--moss) 12%,transparent)}
+.chapter-num{font-family:var(--serif);font-size:18px;font-weight:700;font-style:italic;color:var(--moss-ink);min-width:32px;line-height:1;margin-top:3px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@container win (max-width:520px){.grid-2{grid-template-columns:1fr}}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}}
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.swatch{width:84px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text);background:color-mix(in srgb,var(--bg) 72%,transparent);border-radius:var(--radius);padding-bottom:3px}
+.swatch-box{height:48px;border-radius:var(--radius);margin-bottom:5px;border:1px solid var(--border);position:relative}
+.swatch-hex{position:absolute;bottom:4px;left:4px;font-family:var(--mono);font-size:9px;color:var(--text);padding:1px 2px;border-radius:2px;line-height:1;pointer-events:none}
+.swatch-hex.is-chip{background:var(--bg)}
+.row-wrap{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+/* ══════════════════════════════════════════════════════
+   INVERNADERO · un solo fondo compartido. En el hero se ve completo;
+   en el escritorio cada ventana copia el pedazo que tiene detrás
+   (ver Greenhouse/Desktop en el script). Capas, de abajo arriba:
+   retícula · komorebi · madera con agujeros · rayos laterales · hojas.
+══════════════════════════════════════════════════════ */
+#bw-gh{position:fixed;inset:0;z-index:0;background:var(--bg);isolation:isolate;pointer-events:none}
+#bw-gh canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#bw-rays{mix-blend-mode:normal}
+body.dark #bw-rays{mix-blend-mode:screen}
+body.mode-desktop:not(.is-switching) #bw-gh{visibility:hidden}
+
+/* ══════════════════════════════════════════════════════
+   HERO · Masked Heading (React Bits) sobre el invernadero
+══════════════════════════════════════════════════════ */
+#bw-hero{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 24px 96px;gap:18px}
+html.js #bw-hero{position:fixed;inset:0;min-height:0}
+body.mode-desktop:not(.is-switching) #bw-hero{visibility:hidden}
+.bw-hero-inner{width:min(1100px,92vw);display:flex;flex-direction:column;align-items:center;gap:18px}
+/* De noche las fibras brillan detrás del título: una penumbra radial de --bg solo bajo él, el resto del invernadero queda igual. */
+body.dark .bw-hero-inner{position:relative}
+body.dark .bw-hero-inner::before{content:"";position:absolute;inset:-14% -8%;z-index:-1;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--bg) 78%,transparent) 55%,transparent)}
+.mh{position:relative;width:100%;margin:0;text-align:center;font-family:var(--serif);font-weight:700;font-style:italic;letter-spacing:-.03em;line-height:1.06;color:var(--moss-ink);font-size:clamp(56px,14vw,200px);-webkit-font-smoothing:antialiased}
+html.js .mh .mh-measure{color:transparent}
+.mh-word{display:inline-block;white-space:pre}
+.mh-base{display:inline-block;width:0;height:0}
+.mh-defs{position:absolute;width:0;height:0;overflow:hidden}
+.mh-reveal{position:absolute;inset:0;display:none;pointer-events:none;filter:var(--mh-rim)}
+html.js .mh-reveal{display:block}
+.mh-clip{position:absolute;inset:0;display:block}
+.mh-media{position:absolute;inset:0;display:block;will-change:transform;filter:var(--mh-filter)}
+.mh-src{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.bw-plate{background:var(--glass);border:1px solid var(--glass-edge);border-radius:999px;padding:4px 14px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.bw-hero-sub{font-family:var(--mono);font-size:13px;color:var(--text)}
+.bw-go{font-family:var(--serif);font-style:italic;font-weight:700;font-size:20px;color:var(--text);padding:10px 40px;border-radius:999px;border:1px solid var(--glass-edge);background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 8px 24px color-mix(in srgb,var(--black) 14%,transparent);cursor:pointer;text-decoration:none;transition:transform .16s ease-out,border-color .2s ease-out,color .2s ease-out}
+.bw-go:hover{border-color:var(--moss-ink);color:var(--moss-ink)}
+.bw-go:active{transform:scale(.97)}
+.bw-hero-foot{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:var(--text2);white-space:nowrap}
+.bw-toggle{position:absolute;top:18px;right:20px;font-family:var(--serif);font-size:13px;font-style:italic;padding:6px 16px;border-radius:999px;border:1px solid var(--glass-edge);background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--text);cursor:pointer;transition:transform .16s ease-out,border-color .2s ease-out}
+.bw-toggle:hover{border-color:var(--moss-ink)}
+.bw-toggle:active{transform:scale(.97)}
+
+/* ══════════════════════════════════════════════════════
+   ESCRITORIO · fondo de pantalla = prouned_bookworm
+══════════════════════════════════════════════════════ */
+#bw-desktop{display:none}
+html.js #bw-desktop{display:block;position:fixed;inset:0;z-index:5;visibility:hidden;overflow:hidden}
+body.mode-desktop #bw-desktop,body.is-switching #bw-desktop{visibility:visible}
+/* Durante el cambio el escritorio va encima del hero: el círculo crece (o se encoge) sobre él. */
+body.is-switching #bw-desktop{z-index:20}
+.bw-wall{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.bw-menubar{position:absolute;top:0;left:0;right:0;height:40px;z-index:3000;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--glass);border-bottom:1px solid var(--glass-edge);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
+.bw-brand{font-family:var(--serif);font-style:italic;font-weight:700;font-size:15px;color:var(--moss-ink)}
+.bw-brand span{color:var(--text2);font-weight:400}
+.bw-menu-actions{display:flex;gap:8px}
+.bw-menubtn{font-family:var(--serif);font-style:italic;font-size:13px;padding:3px 12px;border-radius:999px;border:1px solid var(--glass-edge);background:color-mix(in srgb,var(--bg) 40%,transparent);color:var(--text);cursor:pointer;transition:transform .16s ease-out,border-color .2s ease-out}
+.bw-menubtn:hover{border-color:var(--moss-ink)}
+.bw-menubtn:active{transform:scale(.97)}
+.bw-credit{position:absolute;left:14px;bottom:14px;z-index:2;font-family:var(--mono);font-size:12px;color:var(--text)}
+
+/* ── Glass Icons (React Bits) · CSS del original: placa de color
+   inclinada detrás y frente de vidrio con desenfoque. Cambios: los
+   degradados salen de los tokens del tema (no el azul/morado de
+   fábrica), y la etiqueta se ve siempre (en un escritorio el nombre
+   del ícono no se esconde) sobre su propia placa de vidrio. ── */
+/* Dos columnas de tres: con etiquetas de dos líneas, una sola columna
+   encimaba cada etiqueta con la placa inclinada del ícono siguiente. */
+.bw-icons{position:absolute;top:60px;left:10px;z-index:2;display:grid;grid-template-columns:repeat(2,104px);gap:64px 6px;justify-items:center}
+.gi{background:transparent;position:relative;width:64px;height:64px;perspective:24em;transform-style:preserve-3d;-webkit-tap-highlight-color:transparent;border:none;cursor:pointer;font-size:16px;color:var(--text)}
+.gi-back,.gi-front{border-radius:18px;position:absolute;top:0;left:0;width:100%;height:100%;transition:opacity .3s cubic-bezier(.83,0,.17,1),transform .3s cubic-bezier(.83,0,.17,1)}
+.gi-back{background:linear-gradient(var(--gi-a),var(--gi-b));box-shadow:.5em -.5em .75em color-mix(in srgb,var(--black) 15%,transparent);display:block;transform:rotate(15deg);transform-origin:100% 100%;will-change:transform}
+.gi-front{background-color:color-mix(in srgb,var(--white) 15%,transparent);box-shadow:0 0 0 .1em color-mix(in srgb,var(--white) 30%,transparent) inset;-webkit-backdrop-filter:blur(.75em);backdrop-filter:blur(.75em);display:flex;transform-origin:80% 50%;will-change:transform}
+.gi-icon{margin:auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:var(--white)}
+.gi-icon svg{width:100%;height:100%}
+.gi-label{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);width:max-content;max-width:108px;text-align:center;white-space:normal;font-family:var(--serif);font-size:12px;line-height:1.3;padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--bg) 90%,transparent);border:1px solid var(--glass-edge);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--text);pointer-events:none}
+@media (hover:hover) and (pointer:fine){
+  .gi:hover .gi-back{transform:rotate(25deg) translate3d(-.5em,-.5em,.5em)}
+  .gi:hover .gi-front{transform:translate3d(0,0,2em)}
+}
+.gi:focus-visible{outline:none}
+.gi:focus-visible .gi-back{transform:rotate(25deg) translate3d(-.5em,-.5em,.5em)}
+.gi:focus-visible .gi-front{transform:translate3d(0,0,2em);box-shadow:0 0 0 2px var(--accent)}
+.gi:active .gi-front{transform:scale(.97)}
+.gi.is-open .gi-label{border-color:var(--moss-ink)}
+.bw-trash{position:absolute;right:26px;bottom:44px;z-index:3001}
+.bw-trash .gi-back{transition:transform .25s cubic-bezier(.23,1,.32,1)}
+.bw-trash.is-armed .gi-back{transform:rotate(28deg) translate3d(-.4em,-.6em,.5em)}
+.bw-trash.is-armed .gi-front{transform:translate3d(0,0,1.6em) scale(1.08)}
+.bw-trash.is-bump .gi-front{animation:bw-bump .32s cubic-bezier(.23,1,.32,1)}
+@keyframes bw-bump{0%{transform:scale(1)}40%{transform:scale(.9)}100%{transform:scale(1)}}
+.bw-trash-count{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--bark);color:var(--white);font-family:var(--mono);font-size:11px;line-height:20px;text-align:center;pointer-events:none}
+.bw-trash-count[hidden]{display:none}
+
+/* ── Ventanas ── */
+.bw-windows{position:absolute;inset:0;z-index:1000;pointer-events:none}
+.bw-win{position:absolute;top:0;left:0;pointer-events:auto;display:flex;flex-direction:column;border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 0 0 1px var(--glass-edge),0 22px 48px color-mix(in srgb,var(--black) 30%,transparent);container:win / inline-size;outline:none}
+.bw-win:focus-visible{box-shadow:0 0 0 2px var(--accent),0 22px 48px color-mix(in srgb,var(--black) 30%,transparent)}
+.bw-win-bar{flex:none;height:38px;display:flex;align-items:center;gap:10px;padding:0 8px 0 16px;background:var(--glass);border-bottom:1px solid var(--glass-edge);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);cursor:grab;user-select:none;touch-action:none}
+.bw-win.is-dragging .bw-win-bar{cursor:grabbing}
+.bw-win-title{flex:1;font-family:var(--serif);font-style:italic;font-weight:700;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bw-win:not(.is-front) .bw-win-title{color:var(--text2)}
+.bw-win-close{width:26px;height:26px;border-radius:999px;border:1px solid var(--glass-edge);background:color-mix(in srgb,var(--bg) 45%,transparent);color:var(--text);font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .16s ease-out,border-color .2s ease-out,color .2s ease-out}
+.bw-win-close:hover{border-color:var(--danger-ink);color:var(--danger-ink)}
+.bw-win-close:active{transform:scale(.97)}
+.bw-win-body{position:relative;flex:1;min-height:0}
+.bw-win-glass{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bw-win-tint{position:absolute;inset:0;background:var(--glass-tint)}
+.bw-win-content{position:absolute;inset:0;overflow:auto;padding:18px 24px 24px}
+/* Redimensionar solo desde las esquinas (mover solo desde la barra). */
+.bw-rz{position:absolute;width:16px;height:16px;z-index:2;touch-action:none}
+.bw-rz.nw{top:0;left:0;cursor:nwse-resize}.bw-rz.ne{top:0;right:0;cursor:nesw-resize}
+.bw-rz.sw{bottom:0;left:0;cursor:nesw-resize}.bw-rz.se{bottom:0;right:0;cursor:nwse-resize}
+@media (max-width:700px){
+  .bw-icons{gap:60px 0;left:0;grid-template-columns:repeat(2,92px)}
+  .bw-rz{display:none}
+  .bw-win-bar{cursor:default}
+  .bw-credit{display:none}
+  th{font-size:12px}
+  .bw-win table{display:block;overflow-x:auto}
+  .bw-win td code{white-space:nowrap}
+}
+/* Teléfono acostado (390px de alto): el crédito tapaba los íconos y
+   se comía los toques (revisión móvil del 2026-10-03). */
+@media (max-height:500px){.bw-credit{display:none}.bw-icons{top:44px;gap:58px 4px;grid-template-columns:repeat(3,92px)}}
+@media (pointer:coarse){th{font-size:12px}}
+@media (max-width:400px){.bw-hero-foot{white-space:normal;width:calc(100% - 32px);text-align:center}}
+#bw-crumple{position:fixed;inset:0;width:100%;height:100%;z-index:4000;pointer-events:none;display:none}
+
+/* ── Sin JS: las seis secciones como una página normal bajo el hero ── */
+#bw-library{position:relative;z-index:10;max-width:880px;margin:0 auto;padding:40px 24px 60px;background:var(--bg)}
+html.js #bw-library{display:none}
+.bw-library-foot{text-align:center;font-family:var(--mono);font-size:12px;color:var(--text2);margin-top:28px}

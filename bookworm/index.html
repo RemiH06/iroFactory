@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--
+bookworm_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+
+Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
+iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
+
+· React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
+  Componentes portados: Ghost Fibers, Glass Icons, Masked Heading, Paper Crumple, Side Rays.
+
+──── React Bits ────
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2026 David Haz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, and distribute the Software as part of
+an application, website, or product, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Commons Clause Restriction: You may use this Software, including for any
+commercial purpose, so long as you do not sell, sublicense, or redistribute
+the components themselves-whether alone, in a bundle, or as a ported version.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>bookworm_theme · Demo</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=libre-baskerville:400,400i,700,700i&family=fira-code:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="bookworm.css">
+</head>
+<body>
+
+<div id="bw-gh" aria-hidden="true">
+  <canvas id="bw-sky"></canvas>
+  <canvas id="bw-tri"></canvas>
+  <canvas id="bw-light"></canvas>
+  <canvas id="bw-wood"></canvas>
+  <canvas id="bw-rays"></canvas>
+  <canvas id="bw-parts"></canvas>
+</div>
+
+<header id="bw-hero">
+  <button class="bw-toggle" data-theme-toggle aria-label="Cambiar a modo noche">☽ noche</button>
+  <div class="bw-hero-inner">
+    <h1 class="mh" id="bw-title">
+      <span class="mh-measure"><span class="mh-word">bookworm<i class="mh-base"></i></span></span>
+      <svg class="mh-defs" aria-hidden="true" focusable="false"><defs><clipPath id="mh-clip" clipPathUnits="userSpaceOnUse"><text class="mh-glyph">bookworm</text></clipPath></defs></svg>
+      <span class="mh-reveal" aria-hidden="true"><span class="mh-clip" style="clip-path:url(#mh-clip)"><span class="mh-media"><img class="mh-src" alt="" draggable="false"></span></span></span>
+    </h1>
+    <p class="bw-hero-sub bw-plate">_theme · iroFactory</p>
+    <a class="bw-go" id="bw-go" href="#bw-library">ir</a>
+  </div>
+  <p class="bw-hero-foot bw-plate">bookworm_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT</p>
+</header>
+
+<div id="bw-desktop" aria-label="Escritorio" inert>
+  <img class="bw-wall" id="bw-wall" alt="" draggable="false">
+  <header class="bw-menubar">
+    <span class="bw-brand">bookworm<span>_theme</span></span>
+    <div class="bw-menu-actions">
+      <button class="bw-menubtn" data-theme-toggle aria-label="Cambiar a modo noche">☽ noche</button>
+      <button class="bw-menubtn" id="bw-home">inicio</button>
+    </div>
+  </header>
+  <nav class="bw-icons" aria-label="Ventanas del tema">
+    <button class="gi" data-win="paleta" style="--gi-a:var(--moss);--gi-b:var(--canopy)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.6-.9 1.2-1.8-.5-1.1.2-2.2 1.4-2.2H17a4 4 0 0 0 4-4c0-5-4-10-9-10z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/></svg></span></span><span class="gi-label">Paleta</span></button>
+    <button class="gi" data-win="avisos" style="--gi-a:var(--ochre);--gi-b:var(--bark)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span></span><span class="gi-label">Callouts y badges</span></button>
+    <button class="gi" data-win="metricas" style="--gi-a:var(--fern);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-6M3 20h18"/></svg></span></span><span class="gi-label">Botones y métricas</span></button>
+    <button class="gi" data-win="codigo" style="--gi-a:var(--stone);--gi-b:var(--canopy)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14"/></svg></span></span><span class="gi-label">Código</span></button>
+    <button class="gi" data-win="lectura" style="--gi-a:var(--amber);--gi-b:var(--earth)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg></span></span><span class="gi-label">Tabla y reading log</span></button>
+    <button class="gi" data-win="capitulos" style="--gi-a:var(--dew);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v18l-5-4-5 4z"/></svg></span></span><span class="gi-label">Capítulos y cards</span></button>
+  </nav>
+  <div class="bw-windows" id="bw-windows"></div>
+  <div class="bw-trash" id="bw-trash">
+    <div class="gi" role="img" aria-label="Papelera: arrastra una ventana aquí para descartarla" style="--gi-a:var(--bark);--gi-b:var(--earth)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></span></span><span class="gi-label">Papelera</span><span class="bw-trash-count" id="bw-trash-count" hidden>0</span></div>
+  </div>
+  <p class="bw-credit bw-plate">bookworm_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT</p>
+</div>
+
+<canvas id="bw-crumple" aria-hidden="true"></canvas>
+
+<main id="bw-library">
+  <section class="bw-doc" id="doc-paleta" data-title="Paleta" data-w="760" data-h="560">
+    <h2>Paleta de colores</h2>
+    <p class="muted">Verde musgo, corteza y ocre · El bosque en dos luces.</p>
+    <h3>Bosque</h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-box" style="background:var(--canopy)"><span class="swatch-hex" id="hex-canopy"></span></div>--canopy</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--moss)"><span class="swatch-hex" id="hex-moss"></span></div>--moss</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--fern)"><span class="swatch-hex" id="hex-fern"></span></div>--fern</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--dew)"><span class="swatch-hex" id="hex-dew"></span></div>--dew</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--lichen)"><span class="swatch-hex" id="hex-lichen"></span></div>--lichen</div>
+    </div>
+    <h3>Tierra y corteza</h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-box" style="background:var(--bark)"><span class="swatch-hex" id="hex-bark"></span></div>--bark</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--earth)"><span class="swatch-hex" id="hex-earth"></span></div>--earth</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--ochre)"><span class="swatch-hex" id="hex-ochre"></span></div>--ochre</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--amber)"><span class="swatch-hex" id="hex-amber"></span></div>--amber</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--stone)"><span class="swatch-hex" id="hex-stone"></span></div>--stone</div>
+    </div>
+    <h3>Semántico libresco</h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-box" style="background:var(--chapter)"><span class="swatch-hex" id="hex-chapter"></span></div>--chapter</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--note)"><span class="swatch-hex" id="hex-note"></span></div>--note</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--bookmark)"><span class="swatch-hex" id="hex-bookmark"></span></div>--bookmark</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
+      <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
+    </div>
+  </section>
+
+  <section class="bw-doc" id="doc-avisos" data-title="Callouts y badges" data-w="680" data-h="580">
+    <h2>Callouts</h2>
+    <div class="callout"><div class="callout-title">Acento · Musgo</div><p>Notas generales del lector. Observaciones al margen de la página.</p></div>
+    <div class="callout ok"><div class="callout-title">OK · Musgo</div><p>Capítulo completado. El lector avanza sin obstáculos.</p></div>
+    <div class="callout warn"><div class="callout-title">Warn · Ocre</div><p>Pasaje confuso. Releer antes de continuar.</p></div>
+    <div class="callout danger"><div class="callout-title">Danger</div><p>Spoiler adelante. Proceder con cautela.</p></div>
+    <div class="callout chapter"><div class="callout-title">Chapter</div><p>Inicio de capítulo. El bosque se abre ante nosotros.</p></div>
+    <div class="callout note"><div class="callout-title">Note · Ocre</div><p>Anotación del autor. Contexto histórico relevante.</p></div>
+    <div class="callout bookmark"><div class="callout-title">Bookmark · Corteza</div><p>Página marcada. El lector regresará aquí.</p></div>
+    <div class="callout moss"><div class="callout-title">Moss</div><p>El musgo crece donde la luz no llega. Persistencia silenciosa.</p></div>
+    <div class="callout fern"><div class="callout-title">Fern</div><p>Helecho antiquísimo. Más viejo que los dinosaurios.</p></div>
+    <div class="callout bark"><div class="callout-title">Bark</div><p>La corteza guarda la memoria del árbol en sus anillos.</p></div>
+    <div class="callout ochre"><div class="callout-title">Ochre</div><p>La luz de la tarde tiñe el bosque de amarillo.</p></div>
+    <div class="callout dew"><div class="callout-title">Dew</div><p>Rocío de la mañana. La primera luz del día.</p></div>
+    <div class="callout stone"><div class="callout-title">Stone</div><p>Piedra cubierta de musgo. Quietud milenaria.</p></div>
+    <div class="callout lichen"><div class="callout-title">Lichen</div><p>Liquen · simbiosis de hongo y alga. Dos vidas en una.</p></div>
+    <h2>Badges</h2>
+    <div class="row-wrap">
+      <span class="badge moss">moss</span><span class="badge fern">fern</span>
+      <span class="badge bark">bark</span><span class="badge earth">earth</span>
+      <span class="badge ochre">ochre</span><span class="badge amber">amber</span>
+      <span class="badge dew">dew</span><span class="badge stone">stone</span>
+      <span class="badge lichen">lichen</span><span class="badge chapter">chapter</span>
+      <span class="badge note">note</span><span class="badge bookmark">bookmark</span>
+      <span class="badge ok">ok</span><span class="badge warn">warn</span>
+      <span class="badge danger">danger</span><span class="badge">default</span>
+    </div>
+  </section>
+
+  <section class="bw-doc" id="doc-metricas" data-title="Botones y métricas" data-w="700" data-h="440">
+    <h2>Botones</h2>
+    <div class="row-wrap">
+      <button class="btn primary">primary</button><button class="btn">default</button>
+      <button class="btn chapter">chapter</button><button class="btn note">note</button>
+      <button class="btn bark">bark</button><button class="btn ochre">ochre</button>
+      <button class="btn fern">fern</button><button class="btn dew">dew</button>
+      <button class="btn ok">ok</button><button class="btn warn">warn</button>
+      <button class="btn danger">danger</button>
+    </div>
+    <h2>Métricas</h2>
+    <div class="metrics-row">
+      <div class="metric"><div class="metric-val">312</div><div class="metric-lbl">páginas</div></div>
+      <div class="metric"><div class="metric-val ochre">7</div><div class="metric-lbl">capítulos</div></div>
+      <div class="metric"><div class="metric-val bark">3h</div><div class="metric-lbl">lectura</div></div>
+      <div class="metric"><div class="metric-val fern">84%</div><div class="metric-lbl">progreso</div></div>
+      <div class="metric"><div class="metric-val amber">12</div><div class="metric-lbl">anotaciones</div></div>
+      <div class="metric"><div class="metric-val lichen">∞</div><div class="metric-lbl">relecturas</div></div>
+    </div>
+  </section>
+
+  <section class="bw-doc" id="doc-codigo" data-title="Código" data-w="620" data-h="400">
+    <h2>Código</h2>
+    <p class="muted">Inline: <code>toggleTheme()</code> alterna entre día y noche.</p>
+<pre data-lang="python"><span class="cm"># Índice de un bosque de libros</span>
+<span class="kw">class</span> <span class="tp">Libro</span>:
+    <span class="fn">def</span> <span class="kw">__init__</span>(self, titulo, autor, paginas):
+        self.titulo  = titulo
+        self.autor   = autor
+        self.paginas = paginas
+        self.leido   = <span class="kw">False</span>
+
+    <span class="fn">def</span> <span class="kw">leer</span>(self):
+        self.leido = <span class="kw">True</span>
+        <span class="kw">return</span> <span class="str">f"'{self.titulo}' · terminado"</span></pre>
+  </section>
+
+  <section class="bw-doc" id="doc-lectura" data-title="Tabla y reading log" data-w="740" data-h="580">
+    <h2>Tabla</h2>
+    <table>
+      <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Evocación</th></tr>
+      <tr><td><code>--moss</code></td><td>#4A6040</td><td>#5A7850</td><td>Musgo · verde profundo del suelo</td></tr>
+      <tr><td><code>--fern</code></td><td>#6A8050</td><td>#7A9060</td><td>Helecho · verde medio luminoso</td></tr>
+      <tr><td><code>--bark</code></td><td>#6A4828</td><td>#5A3818</td><td>Corteza · marrón cálido</td></tr>
+      <tr><td><code>--ochre</code></td><td>#B08030</td><td>#988040</td><td>Ocre · luz de tarde entre hojas</td></tr>
+      <tr><td><code>--amber</code></td><td>#C89040</td><td>#A87830</td><td>Ámbar · resina solidificada</td></tr>
+      <tr><td><code>--dew</code></td><td>#789878</td><td>#688868</td><td>Rocío · verde suave de amanecer</td></tr>
+      <tr><td><code>--lichen</code></td><td>#8A9870</td><td>#708060</td><td>Liquen · gris verdoso de roca</td></tr>
+    </table>
+    <h2>Reading Log</h2>
+    <div class="reading-log">
+      <div class="reading-entry"><div class="reading-dot chapter">I</div><div><h4>El sendero que desaparece</h4><p class="muted">La protagonista entra al bosque por primera vez. La luz entre los árboles es casi sólida.</p></div></div>
+      <div class="reading-entry"><div class="reading-dot note">✎</div><div><h4>Nota del autor</h4><p class="muted">El bosque de este libro está basado en el Bosque de Irati, en los Pirineos navarros.</p></div></div>
+      <div class="reading-entry"><div class="reading-dot chapter">II</div><div><h4>La cabaña de musgo</h4><p class="muted">Nadie la había habitado en años. El musgo había reclamado las paredes como suyas.</p></div></div>
+      <div class="reading-entry"><div class="reading-dot bookmark">♦</div><div><h4>Página marcada · p. 187</h4><p class="muted">El momento en que el bosque habla. Volver aquí.</p></div></div>
+      <div class="reading-entry"><div class="reading-dot ok">✓</div><div><h4>Terminado</h4><p class="muted">Tres horas y doce anotaciones después. El bosque sigue ahí.</p></div></div>
+    </div>
+  </section>
+
+  <section class="bw-doc" id="doc-capitulos" data-title="Capítulos y cards" data-w="700" data-h="560">
+    <h2>Capítulos</h2>
+    <div class="chapter-row"><div class="chapter-num">I</div><div><h4>El sendero</h4><p class="muted">Todo bosque tiene un camino que desaparece si lo miras fijamente.</p></div></div>
+    <div class="chapter-row" style="border-left-color:var(--ochre-ink)"><div class="chapter-num" style="color:var(--ochre-ink)">II</div><div><h4>La luz</h4><p class="muted">El komorebi · la luz que cae entre las hojas · no tiene traducción exacta al castellano.</p></div></div>
+    <div class="chapter-row" style="border-left-color:var(--bark-ink)"><div class="chapter-num" style="color:var(--bark-ink)">III</div><div><h4>La corteza</h4><p class="muted">Los anillos del árbol son su memoria. Cada uno, un año de vida.</p></div></div>
+    <div class="chapter-row" style="border-left-color:var(--fern-ink)"><div class="chapter-num" style="color:var(--fern-ink)">IV</div><div><h4>El regreso</h4><p class="muted">El que entra al bosque siempre regresa siendo otro.</p></div></div>
+    <h2>Cards</h2>
+    <div class="grid-2">
+      <div class="card"><strong>El nombre del viento</strong><span class="badge chapter" style="margin-left:8px">cap. 1</span><p class="muted" style="margin:8px 0 0">Patrick Rothfuss · 662 páginas · Un posadero que fue el mago más temido del mundo.</p></div>
+      <div class="card"><strong>Cien años de soledad</strong><span class="badge ok" style="margin-left:8px">terminado</span><p class="muted" style="margin:8px 0 0">García Márquez · 432 páginas · El árbol genealógico más frondoso de la literatura.</p></div>
+    </div>
+  </section>
+  <p class="bw-library-foot">bookworm_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>)</p>
+</main>
+
+<script type="module">
+import { mount as m0 } from '../shared/components/bookworm/kit.js';
+import { mount as m1 } from '../shared/components/bookworm/hero-desktop.js';
+m0(); m1();
+</script>
+</body>
+</html>
