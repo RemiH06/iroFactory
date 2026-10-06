@@ -1,0 +1,4 @@
+/* Hilos de aurora entre secciones: el hilo de Ariadne (una curva que cambia de
+   ruta en cada carga y se dibuja de punta a punta) hecho con Soft Aurora. */
+.aurora-thread { position: relative; z-index: 1; height: clamp(90px, 11vw, 150px); margin: -36px 0; pointer-events: none; }
+.aurora-thread canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }

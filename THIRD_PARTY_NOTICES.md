@@ -34,7 +34,7 @@ The React Bits license allows using the components as part of an application, we
 | [Simple Icons](https://simpleicons.org) v16.34.0 · tool logos | CC0 1.0 (the brands belong to their owners) | lambda (tool strip) |
 | Fish radiographs · Sandra Raredon, Smithsonian National Museum of Natural History, Division of Fishes | Credited to the author and institution | elixir, shui |
 
-## Fonts embedded from ffonts.net (unmodified)
+## Fonts from ffonts.net (unmodified; embedded in the older single-file themes, as files in `assets/fonts/` in the migrated ones)
 
 | Font | Author | License | Used in |
 |---|---|---|---|

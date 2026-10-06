@@ -50,7 +50,7 @@ iroFactory/
 ├── bookworm/
 │   └── bookworm_theme_demo.html
 ├── disco/
-│   └── disco_theme_demo.html
+│   └── index.html (compone componentes de shared/)
 ├── elixir/
 │   └── elixir_theme_demo.html
 ├── forge/

@@ -1,0 +1,300 @@
+/* Boogie Nights NF (Nick Curtis · Nick's Fonts, ffonts.net), archivo sin
+   modificar: el letrero de la pista. Trae acentos y eñe. */
+@font-face { font-family: 'Boogie Nights'; src: url('../assets/fonts/BoogieNightsNF.ttf') format('truetype'); font-display: swap; }
+
+/* ══════════════════════════════════════════════════════
+   TOKENS · CLARO (default) · la pista de día
+══════════════════════════════════════════════════════ */
+body {
+  --bg:      #FAFAF8;
+  --bg2:     #F2F1EE;
+  --bg3:     #E8E6E0;
+  --text:    #1A1814;
+  --text2:   #5E5953;
+  --border:  #D8D4CC;
+
+  /* Estado de interacción: new (coral), active (índigo), done (menta) */
+  --new:     #D94F3A;
+  --active:  #4A50C8;
+  --done:    #2A8C5A;
+
+  --tomato:  #D94F3A;
+  --indigo:  #4A50C8;
+  --mint:    #2A8C5A;
+  --mustard: #C07A10;
+  --lila:    #8644C6;
+  --peach:   #D4703A;
+  --sky:     #2A7AC8;
+  --rose:    #C84A70;
+
+  --black:   #141210;
+  --white:   #FEFEFC;
+  --gray:    #A09890;
+
+  --accent:  #D94F3A;
+  --accent2: #4A50C8;
+  --ok:      #2A8C5A;
+  --warn:    #C07A10;
+  --danger:  #C82A2A;
+
+  /* Bentos de vidrio (riff de @dd_uiux) y tablero split flap */
+  --glass:   color-mix(in srgb, #FFFFFC 82%, transparent);
+  --glass-edge: color-mix(in srgb, #1A1814 10%, transparent);
+  --trace:   #C9C3B8;
+  --tile:    #24211D;
+  --tile-ink: #F6F2EA;
+  --orb-a:   #F2A0B8;
+  --orb-b:   #F5BE8C;
+  --orb-c:   #C6A6F0;
+
+  --sans:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono:    'Fira Code', ui-monospace, monospace;
+  --display: 'Boogie Nights', 'Plus Jakarta Sans', sans-serif;
+  --radius:    20px;
+  --radius-sm: 12px;
+  --radius-lg: 28px;
+  --gutter:  clamp(16px, 4vw, 40px);
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --accent-ink: #B93724;
+  --tomato-ink: #B93724;
+  --mint-ink: #23734A;
+  --mustard-ink: #8D5A0C;
+  --ok-ink: #23734A;
+  --warn-ink: #8D5A0C;
+  --danger-ink: #C22929;
+  --sky-ink: #2468AA;
+  --new-ink: #B93724;
+  --done-ink: #23734A;
+  --peach-ink: #A04F23;
+  --rose-ink: #B4375C;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOKENS · OSCURO · la pista de noche
+══════════════════════════════════════════════════════ */
+body.dark {
+  --bg:      #1C1A18;
+  --bg2:     #242220;
+  --bg3:     #2E2C28;
+  --text:    #F0EDE8;
+  --text2:   #A39B92;
+  --border:  #3A3830;
+
+  --new:     #FF6B52;
+  --active:  #868BF3;
+  --done:    #3EC87A;
+
+  --tomato:  #FF6B52;
+  --indigo:  #868BF3;
+  --mint:    #3EC87A;
+  --mustard: #F0A830;
+  --lila:    #B87AF0;
+  --peach:   #F09060;
+  --sky:     #50A8F0;
+  --rose:    #F06090;
+
+  --black:   #0E0C0A;
+  --white:   #F8F5F0;
+  --gray:    #605850;
+
+  --accent:  #FF6B52;
+  --accent2: #868BF3;
+  --ok:      #3EC87A;
+  --warn:    #F0A830;
+  --danger:  #F04040;
+
+  --glass:   color-mix(in srgb, #24211E 84%, transparent);
+  --glass-edge: color-mix(in srgb, #F0EDE8 10%, transparent);
+  --trace:   #4A463E;
+  --tile:    #2E2B27;
+  --tile-ink: #F4EFE6;
+  --orb-a:   #C0306E;
+  --orb-b:   #D8682E;
+  --orb-c:   #7A3AD0;
+  /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
+     para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
+     token original se queda para rellenos y muestras de la paleta. */
+  --accent-ink: var(--accent);
+  --tomato-ink: var(--tomato);
+  --mint-ink: var(--mint);
+  --mustard-ink: var(--mustard);
+  --ok-ink: var(--ok);
+  --warn-ink: var(--warn);
+  --danger-ink: #F36767;
+  --sky-ink: var(--sky);
+  --new-ink: var(--new);
+  --done-ink: var(--done);
+  --peach-ink: var(--peach);
+  --rose-ink: #F06593;
+}
+
+/* ══════════════════════════════════════════════════════
+   BASE
+══════════════════════════════════════════════════════ */
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.7; overflow-x: clip; transition: background-color .25s, color .25s; }
+::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+a { color: var(--accent-ink); }
+
+/* De noche las luces bajan a .72: sin esto el texto de la pista bajaba de 4.5:1. */
+body.dark #disco-lights { opacity: .72; }
+main, .ds-footer { position: relative; z-index: 1; }
+.ds-wrap { width: min(1120px, calc(100% - 2 * var(--gutter))); margin-inline: auto; }
+
+/* ── Cabecera fija: marca, tema y Staggered Menu ── */
+.ds-top { position: fixed; top: 0; left: 0; right: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px var(--gutter); pointer-events: none; }
+.ds-top > * { pointer-events: auto; }
+.ds-top::before { content: ''; position: absolute; inset: 0; z-index: -1; background: color-mix(in srgb, var(--bg) 94%, transparent); border-bottom: 1px solid var(--border); opacity: 0; transition: opacity .25s ease-out; }
+.ds-top.is-scrolled::before { opacity: 1; }
+.ds-brand { font-family: var(--display); font-size: 26px; line-height: 1; color: var(--text); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 999px; background: color-mix(in srgb, var(--bg) 85%, transparent); border: 1px solid var(--border); }
+.ds-brand b { color: var(--accent-ink); font-weight: 400; }
+.ds-top-right { display: flex; gap: 10px; align-items: center; }
+.ds-pill { font-family: var(--sans); font-size: 14px; font-weight: 600; min-height: 44px; padding: 0 18px; display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; border: 1.5px solid var(--border); background: color-mix(in srgb, var(--bg) 90%, transparent); color: var(--text); cursor: pointer; transition: border-color .2s ease-out, transform .16s ease-out; }
+.ds-pill:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .ds-pill:hover { border-color: var(--accent-ink); } }
+
+/* ══════════════════════════════════════════════════════
+   PISTA · Split Flap Text y proun en Halftone Reveal
+══════════════════════════════════════════════════════ */
+.ds-hero { position: relative; overflow: hidden; min-height: 100svh; display: flex; align-items: center; padding: 104px 0 64px; cursor: crosshair; }
+.ds-hero-grid { position: relative; z-index: 1; display: flex; pointer-events: none; }
+.ds-hero-copy { pointer-events: auto; cursor: auto; max-width: 600px; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: clamp(22px, 3vw, 36px); box-shadow: 0 24px 60px color-mix(in srgb, var(--black) 16%, transparent); }
+.ds-kicker { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; font-weight: 600; color: var(--text2); background: color-mix(in srgb, var(--bg) 85%, transparent); border: 1px solid var(--border); border-radius: 999px; padding: 4px 14px; }
+.ds-kicker b { color: var(--accent-ink); font-weight: 700; }
+.ds-hero h1 { margin: 22px 0 6px; }
+.ds-lede { font-size: 18px; max-width: 40ch; color: var(--text); margin-top: 18px; }
+.ds-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.ds-go { display: inline-flex; align-items: center; min-height: 48px; padding: 0 26px; border-radius: 999px; background: var(--accent-ink); color: var(--white); text-decoration: none; font-weight: 700; transition: transform .16s ease-out; }
+.ds-go:active { transform: scale(.97); }
+body.dark .ds-go:not(.ghost), body.dark .btn.primary { color: var(--black); }
+.ds-go.ghost { background: color-mix(in srgb, var(--bg) 85%, transparent); color: var(--text); border: 1.5px solid var(--border); }
+
+/* ══════════════════════════════════════════════════════
+   SECCIONES · bentos de vidrio (riff de @dd_uiux)
+══════════════════════════════════════════════════════ */
+.ds-sec { position: relative; padding: clamp(56px, 8vw, 96px) 0; scroll-margin-top: 64px; overflow-x: clip; }
+/* Las esferas se salen a propósito de la rejilla; la sección las recorta para no ensanchar la página. */
+.ds-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; }
+.ds-num { font-family: var(--mono); font-size: 14px; color: var(--text2); }
+.ds-h2 { font-family: var(--display); font-weight: 400; font-size: clamp(40px, 6vw, 64px); line-height: 1; color: var(--text); }
+.ds-sub { flex: 1 0 100%; color: var(--text); }
+/* Secciones con fondo propio (Soft Aurora, Prism): el lienzo detrás y el encabezado en placa. */
+.ds-bg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.ds-sec > .ds-wrap { position: relative; z-index: 1; }
+/* La luz ocupa la franja del encabezado: más abajo la taparían las tarjetas. */
+[data-prism] { left: 50%; right: auto; width: min(100%, 780px); transform: translateX(-50%); -webkit-mask-image: radial-gradient(closest-side, rgb(128 128 128) 70%, transparent); mask-image: radial-gradient(closest-side, rgb(128 128 128) 70%, transparent); }
+.has-bg .ds-head { display: inline-flex; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: 18px 24px; max-width: 100%; }
+
+/* ── Contenido de las tarjetas ── */
+h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+p { margin-bottom: 12px; }
+p.muted { color: var(--text2); font-size: 14px; margin-bottom: 0; }
+code { font-family: var(--mono); font-size: 13px; background: var(--bg3); border: 1px solid var(--border); padding: 1px 7px; border-radius: 8px; color: var(--accent-ink); white-space: nowrap; }
+pre { font-family: var(--mono); background: color-mix(in srgb, var(--bg2) 92%, transparent); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius-sm); padding: 28px 18px 16px; overflow-x: auto; font-size: 13px; line-height: 1.75; color: var(--text); position: relative; }
+pre::before { content: attr(data-lang); position: absolute; top: 6px; right: 12px; font-size: 12px; color: var(--text2); letter-spacing: .08em; text-transform: uppercase; }
+pre code { background: none; border: none; padding: 0; color: inherit; white-space: pre; }
+pre .kw { color: var(--indigo); } pre .fn { color: var(--tomato-ink); } pre .str { color: var(--mint-ink); }
+pre .num { color: var(--mustard-ink); } pre .cm { color: var(--text2); font-style: italic; } pre .tp { color: var(--lila); }
+
+.callout { border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--bg) 70%, transparent); padding: 10px 14px; margin: 8px 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.callout-title { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 2px; }
+.callout p { margin-bottom: 0; font-size: 14px; }
+.callout.ok { border-color: var(--ok-ink); } .callout.ok .callout-title { color: var(--ok-ink); }
+.callout.warn { border-color: var(--warn-ink); } .callout.warn .callout-title { color: var(--warn-ink); }
+.callout.danger { border-color: var(--danger-ink); } .callout.danger .callout-title { color: var(--danger-ink); }
+.callout.active { border-color: var(--active); } .callout.active .callout-title { color: var(--active); }
+.callout.lila { border-color: var(--lila); } .callout.lila .callout-title { color: var(--lila); }
+.callout.sky { border-color: var(--sky-ink); } .callout.sky .callout-title { color: var(--sky-ink); }
+
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 11px; border-radius: 999px; background: var(--bg3); color: var(--text2); letter-spacing: .02em; }
+.badge.accent { background: color-mix(in srgb, var(--accent) 8%, var(--bg)); color: var(--accent-ink); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+.badge.ok { background: color-mix(in srgb, var(--ok) 8%, var(--bg)); color: var(--ok-ink); border: 1px solid color-mix(in srgb, var(--ok) 30%, transparent); }
+.badge.warn { background: color-mix(in srgb, var(--warn) 8%, var(--bg)); color: var(--warn-ink); border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent); }
+.badge.danger { background: color-mix(in srgb, var(--danger) 8%, var(--bg)); color: var(--danger-ink); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); }
+.badge.new { background: color-mix(in srgb, var(--new) 8%, var(--bg)); color: var(--new-ink); border: 1px solid color-mix(in srgb, var(--new) 30%, transparent); }
+.badge.active { background: color-mix(in srgb, var(--active) 8%, var(--bg)); color: var(--active); border: 1px solid color-mix(in srgb, var(--active) 30%, transparent); }
+.badge.done { background: color-mix(in srgb, var(--done) 8%, var(--bg)); color: var(--done-ink); border: 1px solid color-mix(in srgb, var(--done) 30%, transparent); }
+.badge.indigo { background: color-mix(in srgb, var(--indigo) 8%, var(--bg)); color: var(--indigo); border: 1px solid color-mix(in srgb, var(--indigo) 30%, transparent); }
+.badge.mint { background: color-mix(in srgb, var(--mint) 8%, var(--bg)); color: var(--mint-ink); border: 1px solid color-mix(in srgb, var(--mint) 30%, transparent); }
+.badge.mustard { background: color-mix(in srgb, var(--mustard) 8%, var(--bg)); color: var(--mustard-ink); border: 1px solid color-mix(in srgb, var(--mustard) 30%, transparent); }
+.badge.lila { background: color-mix(in srgb, var(--lila) 8%, var(--bg)); color: var(--lila); border: 1px solid color-mix(in srgb, var(--lila) 30%, transparent); }
+.badge.peach { background: color-mix(in srgb, var(--peach) 8%, var(--bg)); color: var(--peach-ink); border: 1px solid color-mix(in srgb, var(--peach) 30%, transparent); }
+.badge.sky { background: color-mix(in srgb, var(--sky) 8%, var(--bg)); color: var(--sky-ink); border: 1px solid color-mix(in srgb, var(--sky) 30%, transparent); }
+.badge.rose { background: color-mix(in srgb, var(--rose) 8%, var(--bg)); color: var(--rose-ink); border: 1px solid color-mix(in srgb, var(--rose) 30%, transparent); }
+
+.btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--sans); font-size: 14px; font-weight: 600; min-height: 40px; padding: 0 20px; border: 1.5px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--text2); cursor: pointer; transition: border-color .15s, color .15s, transform .16s; text-decoration: none; }
+.btn:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .btn:hover { border-color: var(--accent-ink); color: var(--accent-ink); } }
+.btn.primary { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--white); }
+@media (hover: hover) and (pointer: fine) { .btn.primary:hover { color: var(--white); opacity: .9; } }
+.btn.ok { border-color: var(--ok-ink); color: var(--ok-ink); } .btn.warn { border-color: var(--warn-ink); color: var(--warn-ink); }
+.btn.danger { border-color: var(--danger-ink); color: var(--danger-ink); } .btn.active { border-color: var(--active); color: var(--active); }
+.btn.lila { border-color: var(--lila); color: var(--lila); } .btn.sky { border-color: var(--sky-ink); color: var(--sky-ink); }
+.btn.rose { border-color: var(--rose-ink); color: var(--rose-ink); } .btn.mint { border-color: var(--mint-ink); color: var(--mint-ink); }
+
+.metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 12px; }
+.metric { background: color-mix(in srgb, var(--bg) 70%, transparent); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.metric-val { font-family: var(--display); font-size: 34px; line-height: 1.05; color: var(--accent-ink); }
+.metric-lbl { font-size: 13px; color: var(--text2); margin-top: 2px; font-weight: 500; }
+.metric-val.done { color: var(--done-ink); } .metric-val.new { color: var(--new-ink); } .metric-val.active { color: var(--active); }
+.metric-val.mustard { color: var(--mustard-ink); } .metric-val.lila { color: var(--lila); }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+th { background: var(--bg3); padding: 9px 14px; text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text2); border-bottom: 1px solid var(--border); }
+td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; background: color-mix(in srgb, var(--bg) 60%, transparent); }
+tr:last-child td { border-bottom: none; }
+td code { white-space: nowrap; }
+
+.feed-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.feed-item:last-child { border-bottom: none; }
+.feed-dot { width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; background: var(--bg3); color: var(--text2); border: 2px solid var(--border); }
+.feed-dot.new { background: color-mix(in srgb, var(--new) 16%, transparent); border-color: var(--new-ink); color: var(--new-ink); }
+.feed-dot.active { background: color-mix(in srgb, var(--active) 16%, transparent); border-color: var(--active); color: var(--active); }
+.feed-dot.done { background: color-mix(in srgb, var(--done) 16%, transparent); border-color: var(--done-ink); color: var(--done-ink); }
+.feed-dot.warn { background: color-mix(in srgb, var(--warn) 16%, transparent); border-color: var(--warn-ink); color: var(--warn-ink); }
+.feed-dot.danger { background: color-mix(in srgb, var(--danger) 16%, transparent); border-color: var(--danger-ink); color: var(--danger-ink); }
+
+.onboard-row { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; }
+.onboard-num { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-weight: 700; border: 2px solid var(--c, var(--accent)); color: var(--text); background: color-mix(in srgb, var(--c, var(--accent)) 12%, var(--bg)); }
+
+.place { padding: 14px 16px; border-radius: var(--radius); border: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 70%, transparent); }
+.place + .place { margin-top: 10px; }
+.place-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+.swatch-group + .swatch-group { margin-top: 16px; }
+.swatch-label { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; }
+.swatch-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.swatch { width: 92px; font-family: var(--mono); font-size: 12px; color: var(--text2); text-align: center; }
+.swatch-box { height: 56px; border-radius: var(--radius-sm); margin-bottom: 6px; border: 1px solid var(--border); position: relative; }
+.swatch-hex { position: absolute; bottom: 4px; left: 6px; font-size: 12px; line-height: 1; pointer-events: none; font-family: var(--mono); }
+
+/* ══════════════════════════════════════════════════════
+   CORCHOLATAS · galería que se enfoca (riff de @singhshristi)
+   sobre Prismatic Burst
+══════════════════════════════════════════════════════ */
+.ds-gallery { position: relative; overflow: hidden; }
+.ds-gallery .ds-wrap { position: relative; z-index: 1; }
+/* Sobre el estallido, el encabezado va en una placa para leerse. */
+.ds-gallery .ds-head { display: inline-flex; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: 18px 24px; max-width: 100%; }
+
+/* ══════════════════════════════════════════════════════
+   PIE
+══════════════════════════════════════════════════════ */
+/* Fin de la pista: la pirámide de Prism detrás de los créditos. */
+.ds-footer { position: relative; overflow: hidden; min-height: clamp(420px, 62vh, 620px); display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 18px; padding: 40px var(--gutter) 48px; text-align: center; font-size: 14px; color: var(--text2); }
+.ds-footer > :not(canvas) { position: relative; z-index: 1; }
+.ds-end { font-family: var(--display); font-size: clamp(40px, 7vw, 76px); line-height: 1; color: var(--text); background: color-mix(in srgb, var(--bg) 88%, transparent); border-radius: var(--radius-lg); padding: 10px 26px; }
+.ds-footer p { max-width: 90ch; margin-inline: auto; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: 12px 20px; }
+
+@media (max-width: 900px) {
+  .ds-hero { padding-top: 96px; align-items: flex-end; }
+}
+@media (max-width: 480px) {
+  .ds-top { padding: 10px 12px; }
+  .ds-brand { font-size: 22px; padding: 0 12px; }
+  .ds-pill { padding: 0 14px; }
+  .card-b { padding: 18px 16px 20px; }
+}

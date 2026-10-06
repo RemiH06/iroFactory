@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!--
+disco_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+Este tema solo compone: los componentes viven en shared/ y conservan su
+propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Fuente Boogie Nights
+NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>disco_theme · Demo</title>
+<meta name="description" content="disco: tema de documentación para apps y sistemas de diseño UX. Pista con tablero split flap y proun en medio tono, bentos de componentes con reflector y circuitos, galería de corcholatas que se enfocan sobre un estallido prismático.">
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700|fira-code:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/core/core.css">
+<link rel="stylesheet" href="../shared/components/asanoha/asanoha.css">
+<link rel="stylesheet" href="../shared/components/ambient-lights/ambient-lights.css">
+<link rel="stylesheet" href="../shared/components/staggered-menu/staggered-menu.css">
+<link rel="stylesheet" href="../shared/components/split-flap/split-flap.css">
+<link rel="stylesheet" href="../shared/components/halftone-reveal/halftone-reveal.css">
+<link rel="stylesheet" href="../shared/components/spotlight-card/spotlight-card.css">
+<link rel="stylesheet" href="../shared/components/bento-traces/bento-traces.css">
+<link rel="stylesheet" href="../shared/components/card-reveal/card-reveal.css">
+<link rel="stylesheet" href="../shared/components/prismatic-burst/prismatic-burst.css">
+<link rel="stylesheet" href="../shared/components/aurora-thread/aurora-thread.css">
+<link rel="stylesheet" href="../shared/components/bottlecap-gallery/bottlecap-gallery.css">
+<link rel="stylesheet" href="disco.css">
+</head>
+<body>
+<div class="asanoha-bg" aria-hidden="true"></div>
+<canvas id="disco-lights" aria-hidden="true"></canvas>
+
+<!-- ── Cabecera fija y Staggered Menu ── -->
+<header class="ds-top">
+  <a class="ds-brand" href="#pista" aria-label="disco · ir a la pista">DISCO<b>_</b></a>
+  <div class="ds-top-right">
+    <button class="ds-pill" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">◐ noche</button>
+    <button class="ds-pill sm-toggle" id="sm-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="staggered-menu-panel">
+      <span class="sm-toggle-textWrap" aria-hidden="true"><span class="sm-toggle-textInner"><span class="sm-toggle-line">Menú</span></span></span>
+      <span class="sm-icon" aria-hidden="true"><span class="sm-icon-line"></span><span class="sm-icon-line sm-icon-line-v"></span></span>
+    </button>
+  </div>
+</header>
+<div class="sm-layer-host">
+  <div class="sm-prelayers" aria-hidden="true"><div class="sm-prelayer" style="background:var(--tomato)"></div><div class="sm-prelayer" style="background:var(--lila)"></div></div>
+  <nav class="staggered-menu-panel" id="staggered-menu-panel" aria-label="Secciones">
+    <ul class="sm-panel-list" role="list">
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#pista"><span class="sm-panel-itemLabel">Pista</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#paleta"><span class="sm-panel-itemLabel">Paleta</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#componentes"><span class="sm-panel-itemLabel">Componentes</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#datos"><span class="sm-panel-itemLabel">Datos</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#corcholatas"><span class="sm-panel-itemLabel">Corcholatas</span></a></li>
+    </ul>
+    <div class="sm-extras">
+      <p class="sm-extras-title">iroFactory</p>
+      <div class="sm-extras-row"><a href="https://github.com/RemiH06/iroFactory">Repositorio</a><a href="https://github.com/RemiH06">@RemiH06</a></div>
+    </div>
+  </nav>
+</div>
+
+<main>
+<!-- ── Pista ── -->
+<section class="ds-hero" id="pista">
+  <figure class="halftone-reveal">
+    <img src="../assets/img/disco/hero_light.webp" data-dark="../assets/img/disco/hero_dark.webp" alt="Proun de disco: collage de flores, helechos y plafones de un salón en colores invertidos.">
+    <figcaption>Pasa el cursor: la lupa revela el color</figcaption>
+  </figure>
+  <div class="ds-wrap ds-hero-grid">
+    <div class="ds-hero-copy">
+      <span class="ds-kicker"><b>_theme</b> · iroFactory</span>
+      <h1><span class="sr-only">disco</span><span class="split-flap-text" data-split-flap aria-hidden="true"></span></h1>
+      <p class="ds-lede">Documentación para apps y sistemas de diseño: estados, componentes y flujos, bajo las luces de la pista.</p>
+      <div class="ds-actions"><a class="ds-go" href="#componentes">↓ A la pista</a><a class="ds-go ghost" href="#corcholatas">Corcholatas</a></div>
+    </div>
+  </div>
+</section>
+<div class="aurora-thread" data-thread="0" aria-hidden="true"><canvas></canvas></div>
+
+<!-- ── Paleta ── -->
+<section class="ds-sec" id="paleta">
+  <div class="ds-wrap">
+    <div class="ds-head"><span class="ds-num">01</span><h2 class="ds-h2">Paleta</h2><p class="ds-sub">Tokens como variables CSS. Cambian solos con el modo.</p></div>
+    <div class="bento">
+      <article class="card-b s6" style="--spot:var(--tomato)">
+        <div class="b-head"><h3 class="b-title"><i></i>Paleta app</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: paleta">+</button></div>
+        <div class="swatch-group"><p class="swatch-label">Estado de interacción</p><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--new)"><span class="swatch-hex" id="hex-new"></span></div>--new</div><div class="swatch"><div class="swatch-box" style="background:var(--active)"><span class="swatch-hex" id="hex-active"></span></div>--active</div><div class="swatch"><div class="swatch-box" style="background:var(--done)"><span class="swatch-hex" id="hex-done"></span></div>--done</div></div></div>
+        <div class="swatch-group"><p class="swatch-label">Paleta app</p><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--tomato)"><span class="swatch-hex" id="hex-tomato"></span></div>--tomato</div><div class="swatch"><div class="swatch-box" style="background:var(--indigo)"><span class="swatch-hex" id="hex-indigo"></span></div>--indigo</div><div class="swatch"><div class="swatch-box" style="background:var(--mint)"><span class="swatch-hex" id="hex-mint"></span></div>--mint</div><div class="swatch"><div class="swatch-box" style="background:var(--mustard)"><span class="swatch-hex" id="hex-mustard"></span></div>--mustard</div><div class="swatch"><div class="swatch-box" style="background:var(--lila)"><span class="swatch-hex" id="hex-lila"></span></div>--lila</div><div class="swatch"><div class="swatch-box" style="background:var(--peach)"><span class="swatch-hex" id="hex-peach"></span></div>--peach</div><div class="swatch"><div class="swatch-box" style="background:var(--sky)"><span class="swatch-hex" id="hex-sky"></span></div>--sky</div><div class="swatch"><div class="swatch-box" style="background:var(--rose)"><span class="swatch-hex" id="hex-rose"></span></div>--rose</div></div></div>
+        <div class="swatch-group"><p class="swatch-label">Neutros y semánticos</p><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div><div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div><div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div><div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div><div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div><div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div><div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div></div></div>
+        <div class="b-more" hidden><p>Usa el estado, no el color: <code>var(--new)</code> para lo nuevo, <code>var(--active)</code> para lo seleccionado, <code>var(--done)</code> para lo terminado. Los ocho colores de la app son para categorías.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+<div class="aurora-thread" data-thread="1" data-rev aria-hidden="true"><canvas></canvas></div>
+
+<!-- ── Componentes ── -->
+<section class="ds-sec" id="componentes">
+  <div class="ds-wrap">
+    <div class="ds-head"><span class="ds-num">02</span><h2 class="ds-h2">Componentes</h2><p class="ds-sub">Cada módulo es una tarjeta con reflector; los circuitos marcan el orden de lectura.</p></div>
+    <div class="bento" data-traces>
+      <span class="orb b" style="top:20%;left:-60px" aria-hidden="true"></span>
+      <span class="orb c" style="bottom:-30px;right:-40px" aria-hidden="true"></span>
+      <article class="card-b s4 r2" style="--spot:var(--active)">
+        <div class="b-head"><h3 class="b-title"><i></i>Avisos</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: avisos">+</button></div>
+        <div class="callout"><div class="callout-title">Acento</div><p>Notas generales de la app, referencias de diseño y documentación.</p></div>
+        <div class="callout ok"><div class="callout-title">OK · Mint</div><p>Acción completada. El usuario terminó el flujo.</p></div>
+        <div class="callout warn"><div class="callout-title">Warn · Mustard</div><p>Revisa la configuración antes de continuar.</p></div>
+        <div class="callout danger"><div class="callout-title">Danger</div><p>Error crítico. La acción no se completó.</p></div>
+        <div class="callout active"><div class="callout-title">Active · Indigo</div><p>Seleccionado o en uso.</p></div>
+        <div class="callout lila"><div class="callout-title">Lila</div><p>Funciones premium o experimentales.</p></div>
+        <div class="b-more" hidden><p><code>.callout</code> más <code>.ok</code>, <code>.warn</code>, <code>.danger</code>, <code>.active</code>, <code>.lila</code> o <code>.sky</code>. El título va en <code>.callout-title</code>.</p></div>
+      </article>
+      <article class="card-b s2" style="--spot:var(--rose)">
+        <div class="b-head"><h3 class="b-title"><i></i>Badges</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: badges">+</button></div>
+        <div class="chips"><span class="badge accent">accent</span><span class="badge ok">ok</span><span class="badge warn">warn</span><span class="badge danger">danger</span><span class="badge new">new</span><span class="badge active">active</span><span class="badge done">done</span><span class="badge indigo">indigo</span><span class="badge mustard">mustard</span><span class="badge lila">lila</span><span class="badge peach">peach</span><span class="badge sky">sky</span><span class="badge rose">rose</span><span class="badge">default</span></div>
+        <div class="b-more" hidden><p><code>.badge</code> más el nombre del token.</p></div>
+      </article>
+      <article class="card-b s2" style="--spot:var(--mustard)">
+        <div class="b-head"><h3 class="b-title"><i></i>Botones</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: botones">+</button></div>
+        <div class="chips"><button class="btn primary" type="button">primary</button><button class="btn" type="button">default</button><button class="btn ok" type="button">ok</button><button class="btn warn" type="button">warn</button><button class="btn danger" type="button">danger</button><button class="btn active" type="button">active</button><button class="btn lila" type="button">lila</button><button class="btn sky" type="button">sky</button></div>
+        <div class="b-more" hidden><p><code>.btn</code> y <code>.btn.primary</code> para la acción principal; un solo primary por vista.</p></div>
+      </article>
+      <article class="card-b s6" style="--spot:var(--mint)">
+        <div class="b-head"><h3 class="b-title"><i></i>Métricas</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: métricas">+</button></div>
+        <div class="metrics-row">
+          <div class="metric"><div class="metric-val" data-count="4.8">4.8</div><div class="metric-lbl">rating promedio</div></div>
+          <div class="metric"><div class="metric-val done" data-count="2341">2,341</div><div class="metric-lbl">reseñas</div></div>
+          <div class="metric"><div class="metric-val new" data-count="18">18</div><div class="metric-lbl">lugares nuevos</div></div>
+          <div class="metric"><div class="metric-val active" data-count="94">94</div><div class="metric-lbl">usuarios activos</div></div>
+          <div class="metric"><div class="metric-val mustard" data-count="67" data-suffix="%">67%</div><div class="metric-lbl">retención</div></div>
+          <div class="metric"><div class="metric-val lila">Pro</div><div class="metric-lbl">plan</div></div>
+        </div>
+        <div class="b-more" hidden><p><code>.metric</code> con <code>.metric-val</code> (en Boogie Nights) y <code>.metric-lbl</code>; <code>data-count</code> anima la cifra al aparecer.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+<div class="aurora-thread" data-thread="2" aria-hidden="true"><canvas></canvas></div>
+
+<!-- ── Datos ── -->
+<section class="ds-sec" id="datos">
+  <div class="ds-wrap">
+    <div class="ds-head"><span class="ds-num">03</span><h2 class="ds-h2">Datos</h2><p class="ds-sub">Código, tokens, actividad y flujos de la app de ejemplo (tacology).</p></div>
+    <div class="bento" data-traces>
+      <span class="orb a" style="top:30%;right:-50px" aria-hidden="true"></span>
+      <article class="card-b" style="--spot:var(--lila)">
+        <div class="b-head"><h3 class="b-title"><i></i>Código</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: código">+</button></div>
+        <p>Inline: <code>toggleTheme()</code> alterna día y noche.</p>
+<pre data-lang="swift"><code><span class="cm">// Vista de detalle de lugar · tacology</span>
+<span class="kw">struct</span> <span class="tp">PlaceDetailView</span>: View {
+    <span class="kw">let</span> place: <span class="tp">Place</span>
+    <span class="kw">var</span> body: some View {
+        <span class="fn">VStack</span>(alignment: .leading, spacing: <span class="num">16</span>) {
+            <span class="fn">RatingBadge</span>(score: place.rating)
+            <span class="fn">Text</span>(place.name).font(.title2.bold())
+            <span class="fn">TagRow</span>(tags: place.tags)
+        }
+    }
+}</code></pre>
+        <div class="b-more" hidden><p><code>pre</code> con <code>data-lang</code>; resaltado con <code>.kw</code>, <code>.fn</code>, <code>.str</code>, <code>.num</code>, <code>.tp</code> y <code>.cm</code>.</p></div>
+      </article>
+      <article class="card-b" style="--spot:var(--sky)">
+        <div class="b-head"><h3 class="b-title"><i></i>Tokens</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: tabla">+</button></div>
+        <div class="table-wrap"><table>
+          <tr><th>Token</th><th>Día</th><th>Noche</th><th>Uso</th></tr>
+          <tr><td><code>--new</code></td><td>#D94F3A</td><td>#FF6B52</td><td>Sin ver</td></tr>
+          <tr><td><code>--active</code></td><td>#4A50C8</td><td>#6E74F0</td><td>En uso</td></tr>
+          <tr><td><code>--done</code></td><td>#2A8C5A</td><td>#3EC87A</td><td>Terminado</td></tr>
+          <tr><td><code>--mustard</code></td><td>#C07A10</td><td>#F0A830</td><td>Métricas</td></tr>
+          <tr><td><code>--lila</code></td><td>#8A4AC8</td><td>#B87AF0</td><td>Premium</td></tr>
+          <tr><td><code>--sky</code></td><td>#2A7AC8</td><td>#50A8F0</td><td>Ayuda</td></tr>
+        </table></div>
+        <div class="b-more" hidden><p>Tabla dentro de <code>.table-wrap</code>: en pantallas chicas se desliza sin romper la página.</p></div>
+      </article>
+      <article class="card-b" style="--spot:var(--tomato)">
+        <div class="b-head"><h3 class="b-title"><i></i>Actividad</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: actividad">+</button></div>
+        <div class="feed">
+          <div class="feed-item"><div class="feed-dot new" aria-hidden="true">★</div><div><h4>Nuevo lugar disponible</h4><p class="muted">Taquería El Padrino acaba de unirse.</p></div></div>
+          <div class="feed-item"><div class="feed-dot done" aria-hidden="true">✓</div><div><h4>Reseña publicada</h4><p class="muted">Tu reseña de Tacos de Canasta Aurora ya se ve.</p></div></div>
+          <div class="feed-item"><div class="feed-dot active" aria-hidden="true">♥</div><div><h4>Guardado en favoritos</h4><p class="muted">Agregaste El Tizoncito a tu lista.</p></div></div>
+          <div class="feed-item"><div class="feed-dot warn" aria-hidden="true">!</div><div><h4>Pendiente de verificar</h4><p class="muted">Los datos de contacto pueden estar desactualizados.</p></div></div>
+          <div class="feed-item"><div class="feed-dot danger" aria-hidden="true">✕</div><div><h4>Lugar reportado</h4><p class="muted">Tres reportes esta semana. En revisión.</p></div></div>
+        </div>
+        <div class="b-more" hidden><p><code>.feed-item</code> con <code>.feed-dot</code> y un estado: <code>.new</code>, <code>.done</code>, <code>.active</code>, <code>.warn</code> o <code>.danger</code>.</p></div>
+      </article>
+      <article class="card-b" style="--spot:var(--indigo)">
+        <div class="b-head"><h3 class="b-title"><i></i>Onboarding</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: onboarding">+</button></div>
+        <div class="onboard-row"><div class="onboard-num">1</div><div><h4>Crea tu cuenta</h4><p class="muted">Solo necesitas un correo. Sin tarjeta.</p></div></div>
+        <div class="onboard-row"><div class="onboard-num" style="--c:var(--indigo)">2</div><div><h4>Encuentra lugares cerca</h4><p class="muted">Activa tu ubicación para ver taquerías en tu zona.</p></div></div>
+        <div class="onboard-row"><div class="onboard-num" style="--c:var(--mint)">3</div><div><h4>Deja tu primera reseña</h4><p class="muted">Califica, comenta y sube fotos.</p></div></div>
+        <div class="b-more" hidden><p><code>.onboard-row</code>; el color de cada paso va en <code>--c</code>.</p></div>
+      </article>
+      <article class="card-b s6" style="--spot:var(--peach)">
+        <div class="b-head"><h3 class="b-title"><i></i>Cards</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: cards">+</button></div>
+        <div class="place"><div class="place-top"><strong>Taquería El Padrino</strong><span class="badge new">nuevo</span></div><p class="muted">Tacos de canasta · Ciudad de México · Abierto ahora</p></div>
+        <div class="place"><div class="place-top"><strong>El Tizoncito</strong><span class="badge done">✓ verificado</span></div><p class="muted">Tacos al pastor · CDMX · 4.7 ★ · 312 reseñas</p></div>
+        <div class="b-more" hidden><p><code>.place</code> con <code>.place-top</code> para el nombre y su badge.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+<div class="aurora-thread" data-thread="3" data-rev aria-hidden="true"><canvas></canvas></div>
+
+<!-- ── Corcholatas ── -->
+<section class="ds-sec ds-gallery" id="corcholatas">
+  <canvas data-prismatic-burst aria-hidden="true"></canvas>
+  <div class="ds-wrap">
+    <div class="ds-head"><span class="ds-num">04</span><h2 class="ds-h2">Corcholatas</h2><p class="ds-sub">Una al centro, en foco; las demás se desenfocan con estelas y aberración. Toca una o usa las flechas.</p></div>
+    <div class="caps-stage"><canvas data-bottlecaps aria-hidden="true"></canvas></div>
+    <div class="caps-ui">
+      <button class="caps-btn" type="button" id="caps-prev" aria-label="Corcholata anterior">←</button>
+      <p class="caps-caption" id="caps-caption" aria-live="polite"><b>Flor</b><span>1 de 7</span></p>
+      <button class="caps-btn" type="button" id="caps-next" aria-label="Corcholata siguiente">→</button>
+    </div>
+    <div class="caps-fallback"><img src="../assets/img/disco/cap0_light.webp" alt="Flor invertida al pie del collage" loading="lazy"><img src="../assets/img/disco/cap1_light.webp" alt="Helechos sobre el plafón azul" loading="lazy"><img src="../assets/img/disco/cap2_light.webp" alt="La mano al centro de la pista" loading="lazy"><img src="../assets/img/disco/cap3_light.webp" alt="Aros de neón del techo" loading="lazy"><img src="../assets/img/disco/cap4_light.webp" alt="Brasa roja de la esquina" loading="lazy"><img src="../assets/img/disco/cap5_light.webp" alt="Plafón con la luz de cian" loading="lazy"><img src="../assets/img/disco/cap6_light.webp" alt="Raíz sobre el rojo" loading="lazy"></div>
+  </div>
+</section>
+<div class="aurora-thread" data-thread="4" aria-hidden="true"><canvas></canvas></div>
+</main>
+
+<footer class="ds-footer">
+  <canvas class="ds-bg" data-prism aria-hidden="true"></canvas>
+  <p class="ds-end" aria-hidden="true">Fin de la pista</p>
+  <p>disco_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Corcholatas inspiradas en <a href="https://www.figma.com/@singhshristi">@singhshristi</a> y bentos en <a href="https://www.figma.com/@dd_uiux">@dd_uiux</a> · Títulos en Boogie Nights de Nick Curtis</p>
+</footer>
+
+<script type="module">
+import { initTheme, stickyHeader } from '../shared/core/core.js';
+import { mount as asanoha } from '../shared/components/asanoha/asanoha.js';
+import { mount as ambientLights } from '../shared/components/ambient-lights/ambient-lights.js';
+import { mount as staggeredMenu } from '../shared/components/staggered-menu/staggered-menu.js';
+import { mount as splitFlap } from '../shared/components/split-flap/split-flap.js';
+import { mount as halftoneReveal } from '../shared/components/halftone-reveal/halftone-reveal.js';
+import { mount as spotlightCard } from '../shared/components/spotlight-card/spotlight-card.js';
+import { mount as bentoTraces, drawTraces } from '../shared/components/bento-traces/bento-traces.js';
+import { mount as cardReveal } from '../shared/components/card-reveal/card-reveal.js';
+import { mount as prismaticBurst } from '../shared/components/prismatic-burst/prismatic-burst.js';
+import { mount as auroraThread } from '../shared/components/aurora-thread/aurora-thread.js';
+import { mount as prism } from '../shared/components/prism/prism.js';
+import { mount as bottlecapGallery } from '../shared/components/bottlecap-gallery/bottlecap-gallery.js';
+
+const PALETTE = ['--tomato', '--mustard', '--mint', '--sky', '--indigo', '--lila', '--rose', '--peach'];
+const IMG = '../assets/img/disco/';
+
+initTheme({ altClass: 'dark', label: dark => (dark ? '◑ día' : '◐ noche'), aria: dark => `Cambiar a modo ${dark ? 'claro' : 'oscuro'}` });
+stickyHeader('.ds-top');
+asanoha({ size: 80, opacity: .15 });
+ambientLights({ palette: PALETTE });
+staggeredMenu();
+splitFlap({ words: ['DISCO', 'PISTA', 'DISEÑO', 'APPS'], palette: PALETTE });
+halftoneReveal();
+spotlightCard({ onToggle: drawTraces });
+bentoTraces();
+cardReveal();
+prismaticBurst({ colors: ['--rose', '--tomato', '--mustard', '--lila', '--indigo'] });
+auroraThread({ pairs: [['--mustard', '--rose', '--peach', '--lila'], ['--sky', '--lila', '--sky', '--rose'], ['--mint', '--indigo', '--mint', '--indigo'], ['--peach', '--tomato', '--mustard', '--tomato'], ['--rose', '--lila', '--rose', '--lila']] });
+prism();
+bottlecapGallery({ items: [
+    { name: 'Flor', light: `${IMG}cap0_light.webp`, dark: `${IMG}cap0_dark.webp` },
+    { name: 'Helechos', light: `${IMG}cap1_light.webp`, dark: `${IMG}cap1_dark.webp` },
+    { name: 'Mano', light: `${IMG}cap2_light.webp`, dark: `${IMG}cap2_dark.webp` },
+    { name: 'Aros', light: `${IMG}cap3_light.webp`, dark: `${IMG}cap3_dark.webp` },
+    { name: 'Brasa', light: `${IMG}cap4_light.webp`, dark: `${IMG}cap4_dark.webp` },
+    { name: 'Techo', light: `${IMG}cap5_light.webp`, dark: `${IMG}cap5_dark.webp` },
+    { name: 'Raíz', light: `${IMG}cap6_light.webp`, dark: `${IMG}cap6_dark.webp` }
+  ] });
+</script>
+</body>
+</html>

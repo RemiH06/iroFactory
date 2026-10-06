@@ -1,0 +1,2 @@
+/* Asanoha: capa fija detrás del contenido. */
+.asanoha-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }

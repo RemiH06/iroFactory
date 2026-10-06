@@ -1,0 +1,3 @@
+/* Luces ambientales: multiply de día, screen de noche. */
+#disco-lights { position: fixed; inset: 0; pointer-events: none; z-index: 0; mix-blend-mode: multiply; }
+body.dark #disco-lights { mix-blend-mode: screen; }

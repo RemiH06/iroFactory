@@ -1,0 +1,19 @@
+/* Split Flap Text: fichas de tablero con una mitad que cae al voltear. */
+.split-flap-text { display: inline-flex; align-items: center; gap: clamp(4px, .7vw, 8px); color: var(--tile-ink); font-family: var(--display); font-size: clamp(54px, 9vw, 112px); line-height: 1; white-space: pre; user-select: none; }
+.sft-tile { position: relative; width: .74em; height: 1.1em; overflow: hidden; border-radius: clamp(6px, .9vw, 10px); background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--white) 16%, transparent), transparent 44%), linear-gradient(180deg, color-mix(in srgb, var(--tile) 82%, var(--white)), var(--tile)); box-shadow: 0 .035em .08em color-mix(in srgb, var(--white) 8%, transparent) inset, 0 -.05em .1em color-mix(in srgb, var(--black) 38%, transparent) inset, 0 .16em .38em color-mix(in srgb, var(--black) 28%, transparent); perspective: 520px; transform-style: preserve-3d; isolation: isolate; }
+.sft-tile::before { content: ''; position: absolute; z-index: 8; top: calc(50% - .5px); left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--white) 18%, transparent) 18%, color-mix(in srgb, var(--black) 64%, transparent) 50%, color-mix(in srgb, var(--white) 14%, transparent) 82%, transparent); pointer-events: none; }
+.sft-tile::after { content: ''; position: absolute; inset: 0; z-index: 9; border: 1px solid color-mix(in srgb, var(--white) 8%, transparent); border-radius: inherit; pointer-events: none; }
+.sft-half, .sft-flap { position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--white) 7%, transparent), transparent 34%), var(--tile); backface-visibility: hidden; }
+.sft-top, .sft-front { top: 0; }
+.sft-bottom, .sft-back { bottom: 0; background: linear-gradient(0deg, color-mix(in srgb, var(--white) 6%, transparent), transparent 38%), color-mix(in srgb, var(--tile) 92%, var(--black)); }
+.sft-char { position: absolute; left: 0; width: 100%; height: 200%; display: flex; align-items: center; justify-content: center; color: var(--tile-ink); text-shadow: 0 .025em 0 color-mix(in srgb, var(--white) 16%, transparent), 0 .09em .16em color-mix(in srgb, var(--black) 42%, transparent); }
+.sft-top .sft-char, .sft-front .sft-char { top: 0; }
+.sft-bottom .sft-char, .sft-back .sft-char { bottom: 0; }
+.sft-flap { z-index: 6; will-change: transform, filter; transform-style: preserve-3d; }
+.sft-front { transform-origin: center bottom; animation: sft-front var(--sft-dur, .12s) cubic-bezier(.23, 1, .32, 1) both; }
+.sft-back { transform-origin: center top; transform: rotateX(90deg); animation: sft-back var(--sft-dur, .12s) cubic-bezier(.23, 1, .32, 1) both; }
+@keyframes sft-front { 0% { transform: rotateX(0deg); filter: brightness(1.08); } 100% { transform: rotateX(-90deg); filter: brightness(.52); } }
+@keyframes sft-back { 0%, 45% { transform: rotateX(90deg); filter: brightness(.58); } 100% { transform: rotateX(0deg); filter: brightness(1); } }
+@media (prefers-reduced-motion: reduce) { .sft-flap { animation: none !important; } }
+/* Cada ficha toma un color de la paleta en el borde inferior: luces de la pista. */
+.sft-tile { border-bottom: 3px solid var(--sft-c, var(--accent)); }

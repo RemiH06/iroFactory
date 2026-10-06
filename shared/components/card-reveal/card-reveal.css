@@ -1,0 +1,2 @@
+/* Entrada escalonada de las tarjetas (solo con JS y sin reduced motion). */
+html.js .card-b.pre { opacity: 0; transform: translateY(14px); }

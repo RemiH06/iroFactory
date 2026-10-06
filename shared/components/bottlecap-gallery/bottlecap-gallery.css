@@ -1,0 +1,14 @@
+.caps-stage { position: relative; height: clamp(420px, 62vh, 620px); border-radius: var(--radius-lg); }
+[data-bottlecaps] { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: pointer; touch-action: pan-y; }
+.caps-ui { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 18px; }
+.caps-btn { flex: 0 0 auto; }
+.caps-btn { width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid var(--border); background: color-mix(in srgb, var(--bg) 90%, transparent); color: var(--text); font-size: 20px; cursor: pointer; display: grid; place-items: center; transition: border-color .2s, transform .16s; }
+.caps-btn:active { transform: scale(.95); }
+@media (hover: hover) and (pointer: fine) { .caps-btn:hover { border-color: var(--accent-ink); } }
+.caps-caption { flex: 0 1 320px; min-width: 0; text-align: center; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 8px 20px; }
+.caps-caption b { font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.1; display: block; color: var(--text); }
+.caps-caption span { font-size: 13px; color: var(--text2); }
+.caps-fallback { display: none; }
+html:not(.js) .caps-fallback { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+html:not(.js) .caps-fallback img { width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; }
+html:not(.js) .caps-stage, html:not(.js) .caps-ui { display: none; }
