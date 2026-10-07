@@ -25,8 +25,8 @@ export function mount() {
     if (p) stamp(p, i + 1); else clearStamp();
     ports.show(i);
     worldBtn.hidden = i < 0;
-    flip(where, p ? `${p.wonder} · ${p.place}` : 'Mapamundi · 7 puertos', { chars: 'A-Za-z' });
-    flip(kicker, p ? `Puerto ${i + 1} de 7 · por visitar` : 'Bitácora · 7 puertos por visitar', { chars: 'a-z' });
+    flip(where, p ? `${p.wonder} · ${p.place}` : 'Mapamundi · 7 puertos');
+    flip(kicker, p ? `Puerto ${i + 1} de 7 · por visitar` : 'Bitácora · 7 puertos por visitar');
     busy = false;
     if (queued !== null) { const q = queued; queued = null; travel(q); }
   };

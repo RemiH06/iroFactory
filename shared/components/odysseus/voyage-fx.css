@@ -1,6 +1,10 @@
 /* odysseus · voyage-fx: el sello del puerto sobre el pase. */
-.od-stamp { position: absolute; right: 16px; bottom: 12px; z-index: 3; display: grid; place-items: center; width: 92px; height: 92px; border-radius: 50%; border: 3px double var(--route); color: var(--route); text-align: center; line-height: 1.05; opacity: 0; pointer-events: none; mix-blend-mode: multiply; }
+.od-stamp { position: absolute; left: 214px; top: 30px; /* dentro del cuerpo (320 px; el talón ocupa los últimos 120) */ z-index: 3; display: grid; place-items: center; width: 92px; height: 92px; border-radius: 50%; border: 3px double var(--route); color: var(--route); text-align: center; line-height: 1.05; opacity: 0; pointer-events: none; mix-blend-mode: multiply; }
 body.dark .od-stamp { mix-blend-mode: screen; }
 .od-stamp-code { font-family: 'Cabaret Voltaire', var(--display); font-size: 26px; letter-spacing: .04em; }
 .od-stamp-name { font-family: var(--display); font-size: 10px; max-width: 76px; }
 .od-stamp-n { font-family: var(--mono); font-size: 8px; letter-spacing: .08em; text-transform: uppercase; }
+/* Rótulos que cambian: el texto viejo sale hacia arriba; el nuevo se teclea con cursor. */
+.od-flip-out { position: absolute; white-space: nowrap; pointer-events: none; } /* sin left/top: queda donde empieza el texto */
+.is-typing::after { content: '|'; margin-left: 1px; animation: od-caret .55s steps(1) infinite; }
+@keyframes od-caret { 50% { opacity: 0; } }
