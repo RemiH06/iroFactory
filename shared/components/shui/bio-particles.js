@@ -22,7 +22,10 @@ export function mount() {
     }
     ctx.globalAlpha = 1;
   };
+  // Si el mar en 3D está montado, sus partículas reemplazan a estas.
+  const sea = () => document.body.classList.contains('sea-3d');
   const frame = t => {
+    if (sea()) return set(false);
     raf = on && !document.hidden && !reduceMotion.matches ? requestAnimationFrame(frame) : 0;
     const k = last ? Math.min(3, (t - last) / 16.67) : 1; last = t;
     if (Math.random() < 0.08 * k) parts.push(make());
@@ -30,7 +33,7 @@ export function mount() {
     paint();
   };
   const set = v => {
-    on = v; cols = COLS.map(n => cssVar(n)).filter(Boolean);
+    on = v && !sea(); v = on; cols = COLS.map(n => cssVar(n)).filter(Boolean);
     if (v) { resize(); parts = Array.from({ length: 36 }, () => make(Math.random() * H)); canvas.style.visibility = ''; if (reduceMotion.matches) paint(); else if (!raf) { last = 0; raf = requestAnimationFrame(frame); } }
     else { if (raf) cancelAnimationFrame(raf); raf = 0; parts = []; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height); canvas.style.visibility = 'hidden'; }
   };

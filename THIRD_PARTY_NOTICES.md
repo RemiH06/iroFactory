@@ -8,7 +8,7 @@ iroFactory's own code is MIT licensed (see `LICENSE`). Some themes include code,
 |---|---|---|---|
 | [React Bits](https://github.com/DavidHDev/react-bits) | David Haz ([@DavidHDev](https://github.com/DavidHDev)) | MIT + Commons Clause | apolo, bookworm, disco, elixir, forge, lambda, metro, odysseus, sherry, shui |
 | [WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | Pavel Dobryakov ([@PavelDoGreat](https://github.com/PavelDoGreat)) | MIT | shui (Splash Cursor is built on it) |
-| [Three.js](https://threejs.org) r186 · `shared/vendor/three/` (minified core + GLTFLoader, BufferGeometryUtils, SkeletonUtils, meshopt decoder) | three.js authors ([@mrdoob](https://github.com/mrdoob)) | MIT (`shared/vendor/three/LICENSE`) | apolo (3D statue, petals), odysseus (celestial sphere, paper cards, sheet curl) |
+| [Three.js](https://threejs.org) r186 · `shared/vendor/three/` (minified core + GLTFLoader, BufferGeometryUtils, SkeletonUtils, meshopt decoder, RoundedBoxGeometry, RoomEnvironment) | three.js authors ([@mrdoob](https://github.com/mrdoob)) | MIT (`shared/vendor/three/LICENSE`) | apolo (3D statue, petals), odysseus (celestial sphere, paper cards, sheet curl), shui (fish school, descent, ice, particles) |
 | [anime.js](https://animejs.com) v4.5.0 · `shared/vendor/anime/anime.esm.min.js` (ESM bundle) | Julian Garnier ([@juliangarnier](https://github.com/juliangarnier)) | MIT (`shared/vendor/anime/LICENSE.md`) | odysseus |
 | [Motion](https://motion.dev) v11.18.2, mini build, inlined | Motion B.V. ([@motiondivision](https://github.com/motiondivision)) | MIT | apolo |
 

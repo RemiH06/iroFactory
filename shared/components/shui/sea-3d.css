@@ -1,0 +1,3 @@
+/* El mar en 3D: capa fija sobre el agua de Ferrofluid y debajo de los cursores. */
+#sh-sea { position: fixed; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 0; }
+body.sea-3d #sh-bio { visibility: hidden; }
