@@ -55,7 +55,9 @@ void main() {
     pointer(x, y, inside) { mouse = [x, 1 - y]; activeT = inside ? 1 : 0; },
     render(t) {
       active += (activeT - active) * 0.05;
-      gl.uniform1f(u('uTime'), t * 0.001); gl.uniform1f(u('uStarSpeed'), (t * 0.001 * 0.5) / 10);
+      // A una quinta parte de la velocidad del original: giro, deriva de capas y titileo.
+      const k = t * 0.001 * 0.2;
+      gl.uniform1f(u('uTime'), k); gl.uniform1f(u('uStarSpeed'), (k * 0.5) / 10);
       gl.uniform2f(u('uMouse'), mouse[0], mouse[1]); gl.uniform1f(u('uMouseActive'), active);
       gl.uniform3fv(u('uBg'), rgb01('--sea-dk'));
       gl.drawArrays(gl.TRIANGLES, 0, 3);
