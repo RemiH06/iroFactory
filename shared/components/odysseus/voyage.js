@@ -6,6 +6,7 @@ import { HOME, PORTS } from './geography.js';
 import { ticket } from './tear-ticket.js';
 import { ports } from './ports.js';
 import { map } from './world-map.js';
+import { flip, stamp, clearStamp } from './voyage-fx.js';
 
 export function mount() {
 (() => {
@@ -19,10 +20,13 @@ export function mount() {
     const p = i >= 0 ? PORTS[i] : null, from = i >= 0 ? PORTS[i] : (last >= 0 ? PORTS[last] : HOME), to = PORTS[i >= 0 ? nextOf(i) : (last >= 0 ? nextOf(last) : 0)];
     showDoc(p ? p.id : 'intro');
     ticket.set(from, to, PORTS.indexOf(to) + 1);
+    // Tablero de aeropuerto: los códigos del pase y los rótulos se descifran.
+    document.querySelectorAll('#od-ticket .tt-from, #od-ticket .tt-to').forEach((el, k) => flip(el, el.textContent, { force: true, delay: k * 90 }));
+    if (p) stamp(p, i + 1); else clearStamp();
     ports.show(i);
     worldBtn.hidden = i < 0;
-    where.textContent = p ? `${p.wonder} · ${p.place}` : 'Mapamundi · 7 puertos';
-    kicker.textContent = p ? `Puerto ${i + 1} de 7 · por visitar` : 'Bitácora · 7 puertos por visitar';
+    flip(where, p ? `${p.wonder} · ${p.place}` : 'Mapamundi · 7 puertos', { chars: 'A-Za-z' });
+    flip(kicker, p ? `Puerto ${i + 1} de 7 · por visitar` : 'Bitácora · 7 puertos por visitar', { chars: 'a-z' });
     busy = false;
     if (queued !== null) { const q = queued; queued = null; travel(q); }
   };

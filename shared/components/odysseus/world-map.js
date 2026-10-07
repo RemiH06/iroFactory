@@ -13,6 +13,15 @@ export const map = (() => {
   const ROT0 = ((Math.random() * 4) - 2) * Math.PI / 180;
   let W = 1, H = 1, dpr = 1, sheet = { w: 1, h: 1, rot: 0 }, zWorld = 0, cam = null, flight = null, hover = -1, compass = { a: 0, t: 0, next: 0 }, lastT = 0;
   let active = -1, route = new Set(), pal = {};
+  // Esfera celeste 3D (sky-3d.js, Three.js): se carga la primera vez que se hace de noche.
+  let sky = null, skyLoading = false;
+  // La hoja que se curva en vuelo (sheet-curl.js, Three.js): se carga con el primer vuelo.
+  let curl = null, curlLoading = false;
+  const wantCurl = () => { if (curl || curlLoading || reduceMotion.matches) return; curlLoading = true; import('./sheet-curl.js').then(m => { curl = m.mount({ stage, source: canvas }); }).catch(() => {}); };
+  const wantSky = () => {
+    if (sky || skyLoading || !isDark) return; skyLoading = true;
+    import('./sky-3d.js').then(m => { sky = m.createSky({ reduceMotion }); if (sky) sky.resize(sheet.w, sheet.h); loop.still(); }).catch(() => {});
+  };
   const readPal = () => { pal = {}; for (const n of ['--sea', '--sea-dk', '--land', '--land-dk', '--ink', '--rust', '--stain', '--route', '--wonder', '--visited', '--unvisited', '--compass', '--bg', '--bg2', '--parchment', '--text', '--white']) pal[n] = cssVar(n); };
   const worldCam = () => ({ lon: sheet.w < sheet.h ? 6 : 12, lat: 12, z: zWorld });
   const cityZ = p => Math.log2((Math.min(sheet.w, sheet.h) / 2) / ((p.r * 0.78) / 110540));
@@ -29,6 +38,7 @@ export const map = (() => {
     if (!cam) cam = worldCam(); else if (active < 0 && !flight) cam = worldCam(); else if (active >= 0 && !flight) cam = portCam(PORTS[active]);
     if (galaxy) galaxy.resize(sheet.w * 0.5, sheet.h * 0.5);
     if (topo) topo.resize(sheet.w * 0.5, sheet.h * 0.5);
+    if (sky) sky.resize(sheet.w, sheet.h);
   };
   // Matriz base: dpr · centro del escenario · giro de la hoja · origen en su esquina.
   const base = () => new DOMMatrix().scaleSelf(dpr, dpr).translateSelf(W / 2, H / 2).rotateSelf(sheet.rot * 180 / Math.PI).translateSelf(-sheet.w / 2, -sheet.h / 2);
@@ -47,8 +57,17 @@ export const map = (() => {
     const dt = lastT ? Math.min(0.05, (t - lastT) / 1000) : 0; lastT = t;
     if (flight) {
       const s0 = clamp((t - flight.t0) / flight.dur, 0, 1), s = s0 < 0.5 ? 4 * s0 * s0 * s0 : 1 - Math.pow(-2 * s0 + 2, 3) / 2;
-      const m = smooth(0.12, 0.88, s);
+      const m = smooth(0.12, 0.88, s); flight.s = s;
       cam = { lon: lerp(flight.A.lon, flight.B.lon, m), lat: lerp(flight.A.lat, flight.B.lat, m), z: (1 - s) * (1 - s) * flight.A.z + 2 * s * (1 - s) * flight.zM + s * s * flight.B.z };
+      // La cámara sigue al avión (que va en arco) en todo el tramo; solo al despegar
+      // se suelta poco a poco de la vista del mundo.
+      if (flight.leg) {
+        const [px, py] = legPoint(flight.leg, s), w = smooth(0, 0.15, s);
+        // Vuelo alto a escala de continente casi todo el tramo; el descenso a la ciudad, al final.
+        const d = smooth(0.62, 1, s);
+        cam.z = lerp(lerp(flight.A.z, flight.zM, smooth(0, 0.3, s)), flight.B.z, d * d);
+        cam.lon = lerp(cam.lon, px, w); cam.lat = lerp(cam.lat, py, w);
+      }
       if (s0 >= 1) { const done = flight.done; cam = { ...flight.B }; flight = null; done && done(); }
     }
     const v = view(), M = base();
@@ -94,9 +113,14 @@ export const map = (() => {
     // 6 · Ruta y 7 · alfileres
     const pinA = 1 - smooth(cityZ(PORTS[0]) - zWorld - 2.6, cityZ(PORTS[0]) - zWorld - 1.4, v.zr);
     if (pinA > 0.01) drawRoute(v, pinA, t);
+    // El avión se ve todo el vuelo: la cámara avanza a su ritmo, así que queda cerca del centro.
+    if (flight && flight.leg) drawPlane(v, flight.leg, flight.s || 0);
     // 8 · Constelaciones (carta estelar)
     const starA = night ? 1 - smooth(1, 3, v.zr) : 0;
-    if (starA > 0.01) drawStars(starA);
+    if (starA > 0.01) {
+      if (sky) { sky.render(t); ctx.globalAlpha = starA; ctx.drawImage(sky.canvas, 0, 0, sheet.w, sheet.h); ctx.globalAlpha = 1; drawSkyLabels(starA); }
+      else drawStars(starA);
+    }
     // Etiquetas de océanos
     const oceanA = (1 - smooth(1, 2.5, v.zr)) * (night ? 0.3 : 0.32);
     if (oceanA > 0.01) {
@@ -109,6 +133,10 @@ export const map = (() => {
     ctx.strokeStyle = pal['--ink']; ctx.globalAlpha = 0.45; ctx.lineWidth = 1.2; ctx.strokeRect(6, 6, sheet.w - 12, sheet.h - 12);
     ctx.lineWidth = 0.5; ctx.strokeRect(10, 10, sheet.w - 20, sheet.h - 20); ctx.globalAlpha = 1;
     drawCompass(v, dt);
+    if (curl) {
+      if (flight && flight.leg) { const [x0] = project(...legPoint(flight.leg, 0), v), [x1] = project(...legPoint(flight.leg, 1), v); curl.show(true); curl.frame(flight.s || 0, Math.sign(x1 - x0) || 1); }
+      else curl.show(false);
+    }
   };
 
   function drawCity(p, v, a, night) {
@@ -191,6 +219,22 @@ export const map = (() => {
     });
     ctx.restore();
   }
+  // Avión que recorre el tramo del vuelo: el trazo se vuelve continuo detrás de él.
+  // El arco se define en grados (el mismo que sigue la cámara) y luego se proyecta.
+  const legPoint = ([i0, i1], u) => {
+    const R = [HOME, ...PORTS], P0 = R[i0], P1 = R[i1], d = Math.hypot(P1.lon - P0.lon, P1.lat - P0.lat);
+    const cx = (P0.lon + P1.lon) / 2, cy = (P0.lat + P1.lat) / 2 + d * 0.18;
+    return [(1 - u) * (1 - u) * P0.lon + 2 * u * (1 - u) * cx + u * u * P1.lon, (1 - u) * (1 - u) * P0.lat + 2 * u * (1 - u) * cy + u * u * P1.lat];
+  };
+  function drawPlane(v, leg, s) {
+    const at = u => project(...legPoint(leg, u), v);
+    ctx.save(); ctx.strokeStyle = pal['--route']; ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(...at(0));
+    for (let k = 1; k <= 32; k++) ctx.lineTo(...at(s * k / 32)); ctx.stroke();
+    const [px, py] = at(s), [qx, qy] = at(Math.min(1, s + 0.01)), ang = Math.atan2(qy - py, qx - px);
+    ctx.translate(px, py); ctx.rotate(ang); ctx.fillStyle = pal['--route']; ctx.strokeStyle = isDark ? pal['--bg'] : pal['--parchment']; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(11, 0); ctx.lineTo(-7, -9); ctx.lineTo(-3, 0); ctx.lineTo(-7, 9); ctx.closePath(); ctx.stroke(); ctx.fill();
+    ctx.restore();
+  }
   function drawStars(a) {
     ctx.save(); ctx.globalAlpha = a;
     for (const c of constellations) {
@@ -202,9 +246,17 @@ export const map = (() => {
       const cx = P.reduce((s, p) => s + p[0], 0) / P.length, cy = Math.max(...P.map(p => p[1]));
       label(c.name, cx, cy + 18, 14, 'center');
     }
+    epigraph();
+    ctx.restore();
+  }
+  function epigraph() {
     if (sheet.w < 600) { label('Odisea, canto V: Odiseo gobierna', sheet.w - 18, sheet.h - 42, 12, 'right', true); label('mirando las Pléyades, el Boyero y la Osa.', sheet.w - 18, sheet.h - 25, 12, 'right', true); }
     else label('Odisea, canto V: Odiseo gobierna mirando las Pléyades, el Boyero y la Osa.', sheet.w / 2 + 40, sheet.h - 26, 13, 'center', true);
-    ctx.restore();
+  }
+  function drawSkyLabels(a) {
+    ctx.save(); ctx.globalAlpha = a;
+    sky.labels().forEach(l => label(l.name, l.x * sheet.w, l.y * sheet.h, 14, 'center', true)); // en IM Fell: se distinguen de los puertos
+    epigraph(); ctx.restore();
   }
   function drawCompass(v, dt) {
     // La brújula titubea en el mapamundi; con un puerto, apunta a él.
@@ -238,21 +290,39 @@ export const map = (() => {
     if (galaxy) { const [x, y] = toSheet(e); galaxy.pointer(x / sheet.w, y / sheet.h, x > 0 && y > 0 && x < sheet.w && y < sheet.h); }
   });
   canvas.addEventListener('pointerleave', () => { hover = -1; if (galaxy) galaxy.pointer(0.5, 0.5, false); });
-  canvas.addEventListener('click', e => { const h = hit(e); if (h >= 0 && api.onPick) api.onPick(h); });
+  // De noche, en el mapamundi, arrastrar gira la esfera celeste.
+  let skyDrag = null;
+  const skyOn = () => sky && isDark && view().zr < 1.5;
+  canvas.addEventListener('pointerdown', e => { if (skyOn() && hit(e) < 0) { skyDrag = { x: e.clientX, y: e.clientY, moved: false }; canvas.setPointerCapture?.(e.pointerId); } });
+  canvas.addEventListener('pointermove', e => {
+    if (!skyDrag) return; const dx = e.clientX - skyDrag.x, dy = e.clientY - skyDrag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) skyDrag.moved = true;
+    sky.drag(-dx, dy); skyDrag.x = e.clientX; skyDrag.y = e.clientY; canvas.style.cursor = 'grabbing'; loop.still();
+  });
+  const endDrag = () => { if (skyDrag) { canvas.style.cursor = ''; setTimeout(() => { skyDrag = null; }, 0); } };
+  canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+  canvas.addEventListener('click', e => { if (skyDrag && skyDrag.moved) return; const h = hit(e); if (h >= 0 && api.onPick) api.onPick(h); });
   const loop = makeLoop(stage, frame);
-  readPal(); layout();
+  readPal(); layout(); wantSky();
   new ResizeObserver(() => { layout(); loop.still(); }).observe(stage);
-  onTheme(() => { readPal(); loop.still(); });
+  onTheme(() => { readPal(); wantSky(); if (sky) sky.refresh(); loop.still(); });
   if (document.fonts) { document.fonts.ready.then(() => loop.still()); document.fonts.load("16px 'Cabaret Voltaire'").then(() => loop.still()); }
   const api = {
     onPick: null,
     flyTo(i, done) {
       const B = i >= 0 ? portCam(PORTS[i]) : worldCam();
       if (reduceMotion.matches) { cam = B; active = i; loop.still(); done && done(); return; }
+      wantCurl();
       const A = { ...cam }, dist = Math.hypot(B.lon - A.lon, B.lat - A.lat);
       const zApex = zWorld + Math.max(0.4, 7.5 - Math.log2(1 + dist) * 1.4), lo = Math.min(A.z, B.z);
       const zM = zApex < lo ? 2 * zApex - (A.z + B.z) / 2 : (A.z + B.z) / 2;
       flight = { A, B, zM, t0: performance.now(), dur: 1500 + 1100 * Math.min(1, dist / 120), to: i >= 0 ? i : active, done: () => { active = i; done && done(); } };
+      // Tramo en la ruta (índices en [Guadalajara, ...puertos]): del puerto actual (o casa) al nuevo.
+      if (i >= 0) {
+        flight.leg = [active >= 0 ? active + 1 : 0, i + 1];
+        // En el punto alto del vuelo se ven los continentes bajo el avión, no mar liso.
+        flight.zM = Math.min(flight.zM, zWorld + 1.6);
+      }
       if (i < 0) flight.to = Math.max(0, active);
       loop.start();
     },

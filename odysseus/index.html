@@ -50,6 +50,8 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/odysseus/ports.css">
 <link rel="stylesheet" href="../shared/components/odysseus/voyage.css">
 <link rel="stylesheet" href="../shared/components/odysseus/tear-ticket.css">
+<link rel="stylesheet" href="../shared/components/odysseus/voyage-fx.css">
+<link rel="stylesheet" href="../shared/components/odysseus/cards-3d.css">
 </head>
 <body>
 
@@ -273,8 +275,9 @@ ruta = [
 </section>
 </main>
 
-<footer class="od-footer">odysseus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Carrusel inspirado en <a href="https://www.figma.com/@ariantaheri">@ariantaheri</a> · Mapas © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> · Natural Earth · Puertos y tarjetas en Debonair Inline de Nick Curtis · "Cabaret Voltaire" Designed by Haimeluna (<a href="http://www.morbofly.com">www.morbofly.com</a>)</footer>
+<footer class="od-footer">odysseus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Carrusel inspirado en <a href="https://www.figma.com/@ariantaheri">@ariantaheri</a> · 3D con <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> (MIT) · Mapas © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> · Natural Earth · Puertos y tarjetas en Debonair Inline de Nick Curtis · "Cabaret Voltaire" Designed by Haimeluna (<a href="http://www.morbofly.com">www.morbofly.com</a>)</footer>
 
+<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/", "animejs": "../shared/vendor/anime/anime.esm.min.js" } }</script>
 <script type="module">
 import { mount as m0 } from '../shared/components/odysseus/kit.js';
 import { mount as m1 } from '../shared/components/odysseus/geography.js';

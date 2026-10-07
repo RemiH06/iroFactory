@@ -1,7 +1,7 @@
 // ══════════════════════════════════════════════════════
 // Puertos: carrusel 3D de tarjetas (riff de Figma), deslizable.
 // ══════════════════════════════════════════════════════
-import { $, clamp } from './kit.js';
+import { $, clamp, makeLoop, onTheme } from './kit.js';
 
 export const ports = (() => {
   const track = $('#od-track'), cards = [...track.children];
@@ -32,6 +32,8 @@ export const ports = (() => {
   new ResizeObserver(place).observe(track);
   const api = { onPick: null, show(i) { current = i; setIdx(i < 0 ? idx : i, false); } };
   track.classList.add('is-init'); place();
+  // Tarjetas de papel 3D detrás de los botones (Three.js, carga diferida).
+  import('./cards-3d.js').then(m => m.mount({ stage: track.parentElement, track, onTheme, makeLoop })).catch(() => {});
   requestAnimationFrame(() => requestAnimationFrame(() => track.classList.remove('is-init')));
   return api;
 })();

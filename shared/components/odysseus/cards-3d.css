@@ -1,0 +1,8 @@
+/* odysseus · cards-3d: tarjetas de papel en Three.js detrás de los botones del carrusel. */
+.od-cards-3d { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.od-ports-stage.is-3d .od-ports-track { z-index: 1; }
+/* Los botones siguen siendo el carrusel; el papel (fondo, borde, sombra) es 3D. La del
+   frente muestra su HTML; las de los lados, el contenido dibujado en su textura. */
+.od-ports-stage.is-3d .od-card { background: transparent; border-color: transparent; box-shadow: none; }
+.od-ports-stage.is-3d .od-card:not(.is-front) > * { visibility: hidden; }
+.od-ports-stage.is-3d .od-card:focus-visible { outline: 2px solid var(--route-ink); outline-offset: 2px; }
