@@ -1,0 +1,26 @@
+/* metro · lattice-loader: estilos del componente (antes en metro.css). */
+.ll__grid{display:grid;flex:none}
+.ll__layer{grid-area:1/1;display:grid;grid-template-columns:repeat(var(--ll-n),var(--ll-cell));gap:var(--ll-gap)}
+.ll__cell{width:var(--ll-cell);height:var(--ll-cell);border-radius:max(1px,calc(var(--ll-cell) * .25));background:var(--ll-color);opacity:var(--ll-idle)}
+.ll__run{transition:opacity .2s ease}
+.ll__run .ll__cell{animation:ll-on var(--ll-cycle) var(--ll-ease-in-out) infinite}
+.ll__run .ll__cell[data-lit="45"]{animation-name:ll-on-45}
+.ll__run .ll__cell[data-lit="35"]{animation-name:ll-on-35}
+.ll__run .ll__cell[data-lit="25"]{animation-name:ll-on-25}
+.ll__run .ll__cell[data-hole]{animation:none;opacity:calc(var(--ll-idle) * .47)}
+.ll__mark{opacity:0;transform:scale(.9);transform-origin:center;transition:opacity .16s var(--ll-ease-out),transform .16s var(--ll-ease-out)}
+.ll__mark .ll__cell{transition:opacity .2s ease,background-color .2s ease}
+.ll__mark .ll__cell[data-on]{background:var(--ll-mark);opacity:var(--ll-peak)}
+.ll__label{position:relative;display:inline-block;font-weight:700}
+.ll__text{position:absolute;top:0;left:0;white-space:nowrap;opacity:0;filter:blur(2px);transition:opacity .2s ease,filter .2s ease}
+.ll__text[data-active]{position:static;opacity:1;filter:blur(0)}
+.ll__timer{font-size:calc(var(--ll-font) * .875);font-variant-numeric:tabular-nums;opacity:.6}
+.ll__sr{position:absolute;width:1px;height:1px;margin:-1px;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@keyframes ll-on{0%,100%{opacity:var(--ll-idle)}18%,42%{opacity:var(--ll-peak)}62%{opacity:var(--ll-idle)}}
+@keyframes ll-on-45{0%,100%{opacity:var(--ll-idle)}13%,31%{opacity:var(--ll-peak)}45%{opacity:var(--ll-idle)}}
+@keyframes ll-on-35{0%,100%{opacity:var(--ll-idle)}10%,24%{opacity:var(--ll-peak)}35%{opacity:var(--ll-idle)}}
+@keyframes ll-on-25{0%,100%{opacity:var(--ll-idle)}7%,17%{opacity:var(--ll-peak)}25%{opacity:var(--ll-idle)}}
+@media (prefers-reduced-motion:reduce){
+.ll__run{--ll-peak:.7}
+.ll__run .ll__cell{animation-delay:0ms!important;animation-duration:1400ms!important}
+}

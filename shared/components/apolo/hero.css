@@ -1,0 +1,31 @@
+/* apolo · hero: estilos del componente (antes en apolo.css). */
+/* ══════════════════════════════════════════════════════
+   HERO · imagen de bienvenida (prouned_apolo.webp), pin de
+   scroll con blur/zoom estilo Proun (docs/index.html: pin-wrap
+   que crece a varios altos de pantalla, header adentro pasa a
+   sticky mientras dura el scroll). Sin JS o con reduced-motion,
+   el fallback es un bloque estático de una pantalla · nunca un
+   estado roto a medio cargar (mismo principio defensivo que
+   Proun: sin la clase que agrega el script, se ve normal).
+══════════════════════════════════════════════════════ */
+/* z-index:5 · arriba de las 5 capas fijas de fondo (sky/beams/rays/
+   texture/tilt, 0-4: son position:fixed;inset:0, cubren todo el
+   viewport, y sin esto pintarían encima del hero por estar más
+   abajo en el DOM con z-index:auto). Abajo de #ap-toggle-wrap (30)
+   y de .page (10), que sí deben quedar siempre por encima. */
+.ap-hero-pin{position:relative;z-index:5}
+/* 200vh (Proun) dejaba una pantalla ENTERA de scroll pinneado antes
+   de soltar · el usuario notó que nunca llegaba a ver las columnas
+   con los beams. 150vh: mismo alto de hero (100vh), pero solo 50vh
+   de scroll "detenido" para el blur/zoom en vez de 100vh completos. */
+html.js-ap-pin .ap-hero-pin{height:150vh}
+.ap-hero{position:relative;height:100vh;min-height:480px;max-height:880px;overflow:hidden;isolation:isolate;border-bottom:1px solid var(--border)}
+html.js-ap-pin .ap-hero{position:sticky;top:0}
+.ap-hero-text{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;will-change:opacity,transform}
+.ap-hero-text .page-title{font-size:clamp(52px,12vw,150px);line-height:.95}
+/* Sobre la foto del hero el mármol quedaba en 1.6:1 (medido en píxeles):
+   placa oscura detrás, como el toggle tiene la suya. */
+.ap-hero-text .page-subtitle{margin-top:10px;color:var(--marble);font-size:11px;background:color-mix(in srgb,var(--black) 62%,transparent);padding:3px 10px;border-radius:var(--radius)}
+@media(max-width:760px),(pointer:coarse){
+.page-subtitle,.ap-hero-text .page-subtitle{font-size:12px}
+}

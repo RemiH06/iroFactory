@@ -75,7 +75,6 @@ body {
   --olive-ink: #506428;
   --sky-ink: #1B5EA5;
 }
-
 /* ══════════════════════════════════════════════════════
    TOKENS · OSCURO · atardecer griego
 ══════════════════════════════════════════════════════ */
@@ -126,7 +125,6 @@ body.dark {
   --olive-ink: #678E34;
   --sky-ink: #B56C90;
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 /* Antes: contorno mármol/negro vía text-shadow, para leer texto
@@ -138,13 +136,9 @@ html,body{height:100%}
    ya resuelve el contraste · el contorno quedó redundante, no solo
    opcional. Se quita del todo.*/
 body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:21px;line-height:1.75;transition:background .5s,color .5s}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
-
-/* ══════════════════════════════════════════════════════
-   ESCENA DE FONDO · capas fijas
-══════════════════════════════════════════════════════ */
-#ap-sky      {position:fixed;inset:0;z-index:0;pointer-events:none}
-#ap-texture  {position:fixed;inset:0;z-index:1;pointer-events:none} /* mármol + estrías · lienzo disperso */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
+/* mármol + estrías · lienzo disperso */
 /* Segunda capa de tiras, DETRÁS de las tilt-card, con su propio
    barajado (independiente del de enfrente) y sin tilt · estática. En
    reposo las tilt-card de enfrente son opacas y la tapan del todo;
@@ -153,40 +147,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:2
    transparencia fija. Más blur que la de enfrente (6px vs 3px) para
    que se lea como "más al fondo". */
 #ap-back-stripes{position:fixed;inset:0;z-index:2;pointer-events:none;filter:var(--strip-filter)}
-.back-stripe{position:absolute;top:0;height:100%;background-repeat:no-repeat}
-/* Tilt-card: cada columna es un div real que muestra su propio recorte
-   de la imagen del hero (background-position) y rota en 3D hacia el
-   cursor (motion.dev "js-tilt-card", reconstruido desde el concepto).
-   Las columnas dejaron de ser un solo SVG de fondo en #ap-texture
-   para poder tiltear contenido real y visible · antes la capa de tilt
-   era invisible (sin brillo/fondo propio), rotar un div vacío no
-   rotaba nada a la vista. El blur/aclarado va en la CAPA completa
-   (#ap-tilt-layer), no por columna · un filtro por elemento (50-70
-   veces) es mucho más caro que uno solo sobre el contenedor entero. */
-#ap-tilt-layer{position:fixed;inset:0;z-index:3;pointer-events:none;perspective:900px;filter:var(--tilt-filter)}
-.tilt-col{
-  position:absolute;top:0;height:100%;
-  background-repeat:no-repeat;
-  transform-style:preserve-3d;
-  transition:transform .35s cubic-bezier(.22,1,.36,1);
-  will-change:transform;
-}
-/* Light Rays por encima de ambas capas de columnas, que ahora son
-   lienzos densos (antes #ap-texture era disperso/translúcido y
-   dejaba pasar la luz por debajo; con la imagen real cubriendo casi
-   todo, cualquier capa en un z-index menor queda enterrada · el
-   usuario reportó no ver Light Rays, esta era la causa real, no un
-   z-index mal escrito). */
-#ap-rays     {position:fixed;inset:0;z-index:4;pointer-events:none}
-#ap-petals   {position:fixed;inset:0;z-index:20;pointer-events:none} /* pétalos · pasan por delante de todo */
-
+/* pétalos · pasan por delante de todo */
 /* .page ya no es una columna angosta de 28% · cada nivel (Presentación,
    Ejemplos, Motivo, Pestañas) maneja su propio ancho vía .wrap. Solo
    se queda con el z-index para estar arriba de las capas de fondo. */
 .page{position:relative;z-index:10}
 .wrap{max-width:1040px;margin:0 auto;padding:0 40px}
-@media(max-width:760px){.wrap{padding:0 20px}}
-
+@media(max-width:760px){
+.wrap{padding:0 20px}
+}
 /* ══════════════════════════════════════════════════════
    TIPOGRAFÍA
 ══════════════════════════════════════════════════════ */
@@ -200,7 +169,6 @@ h3{font-family:var(--display);font-size:12px;font-weight:400;color:var(--aegean)
 h4{font-family:var(--display);font-size:14px;color:var(--text);margin-bottom:5px;letter-spacing:.06em}
 p{margin-bottom:12px;line-height:1.75;font-family:var(--serif);font-weight:400;font-size:21px}
 p.muted{color:var(--text2);font-size:14px}
-
 /* ══════════════════════════════════════════════════════
    CÓDIGO
 ══════════════════════════════════════════════════════ */
@@ -208,23 +176,31 @@ code{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px sol
 pre{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:var(--radius);padding:12px 16px;margin:12px 0;overflow-x:auto;font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--text);position:relative}
 pre::before{content:attr(data-lang);position:absolute;top:5px;right:8px;font-size:8px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;font-family:var(--display)}
 pre code{background:none;border:none;padding:0;color:inherit}
-pre .kw{color:var(--gold-ink)}pre .fn{color:var(--aegean-lt-ink)}pre .str{color:var(--rose-ink)}
-pre .num{color:var(--yellow-ink)}pre .cm{color:var(--text2);font-style:italic}
-
+pre .kw{color:var(--gold-ink)}
+pre .fn{color:var(--aegean-lt-ink)}
+pre .str{color:var(--rose-ink)}
+pre .num{color:var(--yellow-ink)}
+pre .cm{color:var(--text2);font-style:italic}
 /* ══════════════════════════════════════════════════════
    CALLOUTS
 ══════════════════════════════════════════════════════ */
 .callout{border-left:2px solid var(--accent);background:var(--bg2);padding:10px 14px;margin:8px 0;border-radius:0 var(--radius) var(--radius) 0}
 .callout-title{font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:4px}
 .callout p{margin-bottom:0;font-size:12px}
-.callout.ok      {border-color:var(--ok-ink)     }.callout.ok      .callout-title{color:var(--ok-ink)     }
-.callout.warn    {border-color:var(--warn-ink)   }.callout.warn    .callout-title{color:var(--warn-ink)   }
-.callout.danger  {border-color:var(--danger-ink) }.callout.danger  .callout-title{color:var(--danger-ink) }
-.callout.aegean  {border-color:var(--aegean) }.callout.aegean  .callout-title{color:var(--aegean) }
-.callout.olive   {border-color:var(--olive-ink)  }.callout.olive   .callout-title{color:var(--olive-ink)  }
-.callout.rose    {border-color:var(--rose-ink)   }.callout.rose    .callout-title{color:var(--rose-ink)   }
-.callout.marble  {border-color:var(--border) }.callout.marble  .callout-title{color:var(--text2)  }
-
+.callout.ok      {border-color:var(--ok-ink)     }
+.callout.ok      .callout-title{color:var(--ok-ink)     }
+.callout.warn    {border-color:var(--warn-ink)   }
+.callout.warn    .callout-title{color:var(--warn-ink)   }
+.callout.danger  {border-color:var(--danger-ink) }
+.callout.danger  .callout-title{color:var(--danger-ink) }
+.callout.aegean  {border-color:var(--aegean) }
+.callout.aegean  .callout-title{color:var(--aegean) }
+.callout.olive   {border-color:var(--olive-ink)  }
+.callout.olive   .callout-title{color:var(--olive-ink)  }
+.callout.rose    {border-color:var(--rose-ink)   }
+.callout.rose    .callout-title{color:var(--rose-ink)   }
+.callout.marble  {border-color:var(--border) }
+.callout.marble  .callout-title{color:var(--text2)  }
 /* ══════════════════════════════════════════════════════
    TABLA
 ══════════════════════════════════════════════════════ */
@@ -232,7 +208,6 @@ table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
 th{background:var(--bg3);padding:7px 12px;text-align:left;font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);border-bottom:1px solid var(--border)}
 td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
 tr:hover td{background:var(--bg3)}
-
 /* ══════════════════════════════════════════════════════
    BOTONES
 ══════════════════════════════════════════════════════ */
@@ -244,7 +219,6 @@ tr:hover td{background:var(--bg3)}
 .btn.aegean {border-color:var(--aegean);color:var(--aegean)}
 .btn.rose   {border-color:var(--rose-ink);  color:var(--rose-ink)  }
 .btn.olive  {border-color:var(--olive-ink); color:var(--olive-ink) }
-
 /* ══════════════════════════════════════════════════════
    BADGES
 ══════════════════════════════════════════════════════ */
@@ -257,13 +231,11 @@ tr:hover td{background:var(--bg3)}
 .badge.ok     {border-color:var(--ok-ink);     color:var(--ok-ink)    }
 .badge.warn   {border-color:var(--warn-ink);   color:var(--warn-ink)  }
 .badge.danger {border-color:var(--danger-ink); color:var(--danger-ink)}
-
 /* ══════════════════════════════════════════════════════
    CARDS
 ══════════════════════════════════════════════════════ */
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
 .card:hover{border-color:var(--gold-ink);box-shadow:0 2px 14px color-mix(in srgb,var(--gold) 12%,transparent)}
-
 /* ══════════════════════════════════════════════════════
    MÉTRICAS
 ══════════════════════════════════════════════════════ */
@@ -271,9 +243,10 @@ tr:hover td{background:var(--bg3)}
 .metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;flex:1;min-width:80px}
 .metric-val{font-family:var(--display);font-size:20px;font-weight:700;color:var(--gold-ink);letter-spacing:-.5px}
 .metric-lbl{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:2px}
-.metric-val.aegean{color:var(--aegean)}.metric-val.olive{color:var(--olive-ink)}
-.metric-val.rose{color:var(--rose-ink)}.metric-val.sky{color:var(--sky-ink)}
-
+.metric-val.aegean{color:var(--aegean)}
+.metric-val.olive{color:var(--olive-ink)}
+.metric-val.rose{color:var(--rose-ink)}
+.metric-val.sky{color:var(--sky-ink)}
 /* ══════════════════════════════════════════════════════
    DIVIDER
 ══════════════════════════════════════════════════════ */
@@ -281,26 +254,12 @@ tr:hover td{background:var(--bg3)}
 hr.divider{border:none;height:48px;margin:20px 0;position:relative;overflow:visible;background:linear-gradient(var(--border),var(--border)) left center/calc(50% - 36px) 1px no-repeat,linear-gradient(var(--border),var(--border)) right center/calc(50% - 36px) 1px no-repeat}
 hr.divider::after{content:attr(data-v) / '';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'GreeKish';font-size:42px;line-height:1;color:var(--gold-ink)}
 .ornament{text-align:center;color:var(--gold-ink);font-size:16px;letter-spacing:.3em;margin:6px 0;opacity:.6}
-
-/* ══════════════════════════════════════════════════════
-   ODE LOG · timeline con estética griega
-══════════════════════════════════════════════════════ */
-.ode-log{margin:12px 0}
-.ode-entry{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
-.ode-entry:last-child{border-bottom:none}
 .ode-dot{width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px;border:1px solid var(--border);border-radius:50%;background:var(--bg3);color:var(--text2);font-family:var(--display)}
 .ode-dot.gold  {border-color:var(--gold-ink);  color:var(--gold-ink)  }
 .ode-dot.aegean{border-color:var(--aegean);color:var(--aegean)}
 .ode-dot.olive {border-color:var(--olive-ink); color:var(--olive-ink) }
 .ode-dot.rose  {border-color:var(--rose-ink);  color:var(--rose-ink)  }
-
-/* ══════════════════════════════════════════════════════
-   STROPHE STEPS · pipeline griego
-══════════════════════════════════════════════════════ */
-.strophe{display:flex;gap:14px;align-items:flex-start;margin:8px 0;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:var(--radius);transition:box-shadow .2s}
-.strophe:hover{box-shadow:0 2px 10px color-mix(in srgb,var(--gold) 10%,transparent)}
 .strophe-num{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold-ink);min-width:28px;line-height:1;margin-top:2px;letter-spacing:.04em}
-
 /* ══════════════════════════════════════════════════════
    THEME TOGGLE
 ══════════════════════════════════════════════════════ */
@@ -313,7 +272,6 @@ a{color:var(--accent-ink);text-underline-offset:3px}
 /* Foco: tinta de oro (el oro de relleno no llega a 3:1 sobre el mármol
    claro). Las pestañas viven sobre la franja negra y conservan el oro. */
 .theme-btn:focus-visible,.btn:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold-ink);outline-offset:2px}
-
 /* ══════════════════════════════════════════════════════
    TÍTULO · h1 real, shiny-text (React Bits) vía CSS puro:
    degradado diagonal clipeado al texto, background-position
@@ -339,55 +297,24 @@ a{color:var(--accent-ink);text-underline-offset:3px}
   100%{background-position:-60% center}
 }
 @media(prefers-reduced-motion:reduce){
-  .page-title{animation:none;background-position:50% center}
+.page-title{animation:none;background-position:50% center}
 }
 .page-subtitle{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:-2px}
-
-/* ══════════════════════════════════════════════════════
-   HERO · imagen de bienvenida (prouned_apolo.webp), pin de
-   scroll con blur/zoom estilo Proun (docs/index.html: pin-wrap
-   que crece a varios altos de pantalla, header adentro pasa a
-   sticky mientras dura el scroll). Sin JS o con reduced-motion,
-   el fallback es un bloque estático de una pantalla · nunca un
-   estado roto a medio cargar (mismo principio defensivo que
-   Proun: sin la clase que agrega el script, se ve normal).
-══════════════════════════════════════════════════════ */
-/* z-index:5 · arriba de las 5 capas fijas de fondo (sky/beams/rays/
-   texture/tilt, 0-4: son position:fixed;inset:0, cubren todo el
-   viewport, y sin esto pintarían encima del hero por estar más
-   abajo en el DOM con z-index:auto). Abajo de #ap-toggle-wrap (30)
-   y de .page (10), que sí deben quedar siempre por encima. */
-.ap-hero-pin{position:relative;z-index:5}
-/* 200vh (Proun) dejaba una pantalla ENTERA de scroll pinneado antes
-   de soltar · el usuario notó que nunca llegaba a ver las columnas
-   con los beams. 150vh: mismo alto de hero (100vh), pero solo 50vh
-   de scroll "detenido" para el blur/zoom en vez de 100vh completos. */
-html.js-ap-pin .ap-hero-pin{height:150vh}
-.ap-hero{position:relative;height:100vh;min-height:480px;max-height:880px;overflow:hidden;isolation:isolate;border-bottom:1px solid var(--border)}
-html.js-ap-pin .ap-hero{position:sticky;top:0}
-.ap-hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--bg2)}
-.ap-hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:filter,transform}
-#ap-hero-ripple{position:absolute;inset:0;width:100%;height:100%;opacity:0}
 .ap-hero-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,color-mix(in srgb,var(--black) 45%,transparent) 0%,color-mix(in srgb,var(--black) 8%,transparent) 45%,color-mix(in srgb,var(--black) 60%,transparent) 100%)}
 /* Atardecer: el título en mármol sobre el naranja de la foto quedaba en
    2.7:1 (medido en píxeles, sin pétalos); la franja central del velo
    sube de 8% a 34% solo en este modo para pasar 3:1 de texto grande. */
 body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var(--black) 45%,transparent) 0%,color-mix(in srgb,var(--black) 34%,transparent) 45%,color-mix(in srgb,var(--black) 60%,transparent) 100%)}
-.ap-hero-text{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;will-change:opacity,transform}
-.ap-hero-text .page-title{font-size:clamp(52px,12vw,150px);line-height:.95}
-/* Sobre la foto del hero el mármol quedaba en 1.6:1 (medido en píxeles):
-   placa oscura detrás, como el toggle tiene la suya. */
-.ap-hero-text .page-subtitle{margin-top:10px;color:var(--marble);font-size:11px;background:color-mix(in srgb,var(--black) 62%,transparent);padding:3px 10px;border-radius:var(--radius)}
 /* Toggle: control persistente, ya no vive dentro de .page · se ve
    sobre la imagen del hero y sobre el resto del contenido igual. */
 #ap-toggle-wrap{position:fixed;top:20px;right:24px;z-index:30}
-
 /* ══════════════════════════════════════════════════════
    LAYOUT
 ══════════════════════════════════════════════════════ */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:900px){.grid-2{grid-template-columns:1fr}}
-
+@media(max-width:900px){
+.grid-2{grid-template-columns:1fr}
+}
 /* ══════════════════════════════════════════════════════
    NIVELES · estructura calcada de 43.Proun/docs/index.html
    (portada · presentación · ejemplos · motivo · pestañas · footer),
@@ -402,21 +329,10 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
 .ap-presentacion h1{font-family:var(--title);font-weight:400;font-synthesis:none;font-size:clamp(32px,4.6vw,48px);line-height:1.15;margin:0 0 18px;color:var(--text)}
 .ap-quote{font-family:var(--display);font-size:20px;line-height:1.5;border-left:2px solid var(--gold);padding-left:20px;margin:0;color:var(--text)}
 .ap-quote cite{display:block;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text2);margin-top:10px}
-@media(max-width:760px){.ap-presentacion-grid{grid-template-columns:1fr}}
-/* Estatuas (Afrodita bajo la cita, Apolo junto a las pestañas): PNG sin
-   fondo, así que sin marco ni borde. En reposo blanco y negro con tinte
-   --sky, en hover Ripple Distortion revela el color real (ver
-   initStatueRipple). Sin WebGL, la <img> hace lo mismo con filter. */
-.ap-statue{margin:0}
-.ap-statue-media{position:relative;touch-action:pan-y}
-.ap-statue-media img{display:block;width:100%;height:100%;object-fit:contain;filter:grayscale(1)}
-.ap-statue-media canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0}
-.ap-statue.is-gl .ap-statue-media img{opacity:0}
-.ap-statue.is-gl .ap-statue-media canvas{opacity:1}
-.ap-statue figcaption{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text2);text-align:center;margin-top:8px}
+@media(max-width:760px){
+.ap-presentacion-grid{grid-template-columns:1fr}
+}
 .ap-presentacion-aside{display:flex;flex-direction:column;gap:28px}
-.ap-statue-aphrodite .ap-statue-media{height:380px}
-
 .ap-ejemplos{padding:56px 0 80px}
 .ap-ejemplos-heading{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);margin:0 0 32px;padding:0 40px}
 .ap-gallery{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:0;padding:20px 40px 40px}
@@ -426,8 +342,10 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
 .ap-gallery .g2{grid-column:6/13;margin-top:70px;transform:rotate(.8deg);z-index:2}
 .ap-gallery .g3{grid-column:2/7;margin-top:40px;transform:rotate(.6deg);z-index:1}
 .ap-gallery .g4{grid-column:7/12;margin-top:10px;transform:rotate(-.7deg);z-index:2}
-@media(max-width:760px){.ap-gallery{grid-template-columns:1fr;padding:0 20px;row-gap:24px}.ap-gallery .g1,.ap-gallery .g2,.ap-gallery .g3,.ap-gallery .g4{grid-column:1/-1;margin-top:0;transform:none}}
-
+@media(max-width:760px){
+.ap-gallery{grid-template-columns:1fr;padding:0 20px;row-gap:24px}
+.ap-gallery .g1,.ap-gallery .g2,.ap-gallery .g3,.ap-gallery .g4{grid-column:1/-1;margin-top:0;transform:none}
+}
 /* Fondo fijo (--black/--white), no depende de claro/oscuro · como
    .about de Proun, es su propia superficie, no una variación del tema. */
 /* text-shadow:none · el contorno mármol/negro heredado de body es
@@ -438,38 +356,10 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
 .ap-motivo .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px}
 .ap-motivo h2{font-family:var(--title);font-weight:400;font-synthesis:none;font-size:28px;margin:0 0 16px;color:var(--gold-lt);border:none;padding:0;text-transform:none;letter-spacing:0}
 .ap-motivo p{color:var(--white);opacity:.82;font-size:16px;font-family:var(--serif)}
-@media(max-width:760px){.ap-motivo .wrap{grid-template-columns:1fr}}
-
-.ap-stage-section{padding:0 0 80px;background:color-mix(in srgb,var(--bg2) 90%,transparent);border-top:1px solid var(--border)}
-/* Pestañas como galería circular · React Bits "Circular Gallery" (OGL:
-   planos que se curvan en arco al desplazarse) + "Decay Card" (filtro
-   SVG feTurbulence/feDisplacementMap, distorsión atada a la velocidad
-   del cursor). Reconstruido desde el concepto, no portado literal: los
-   paneles de abajo tienen tablas, código seleccionable y un iframe ·
-   convertirlos en texturas WebGL rompería selección de texto y ARIA.
-   En su lugar, los botones <button role="tab"> reales se curvan por
-   CSS transform (misma idea del arco de Circular Gallery, sin OGL) y
-   el filtro de Decay Card se aplica a las miniaturas vía CSS
-   filter:url(), con el "scale" del feDisplacementMap animado por la
-   velocidad de arrastre en vez de la distancia recorrida del cursor. */
-.ap-gallery-tabs{position:relative;background:var(--black);padding:30px 0 22px;overflow:hidden;touch-action:pan-y}
-.ap-gallery-track{position:relative;height:172px;cursor:grab}
-.ap-gallery-track.is-dragging{cursor:grabbing}
-.ap-tab{
-  position:absolute;top:14px;left:0;width:150px;height:118px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
-  font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--text);opacity:.6;cursor:pointer;will-change:transform;transform-origin:center;
-  transition:opacity .25s,border-color .25s,box-shadow .25s;
+@media(max-width:760px){
+.ap-motivo .wrap{grid-template-columns:1fr}
 }
-/* Inactivas a .6 (no .5): sobre la franja negra, .52 es el mínimo para
-   que la etiqueta pase 4.5:1 en ambos modos (texto y fondo de la pestaña
-   se componen juntos con el negro de detrás). */
-.ap-tab:hover{opacity:.8}
-.ap-tab.is-centered{opacity:.85}
-.ap-tab[aria-selected="true"]{opacity:1;border-color:var(--gold-ink);box-shadow:0 0 0 1px var(--gold)}
-.ap-tab:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.ap-stage-section{padding:0 0 80px;background:color-mix(in srgb,var(--bg2) 90%,transparent);border-top:1px solid var(--border)}
 .ap-tab-preview{filter:url(#ap-decay-filter);pointer-events:none}
 .ap-tab-label{pointer-events:none}
 .ap-stage{padding:40px 40px 0}
@@ -481,13 +371,18 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
 .ap-stage{display:grid;grid-template-columns:2fr 1fr;gap:40px;align-items:start}
 .ap-stage-main{min-width:0}
 .ap-stage-statue{position:sticky;top:80px}
-.ap-stage-statue .ap-statue-media{aspect-ratio:3/4}
-@media(max-width:760px){.ap-stage{grid-template-columns:1fr}.ap-stage-statue{position:static;max-width:240px;margin:0 auto;width:100%}}
+@media(max-width:760px){
+.ap-stage{grid-template-columns:1fr}
+.ap-stage-statue{position:static;max-width:240px;margin:0 auto;width:100%}
+}
 .ap-panel[hidden]{display:none}
 .ap-graph-frame{border:1px solid var(--border);height:560px;border-radius:var(--radius);overflow:hidden}
 .ap-graph-frame iframe{width:100%;height:100%;border:0;display:block}
-@media(max-width:760px){.ap-stage{padding:28px 20px 0}.ap-stage.wrap{max-width:none}.ap-graph-frame{height:420px}}
-
+@media(max-width:760px){
+.ap-stage{padding:28px 20px 0}
+.ap-stage.wrap{max-width:none}
+.ap-graph-frame{height:420px}
+}
 /* Superficie propia (como los demás niveles): sin ella el texto quedaba
    sobre las tiras de foto y en modo día no se leía. */
 .ap-footer{padding:22px 40px 30px;background:color-mix(in srgb,var(--bg2) 94%,transparent);border-top:1px solid var(--border)}
@@ -503,20 +398,17 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
    al hacer scroll, las tablas partían --token en dos líneas y había texto
    de 8 a 10px. En escritorio no cambia nada. */
 @media(max-width:760px){
-  #ap-toggle-wrap{position:absolute;top:16px;right:16px}
-  .ap-ejemplos-heading{display:inline-block;margin:0 20px 28px;padding:4px 10px;background:color-mix(in srgb,var(--bg) 90%,transparent);border-radius:var(--radius)}
+#ap-toggle-wrap{position:absolute;top:16px;right:16px}
+.ap-ejemplos-heading{display:inline-block;margin:0 20px 28px;padding:4px 10px;background:color-mix(in srgb,var(--bg) 90%,transparent);border-radius:var(--radius)}
 }
-/* Tamaños mínimos también en táctil ancho (teléfono acostado, tablet). */
 @media(max-width:760px),(pointer:coarse){
-  .theme-btn,.btn,.ap-tab{font-size:12px}
-  .ap-gallery-card pre{font-size:12px!important}
-  .badge{font-size:12px}
-  .page-subtitle,.ap-hero-text .page-subtitle{font-size:12px}
-  .ap-gallery-caption{font-size:12px;letter-spacing:.04em}
-  pre,code{font-size:12px}
-  th{font-size:12px;letter-spacing:.06em}
-  .swatch{font-size:12px;width:auto;min-width:76px}
-  .swatch-hex{font-size:12px}
-  table{display:block;overflow-x:auto}
-  td code{white-space:nowrap}
+.ap-gallery-card pre{font-size:12px!important}
+.badge{font-size:12px}
+.ap-gallery-caption{font-size:12px;letter-spacing:.04em}
+pre,code{font-size:12px}
+th{font-size:12px;letter-spacing:.06em}
+.swatch{font-size:12px;width:auto;min-width:76px}
+.swatch-hex{font-size:12px}
+table{display:block;overflow-x:auto}
+td code{white-space:nowrap}
 }

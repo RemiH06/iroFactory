@@ -1,0 +1,11 @@
+/* odysseus · tear-ticket: estilos del componente (antes en odysseus.css). */
+.tear-ticket__stage { position: absolute; top: 0; left: 0; width: var(--tt-w); height: var(--tt-h); transform: scale(var(--tt-fit)); transform-origin: top left; transition: transform 650ms cubic-bezier(.22, 1, .36, 1); }
+.tear-ticket__piece--stub { outline: none; will-change: transform; }
+.tear-ticket__edge { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.tear-ticket__edge path { fill: none; stroke: var(--tt-edge); stroke-width: 1; }
+.tear-ticket__fibres { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.tear-ticket__fibres path { fill: none; stroke: var(--tt-bg); stroke-linecap: round; opacity: 0; }
+.tt-route .tt-from, .tt-route .tt-to, .tt-stub-code { font-family: 'Cabaret Voltaire', var(--display); font-style: normal; font-synthesis: none; letter-spacing: .04em; }
+@media (prefers-reduced-motion: reduce){
+.tear-ticket__stage { transition: none; }
+}

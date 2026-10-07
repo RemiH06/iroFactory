@@ -1,0 +1,4 @@
+/* shui · current-graph: estilos del componente (antes en shui.css). */
+.sh-graph { position: relative; height: min(540px, 60svh); min-height: 320px; border-radius: 18px; }
+.sh-graph canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+html:not(.js) .sh-graph { display: none; }

@@ -1,0 +1,18 @@
+/* apolo · tilt-card: estilos del componente (antes en apolo.css). */
+/* Tilt-card: cada columna es un div real que muestra su propio recorte
+   de la imagen del hero (background-position) y rota en 3D hacia el
+   cursor (motion.dev "js-tilt-card", reconstruido desde el concepto).
+   Las columnas dejaron de ser un solo SVG de fondo en #ap-texture
+   para poder tiltear contenido real y visible · antes la capa de tilt
+   era invisible (sin brillo/fondo propio), rotar un div vacío no
+   rotaba nada a la vista. El blur/aclarado va en la CAPA completa
+   (#ap-tilt-layer), no por columna · un filtro por elemento (50-70
+   veces) es mucho más caro que uno solo sobre el contenedor entero. */
+#ap-tilt-layer{position:fixed;inset:0;z-index:3;pointer-events:none;perspective:900px;filter:var(--tilt-filter)}
+.tilt-col{
+  position:absolute;top:0;height:100%;
+  background-repeat:no-repeat;
+  transform-style:preserve-3d;
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+  will-change:transform;
+}

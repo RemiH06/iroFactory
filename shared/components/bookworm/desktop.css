@@ -1,0 +1,37 @@
+/* bookworm · desktop: estilos del componente (antes en bookworm.css). */
+.bw-trash{position:absolute;right:26px;bottom:44px;z-index:3001}
+.bw-trash .gi-back{transition:transform .25s cubic-bezier(.23,1,.32,1)}
+.bw-trash.is-armed .gi-back{transform:rotate(28deg) translate3d(-.4em,-.6em,.5em)}
+.bw-trash.is-armed .gi-front{transform:translate3d(0,0,1.6em) scale(1.08)}
+.bw-trash.is-bump .gi-front{animation:bw-bump .32s cubic-bezier(.23,1,.32,1)}
+@keyframes bw-bump{0%{transform:scale(1)}40%{transform:scale(.9)}100%{transform:scale(1)}}
+.bw-trash-count{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--bark);color:var(--white);font-family:var(--mono);font-size:11px;line-height:20px;text-align:center;pointer-events:none}
+.bw-trash-count[hidden]{display:none}
+/* ── Ventanas ── */
+.bw-windows{position:absolute;inset:0;z-index:1000;pointer-events:none}
+.bw-win{position:absolute;top:0;left:0;pointer-events:auto;display:flex;flex-direction:column;border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 0 0 1px var(--glass-edge),0 22px 48px color-mix(in srgb,var(--black) 30%,transparent);container:win / inline-size;outline:none}
+.bw-win:focus-visible{box-shadow:0 0 0 2px var(--accent),0 22px 48px color-mix(in srgb,var(--black) 30%,transparent)}
+.bw-win-bar{flex:none;height:38px;display:flex;align-items:center;gap:10px;padding:0 8px 0 16px;background:var(--glass);border-bottom:1px solid var(--glass-edge);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);cursor:grab;user-select:none;touch-action:none}
+.bw-win.is-dragging .bw-win-bar{cursor:grabbing}
+.bw-win-title{flex:1;font-family:var(--serif);font-style:italic;font-weight:700;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bw-win:not(.is-front) .bw-win-title{color:var(--text2)}
+.bw-win-close{width:26px;height:26px;border-radius:999px;border:1px solid var(--glass-edge);background:color-mix(in srgb,var(--bg) 45%,transparent);color:var(--text);font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .16s ease-out,border-color .2s ease-out,color .2s ease-out}
+.bw-win-close:hover{border-color:var(--danger-ink);color:var(--danger-ink)}
+.bw-win-close:active{transform:scale(.97)}
+.bw-win-body{position:relative;flex:1;min-height:0}
+.bw-win-glass{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bw-win-tint{position:absolute;inset:0;background:var(--glass-tint)}
+.bw-win-content{position:absolute;inset:0;overflow:auto;padding:18px 24px 24px}
+/* Redimensionar solo desde las esquinas (mover solo desde la barra). */
+.bw-rz{position:absolute;width:16px;height:16px;z-index:2;touch-action:none}
+.bw-rz.ne{top:0;right:0;cursor:nesw-resize}
+.bw-rz.sw{bottom:0;left:0;cursor:nesw-resize}
+@media (max-width:700px){
+.bw-rz{display:none}
+.bw-win-bar{cursor:default}
+.bw-win table{display:block;overflow-x:auto}
+.bw-win td code{white-space:nowrap}
+}
+/* ── Sin JS: las seis secciones como una página normal bajo el hero ── */
+#bw-library{position:relative;z-index:10;max-width:880px;margin:0 auto;padding:40px 24px 60px;background:var(--bg)}
+html.js #bw-library{display:none}

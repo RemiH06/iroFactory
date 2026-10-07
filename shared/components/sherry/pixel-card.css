@@ -1,0 +1,36 @@
+/* sherry · pixel-card: estilos del componente (antes en sherry.css). */
+/* Pixel Card: el wrapper es ahora el hijo directo de layouts flex/grid
+   que antes tenían al elemento de contenido directo (.metrics-row,
+   .grid-2) · se le pasa el mismo comportamiento de tamaño para que el
+   layout no cambie solo por envolver. */
+/* Capas de Pixel Card: fondo (wrapper) → brillo (::before) → pixeles
+   (canvas) → contenido. El fondo que antes traía el contenido se muda
+   al wrapper para que el canvas quede ENTRE fondo y texto, como en el
+   original · si no, el fondo opaco del contenido tapa los pixeles. */
+.sherry-pixel-card { position: relative; isolation: isolate; overflow: hidden; }
+.sherry-pixel-card:has(> .callout, > .metric, > .step-row, > .card, > .timeline-item) { background: var(--bg2); }
+/* Timeline va sobre fondo Dither: cada entrada pasa a ser un panel
+   (como los callouts de Componentes) para que el texto no quede
+   directo sobre el ruido. */
+#level-timeline .timeline .sherry-pixel-card { margin-bottom: 8px; border: 1px solid var(--border2); }
+.sherry-pixel-card::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, var(--pc-glow, transparent), transparent 85%);
+  opacity: 0; transition: opacity 800ms cubic-bezier(0.5, 1, 0.89, 1);
+}
+.sherry-pixel-card:hover::before, .sherry-pixel-card:focus-within::before { opacity: 1; }
+.sherry-pc-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; display: block; }
+.sherry-pixel-card > .sherry-pc-content { position: relative; z-index: 2; background: transparent; }
+/* Halo de contraste: al llenarse de pixeles, el texto se recorta con
+   un brillo en --pc-halo (calculado por tarjeta en JS). Va sobre todos
+   los descendientes porque títulos y valores traen su propio
+   text-shadow neón, que si no ganaría por especificidad. */
+.sherry-pc-content, .sherry-pc-content * { transition: text-shadow 600ms cubic-bezier(0.5, 1, 0.89, 1); }
+.sherry-pixel-card:hover .sherry-pc-content,
+.sherry-pixel-card:hover .sherry-pc-content *,
+.sherry-pixel-card:focus-within .sherry-pc-content,
+.sherry-pixel-card:focus-within .sherry-pc-content * {
+  text-shadow: 0 0 1px var(--pc-halo), 0 0 3px var(--pc-halo), 0 0 6px var(--pc-halo), 0 0 10px var(--pc-halo);
+}
+.metrics-row .sherry-pixel-card { flex: 1; min-width: 100px; }
+.metrics-row .sherry-pixel-card .metric { height: 100%; }

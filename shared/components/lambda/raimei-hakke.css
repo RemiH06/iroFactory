@@ -1,0 +1,4 @@
+/* lambda · raimei-hakke: estilos del componente (antes en lambda.css). */
+.hakke{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);justify-items:center;align-items:center;width:min(100%,520px);aspect-ratio:1;margin-inline:auto;padding:4px;border-radius:8px;background:color-mix(in srgb,var(--bg) 70%,transparent)}
+.hakke svg{width:68%;height:68%;display:block;transform:rotate(var(--rotate,-10deg));opacity:var(--hk-o,.55);transition:opacity .25s ease-out}
+.hakke rect{fill:currentColor}

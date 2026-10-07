@@ -1,0 +1,2 @@
+/* apolo · petals: estilos del componente (antes en apolo.css). */
+#ap-petals   {position:fixed;inset:0;z-index:20;pointer-events:none}

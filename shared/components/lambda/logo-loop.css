@@ -1,0 +1,11 @@
+/* lambda · logo-loop: estilos del componente (antes en lambda.css). */
+.lm-strip .logoloop{padding:8px 0;border-block:1px solid color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--bg) 86%,transparent);--logoloop-logoHeight:22px;--logoloop-gap:30px}
+.logoloop{position:relative;overflow:hidden;--logoloop-gap:44px;--logoloop-logoHeight:30px;-webkit-mask-image:linear-gradient(to right,transparent,var(--bg) 9%,var(--bg) 91%,transparent);mask-image:linear-gradient(to right,transparent,var(--bg) 9%,var(--bg) 91%,transparent)}
+.logoloop__track{display:flex;width:max-content;will-change:transform;user-select:none}
+.logoloop__list{display:flex;align-items:center;list-style:none}
+@media (prefers-reduced-motion:reduce){
+.logoloop{-webkit-mask-image:none;mask-image:none}
+.logoloop__track{width:auto;flex-wrap:wrap}
+.logoloop__list{flex-wrap:wrap;row-gap:20px}
+.logoloop__list[aria-hidden="true"]{display:none}
+}

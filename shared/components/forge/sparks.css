@@ -1,0 +1,10 @@
+/* forge · sparks: estilos del componente (antes en forge.css). */
+#fg-sparks{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+/* Contenedores: metal al rojo en la forja, Electric Border en el taller. */
+.hot{position:relative;border:1px solid var(--border);border-radius:6px;background:var(--bg2)}
+body:not(.light) .hot::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(var(--hot-a,0deg),var(--ember),var(--slag) 30%,var(--ember) 55%,var(--coal) 80%,var(--ember));-webkit-mask:linear-gradient(var(--black) 0 0) content-box,linear-gradient(var(--black) 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:fg-hot 6s linear infinite;pointer-events:none}
+body:not(.light) .hot{box-shadow:0 0 24px color-mix(in srgb,var(--ember) 18%,transparent)}
+@keyframes fg-hot{to{--hot-a:360deg}}
+@media (prefers-reduced-motion:reduce){
+body:not(.light) .hot::before{animation:none}
+}

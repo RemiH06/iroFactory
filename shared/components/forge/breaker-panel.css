@@ -1,0 +1,20 @@
+/* forge · breaker-panel: estilos del componente (antes en forge.css). */
+.breaker{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text2);font-size:12px;letter-spacing:.06em;min-height:44px}
+.breaker-lever{position:absolute;left:4px;right:4px;height:18px;bottom:3px;border-radius:2px;background:linear-gradient(to bottom,var(--gray),var(--ash));transition:bottom .22s cubic-bezier(.3,1.4,.5,1),background .22s}
+.breaker[aria-current="true"] .breaker-lever{bottom:21px;background:linear-gradient(to bottom,var(--slag),var(--accent))}
+.breaker[aria-current="true"] .breaker-led{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.breaker[aria-current="true"]{color:var(--text)}
+@media (max-width:1180px){
+.breaker{flex-direction:column;gap:2px;min-width:48px}
+.breaker-lever{height:13px}
+.breaker[aria-current="true"] .breaker-lever{bottom:15px}
+}
+.fg-head{position:relative;height:120px;margin-bottom:28px;display:grid;place-items:center}
+.fg-cables .charge{stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-dasharray:70 1200;stroke-dashoffset:70;filter:drop-shadow(0 0 6px var(--accent));opacity:0}
+.fg-pill{font-family:var(--dots);position:relative;z-index:1;display:inline-flex;align-items:center;gap:12px;padding:12px 26px;border-radius:999px;border:1px solid var(--border);background:var(--bg2);font-size:clamp(16px,2.4vw,22px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);transition:color .5s ease-out,text-shadow .5s ease-out,border-color .5s ease-out,box-shadow .5s ease-out}
+.fg-pill small{font-size:13px;font-weight:500;letter-spacing:.06em;color:var(--accent2)}
+.fg-pill.is-lit{color:var(--text);border-color:var(--accent);text-shadow:0 0 14px color-mix(in srgb,var(--accent) 70%,transparent);box-shadow:0 0 26px color-mix(in srgb,var(--accent) 22%,transparent)}
+.fg-pill.is-lit small{color:var(--accent)}
+@media (max-width:760px),(pointer:coarse){
+.fg-head{height:96px}
+}

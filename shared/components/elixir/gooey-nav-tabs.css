@@ -1,0 +1,6 @@
+/* elixir · gooey-nav-tabs: estilos del componente (antes en elixir.css). */
+.ex-tabpanel.is-entering { animation: ex-tab-in .32s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes ex-tab-in { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce){
+.ex-tabpanel.is-entering { animation: none; }
+}

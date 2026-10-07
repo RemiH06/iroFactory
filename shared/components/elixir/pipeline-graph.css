@@ -1,0 +1,7 @@
+/* elixir · pipeline-graph: estilos del componente (antes en elixir.css). */
+.ex-net { position: relative; height: 460px; padding: 0; overflow: hidden; }
+html:not(.js) .ex-net, html:not(.js) .ex-net + figcaption { display: none; }
+.ex-net canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+@media (max-width: 1000px){
+.ex-net { height: 340px; }
+}

@@ -1,0 +1,25 @@
+/* shui · module-tabs: estilos del componente (antes en shui.css). */
+.sh-tab { font-family: var(--mono); font-size: 13px; padding: 5px 12px; min-height: 34px; display: inline-flex; align-items: center; border-radius: 999px; border: 1px solid var(--ice-edge); background: var(--ice); color: var(--text); text-decoration: none; cursor: pointer; transition: background-color .2s ease-out, color .2s ease-out, transform .16s ease-out; }
+.sh-tab:active { transform: scale(.97); }
+.sh-tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+@media (hover: hover) and (pointer: fine){
+.sh-tab:hover { border-color: var(--accent); }
+}
+/* Consulta de carga: cada nodo corre una consulta en cqlsh antes de abrir su módulo. */
+.sh-query { display: none; padding: 18px 20px; min-height: 170px; }
+.sh-query.is-on { display: block; }
+.sh-query pre { background: none; border: 0; padding: 0; margin: 0; font-size: 14px; line-height: 1.7; white-space: pre-wrap; color: var(--text); }
+.sh-query pre::before { content: none; }
+.sh-query .q-prompt { color: var(--accent); }
+.sh-query .q-kw { color: var(--schema); }
+.sh-query .q-str { color: var(--store-ink); }
+.sh-query .q-dim { color: var(--text2-ink); }
+.sh-query .q-caret { display: inline-block; width: .6em; height: 1.1em; vertical-align: text-bottom; background: var(--accent); animation: sh-caret 1s steps(1) infinite; }
+@keyframes sh-caret { 50% { opacity: 0; } }
+@media (max-width: 999px){
+.sh-tab { flex: none; }
+}
+.log-entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.log-entry:last-child { border-bottom: none; }
+.pipe { display: flex; gap: 14px; align-items: flex-start; padding: 12px 14px; background: color-mix(in srgb, var(--bg2) 92%, transparent); border: 1px solid var(--border); border-left: 2px solid var(--stream); border-radius: var(--radius); }
+.pipe + .pipe { margin-top: 8px; }

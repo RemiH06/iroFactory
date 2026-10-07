@@ -1,0 +1,9 @@
+/* odysseus · world-map: estilos del componente (antes en odysseus.css). */
+.od-stage { grid-column: 1; grid-row: 1; position: relative; min-height: 0; }
+.od-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: manipulation; }
+@media (max-width: 999px){
+.od-stage { height: 58svh; min-height: 340px; }
+}
+@media (max-width: 999px) and (orientation: landscape){
+.od-stage { height: 86svh; }
+}

@@ -1,0 +1,45 @@
+/* tarot · floating-cards: estilos del componente (antes en tarot.css). */
+/* ══════════════════════════════════════════════════════
+   CARTAS FLOTANTES
+══════════════════════════════════════════════════════ */
+#tarot-cards{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+  perspective:1200px;
+}
+.tarot-card{
+  position:absolute;
+  width:var(--card-w);
+  height:var(--card-h);
+  border-radius:8px;
+  transform-style:preserve-3d;
+  animation:card-float linear infinite;
+}
+.card-face,.card-back{
+  position:absolute;inset:0;
+  border-radius:8px;
+  backface-visibility:hidden;
+  border:1.5px solid var(--gold);
+  box-shadow:0 0 18px rgba(200,146,26,.35), 0 0 6px rgba(168,24,32,.25);
+}
+.card-back{
+  background:var(--wine, #701018);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;
+  transform:rotateY(180deg);
+}
+.card-face{
+  background:var(--ivory, #F8F2E8);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  font-family:var(--serif);
+  color:var(--crimson, #A81820);
+  font-size:11px;
+  letter-spacing:.1em;
+}
+.card-suit{font-size:32px;line-height:1}
+.card-name{font-size:8px;letter-spacing:.14em;text-transform:uppercase;margin-top:4px;color:var(--gold-dk,#8A6010)}
+@keyframes card-float{
+  0%   {transform:translateY(110vh) rotate(var(--rot-start)) rotateY(0deg)}
+  100% {transform:translateY(-30vh) rotate(var(--rot-end))   rotateY(360deg)}
+}

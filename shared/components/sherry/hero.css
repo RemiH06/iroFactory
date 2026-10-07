@@ -1,0 +1,30 @@
+/* sherry · hero: estilos del componente (antes en sherry.css). */
+.sherry-corner-title {
+  position: fixed; top: 18px; left: 18px; z-index: 40;
+  font-size: 15px; font-weight: 700; letter-spacing: -.5px;
+  /* Placa como la de los botones de la esquina opuesta: el título fijo
+     pasa por encima de los fondos Dither al hacer scroll. */
+  background: color-mix(in srgb, var(--bg2) 92%, transparent);
+  border: 1px solid var(--border2); border-radius: var(--radius); padding: 3px 8px;
+  opacity: 0; pointer-events: none; transition: opacity .1s linear;
+}
+/* ══════════════════════════════════════════════════════
+   HERO · zoom ambiental + fade por scroll + título ASCII
+   Mismo patrón de pin que apolo (.ap-hero-pin/.ap-hero):
+   position:sticky dentro de un wrapper alto, listener de
+   scroll con rAF escribiendo estilos inline. Sin JS o con
+   prefers-reduced-motion, el wrapper se queda en su altura
+   natural y el hero es un bloque 100vh estático · nunca un
+   estado a medias.
+══════════════════════════════════════════════════════ */
+.sherry-hero-pin { position: relative; }
+html.js-sherry-pin .sherry-hero-pin { height: 150vh; }
+.sherry-hero {
+  position: relative; height: 100vh; min-height: 480px; max-height: 900px;
+  overflow: hidden; isolation: isolate; background: var(--bg);
+  border-bottom: 1px solid var(--border2);
+}
+html.js-sherry-pin .sherry-hero { position: sticky; top: 0; }
+@media (max-width: 760px){
+.sherry-corner-title { top: 12px; left: 12px; font-size: 13px; }
+}

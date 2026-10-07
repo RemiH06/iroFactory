@@ -1,0 +1,8 @@
+/* apolo · light-rays: estilos del componente (antes en apolo.css). */
+/* Light Rays por encima de ambas capas de columnas, que ahora son
+   lienzos densos (antes #ap-texture era disperso/translúcido y
+   dejaba pasar la luz por debajo; con la imagen real cubriendo casi
+   todo, cualquier capa en un z-index menor queda enterrada · el
+   usuario reportó no ver Light Rays, esta era la causa real, no un
+   z-index mal escrito). */
+#ap-rays     {position:fixed;inset:0;z-index:4;pointer-events:none}

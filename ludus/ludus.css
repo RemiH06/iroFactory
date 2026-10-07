@@ -55,7 +55,6 @@ body {
   --glow-red:     0 0 10px rgba(144,24,40,.6);
   --glow-blue:    0 0 10px rgba(200,144,26,.4);
 }
-
 /* ══════════════════════════════════════════════════════
    TOKENS — CLARO · feria de día
 ══════════════════════════════════════════════════════ */
@@ -101,7 +100,6 @@ body.light {
   --glow-red:     none;
   --glow-blue:    none;
 }
-
 /* ══════════════════════════════════════════════════════
    RESET & BASE
 ══════════════════════════════════════════════════════ */
@@ -117,86 +115,12 @@ body{
 }
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-
-/* ══════════════════════════════════════════════════════
-   FONDO TETRIS — canvas
-══════════════════════════════════════════════════════ */
-#ludus-tetris{
-  position:fixed;inset:0;
-  pointer-events:none;z-index:0;
-}
-
-/* ══════════════════════════════════════════════════════
-   CUBOS FLOTANTES — scene CSS
-══════════════════════════════════════════════════════ */
-#ludus-cubes{
-  position:fixed;inset:0;
-  pointer-events:none;z-index:1;
-  perspective:1500px;
-}
-
-.cube{
-  width:40px;height:40px;
-  position:absolute;
-  transform-style:preserve-3d;
-  animation:cube-spin 5s infinite linear, cube-move 10s linear forwards;
-}
-.cube div{
-  position:absolute;
-  width:40px;height:40px;
-  box-sizing:border-box;
-  opacity:.55;
-}
-.cube div:nth-child(1){transform:rotateY(  0deg) translateZ(20px)}
-.cube div:nth-child(2){transform:rotateY( 90deg) translateZ(20px)}
-.cube div:nth-child(3){transform:rotateY(180deg) translateZ(20px)}
-.cube div:nth-child(4){transform:rotateY(-90deg) translateZ(20px)}
-.cube div:nth-child(5){transform:rotateX( 90deg) translateZ(20px)}
-.cube div:nth-child(6){transform:rotateX(-90deg) translateZ(20px)}
-
-.inner-cube{
-  width:24px;height:24px;
-  transform-style:preserve-3d;
-  position:absolute;top:8px;left:8px;
-  animation:cube-spin-inner 3s infinite linear reverse;
-}
-.inner-cube div{
-  position:absolute;
-  width:24px;height:24px;
-  box-sizing:border-box;
-}
-.inner-cube div:nth-child(1){transform:rotateY(  0deg) translateZ(12px)}
-.inner-cube div:nth-child(2){transform:rotateY( 90deg) translateZ(12px)}
-.inner-cube div:nth-child(3){transform:rotateY(180deg) translateZ(12px)}
-.inner-cube div:nth-child(4){transform:rotateY(-90deg) translateZ(12px)}
-.inner-cube div:nth-child(5){transform:rotateX( 90deg) translateZ(12px)}
-.inner-cube div:nth-child(6){transform:rotateX(-90deg) translateZ(12px)}
-
-@keyframes cube-spin{
-  from{transform:rotateX(0deg) rotateY(0deg)}
-  to{transform:rotateX(360deg) rotateY(360deg)}
-}
-@keyframes cube-spin-inner{
-  from{transform:rotateX(0deg) rotateY(0deg)}
-  to{transform:rotateX(360deg) rotateY(360deg)}
-}
-@keyframes cube-move{
-  from{transform:translate(0,0) rotateX(45deg) rotateY(45deg)}
-  to{transform:translate(calc(100vw * var(--x-dir)),calc(100vh * var(--y-dir))) rotateX(405deg) rotateY(405deg)}
-}
 @keyframes cube-explode{
   to{transform:scale(0);opacity:0}
-}
-.cube-particle{
-  position:fixed;
-  width:8px;height:8px;
-  border-radius:1px;
-  opacity:.9;
 }
 @keyframes cube-particle-fly{
   to{transform:translate(var(--dx),var(--dy)) scale(.1);opacity:0}
 }
-
 /* ══════════════════════════════════════════════════════
    PÁGINA
 ══════════════════════════════════════════════════════ */
@@ -205,7 +129,6 @@ body{
   padding:40px 34% 40px 34%;
   max-width:100%;margin:0;
 }
-
 /* ══════════════════════════════════════════════════════
    TIPOGRAFÍA
 ══════════════════════════════════════════════════════ */
@@ -224,7 +147,6 @@ h3{
 h4{font-family:var(--display);font-size:14px;color:var(--text);margin-bottom:5px}
 p{margin-bottom:14px;line-height:1.8;font-family:var(--display)}
 p.muted{color:var(--text2);font-size:13px}
-
 /* ══════════════════════════════════════════════════════
    CÓDIGO
 ══════════════════════════════════════════════════════ */
@@ -248,7 +170,6 @@ pre .fn {color:var(--piece-i);text-shadow:var(--glow-cyan)}
 pre .str{color:var(--piece-s);text-shadow:var(--glow-green)}
 pre .num{color:var(--piece-o)}
 pre .cm {color:var(--text2);font-style:italic}
-
 /* ══════════════════════════════════════════════════════
    CALLOUTS
 ══════════════════════════════════════════════════════ */
@@ -263,20 +184,32 @@ pre .cm {color:var(--text2);font-style:italic}
   color:var(--accent);text-shadow:var(--glow-accent);margin-bottom:5px;
 }
 .callout p{margin-bottom:0;font-size:13px}
-.callout.ok      {border-color:var(--ok)     }.callout.ok       .callout-title{color:var(--ok);     text-shadow:var(--glow-green) }
-.callout.warn    {border-color:var(--warn)   }.callout.warn     .callout-title{color:var(--warn);   text-shadow:var(--glow-yellow)}
-.callout.danger  {border-color:var(--danger) }.callout.danger   .callout-title{color:var(--danger); text-shadow:var(--glow-red)   }
-.callout.play    {border-color:var(--play)   }.callout.play     .callout-title{color:var(--play);   text-shadow:var(--glow-green) }
-.callout.pause   {border-color:var(--pause)  }.callout.pause    .callout-title{color:var(--pause);  text-shadow:var(--glow-yellow)}
-.callout.gameover{border-color:var(--gameover)}.callout.gameover .callout-title{color:var(--gameover);text-shadow:var(--glow-red)}
-.callout.piece-i {border-color:var(--piece-i)}.callout.piece-i  .callout-title{color:var(--piece-i);text-shadow:var(--glow-cyan)  }
-.callout.piece-o {border-color:var(--piece-o)}.callout.piece-o  .callout-title{color:var(--piece-o);text-shadow:var(--glow-yellow)}
-.callout.piece-t {border-color:var(--piece-t)}.callout.piece-t  .callout-title{color:var(--piece-t);text-shadow:var(--glow-accent)}
-.callout.piece-s {border-color:var(--piece-s)}.callout.piece-s  .callout-title{color:var(--piece-s);text-shadow:var(--glow-green) }
-.callout.piece-z {border-color:var(--piece-z)}.callout.piece-z  .callout-title{color:var(--piece-z);text-shadow:var(--glow-red)   }
-.callout.piece-j {border-color:var(--piece-j)}.callout.piece-j  .callout-title{color:var(--piece-j);text-shadow:var(--glow-blue)  }
-.callout.piece-l {border-color:var(--piece-l)}.callout.piece-l  .callout-title{color:var(--piece-l);text-shadow:var(--glow-orange)}
-
+.callout.ok      {border-color:var(--ok)     }
+.callout.ok       .callout-title{color:var(--ok);     text-shadow:var(--glow-green) }
+.callout.warn    {border-color:var(--warn)   }
+.callout.warn     .callout-title{color:var(--warn);   text-shadow:var(--glow-yellow)}
+.callout.danger  {border-color:var(--danger) }
+.callout.danger   .callout-title{color:var(--danger); text-shadow:var(--glow-red)   }
+.callout.play    {border-color:var(--play)   }
+.callout.play     .callout-title{color:var(--play);   text-shadow:var(--glow-green) }
+.callout.pause   {border-color:var(--pause)  }
+.callout.pause    .callout-title{color:var(--pause);  text-shadow:var(--glow-yellow)}
+.callout.gameover{border-color:var(--gameover)}
+.callout.gameover .callout-title{color:var(--gameover);text-shadow:var(--glow-red)}
+.callout.piece-i {border-color:var(--piece-i)}
+.callout.piece-i  .callout-title{color:var(--piece-i);text-shadow:var(--glow-cyan)  }
+.callout.piece-o {border-color:var(--piece-o)}
+.callout.piece-o  .callout-title{color:var(--piece-o);text-shadow:var(--glow-yellow)}
+.callout.piece-t {border-color:var(--piece-t)}
+.callout.piece-t  .callout-title{color:var(--piece-t);text-shadow:var(--glow-accent)}
+.callout.piece-s {border-color:var(--piece-s)}
+.callout.piece-s  .callout-title{color:var(--piece-s);text-shadow:var(--glow-green) }
+.callout.piece-z {border-color:var(--piece-z)}
+.callout.piece-z  .callout-title{color:var(--piece-z);text-shadow:var(--glow-red)   }
+.callout.piece-j {border-color:var(--piece-j)}
+.callout.piece-j  .callout-title{color:var(--piece-j);text-shadow:var(--glow-blue)  }
+.callout.piece-l {border-color:var(--piece-l)}
+.callout.piece-l  .callout-title{color:var(--piece-l);text-shadow:var(--glow-orange)}
 /* ══════════════════════════════════════════════════════
    TABLA
 ══════════════════════════════════════════════════════ */
@@ -284,7 +217,6 @@ table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
 th{background:var(--bg3);padding:8px 14px;text-align:left;font-family:var(--display);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);border-bottom:1px solid var(--border)}
 td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
 tr:hover td{background:var(--bg3)}
-
 /* ══════════════════════════════════════════════════════
    BOTONES
 ══════════════════════════════════════════════════════ */
@@ -304,7 +236,6 @@ tr:hover td{background:var(--bg3)}
 .btn.piece-t {border-color:var(--piece-t);color:var(--piece-t);text-shadow:var(--glow-accent)}
 .btn.piece-s {border-color:var(--piece-s);color:var(--piece-s);text-shadow:var(--glow-green) }
 .btn.piece-l {border-color:var(--piece-l);color:var(--piece-l);text-shadow:var(--glow-orange)}
-
 /* ══════════════════════════════════════════════════════
    BADGES
 ══════════════════════════════════════════════════════ */
@@ -327,7 +258,6 @@ tr:hover td{background:var(--bg3)}
 .badge.piece-z {border-color:var(--piece-z);  color:var(--piece-z); text-shadow:var(--glow-red)   }
 .badge.piece-j {border-color:var(--piece-j);  color:var(--piece-j); text-shadow:var(--glow-blue)  }
 .badge.piece-l {border-color:var(--piece-l);  color:var(--piece-l); text-shadow:var(--glow-orange)}
-
 /* ══════════════════════════════════════════════════════
    CARDS
 ══════════════════════════════════════════════════════ */
@@ -337,7 +267,6 @@ tr:hover td{background:var(--bg3)}
   transition:border-color .2s,box-shadow .2s;
 }
 .card:hover{border-color:var(--accent);box-shadow:var(--glow-accent)}
-
 /* ══════════════════════════════════════════════════════
    MÉTRICAS
 ══════════════════════════════════════════════════════ */
@@ -357,12 +286,10 @@ tr:hover td{background:var(--bg3)}
 .metric-val.piece-l{color:var(--piece-l);text-shadow:var(--glow-orange)}
 .metric-val.ok     {color:var(--ok);     text-shadow:var(--glow-green) }
 .metric-val.danger {color:var(--danger); text-shadow:var(--glow-red)   }
-
 /* ══════════════════════════════════════════════════════
    DIVIDER
 ══════════════════════════════════════════════════════ */
 hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
-
 /* ══════════════════════════════════════════════════════
    LEVEL LOG — análogo al timeline
    Indicadores en forma de bloque L (tetromino)
@@ -383,7 +310,6 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
 .level-dot.pause   {border-color:var(--pause);   color:var(--pause);   background:color-mix(in srgb,var(--pause)    12%,transparent);text-shadow:var(--glow-yellow)}
 .level-dot.gameover{border-color:var(--gameover);color:var(--gameover);background:color-mix(in srgb,var(--gameover) 12%,transparent);text-shadow:var(--glow-red)   }
 .level-dot.warn    {border-color:var(--warn);    color:var(--warn);    background:color-mix(in srgb,var(--warn)     12%,transparent);text-shadow:var(--glow-yellow)}
-
 /* ══════════════════════════════════════════════════════
    STAGE STEPS — análogo a pipeline/step-row
 ══════════════════════════════════════════════════════ */
@@ -400,7 +326,6 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
   color:var(--accent);text-shadow:var(--glow-accent);
   min-width:32px;line-height:1;margin-top:2px;
 }
-
 /* ══════════════════════════════════════════════════════
    THEME TOGGLE
 ══════════════════════════════════════════════════════ */
@@ -412,13 +337,14 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
   letter-spacing:.08em;text-transform:uppercase;
 }
 .theme-btn:hover{border-color:var(--accent);color:var(--accent);text-shadow:var(--glow-accent)}
-
 /* ══════════════════════════════════════════════════════
    LAYOUT
 ══════════════════════════════════════════════════════ */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-@media(max-width:600px){.grid-2,.grid-3{grid-template-columns:1fr}}
+@media(max-width:600px){
+.grid-2,.grid-3{grid-template-columns:1fr}
+}
 .swatch-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
 .swatch{width:84px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--text2)}
 .swatch-box{height:48px;border-radius:var(--radius);margin-bottom:6px;border:1px solid var(--border);position:relative}

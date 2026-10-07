@@ -1,0 +1,8 @@
+/* forge · electric-border: estilos del componente (antes en forge.css). */
+.eb-canvas-container{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:2}
+.eb-canvas{display:block}
+.eb-glow-1,.eb-glow-2,.eb-background-glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.eb-glow-1{border:2px solid color-mix(in srgb,var(--voltage) 60%,transparent);filter:blur(1px)}
+.eb-glow-2{border:2px solid var(--voltage);filter:blur(4px)}
+.eb-background-glow{z-index:-1;transform:scale(1.06);filter:blur(32px);opacity:.25;background:linear-gradient(-30deg,var(--voltage),transparent,var(--flux))}
+body:not(.light) .eb-canvas-container,body:not(.light) .eb-glow-1,body:not(.light) .eb-glow-2,body:not(.light) .eb-background-glow{display:none}

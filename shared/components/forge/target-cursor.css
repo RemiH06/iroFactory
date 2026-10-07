@@ -1,0 +1,6 @@
+/* forge · target-cursor: estilos del componente (antes en forge.css). */
+/* Target Cursor (React Bits): mira que gira y se pega a lo que apuntas. */
+.target-cursor-wrapper{position:fixed;top:0;left:0;width:0;height:0;pointer-events:none;z-index:2147483647;will-change:transform}
+.target-cursor-dot{position:absolute;left:0;top:0;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent)}
+.target-cursor-corner{position:absolute;left:0;top:0;width:12px;height:12px;border:3px solid var(--accent);will-change:transform;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--accent) 70%,transparent))}
+html.tc-on,html.tc-on *{cursor:none!important}

@@ -1,0 +1,62 @@
+/* ludus · floating-cubes: estilos del componente (antes en ludus.css). */
+/* ══════════════════════════════════════════════════════
+   CUBOS FLOTANTES — scene CSS
+══════════════════════════════════════════════════════ */
+#ludus-cubes{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+  perspective:1500px;
+}
+.cube{
+  width:40px;height:40px;
+  position:absolute;
+  transform-style:preserve-3d;
+  animation:cube-spin 5s infinite linear, cube-move 10s linear forwards;
+}
+.cube div{
+  position:absolute;
+  width:40px;height:40px;
+  box-sizing:border-box;
+  opacity:.55;
+}
+.cube div:nth-child(1){transform:rotateY(  0deg) translateZ(20px)}
+.cube div:nth-child(2){transform:rotateY( 90deg) translateZ(20px)}
+.cube div:nth-child(3){transform:rotateY(180deg) translateZ(20px)}
+.cube div:nth-child(4){transform:rotateY(-90deg) translateZ(20px)}
+.cube div:nth-child(5){transform:rotateX( 90deg) translateZ(20px)}
+.cube div:nth-child(6){transform:rotateX(-90deg) translateZ(20px)}
+.inner-cube{
+  width:24px;height:24px;
+  transform-style:preserve-3d;
+  position:absolute;top:8px;left:8px;
+  animation:cube-spin-inner 3s infinite linear reverse;
+}
+.inner-cube div{
+  position:absolute;
+  width:24px;height:24px;
+  box-sizing:border-box;
+}
+.inner-cube div:nth-child(1){transform:rotateY(  0deg) translateZ(12px)}
+.inner-cube div:nth-child(2){transform:rotateY( 90deg) translateZ(12px)}
+.inner-cube div:nth-child(3){transform:rotateY(180deg) translateZ(12px)}
+.inner-cube div:nth-child(4){transform:rotateY(-90deg) translateZ(12px)}
+.inner-cube div:nth-child(5){transform:rotateX( 90deg) translateZ(12px)}
+.inner-cube div:nth-child(6){transform:rotateX(-90deg) translateZ(12px)}
+@keyframes cube-spin{
+  from{transform:rotateX(0deg) rotateY(0deg)}
+  to{transform:rotateX(360deg) rotateY(360deg)}
+}
+@keyframes cube-spin-inner{
+  from{transform:rotateX(0deg) rotateY(0deg)}
+  to{transform:rotateX(360deg) rotateY(360deg)}
+}
+@keyframes cube-move{
+  from{transform:translate(0,0) rotateX(45deg) rotateY(45deg)}
+  to{transform:translate(calc(100vw * var(--x-dir)),calc(100vh * var(--y-dir))) rotateX(405deg) rotateY(405deg)}
+}
+.cube-particle{
+  position:fixed;
+  width:8px;height:8px;
+  border-radius:1px;
+  opacity:.9;
+}

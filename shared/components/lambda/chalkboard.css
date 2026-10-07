@@ -1,0 +1,4 @@
+/* lambda · chalkboard: estilos del componente (antes en lambda.css). */
+/* ── Pizarrón de base: rejilla hexagonal + objetos en gis (de siempre) ── */
+#lambda-hex{position:fixed;inset:0;pointer-events:none;z-index:0}
+#lambda-bg{position:fixed;inset:0;pointer-events:none;z-index:1}

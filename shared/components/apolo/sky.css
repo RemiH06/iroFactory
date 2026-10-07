@@ -1,0 +1,5 @@
+/* apolo · sky: estilos del componente (antes en apolo.css). */
+/* ══════════════════════════════════════════════════════
+   ESCENA DE FONDO · capas fijas
+══════════════════════════════════════════════════════ */
+#ap-sky      {position:fixed;inset:0;z-index:0;pointer-events:none}

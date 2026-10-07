@@ -1,0 +1,3 @@
+/* forge · ascii-wave: estilos del componente (antes en forge.css). */
+.fg-ascii{position:absolute;inset:0;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,transparent,var(--bg) 8%,var(--bg) 92%,transparent);mask-image:linear-gradient(to bottom,transparent,var(--bg) 8%,var(--bg) 92%,transparent)}
+.fg-ascii canvas{position:absolute;inset:0;width:100%;height:100%;display:block}

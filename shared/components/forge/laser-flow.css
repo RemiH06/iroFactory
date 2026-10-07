@@ -1,0 +1,5 @@
+/* forge · laser-flow: estilos del componente (antes en forge.css). */
+#fg-beam{top:0;right:0;width:60%;height:100%;mix-blend-mode:screen}
+@media (max-width:860px){
+#fg-beam{width:100%}
+}

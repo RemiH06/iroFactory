@@ -1,0 +1,5 @@
+/* forge · strands-core: estilos del componente (antes en forge.css). */
+#fg-core{right:2%;top:50%;width:min(34vw,440px);height:min(34vw,440px);transform:translateY(-50%)}
+@media (max-width:860px){
+#fg-core{right:50%;transform:translate(50%,0);top:auto;bottom:4%;width:70vw;height:70vw;opacity:.75}
+}

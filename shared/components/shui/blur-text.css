@@ -1,0 +1,4 @@
+/* shui · blur-text: estilos del componente (antes en shui.css). */
+.sh-h2 { font-family: 'Y2KBUG', var(--mono); font-size: clamp(30px, 4.6vw, 46px); font-weight: 400; font-synthesis: none; letter-spacing: .01em; line-height: 1.15; text-transform: uppercase; margin-top: .14em; }
+.acc { position: relative; display: inline-block; }
+.acc::after { content: ''; position: absolute; left: 50%; top: -.1em; width: .085em; height: .18em; border-radius: .05em; background: currentColor; transform: translateX(-20%) rotate(42deg); }

@@ -1,0 +1,23 @@
+/* metro · dome-gallery: estilos del componente (antes en metro.css). */
+.dg-sphere,.dg-item,.dg-item-image{transform-style:preserve-3d}
+.dg-main{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;background:var(--overlay-blur-color);cursor:grab}
+.dg-main.is-dragging{cursor:grabbing}
+.dg-stage{width:100%;height:100%;display:grid;place-items:center;perspective:calc(var(--radius) * 2);perspective-origin:50% 50%;contain:layout paint size}
+.dg-sphere{transform:translateZ(calc(var(--radius) * -1));will-change:transform}
+.dg-overlay,.dg-overlay-blur{position:absolute;inset:0;margin:auto;z-index:3;pointer-events:none}
+.dg-overlay{background-image:radial-gradient(transparent 65%,var(--overlay-blur-color) 100%)}
+.dg-overlay-blur{mask-image:radial-gradient(transparent 70%,var(--overlay-blur-color) 90%);backdrop-filter:blur(3px)}
+.dg-item{width:calc(var(--item-width) * var(--item-size-x));height:calc(var(--item-height) * var(--item-size-y));position:absolute;top:-999px;bottom:-999px;left:-999px;right:-999px;margin:auto;transform-origin:50% 50%;backface-visibility:hidden;transition:transform .3s;transform:rotateY(calc(var(--rot-y) * (var(--offset-x) + ((var(--item-size-x) - 1) / 2)) + var(--rot-y-delta,0deg))) rotateX(calc(var(--rot-x) * (var(--offset-y) - ((var(--item-size-y) - 1) / 2)) + var(--rot-x-delta,0deg))) translateZ(var(--radius))}
+.dg-item-image{position:absolute;display:block;inset:10px;border-radius:var(--tile-radius);background:var(--bg2);overflow:hidden;backface-visibility:hidden;transition:transform .3s;cursor:pointer;touch-action:manipulation;pointer-events:auto;transform:translateZ(0)}
+.dg-item-image:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dg-item-image img{width:100%;height:100%;object-fit:cover;pointer-events:none;backface-visibility:hidden;filter:var(--image-filter)}
+.dg-viewer{position:absolute;inset:0;z-index:20;pointer-events:none;display:flex;align-items:center;justify-content:center;padding:var(--viewer-pad)}
+.dg-frame{height:100%;aspect-ratio:1;border-radius:var(--enlarge-radius);display:flex}
+@media(max-aspect-ratio:1/1){
+.dg-frame{height:auto;width:100%}
+}
+.dg-scrim{position:absolute;inset:0;z-index:10;background:color-mix(in srgb,var(--black) 40%,transparent);pointer-events:none;opacity:0;transition:opacity .5s ease;backdrop-filter:blur(3px)}
+.dg-enlarge{position:absolute;z-index:30;border-radius:var(--enlarge-radius);overflow:hidden;transform-origin:top left;box-shadow:0 10px 30px color-mix(in srgb,var(--black) 35%,transparent)}
+.dg-enlarge img,.dg-enlarge-closing img{width:100%;height:100%;object-fit:cover;filter:var(--image-filter);display:block}
+.dg-edge-fade{position:absolute;left:0;right:0;height:120px;z-index:5;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--overlay-blur-color))}
+.dg-edge-fade.bottom{bottom:0}

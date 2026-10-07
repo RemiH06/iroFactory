@@ -1,0 +1,24 @@
+/* elixir · refine-frame: estilos del componente (antes en elixir.css). */
+.ex-hero > .refine-frame .refine-frame__chip { left: auto; right: 20px; bottom: 24px; }
+@media (max-width: 900px) and (orientation: portrait){
+.ex-hero > .refine-frame .refine-frame__chip { bottom: auto; top: 16px; right: 16px; }
+}
+.refine-frame__mosaic { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; transition: opacity var(--rf-stage) ease; }
+.refine-frame[data-mosaic] .refine-frame__mosaic { opacity: 1; }
+.refine-frame[data-resolved] .refine-frame__mosaic { opacity: 0; }
+.refine-frame__chip {
+  position: absolute; bottom: 10px; left: 10px; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 11px 0 9px;
+  border-radius: 14px; background: color-mix(in srgb, var(--bg3) 78%, transparent);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms var(--rf-ease-out);
+}
+.refine-frame__chip[hidden] { display: inline-flex; opacity: 0; transform: translateY(4px); }
+html:not(.js) .refine-frame__chip { display: none; }
+.refine-frame__mark { display: inline-flex; color: var(--accent); }
+.refine-frame__mark[data-kind='spin'] { animation: refine-frame-spin 1.1s linear infinite; }
+@keyframes refine-frame-spin { to { transform: rotate(360deg); } }
+.refine-frame__label { animation: refine-frame-label 200ms ease both; }
+@keyframes refine-frame-label { from { opacity: 0; filter: blur(2px); } }
+@media (prefers-reduced-motion: reduce){
+.refine-frame[data-sweep] .refine-frame__sweep, .refine-frame[data-status='queued'] .refine-frame__media, .refine-frame__mark[data-kind='spin'] { animation: none; }
+}

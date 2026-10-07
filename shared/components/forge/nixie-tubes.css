@@ -1,0 +1,10 @@
+/* forge · nixie-tubes: estilos del componente (antes en forge.css). */
+/* Tubo nixie IN-15: vidrio, rejilla del ánodo, cátodos apagados y el encendido. */
+.nixies{display:flex;gap:clamp(6px,1vw,12px);margin:22px 0 0}
+.tube-face .lit{color:var(--nixie);text-shadow:0 0 1px var(--nixie),0 0 6px var(--nixie-glow),0 0 16px var(--nixie-glow);transition:opacity .05s}
+.tube.is-flip .lit{opacity:.6}
+.fg-hex .nixies{margin:0}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.np{display:grid;gap:6px;justify-items:start}
+.np .nixies{margin:0;gap:4px}
+.np .tube{--w:34px}

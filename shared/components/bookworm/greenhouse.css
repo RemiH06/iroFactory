@@ -1,0 +1,3 @@
+/* bookworm · greenhouse: estilos del componente (antes en bookworm.css). */
+#bw-rays{mix-blend-mode:normal}
+body.dark #bw-rays{mix-blend-mode:screen}

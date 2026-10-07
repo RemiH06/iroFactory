@@ -1,0 +1,5 @@
+/* lambda · stroke-text: estilos del componente (antes en lambda.css). */
+.lm-brand{font-family:var(--serif);font-style:italic;font-weight:700;font-size:28px;line-height:1;color:var(--text);text-decoration:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--bg) 82%,transparent);border:1px solid var(--border)}
+.stroke-text__stroke{stroke:var(--accent)}
+.stroke-text__svg{display:block;width:100%;height:auto;overflow:visible}
+.stroke-text__stroke,.stroke-text__fill{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:700;font-size:200px;letter-spacing:-4px}

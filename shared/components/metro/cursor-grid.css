@@ -1,0 +1,17 @@
+/* metro · cursor-grid: estilos del componente (antes en metro.css). */
+#metro-bg,#metro-grid{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+/* ══════════════════════════════════════════════════════
+   DOME GALLERY (React Bits) · CSS 3D del original: cada
+   mosaico rota en Y/X sobre la esfera y se empuja con
+   translateZ(radio); la esfera entera rota al arrastrar.
+══════════════════════════════════════════════════════ */
+.dg-root{position:relative;width:100%;height:620px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);--radius:520px;--viewer-pad:72px;--circ:calc(var(--radius) * 3.14);--rot-y:calc((360deg / var(--segments-x)) / 2);--rot-x:calc((360deg / var(--segments-y)) / 2);--item-width:calc(var(--circ) / var(--segments-x));--item-height:calc(var(--circ) / var(--segments-y));--overlay-blur-color:var(--bg);--tile-radius:var(--radius-lg);--enlarge-radius:var(--radius-lg);--image-filter:none}
+@media(max-width:600px){
+.dg-root{height:440px}
+}
+/* A todo el ancho: se sale de .wrap hasta los bordes del viewport
+   (el clip horizontal de .metro-page absorbe la barra de scroll).
+   Para que la esfera llene ese ancho, el radio sube de 0.5 a 0.75
+   del ancho y el tope por alto pasa de 1.35 a 2.2 veces el alto;
+   con 0.5 la silueta cubría solo ~2/3 del contenedor. */
+.dg-root{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;border-left:0;border-right:0}

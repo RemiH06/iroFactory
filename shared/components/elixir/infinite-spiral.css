@@ -1,0 +1,5 @@
+/* elixir · infinite-spiral: estilos del componente (antes en elixir.css). */
+.infinite-spiral__stage { position: absolute; inset: 0; transform-style: preserve-3d; }
+html:not(.js) .infinite-spiral__stage { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ex-fish-name { display: block; color: var(--text); font-weight: 700; }
+.ex-fish-name i { font-weight: 400; }

@@ -1,0 +1,62 @@
+/* metro · border-glow: estilos del componente (antes en metro.css). */
+/* ══════════════════════════════════════════════════════
+   BORDER GLOW (React Bits) · port directo del CSS real. El
+   mesh-gradient del borde usa los tres colores del semáforo por
+   token (rojo, amarillo, verde, en el orden COLOR_MAP del
+   original) y el brillo exterior toma el color propio de cada
+   contenedor (--mg-color), así todo sigue al modo claro/oscuro
+   sin JS. El JS solo escribe --edge-proximity y --cursor-angle.
+══════════════════════════════════════════════════════ */
+.mg{
+  --edge-proximity:0;--cursor-angle:45deg;--edge-sensitivity:30;--color-sensitivity:calc(var(--edge-sensitivity) + 20);
+  --glow-padding:40px;--cone-spread:25;--fill-opacity:.5;--card-bg:var(--bg2);
+  --gradient-one:radial-gradient(at 80% 55%,var(--red) 0px,transparent 50%);
+  --gradient-two:radial-gradient(at 69% 34%,var(--yellow) 0px,transparent 50%);
+  --gradient-three:radial-gradient(at 8% 6%,var(--green) 0px,transparent 50%);
+  --gradient-four:radial-gradient(at 41% 38%,var(--red) 0px,transparent 50%);
+  --gradient-five:radial-gradient(at 86% 85%,var(--yellow) 0px,transparent 50%);
+  --gradient-six:radial-gradient(at 82% 18%,var(--green) 0px,transparent 50%);
+  --gradient-seven:radial-gradient(at 51% 4%,var(--yellow) 0px,transparent 50%);
+  --gradient-base:linear-gradient(var(--red) 0 100%);
+  --glow-color:var(--mg-color);
+  --glow-color-60:color-mix(in srgb,var(--mg-color) 60%,transparent);
+  --glow-color-50:color-mix(in srgb,var(--mg-color) 50%,transparent);
+  --glow-color-40:color-mix(in srgb,var(--mg-color) 40%,transparent);
+  --glow-color-30:color-mix(in srgb,var(--mg-color) 30%,transparent);
+  --glow-color-20:color-mix(in srgb,var(--mg-color) 20%,transparent);
+  --glow-color-10:color-mix(in srgb,var(--mg-color) 10%,transparent);
+  position:relative;isolation:isolate;transform:translate3d(0,0,.01px);
+}
+.metro .mg{--mg-color:var(--accent)}
+.mg::before,.mg::after,.mg>.mg-edge{content:"";position:absolute;inset:-1px;border-radius:inherit;transition:opacity .25s ease-out;z-index:-1;pointer-events:none}
+.mg:not(:hover)::before,.mg:not(:hover)::after,.mg:not(:hover)>.mg-edge{opacity:0;transition:opacity .75s ease-in-out}
+.mg::before{
+  border:1px solid transparent;
+  background:linear-gradient(var(--card-bg) 0 100%) padding-box,var(--gradient-one) border-box,var(--gradient-two) border-box,var(--gradient-three) border-box,var(--gradient-four) border-box,var(--gradient-five) border-box,var(--gradient-six) border-box,var(--gradient-seven) border-box,var(--gradient-base) border-box;
+  opacity:calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mask-image:conic-gradient(from var(--cursor-angle) at center,black calc(var(--cone-spread) * 1%),transparent calc((var(--cone-spread) + 15) * 1%),transparent calc((100 - var(--cone-spread) - 15) * 1%),black calc((100 - var(--cone-spread)) * 1%));
+}
+.mg::after{
+  border:1px solid transparent;
+  background:var(--gradient-one) padding-box,var(--gradient-two) padding-box,var(--gradient-three) padding-box,var(--gradient-four) padding-box,var(--gradient-five) padding-box,var(--gradient-six) padding-box,var(--gradient-seven) padding-box,var(--gradient-base) padding-box;
+  mask-image:linear-gradient(to bottom,black,black),radial-gradient(ellipse at 50% 50%,black 40%,transparent 65%),radial-gradient(ellipse at 66% 66%,black 5%,transparent 40%),radial-gradient(ellipse at 33% 33%,black 5%,transparent 40%),radial-gradient(ellipse at 66% 33%,black 5%,transparent 40%),radial-gradient(ellipse at 33% 66%,black 5%,transparent 40%),conic-gradient(from var(--cursor-angle) at center,transparent 5%,black 15%,black 85%,transparent 95%);
+  mask-composite:subtract,add,add,add,add,add;
+  opacity:calc(var(--fill-opacity) * (var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mix-blend-mode:soft-light;
+}
+.mg>.mg-edge{
+  inset:calc(var(--glow-padding) * -1);z-index:1;
+  mask-image:conic-gradient(from var(--cursor-angle) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%);
+  opacity:calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+  mix-blend-mode:plus-lighter;
+}
+.mg>.mg-edge::before{
+  content:"";position:absolute;inset:var(--glow-padding);border-radius:inherit;
+  box-shadow:inset 0 0 0 1px var(--glow-color),inset 0 0 1px 0 var(--glow-color-60),inset 0 0 3px 0 var(--glow-color-50),inset 0 0 6px 0 var(--glow-color-40),inset 0 0 15px 0 var(--glow-color-30),inset 0 0 25px 2px var(--glow-color-20),inset 0 0 50px 2px var(--glow-color-10),0 0 1px 0 var(--glow-color-60),0 0 3px 0 var(--glow-color-50),0 0 6px 0 var(--glow-color-40),0 0 15px 0 var(--glow-color-30),0 0 25px 2px var(--glow-color-20),0 0 50px 2px var(--glow-color-10);
+}
+/* Superficie clara: el original cambia plus-lighter/soft-light por normal.
+   Sin soft-light, el relleno del mesh al 50% se veía como una mancha
+   turbia sobre el beige; en claro baja a 15%. */
+.metro:not(.dark) .mg::after,.metro:not(.dark) .mg>.mg-edge{mix-blend-mode:normal}
+.metro:not(.dark) .mg{--fill-opacity:.15}
+.mg>:not(.mg-edge){position:relative;z-index:2}

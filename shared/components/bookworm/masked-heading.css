@@ -1,0 +1,6 @@
+/* bookworm · masked-heading: estilos del componente (antes en bookworm.css). */
+html.js .mh .mh-measure{color:transparent}
+.mh-word{display:inline-block;white-space:pre}
+.mh-base{display:inline-block;width:0;height:0}
+.mh-media{position:absolute;inset:0;display:block;will-change:transform;filter:var(--mh-filter)}
+.mh-src{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}

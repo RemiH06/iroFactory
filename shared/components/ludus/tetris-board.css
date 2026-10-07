@@ -1,0 +1,8 @@
+/* ludus · tetris-board: estilos del componente (antes en ludus.css). */
+/* ══════════════════════════════════════════════════════
+   FONDO TETRIS — canvas
+══════════════════════════════════════════════════════ */
+#ludus-tetris{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:0;
+}

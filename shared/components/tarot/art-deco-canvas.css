@@ -1,0 +1,8 @@
+/* tarot · art-deco-canvas: estilos del componente (antes en tarot.css). */
+/* ══════════════════════════════════════════════════════
+   LIENZO ART DECO — canvas de fondo
+══════════════════════════════════════════════════════ */
+#tarot-deco{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:0;
+}

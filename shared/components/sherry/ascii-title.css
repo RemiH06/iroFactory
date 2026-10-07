@@ -1,0 +1,60 @@
+/* sherry · ascii-title: estilos del componente (antes en sherry.css). */
+/* CRT oscuro · líneas blancas */
+body.crt-on::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(250,250,250,.03) 2px, rgba(250,250,250,.03) 4px
+  );
+}
+/* CRT claro · líneas negras */
+body.light.crt-on::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(5,5,5,.015) 2px, rgba(5,5,5,.015) 4px
+  );
+}
+#sherry-ascii-host { width: min(92vw, 920px); height: min(46vh, 320px); position: relative; }
+#sherry-ascii-host pre {
+  /* .pre global (bloques de código) trae fondo/borde propios · se
+     resetean acá, este <pre> es el lienzo del título ASCII, no código.
+     Color: el usuario pasó el código fuente real del componente ·
+     background-clip:text con un radial-gradient (cada carácter toma
+     el color de su posición, la "sombra de colores" que se había
+     recortado en el primer port), background-attachment:fixed (el
+     degradado queda anclado a la pantalla, no al elemento · se mueve
+     relativo al texto mientras el texto se anima), mix-blend-mode:
+     difference contra lo que haya detrás, y hue-rotate() por el
+     ángulo del cursor (ver initAsciiTitle). Colores de sherry en vez
+     de los del demo original (coral/naranja/amarillo). */
+  position: absolute; inset: 0; margin: 0; padding: 0; background: none; border: none;
+  font-family: var(--mono); font-size: 8px; line-height: 1;
+  white-space: pre; overflow: hidden; text-align: center;
+  background-image: radial-gradient(circle, var(--magenta) 0%, var(--cyan) 50%, var(--electric) 100%);
+  background-attachment: fixed;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none; user-select: none;
+}
+/* Modo claro: el original invierte todo el contenedor, pero con
+   mix-blend-mode:difference sobre un fondo claro el título quedaba
+   pálido. Acá, sin blend y con el degradado de los tokens de
+   body.light (ya oscuros: #B2003F, #006A6F, #6C5E00), el título se lee
+   oscuro y sólido sobre la foto. */
+body.light #sherry-ascii-host pre {
+  mix-blend-mode: normal; font-weight: 700;
+  background-image: radial-gradient(circle, var(--text) 0%, var(--violet) 60%, var(--magenta) 100%);
+}
+/* ── Vertical (celular) · frontend-design/references/responsive-portrait.md
+   Revisión del 2026-10-03 a 390×844: el lienzo del título ASCII medía
+   359×320 (casi cuadrado) y el texto, rasterizado a 3:1, salía apretado
+   y alto; ahora conserva el 3:1. Los controles fijos tapaban renglones
+   al hacer scroll: en vertical van sobre una franja propia, como barra
+   de app. Tablas sin partir --token y texto mínimo de 12px. */
+@media (max-width: 760px){
+#sherry-ascii-host { height: calc(min(92vw, 920px) / 3); }
+}

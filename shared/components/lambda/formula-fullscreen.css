@@ -1,0 +1,35 @@
+/* lambda · formula-fullscreen: estilos del componente (antes en lambda.css). */
+.lm-formula-open{position:absolute;top:12px;right:12px;z-index:2;font-family:var(--mono);font-size:13px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:color-mix(in srgb,var(--bg) 88%,transparent);color:var(--text);cursor:pointer;transition:border-color .2s ease-out,transform .16s ease-out}
+.lm-formula-open:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){
+.lm-formula-open:hover{border-color:var(--accent)}
+}
+/* Formulario a pantalla completa: todas las fórmulas, filtrables con los gises de abajo. */
+.lm-fs{position:fixed;inset:0;z-index:80;background:var(--bg);display:flex;flex-direction:column;overscroll-behavior:contain}
+.lm-fs[hidden]{display:none}
+.lm-fs::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% 30%,color-mix(in srgb,var(--text) 4%,transparent),transparent 70%)}
+.lm-fs-count{font-family:var(--mono);font-size:13px;color:var(--text2);margin-left:10px}
+.lm-fs-body{position:relative;flex:1;overflow-y:auto;padding:24px var(--gutter) 40px}
+.lm-fx{margin:0;transition:opacity .25s ease-out,transform .25s ease-out}
+.lm-fx[hidden]{display:none}
+.lm-fx figcaption{font-family:var(--mono);font-size:12px;color:var(--text2);margin-top:2px}
+.lm-fx.a-calc{color:var(--chalk-blue)}
+.lm-fx.a-alg{color:var(--chalk-violet)}
+.lm-fx.a-prob{color:var(--chalk-green-ink)}
+.lm-fx.a-datos{color:var(--chalk-cyan-ink)}
+.lm-fx.a-elec{color:var(--chalk-yellow-ink)}
+.lm-fx.a-dig{color:var(--chalk-orange)}
+.lm-fx.a-fis{color:var(--chalk-red)}
+.lm-fx.a-log{color:var(--chalk-pink)}
+.lm-chalk{flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:76px;padding:4px 4px 2px;border:0;background:none;color:var(--text);font-family:var(--mono);font-size:12px;cursor:pointer}
+.lm-chalk i{display:block;width:62px;height:16px;border-radius:5px 7px 6px 4px;background:var(--c);box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--black) 22%,transparent),inset 0 2px 0 color-mix(in srgb,var(--white) 30%,transparent);transform:rotate(var(--tilt,-3deg));transition:transform .22s cubic-bezier(.2,.7,.2,1)}
+body.light .lm-chalk i{width:66px;height:14px;border-radius:3px;box-shadow:inset -14px 0 0 color-mix(in srgb,var(--black) 35%,var(--c))}
+.lm-chalk[aria-pressed="true"] i{transform:translateY(-8px) rotate(0deg)}
+.lm-chalk[aria-pressed="true"] span{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+.lm-chalk span{color:var(--text2);white-space:nowrap}
+@media (hover:hover) and (pointer:fine){
+.lm-chalk:hover i{transform:translateY(-4px) rotate(var(--tilt,-3deg))}
+}
+@media (prefers-reduced-motion:reduce){
+.lm-chalk i,.lm-fx{transition:none}
+}

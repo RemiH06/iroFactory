@@ -1,0 +1,13 @@
+/* metro · dock: estilos del componente (antes en metro.css). */
+.metro-panel-loader{display:none;min-height:240px;align-items:center;justify-content:center;color:var(--text2)}
+.metro-panel.is-loading .metro-panel-loader{display:flex}
+.metro-panel.is-loading .metro-panel-body{display:none}
+.metro-dock-item{position:relative;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:var(--radius);background:var(--bg);border:1px solid var(--border);box-shadow:0 4px 6px -1px color-mix(in srgb,var(--black) 12%,transparent),0 2px 4px -1px color-mix(in srgb,var(--black) 8%,transparent);color:var(--text2);cursor:pointer;outline:none;font:inherit;padding:0;transition:color .2s,border-color .2s}
+.metro-dock-item:hover{color:var(--text)}
+.metro-dock-item[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
+.metro-dock-item[aria-selected="true"]::after{content:"";position:absolute;bottom:-7px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--accent)}
+.metro-dock-item:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+/* Foco visible con el acento en todo lo interactivo (antes el botón de
+   tema y .btn quedaban con el anillo por defecto del navegador). */
+.metro a:focus-visible,.metro button:not(.metro-dock-item):focus-visible,.metro [tabindex]:not(.metro-dock-item):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.metro-dock-item.is-hover .metro-dock-label{opacity:1;transform:translate(-50%,-10px)}
