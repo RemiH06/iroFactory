@@ -15,6 +15,7 @@
 // Sin WebGL, la <img> queda visible con grayscale por CSS.
 // ══════════════════════════════════════════════════════
 import { cssVar, reduceMotion, updateHexes } from './kit.js';
+import { glLink } from '../../core/core.js';
 import { drawPetals, resizePetals, seedAvalanche } from './petals.js';
 import { buildSky } from './sky.js';
 import { buildTexture } from './single-canvas.js';
@@ -90,17 +91,10 @@ export function initStatueRipple(figure) {
       gl_FragColor = vec4(mix(mono, c.rgb, reveal), c.a);
     }
   `;
-  function compile(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; }
-  function link(vs, fs) {
-    const p = gl.createProgram();
-    gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
-    gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
-    gl.linkProgram(p);
-    return p;
-  }
+  const link = (vs, fs) => glLink(gl, vs, fs);
   const waveProg = link(waveVs, waveFs);
   const compProg = link(screenVs, compFs);
-  if (!gl.getProgramParameter(compProg, gl.LINK_STATUS)) return null;
+  if (!waveProg || !compProg) return null;
 
   const quad = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, quad);
@@ -281,7 +275,7 @@ animLoop();
 reduceMotion.addEventListener('change', () => { if (!reduceMotion.matches) requestAnimationFrame(animLoop); });
 // ── Tilt-card + Light Rays · reaccionan al puntero ───────
 // Lente desactivado por ahora (probando solo tilt-card, a pedido
-// del usuario) · initLens() se queda definida pero sin usarse.
+// del usuario) · el módulo shader-lens.js se quitó; está en el historial de git.
 // Se desactiva del todo si el usuario prefiere menos movimiento.
 if (!reduceMotion.matches) {
   let tiltRaf = null;

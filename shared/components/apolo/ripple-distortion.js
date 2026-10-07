@@ -24,6 +24,7 @@
 // null o la textura no carga, la función retorna sin tocar
 // nada · la <img> de abajo se queda visible tal cual.
 // ══════════════════════════════════════════════════════
+import { glLink } from '../../core/core.js';
 import { reduceMotion } from './kit.js';
 
 export function initRipple() {
@@ -39,7 +40,7 @@ export function initRipple() {
   // translúcido · bug real encontrado leyendo los valores crudos con
   // readPixels en Beams/Rays (el oro salía como (58,44,14), un café
   // apagado, no el oro (200,144,10) esperado). Con esto, gl_FragColor.rgb
-  // es el color real sin escalar. Mismo fix en initRays/initLens.
+  // es el color real sin escalar. Mismo fix en initRays.
   const gl = canvas.getContext('webgl', { premultipliedAlpha: false });
   if (!gl) return;
 
@@ -99,21 +100,10 @@ export function initRipple() {
     }
   `;
 
-  function compile(type, src) {
-    const sh = gl.createShader(type);
-    gl.shaderSource(sh, src);
-    gl.compileShader(sh);
-    return sh;
-  }
-  function link(vsSrc, fsSrc) {
-    const prog = gl.createProgram();
-    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vsSrc));
-    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fsSrc));
-    gl.linkProgram(prog);
-    return prog;
-  }
+  const link = (vs, fs) => glLink(gl, vs, fs);
   const waveProg = link(waveVsSrc, waveFsSrc);
   const compositeProg = link(screenVsSrc, compositeFsSrc);
+  if (!waveProg || !compositeProg) return;
 
   // Quad unitario compartido por ambos programas (posición + uv).
   const quadBuf = gl.createBuffer();

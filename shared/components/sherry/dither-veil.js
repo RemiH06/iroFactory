@@ -18,6 +18,7 @@
 // celda, así el borde de la silueta queda pixelado igual que el resto.
 // ══════════════════════════════════════════════════════
 import { COMPONENT_IMAGES, cssVar, isLight, reduceMotion } from './kit.js';
+import { glLink } from '../../core/core.js';
 
 export function buildBayer8x8Texture(gl) {
   let m = [[0, 2], [3, 1]];
@@ -201,13 +202,8 @@ export function initDitherVeils() {
     const floatMask = !!gl.getExtension('EXT_color_buffer_float');
 
     function program(fs) {
-      const mk = (type, s) => { const sh = gl.createShader(type); gl.shaderSource(sh, s); gl.compileShader(sh); return sh; };
-      const p = gl.createProgram();
-      gl.attachShader(p, mk(gl.VERTEX_SHADER, DV_VERTEX));
-      gl.attachShader(p, mk(gl.FRAGMENT_SHADER, fs));
-      gl.bindAttribLocation(p, 0, 'position');
-      gl.linkProgram(p);
-      if (!gl.getProgramParameter(p, gl.LINK_STATUS)) { console.warn('dither veil', gl.getProgramInfoLog(p)); return null; }
+      const p = glLink(gl, DV_VERTEX, fs, { attribs: { position: 0 } });
+      if (!p) return null;
       const u = {};
       const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
       for (let i = 0; i < n; i++) {

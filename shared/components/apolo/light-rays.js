@@ -10,6 +10,7 @@
 // vista no importa el scroll" ya lo resuelve position:fixed,
 // igual que cada otra capa de fondo de este archivo.
 // ══════════════════════════════════════════════════════
+import { glLink } from '../../core/core.js';
 import { hexToRgb } from './sky.js';
 import { cssVar } from './kit.js';
 
@@ -78,16 +79,8 @@ export function initRays() {
     }
   `;
 
-  function compile(type, src) {
-    const sh = gl.createShader(type);
-    gl.shaderSource(sh, src);
-    gl.compileShader(sh);
-    return sh;
-  }
-  const prog = gl.createProgram();
-  gl.attachShader(prog, compile(gl.VERTEX_SHADER, vsSrc));
-  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fsSrc));
-  gl.linkProgram(prog);
+  const prog = glLink(gl, vsSrc, fsSrc);
+  if (!prog) return null;
   gl.useProgram(prog);
 
   const buf = gl.createBuffer();
@@ -102,7 +95,7 @@ export function initRays() {
   // SRC_ALPHA/ONE_MINUS_SRC_ALPHA multiplica el RGB por el alpha (y el
   // alpha por sí mismo) igual, apagando el color y el alpha reales ·
   // bug real encontrado con readPixels comparando el mismo shader con
-  // y sin blend. Mismo fix en initLens() más abajo.
+  // y sin blend.
 
   const u = {
     time: gl.getUniformLocation(prog, 'uTime'),

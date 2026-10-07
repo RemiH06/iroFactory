@@ -34,7 +34,7 @@ The React Bits license allows using the components as part of an application, we
 | [Natural Earth](https://www.naturalearthdata.com) | Public domain | odysseus (world map and coastlines) |
 | [Simple Icons](https://simpleicons.org) v16.34.0 · tool logos | CC0 1.0 (the brands belong to their owners) | lambda (tool strip) |
 | "Apollo Statue" · 3D scan by artfletch ([Sketchfab](https://sketchfab.com/3d-models/apollo-statue-a01dbaf0b7db4c308c9fcecade6d4283)) · reduced to 142k triangles, 2048 px texture, meshopt compression | CC BY 4.0 | apolo (`assets/models/apolo/apollo-statue.glb`) |
-| Fish radiographs · Sandra Raredon, Smithsonian National Museum of Natural History, Division of Fishes | Credited to the author and institution | elixir, shui |
+| Fish radiographs · photos by Sandra Raredon, from the Smithsonian exhibition «X-Ray Vision: Fish Inside Out» | Credited to the photographer and the exhibition | elixir, shui |
 
 ## Fonts from ffonts.net (unmodified; embedded in the older single-file themes, as files in `assets/fonts/` in the migrated ones)
 

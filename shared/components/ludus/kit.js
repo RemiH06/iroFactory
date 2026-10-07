@@ -1,17 +1,16 @@
-// ludus · base del tema: modo, lectura de tokens y utilidades que usan sus componentes.
+// ludus · base del tema sobre el núcleo: modo y sus etiquetas de paleta propias
+// (aún con el estilo viejo; se rehacen junto con el tema).
 import { buildTetris } from './tetris-board.js';
+import { cssVar, initTheme, onTheme, theme } from '../../core/core.js';
 
-// ── Toggle ─────────────────────────────────────────────
+export { cssVar };
+
+// ── Modo ───────────────────────────────────────────────
 export let isLight = false;
-export function toggleTheme() {
-  isLight = !isLight;
-  document.body.classList.toggle('light', isLight);
-  document.getElementById('toggle-btn').textContent = isLight ? '🌙 dark' : '☀ light';
-  updateHexes();
-  buildTetris();
-}
+onTheme(() => { isLight = theme.alt; buildTetris(); });
+let ctl;
+export const toggleTheme = () => ctl && ctl.toggle();
 // ── Hexes ──────────────────────────────────────────────
-export function cssVar(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
 export function updateHexes() {
   const map = {
     'hex-i':'--piece-i','hex-o':'--piece-o','hex-t':'--piece-t',
@@ -25,3 +24,5 @@ export function updateHexes() {
     if (el) el.textContent = cssVar(tok);
   });
 }
+// El núcleo pinta el botón y llama a las etiquetas propias en cada cambio.
+ctl = initTheme({ altClass: 'light', toggle: '#toggle-btn', label: alt => (alt ? '🌙 dark' : '☀ light'), aria: alt => (alt ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'), hexes: updateHexes });

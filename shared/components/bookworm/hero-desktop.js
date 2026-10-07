@@ -2,7 +2,10 @@
 // HERO ↔ ESCRITORIO · el escritorio entra en un círculo que crece
 // desde el botón "ir" (y regresa al mismo punto con "inicio").
 // ══════════════════════════════════════════════════════
-import { $, WALL, __set_isDark, cssVar, hexRgb, isDark, reduceMotion } from './kit.js';
+import { $, WALL, isDark, reduceMotion } from './kit.js';
+import { initTheme, onTheme, updateHexes, inkSwatchLabels } from '../../core/core.js';
+
+export { updateHexes, inkSwatchLabels };
 import { Masked } from './masked-heading.js';
 import { Desktop, ghKick } from './desktop.js';
 import { Greenhouse } from './greenhouse.js';
@@ -28,41 +31,20 @@ export function switchTo(desktop) {
   ghKick();
 }
 // ── Tema ──────────────────────────────────────────────
-export function toggleTheme() {
-  __set_isDark(!isDark);
-  document.body.classList.toggle('dark', isDark);
-  document.querySelectorAll('[data-theme-toggle]').forEach(b => { b.textContent = isDark ? '☀ día' : '☽ noche'; b.setAttribute('aria-label', isDark ? 'Cambiar a modo día' : 'Cambiar a modo noche'); });
+let ctl;
+export const toggleTheme = () => ctl && ctl.toggle();
+onTheme(() => {
   const src = isDark ? WALL.dark : WALL.light;
   $('#bw-wall').src = src; Masked.setImage(src);
-  updateHexes();
   Greenhouse.rebuild(); Desktop.paintAll(); ghKick();
-}
-// ── Etiquetas hex de la paleta ─────────────────────────
-// Tinta del modo vigente (--text o --bg) con mayor contraste WCAG real
-// contra cada muestra; si ninguna llega a 4.5:1, pastilla --bg.
-export function inkSwatchLabels() {
-  const rgbOf = s => { const m = String(s).match(/[\d.]+/g); return m ? m.slice(0, 3).map(Number) : null; };
-  const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
-  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
-  const inks = ['--text', '--bg'].map(t => ({ t, c: hexRgb(cssVar(t)) }));
-  document.querySelectorAll('.swatch-hex').forEach(el => {
-    const sw = rgbOf(getComputedStyle(el.parentElement).backgroundColor); if (!sw) return;
-    const best = inks.map(i => ({ t: i.t, r: ratio(i.c, sw) })).sort((a, b) => b.r - a.r)[0];
-    const chip = best.r < 4.5; el.classList.toggle('is-chip', chip); el.style.color = chip ? 'var(--text)' : `var(${best.t})`;
-  });
-}
-export function updateHexes() {
-  document.querySelectorAll('.swatch-hex').forEach(el => { el.textContent = cssVar('--' + el.id.replace('hex-', '')).toUpperCase(); });
-  inkSwatchLabels();
-}
+});
 export function mount() {
 goBtn.addEventListener('click', e => { e.preventDefault(); switchTo(true); });
 $('#bw-home').addEventListener('click', () => switchTo(false));
-document.querySelectorAll('[data-theme-toggle]').forEach(b => b.addEventListener('click', toggleTheme));
 // ── Init ───────────────────────────────────────────────
 $('#bw-wall').src = WALL.light;
 Greenhouse.rebuild();
-updateHexes();
+ctl = initTheme({ altClass: 'dark', label: alt => (alt ? '☀ día' : '☽ noche'), aria: alt => (alt ? 'Cambiar a modo día' : 'Cambiar a modo noche') });
 Masked.init();
 Masked.start();
 desk.inert = true;

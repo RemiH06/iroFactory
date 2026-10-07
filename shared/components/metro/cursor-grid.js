@@ -8,7 +8,7 @@
 // con los cuadrados existentes. El loop solo corre mientras hay
 // celdas visibles.
 // ══════════════════════════════════════════════════════
-import { changeListeners, cssVar, hexToRgb, reduceMotion } from './kit.js';
+import { onTheme, cssVar, hexToRgb, reduceMotion } from './kit.js';
 
 export function initCursorGrid() {
   const cv = document.getElementById('metro-grid');
@@ -77,6 +77,6 @@ export function initCursorGrid() {
   // (botón, pestaña, galería) no dispara el anillo.
   window.addEventListener('pointerdown', e => { if (reduceMotion.matches || e.target.closest('button, a, [role="tab"], .dg-root, input, pre, table')) return; pulses.push({ x: e.clientX, y: e.clientY, t0: performance.now() }); wake(); }, { passive: true });
   window.addEventListener('resize', rebuild);
-  changeListeners.push(readColor);
+  onTheme(readColor);
   readColor(); rebuild();
 }

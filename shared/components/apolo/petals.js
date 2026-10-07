@@ -23,8 +23,8 @@ export function makePetal() {
     vy: (0.1 + Math.random() * 0.3) - boost * (4 + Math.random() * 2.5),
     angle: Math.random() * Math.PI * 2,
     vAngle: (Math.random() - 0.5) * (avalancheActive ? 0.1 : 0.04),
-    w: (6 + Math.random() * 8) * sizeMult,
-    h: (4 + Math.random() * 5) * sizeMult,
+    w: (3 + Math.random() * 4) * sizeMult, // mitad del tamaño anterior (6 + r·8)
+    h: (2 + Math.random() * 2.5) * sizeMult,
     col,
     alpha: 0.6 + Math.random() * 0.3,
   };

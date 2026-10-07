@@ -11,6 +11,7 @@
 // falta álgebra de matrices para este efecto.
 // ══════════════════════════════════════════════════════
 import { reduceMotion, updateHeroImage } from './kit.js';
+import { glLink } from '../../core/core.js';
 import { initDitherBackgrounds, updateHexes } from './dither.js';
 import { initHero } from './hero.js';
 import { initPixelCards } from './pixel-card.js';
@@ -79,19 +80,8 @@ export function initAsciiTitle() {
       gl_FragColor = vec4(r, g, b, a);
     }`;
 
-  function compile(type, src) {
-    const s = gl.createShader(type);
-    gl.shaderSource(s, src);
-    gl.compileShader(s);
-    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { return null; }
-    return s;
-  }
-  const vs = compile(gl.VERTEX_SHADER, vsSrc);
-  const fs = compile(gl.FRAGMENT_SHADER, fsSrc);
-  if (!vs || !fs) return;
-  const prog = gl.createProgram();
-  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  const prog = glLink(gl, vsSrc, fsSrc);
+  if (!prog) return;
   gl.useProgram(prog);
 
   // Grid de 32x12 segmentos en clip space (-1..1), con UV correspondiente.

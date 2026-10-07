@@ -1,24 +1,12 @@
 // metro · base del tema: modo, lectura de tokens y utilidades que usan sus componentes.
 
-export const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-export function cssVar(n){return getComputedStyle(document.body).getPropertyValue(n).trim();}
-export function hexToRgb(hex){
-  const h = hex.replace('#','');
-  const v = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
-  const n = parseInt(v.slice(0,6),16);
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-}
-// ── Toggle ────────────────────────────────────────────
+import { reduceMotion, cssVar, hexRgb, updateHexes, inkSwatchLabels, initTheme, onTheme, theme } from '../../core/core.js';
+
+export { reduceMotion, cssVar, updateHexes, inkSwatchLabels, onTheme };
+export const hexToRgb = hexRgb;
+// ── Modo ──────────────────────────────────────────────
 export let metroDark = false;
-export const changeListeners = [];
-export function metroToggle() {
-  metroDark = !metroDark;
-  document.body.classList.toggle('dark', metroDark);
-  document.getElementById('metro-toggle').textContent = metroDark ? '☀ Light' : '☾ Dark';
-  changeListeners.forEach(fn => fn());
-  updateHexes();
-  rebuildNodes();
-}
+onTheme(() => { metroDark = theme.alt; });
 // ── Fondo: grafo de nodos animado (se queda tal cual) ───
 export const canvas = document.getElementById('metro-bg');
 export const ctx    = canvas.getContext('2d');
@@ -80,34 +68,11 @@ export function drawBg() {
   });
   if (!reduceMotion.matches) requestAnimationFrame(drawBg);
 }
-// ── Etiquetas hex de la paleta ─────────────────────────
-// Antes: color fijo con mix-blend-mode: difference. En medios tonos
-// (naranjas, verdes, el gris) quedaba un gris turbio de 1.1 a 2.5:1.
-// Ahora cada etiqueta usa la tinta del modo vigente (--text o --bg)
-// con mayor contraste WCAG real contra su muestra; si ninguna llega
-// a 4.5:1, va sobre una pastilla --bg con --text (skill colorimetría).
-export function inkSwatchLabels() {
-  const rgbOf = s => { const m = String(s).match(/[\d.]+/g); return m ? m.slice(0, 3).map(Number) : null; };
-  const hexRgb = h => { h = h.trim().replace('#', ''); if (h.length === 3) h = h.replace(/./g, c => c + c); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
-  const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
-  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
-  const inks = ['--text', '--bg'].map(t => ({ t, c: hexRgb(cssVar(t)) }));
-  document.querySelectorAll('.swatch-hex').forEach(el => {
-    const sw = rgbOf(getComputedStyle(el.parentElement).backgroundColor);
-    if (!sw) return;
-    const best = inks.map(i => ({ t: i.t, r: ratio(i.c, sw) })).sort((a, b) => b.r - a.r)[0];
-    const chip = best.r < 4.5;
-    el.classList.toggle('is-chip', chip);
-    el.style.color = chip ? 'var(--text)' : `var(${best.t})`;
-  });
-}
-// ── Hexes ─────────────────────────────────────────────
-export function updateHexes(){
-  const m={'hex-red':'--red','hex-yellow':'--yellow','hex-green':'--green','hex-blue':'--blue','hex-purple':'--purple','hex-orange':'--orange','hex-pink':'--pink','hex-brown':'--brown','hex-black':'--black','hex-gray':'--gray','hex-white':'--white','hex-accent':'--accent','hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger'};
-  Object.entries(m).forEach(([id,tok])=>{const el=document.getElementById(id);if(el)el.textContent=cssVar(tok).toUpperCase();});
-  inkSwatchLabels();
-}
+let ctl;
+export const metroToggle = () => ctl && ctl.toggle();
 export function mount() {
+ctl = initTheme({ altClass: 'dark', toggle: '#metro-toggle', label: alt => (alt ? '☀ Light' : '☾ Dark'), aria: alt => (alt ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro') });
+onTheme(rebuildNodes);
 if (!reduceMotion.matches) document.documentElement.classList.add('js-pin');
 // ── Ciclo de color "_theme" ───────────────────────────
 (function(){
@@ -116,6 +81,6 @@ if (!reduceMotion.matches) document.documentElement.classList.add('js-pin');
   const toks=['--red','--yellow-ink','--green']; let i=0;
   function cycle(){ el.style.color=cssVar(toks[i]); i=(i+1)%3; }
   cycle(); setInterval(cycle,1200);
-  changeListeners.push(()=>{i=0;cycle();});
+  onTheme(()=>{i=0;cycle();});
 })();
 }

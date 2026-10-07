@@ -15,9 +15,23 @@ export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
 // ── Tokens y color ──
 export const cssVar = n => getComputedStyle(document.body).getPropertyValue(n).trim();
-export const hexRgb = h => { h = String(h).trim().replace('#', ''); if (h.length === 3) h = h.replace(/./g, c => c + c); const n = parseInt(h.slice(0, 6), 16); return Number.isNaN(n) ? [128, 128, 128] : [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
-export const rgb01 = n => hexRgb(cssVar(n)).map(v => v / 255);
-export const rgba = (hex, a) => { const [r, g, b] = hexRgb(hex); return `rgba(${r}, ${g}, ${b}, ${a})`; };
+// Cada tema elige el color de respaldo si un token no se puede leer (el
+// de su acento), así que `colorKit(fb)` arma las tres funciones con él.
+export const colorKit = (fb = [128, 128, 128]) => {
+  const hexRgb = h => { h = String(h).trim().replace('#', ''); if (h.length === 3) h = h.replace(/./g, c => c + c); const n = parseInt(h.slice(0, 6), 16); return Number.isNaN(n) ? fb : [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  return { hexRgb, rgb01: n => hexRgb(cssVar(n)).map(v => v / 255), rgba: (hex, a) => { const [r, g, b] = hexRgb(hex); return `rgba(${r}, ${g}, ${b}, ${a})`; } };
+};
+export const { hexRgb, rgb01, rgba } = colorKit();
+// Colores computados ("rgb(...)" o "color(srgb ...)" de color-mix) a rgba() para canvas.
+export function toRgba(s) {
+  let m = String(s).match(/^rgba?\(([^)]+)\)/);
+  if (m) { const p = m[1].split(/[\s,\/]+/).filter(Boolean).map(Number); return `rgba(${p[0]},${p[1]},${p[2]},${p[3] == null ? 1 : p[3]})`; }
+  m = String(s).match(/^color\(srgb ([^)]+)\)/);
+  if (m) { const p = m[1].split(/[\s\/]+/).filter(Boolean).map(Number); return `rgba(${Math.round(p[0] * 255)},${Math.round(p[1] * 255)},${Math.round(p[2] * 255)},${p[3] == null ? 1 : p[3]})`; }
+  return 'transparent';
+}
+export const lerp = (a, b, t) => a + (b - a) * t;
+export const smooth = (a, b, v) => { const x = clamp((v - a) / (b - a), 0, 1); return x * x * (3 - 2 * x); };
 
 // Curvas de GSAP usadas por los originales, como cubic-bezier para Web Animations.
 export const EASE = { power4Out: 'cubic-bezier(0.165, 0.84, 0.44, 1)', power3In: 'cubic-bezier(0.55, 0.055, 0.675, 0.19)', power2InOut: 'cubic-bezier(0.455, 0.03, 0.515, 0.955)', power2Out: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' };
@@ -28,18 +42,24 @@ export const EASE = { power4Out: 'cubic-bezier(0.165, 0.84, 0.44, 1)', power3In:
 export const theme = { alt: false, altClass: 'dark', get dark() { return this.altClass === 'dark' ? this.alt : !this.alt; } };
 const listeners = [];
 export const onTheme = fn => listeners.push(fn);
-export function initTheme({ altClass = 'dark', toggle = '[data-theme-toggle]', label = alt => (alt ? 'claro' : 'oscuro'), aria = alt => `Cambiar a modo ${alt ? 'claro' : 'oscuro'}` } = {}) {
+// `render(alt, boton)` pinta cada botón de modo; por defecto cambia su texto
+// y su aria-label con `label` y `aria`. Los temas con botones más ricos
+// (forge marca el oficio con aria-checked) pasan su propio `render`.
+// `hexes` reescribe las etiquetas de la paleta (ludus y tarot conservan las suyas).
+export function initTheme({ altClass = 'dark', toggle = '[data-theme-toggle]', label = alt => (alt ? 'claro' : 'oscuro'), aria = alt => `Cambiar a modo ${alt ? 'claro' : 'oscuro'}`, render, hexes = updateHexes } = {}) {
   theme.altClass = altClass;
+  theme.alt = document.body.classList.contains(altClass);
+  const paint = render || ((alt, b) => { b.textContent = label(alt); b.setAttribute('aria-label', aria(alt)); });
   const set = alt => {
     theme.alt = alt;
     document.body.classList.toggle(altClass, alt);
-    $$(toggle).forEach(b => { b.textContent = label(alt); b.setAttribute('aria-label', aria(alt)); });
-    updateHexes();
+    $$(toggle).forEach(b => paint(alt, b));
+    hexes();
     listeners.forEach(fn => fn());
   };
   $$(toggle).forEach(b => b.addEventListener('click', () => set(!theme.alt)));
-  updateHexes();
-  return { set };
+  hexes();
+  return { set, toggle: () => set(!theme.alt) };
 }
 
 // ── Etiquetas hex de la paleta ──
@@ -76,19 +96,34 @@ export function stickyHeader(sel, offset = 40) {
 // Solo corre mientras `host` está a la vista (con 120 px de precarga), con
 // la pestaña visible y sin reduced motion. `still()` pinta un cuadro suelto
 // (o lo deja pendiente si está fuera de pantalla).
-export function makeLoop(host, draw, fps) {
+// `margin` es la precarga del IntersectionObserver (algunos temas usan 80 px).
+export function makeLoop(host, draw, fps, { margin = 120 } = {}) {
   let raf = 0, visible = false, last = 0, dirty = false;
   const minDt = fps ? 1000 / fps - 2 : 0;
   const frame = t => { raf = 0; if (!minDt || t - last >= minDt) { last = t; draw(t); } if (visible && !reduceMotion.matches && !document.hidden) raf = requestAnimationFrame(frame); };
   const start = () => { if (!raf && visible && !reduceMotion.matches && !document.hidden) raf = requestAnimationFrame(frame); };
   const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
   if (host === document.documentElement || host === document.body) visible = true;
-  else new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) { if (dirty) { dirty = false; draw(performance.now()); } start(); } else stop(); }, { rootMargin: '120px 0px' }).observe(host);
+  else new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) { if (dirty) { dirty = false; draw(performance.now()); } start(); } else stop(); }, { rootMargin: `${margin}px 0px` }).observe(host);
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
   reduceMotion.addEventListener('change', () => { if (reduceMotion.matches) { stop(); draw(performance.now()); } else start(); });
   start();
   const still = () => { if (!visible) { dirty = true; return; } dirty = false; draw(performance.now()); };
-  return { still, start, stop };
+  return { still, start, stop, get running() { return !!raf; } };
+}
+
+// ── Compilar y enlazar un programa WebGL ──
+// Para componentes con varios programas o geometría propia. Devuelve el
+// programa enlazado (sin activarlo) o null si algo no compila.
+export function glLink(gl, vsSrc, fsSrc, { attribs = {} } = {}) {
+  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(o)); return null; } return o; };
+  const v = sh(gl.VERTEX_SHADER, vsSrc), f = sh(gl.FRAGMENT_SHADER, fsSrc);
+  if (!v || !f) return null;
+  const prog = gl.createProgram(); gl.attachShader(prog, v); gl.attachShader(prog, f);
+  Object.entries(attribs).forEach(([name, loc]) => gl.bindAttribLocation(prog, loc, name));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { console.warn(gl.getProgramInfoLog(prog)); return null; }
+  return prog;
 }
 
 // ── Programa WebGL de pantalla completa (un triángulo) ──
@@ -109,5 +144,5 @@ export function glProgram(canvas, fs, opts = {}) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
   const pl = gl.getAttribLocation(prog, 'position'); gl.enableVertexAttribArray(pl); gl.vertexAttribPointer(pl, 2, gl.FLOAT, false, 0, 0);
   const U = {}; const u = n => (U[n] === undefined ? (U[n] = gl.getUniformLocation(prog, n)) : U[n]);
-  return { gl, u, prog };
+  return { gl, u, prog, buf, pl };
 }

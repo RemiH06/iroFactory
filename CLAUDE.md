@@ -13,7 +13,7 @@ Cada tema no tiene código propio: solo su contenido, su piel (tokens y estilos 
 - `assets/fonts/` y `assets/img/<tema>/`: archivos, no base64.
 - `<tema>/index.html` (contenido, marcado e imports con su configuración) y `<tema>/<tema>.css` (tokens y piel).
 - Para probar en local hace falta servidor (módulos ES e imágenes en WebGL no funcionan por `file://`): `python -m http.server 8037 --bind 127.0.0.1` en la raíz (puerto registrado en `48.SkillShot/PORTS.md`). En GitHub Pages no aplica.
-- Migrados los 12. disco usa componentes con nombre propio en `shared/components/<nombre>/`; los otros 11 tienen sus piezas en `shared/components/<tema>/`: un `kit.js` con la base del tema (modo, tokens, sus utilidades tal como estaban) y un módulo por sección (`laser-flow.js`, `curve-plotter.js`…), cada uno con `mount()`. Los datos grandes van en `assets/data/<tema>/`. Siguiente paso: unificar los kits con el núcleo y subir a `shared/components/<nombre>/` lo que se repite entre temas.
+- Migrados los 12. disco usa componentes con nombre propio en `shared/components/<nombre>/`; los otros 11 tienen sus piezas en `shared/components/<tema>/`: un `kit.js` con la base del tema (modo, tokens, sus utilidades tal como estaban) y un módulo por sección (`laser-flow.js`, `curve-plotter.js`…), cada uno con `mount()`. Los datos grandes van en `assets/data/<tema>/`. Los kits ya no copian utilidades: reexportan las del núcleo y solo guardan lo propio del tema; el modo de todos pasa por `initTheme` (sin `onclick` en el marcado). Siguiente paso: repartir el CSS de cada tema entre piel y componentes.
 
 ## Reglas duras
 

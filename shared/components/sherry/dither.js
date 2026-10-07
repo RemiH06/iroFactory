@@ -18,6 +18,9 @@
 // ══════════════════════════════════════════════════════
 import { buildBayer8x8Texture } from './dither-veil.js';
 import { cssVar, isLight, reduceMotion } from './kit.js';
+import { updateHexes, inkSwatchLabels, glLink } from '../../core/core.js';
+
+export { updateHexes, inkSwatchLabels };
 
 export function createDitherBackground(host, opts) {
   opts = opts || {};
@@ -27,11 +30,6 @@ export function createDitherBackground(host, opts) {
   const gl = canvas.getContext('webgl', { premultipliedAlpha: false });
   if (!gl) return null;
 
-  function compile(type, src) {
-    const s = gl.createShader(type);
-    gl.shaderSource(s, src); gl.compileShader(s);
-    return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
-  }
   const vsSrc = `
     precision mediump float;
     attribute vec2 position;
@@ -131,11 +129,8 @@ export function createDitherBackground(host, opts) {
       gl_FragColor = vec4(color, 1.0);
     }`;
 
-  const vs = compile(gl.VERTEX_SHADER, vsSrc), fs = compile(gl.FRAGMENT_SHADER, fsSrc);
-  if (!vs || !fs) return null;
-  const prog = gl.createProgram();
-  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+  const prog = glLink(gl, vsSrc, fsSrc);
+  if (!prog) return null;
   gl.useProgram(prog);
 
   const quad = gl.createBuffer();
@@ -270,43 +265,6 @@ export function hexToVec3ForDither(hex) {
   if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
   const n = parseInt(hex, 16);
   return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
-}
-export function updateHexes() {
-
-  const map = {
-    'hex-magenta':'--magenta','hex-cyan':'--cyan','hex-lime':'--lime',
-    'hex-violet':'--violet','hex-electric':'--electric','hex-rose':'--rose',
-    'hex-lavender':'--lavender','hex-aqua':'--aqua','hex-peach':'--peach',
-    'hex-mint':'--mint','hex-black':'--black','hex-gray':'--gray',
-    'hex-white':'--white','hex-accent':'--accent','hex-accent2':'--accent2',
-    'hex-ok':'--ok','hex-warn':'--warn','hex-danger':'--danger','hex-info':'--info',
-  };
-  Object.entries(map).forEach(([id, token]) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = cssVar(token).toUpperCase();
-  });
-  inkSwatchLabels();
-}
-// ── Etiquetas hex de la paleta ─────────────────────────
-// Antes: color fijo con mix-blend-mode: difference. En medios tonos
-// (naranjas, verdes, el gris) quedaba un gris turbio de 1.1 a 2.5:1.
-// Ahora cada etiqueta usa la tinta del modo vigente (--text o --bg)
-// con mayor contraste WCAG real contra su muestra; si ninguna llega
-// a 4.5:1, va sobre una pastilla --bg con --text (skill colorimetría).
-export function inkSwatchLabels() {
-  const rgbOf = s => { const m = String(s).match(/[\d.]+/g); return m ? m.slice(0, 3).map(Number) : null; };
-  const hexRgb = h => { h = h.trim().replace('#', ''); if (h.length === 3) h = h.replace(/./g, c => c + c); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
-  const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
-  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
-  const inks = ['--text', '--bg'].map(t => ({ t, c: hexRgb(cssVar(t)) }));
-  document.querySelectorAll('.swatch-hex').forEach(el => {
-    const sw = rgbOf(getComputedStyle(el.parentElement).backgroundColor);
-    if (!sw) return;
-    const best = inks.map(i => ({ t: i.t, r: ratio(i.c, sw) })).sort((a, b) => b.r - a.r)[0];
-    const chip = best.r < 4.5;
-    el.classList.toggle('is-chip', chip);
-    el.style.color = chip ? 'var(--text)' : `var(${best.t})`;
-  });
 }
 export function mount() {
 // ── Canvas triangular con destellos neón ──────────────

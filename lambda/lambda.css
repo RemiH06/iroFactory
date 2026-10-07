@@ -73,33 +73,17 @@ main,.lm-foot{position:relative;z-index:2}
 .lm-pill:active{transform:scale(.97)}
 @media (hover:hover) and (pointer:fine){.lm-pill:hover{border-color:var(--accent)}}
 
-/* Staggered Menu (React Bits): capas de color que entran en cascada y el
-   panel con los capítulos. GSAP → Web Animations. */
-/* Registrada para que Web Animations pueda interpolarla (el original la anima con GSAP). */
-@property --sm-num-opacity{syntax:'<number>';inherits:true;initial-value:0}
-.sm-toggle-textWrap{position:relative;display:inline-block;height:1em;overflow:hidden;white-space:nowrap;line-height:1}
-.sm-toggle-textInner{display:flex;flex-direction:column;line-height:1}
-.sm-toggle-line{display:block;height:1em;line-height:1}
-.sm-icon{position:relative;width:14px;height:14px;flex:0 0 14px;display:inline-flex;align-items:center;justify-content:center}
-.sm-icon-line{position:absolute;left:50%;top:50%;width:100%;height:2px;background:currentColor;border-radius:2px;transform:translate(-50%,-50%)}
-.sm-icon-line-v{transform:translate(-50%,-50%) rotate(90deg)}
-.sm-layer-host{position:fixed;inset:0;z-index:55;pointer-events:none;overflow:hidden}
-.sm-prelayers,.staggered-menu-panel{position:absolute;top:0;right:0;bottom:0;width:clamp(300px,40vw,480px)}
-.sm-prelayer{position:absolute;inset:0;transform:translateX(100%)}
-.staggered-menu-panel{transform:translateX(100%);background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:96px 36px 32px;overflow-y:auto;pointer-events:auto;visibility:hidden}
-.staggered-menu-panel.is-open{visibility:visible}
-.sm-panel-list{list-style:none;display:flex;flex-direction:column;gap:6px;counter-reset:smItem}
-.sm-panel-itemWrap{position:relative;overflow:hidden;line-height:1}
-.sm-panel-item{position:relative;display:inline-flex;align-items:baseline;gap:14px;color:var(--text);text-decoration:none;font-family:var(--serif);font-weight:700;font-size:clamp(30px,3.4vw,44px);line-height:1.1;letter-spacing:-.01em;padding:4px 2.4em 4px 0;white-space:nowrap;width:100%;transition:color .25s}
+/* Staggered Menu: componente compartido (shared/components/staggered-menu).
+   Aquí solo la piel de lambda: capítulos en serif con su número §, tinta
+   de acento y extras en mono. */
+.sm-panel-list{gap:6px}
+.sm-panel-item{gap:14px;font-family:var(--serif);font-weight:700;font-size:clamp(30px,3.4vw,44px);line-height:1.1;letter-spacing:-.01em}
 .sm-panel-item .sm-sec{display:inline-block;min-width:2.4em;font-family:var(--mono);font-size:14px;font-weight:500;color:var(--accent);letter-spacing:0}
-.sm-panel-itemLabel{display:inline-block;transform-origin:50% 100%}
 @media (hover:hover) and (pointer:fine){.sm-panel-item:hover{color:var(--accent)}}
-.sm-panel-item::after{counter-increment:smItem;content:counter(smItem,decimal-leading-zero);position:absolute;top:.3em;right:0;font-family:var(--mono);font-size:14px;font-weight:400;color:var(--text2);opacity:var(--sm-num-opacity,0)}
-.sm-extras{margin-top:auto;padding-top:32px;display:flex;flex-direction:column;gap:12px}
-.sm-extras-title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-.sm-extras-row{display:flex;flex-wrap:wrap;gap:10px}
-.sm-extras a{font-family:var(--mono);font-size:14px;color:var(--text);text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
-@media (max-width:760px){.sm-prelayers,.staggered-menu-panel{width:100%}.staggered-menu-panel{padding:88px 24px 28px}}
+.sm-panel-item::after{top:.3em;font-weight:400}
+.sm-extras-title{font-family:var(--mono);font-weight:400;color:var(--accent)}
+.sm-extras-row{gap:10px}
+.sm-extras a{font-family:var(--mono)}
 
 /* ── Portada: Stroke Text + hélice de vidrio ── */
 .lm-hero{position:relative;min-height:100vh;min-height:100svh;display:grid;align-items:center;padding:96px 0 64px;overflow:hidden}

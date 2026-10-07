@@ -1,10 +1,11 @@
-// sherry · base del tema: modo, lectura de tokens y utilidades que usan sus componentes.
-import { updateHexes } from './dither.js';
+// sherry · base del tema sobre el núcleo: modo (oscuro por defecto), CRT,
+// fondo de triángulos e imágenes. Lo genérico vive en shared/core/core.js.
+import { cssVar, reduceMotion, initTheme, onTheme, theme } from '../../core/core.js';
 
+export { cssVar, reduceMotion };
 export let isLight = false;
 export let crtOn   = true;
 export let triOn   = true;
-export const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 // ── Hero: imagen clara/oscura · mismo patrón que apolo (heroLightSrc
 // capturado una vez del src original en el HTML, antes de que
 // cualquier toggle lo pise) ──
@@ -13,14 +14,9 @@ export const heroLightSrc = heroImgEl.src;
 export function updateHeroImage() {
   heroImgEl.src = isLight ? heroLightSrc : heroImgEl.dataset.dark;
 }
-export function toggleTheme() {
-  isLight = !isLight;
-  document.body.classList.toggle('light', isLight);
-  document.getElementById('toggle-btn').textContent = isLight ? '⬛ dark' : '⬜ light';
-  document.getElementById('toggle-btn').setAttribute('aria-label', isLight ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
-  updateHexes();
-  updateHeroImage();
-}
+onTheme(() => { isLight = theme.alt; updateHeroImage(); });
+const ctl = initTheme({ altClass: 'light', toggle: '#toggle-btn', label: alt => (alt ? '⬛ dark' : '⬜ light'), aria: alt => (alt ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro') });
+export const toggleTheme = ctl.toggle;
 export function toggleCRT() {
   crtOn = !crtOn;
   document.body.classList.toggle('crt-on', crtOn);
@@ -48,6 +44,3 @@ export const COMPONENT_IMAGES = {
   ic: '../assets/img/sherry/5fe49acf6a.webp',
   esp32: '../assets/img/sherry/77c7cfc09e.webp',
 };
-export function cssVar(name) {
-  return getComputedStyle(document.body).getPropertyValue(name).trim();
-}
