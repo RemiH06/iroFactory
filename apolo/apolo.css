@@ -473,9 +473,12 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
 .ap-tab-preview{filter:url(#ap-decay-filter);pointer-events:none}
 .ap-tab-label{pointer-events:none}
 .ap-stage{padding:40px 40px 0}
-/* 70/30: los paneles ceden un 30% fijo a Apolo, que se queda a la
-   derecha en todas las pestañas (sticky mientras el panel es largo). */
-.ap-stage{display:grid;grid-template-columns:7fr 3fr;gap:32px;align-items:start}
+/* El escenario usa el 90% del ancho (no los 1040px de .wrap) para que la
+   estatua 3D luzca. Dos tercios para los paneles y un tercio para Apolo,
+   que se queda a la derecha en todas las pestañas (sticky mientras el
+   panel es largo). */
+.ap-stage.wrap{max-width:90%}
+.ap-stage{display:grid;grid-template-columns:2fr 1fr;gap:40px;align-items:start}
 .ap-stage-main{min-width:0}
 .ap-stage-statue{position:sticky;top:80px}
 .ap-stage-statue .ap-statue-media{aspect-ratio:3/4}
@@ -483,7 +486,7 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
 .ap-panel[hidden]{display:none}
 .ap-graph-frame{border:1px solid var(--border);height:560px;border-radius:var(--radius);overflow:hidden}
 .ap-graph-frame iframe{width:100%;height:100%;border:0;display:block}
-@media(max-width:760px){.ap-stage{padding:28px 20px 0}.ap-graph-frame{height:420px}}
+@media(max-width:760px){.ap-stage{padding:28px 20px 0}.ap-stage.wrap{max-width:none}.ap-graph-frame{height:420px}}
 
 /* Superficie propia (como los demás niveles): sin ella el texto quedaba
    sobre las tiras de foto y en modo día no se leía. */
