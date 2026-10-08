@@ -108,6 +108,7 @@ SOFTWARE.
         <button class="metro-dock-item" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="13" height="13" rx="1"/><path d="M8 4h13v13"/></svg></span><span class="metro-dock-label" role="tooltip">Cards</span></button>
         <button class="metro-dock-item" role="tab" id="tab-galeria" aria-controls="panel-galeria" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 18a9 9 0 0 1 18 0M3 18h18"/><path d="M7.5 18a4.5 9 0 0 1 9 0M12 9v9"/></svg></span><span class="metro-dock-label" role="tooltip">Galería</span></button>
         <button class="metro-dock-item" role="tab" id="tab-manual" aria-controls="panel-manual" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h11l3 3v13H5z"/><path d="M9 10h7M9 14h7M9 18h4"/></svg></span><span class="metro-dock-label" role="tooltip">Guía de guardia</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-mapa" aria-controls="panel-mapa" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="18" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="18" cy="16" r="2"/><path d="M7.5 16.5 11 7.8M13.5 7.5 17 14.3M8 18h8"/></svg></span><span class="metro-dock-label" role="tooltip">Mapa del código</span></button>
       </div>
     </div>
 
@@ -305,6 +306,14 @@ Notificac.    ████████████████▒▒████
       </article>
       <aside class="doc-toc" aria-label="En esta página"></aside>
     </div>
+      </div>
+    </div>
+
+    <div class="metro-panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" data-pattern="orbit" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+        <h2>Mapa del código</h2>
+        <p class="doc-ariadne-note">Árbol de archivos, dependencias entre ellos y clases de iroFactory completo, generado con <a href="https://github.com/RemiH06/iroFactory">Ariadne</a>.</p><div class="doc-ariadne"><iframe src="../ariadne/irofactory.html" title="Mapa del código de iroFactory" loading="lazy"></iframe></div>
       </div>
     </div>
   </div>

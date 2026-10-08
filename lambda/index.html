@@ -146,6 +146,10 @@ SOFTWARE.
       <button class="btn ok" type="button">ok</button><button class="btn warn" type="button">warn</button><button class="btn danger" type="button">danger</button>
       <button class="btn chalk-pink" type="button">ch-pink</button><button class="btn chalk-violet" type="button">ch-violet</button><button class="btn chalk-cyan" type="button">ch-cyan</button>
     </div>
+    <div class="doc-spec">
+      <div class="doc-spec-card"><h3>Tipografía</h3><div id="lm-type"></div></div>
+      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="lm-contrast"></ul></div>
+    </div>
   </div>
 </section>
 
@@ -289,39 +293,36 @@ SOFTWARE.
     <div class="lm-chap-head">
       <span class="lm-chap-num">§6</span>
       <h2 id="h-apu">Apuntes</h2>
-      <p class="lm-chap-lede">Así se ve una página de apuntes con este tema: problema, idea, algoritmo, costo y ejercicios.</p>
+      <p class="lm-chap-lede">Así se ve una página de apuntes con este tema: idea, definición, propiedades, cálculo y ejercicios.</p>
     </div>
     <div class="doc-layout">
       <article class="doc">
-        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#inicio">Lambda</a></li><li><a href="#apuntes">Apuntes</a></li><li aria-current="page">Algoritmo de Euclides</li></ol></nav>
-        <h1>Algoritmo de Euclides</h1>
-        <p class="doc-lede">El algoritmo no trivial más antiguo que se sigue usando: el máximo común divisor en pocas líneas.</p>
-        <h2 id="lm-a-problema">Problema</h2>
-        <p>Dados dos enteros positivos <i>a</i> y <i>b</i>, encontrar su máximo común divisor: el mayor entero que divide a ambos.</p>
-        <h2 id="lm-a-idea">Idea</h2>
-        <blockquote><p>Si <i>a</i> = <i>bq</i> + <i>r</i>, todo divisor común de <i>a</i> y <i>b</i> divide también a <i>r</i>.</p><footer>Euclides, Elementos, libro VII, proposición 2</footer></blockquote>
-        <p>Por eso mcd(<i>a</i>, <i>b</i>) = mcd(<i>b</i>, <i>a</i> mod <i>b</i>), y el residuo baja hasta llegar a cero.</p>
-        <h2 id="lm-a-algoritmo">Algoritmo</h2>
-        <ol><li>Si <i>b</i> = 0, el resultado es <i>a</i>.</li><li>Si no, reemplaza (<i>a</i>, <i>b</i>) por (<i>b</i>, <i>a</i> mod <i>b</i>) y repite.</li></ol>
-<pre data-lang="python"><code>def mcd(a, b):
-    while b:
-        a, b = b, a % b
-    return a</code></pre>
-        <h3 id="lm-a-costo">Costo</h3>
-        <dl><dt>Tiempo</dt><dd>O(log min(<i>a</i>, <i>b</i>)) divisiones<sup><a href="#lm-n1" id="lm-r1">1</a></sup></dd><dt>Memoria</dt><dd>O(1)</dd><dt>Peor caso</dt><dd>Dos números de Fibonacci consecutivos</dd></dl>
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#inicio">Lambda</a></li><li><a href="#apuntes">Apuntes</a></li><li aria-current="page">Transformada de Fourier</li></ol></nav>
+        <h1>Transformada de Fourier</h1>
+        <p class="doc-lede">Toda señal razonable es una suma de senos y cosenos; la transformada dice cuánto de cada frecuencia lleva.</p>
+        <h2 id="lm-f-idea">Idea</h2>
+        <p>En lugar de describir una señal por su valor en cada instante, se describe por <mark>cuánto de cada frecuencia contiene</mark>. Es el mismo objeto visto desde otro lado: el tiempo y la frecuencia.</p>
+        <blockquote><p>Las funciones más arbitrarias pueden expresarse como sumas de senos.</p><footer>Joseph Fourier, Teoría analítica del calor, 1822</footer></blockquote>
+        <h2 id="lm-f-def">Definición</h2>
+        <p>Para una función integrable <i>f</i>:</p>
         <figure>
-<pre aria-label="Traza de mcd(252, 105)">  a     b    a mod b
- 252   105     42
- 105    42     21
-  42    21      0
-  21     0   → mcd = 21</pre>
-          <figcaption><b>Figura 1.</b> Traza de mcd(252, 105).</figcaption>
+<pre aria-label="Transformada y su inversa">  f̂(ξ) = ∫ f(t) · e^(−2πiξt) dt        (de −∞ a ∞)
+  f(t) = ∫ f̂(ξ) · e^(2πiξt) dξ        inversa</pre>
+          <figcaption><b>Ecuación 1.</b> La transformada y su inversa: el mismo par, con el signo del exponente cambiado.</figcaption>
         </figure>
-        <h2 id="lm-a-ejercicios">Ejercicios</h2>
-        <details><summary>Calcula mcd(1071, 462)</summary><p>1071 = 2 · 462 + 147; 462 = 3 · 147 + 21; 147 = 7 · 21. El resultado es 21.</p></details>
-        <details><summary>¿Por qué termina siempre?</summary><p>El residuo es estrictamente menor que <i>b</i> y nunca negativo: una sucesión decreciente de naturales llega a cero.</p></details>
+        <h3 id="lm-f-prop">Propiedades</h3>
+        <dl><dt>Linealidad</dt><dd>La transformada de <i>af</i> + <i>bg</i> es <i>a</i>f̂ + <i>b</i>ĝ.</dd><dt>Desplazamiento</dt><dd>Retrasar la señal solo cambia la fase, no la magnitud.</dd><dt>Convolución</dt><dd>Convolucionar en el tiempo es multiplicar en frecuencia<sup><a href="#lm-n1" id="lm-r1">1</a></sup>.</dd><dt>Parseval</dt><dd>La energía es la misma en los dos dominios.</dd></dl>
+        <h2 id="lm-f-discreta">En la computadora</h2>
+        <ol><li>Se muestrea la señal en <i>N</i> puntos.</li><li>La transformada discreta (DFT) cuesta O(<i>N</i>²) multiplicaciones.</li><li>La rápida (FFT) parte el problema a la mitad recursivamente: O(<i>N</i> log <i>N</i>).</li></ol>
+<pre data-lang="python"><code>import numpy as np
+t = np.linspace(0, 1, 512, endpoint=False)
+x = np.sin(2*np.pi*50*t) + 0.5*np.sin(2*np.pi*120*t)
+X = np.fft.rfft(x)            # picos en 50 y 120 Hz</code></pre>
+        <h2 id="lm-f-ejercicios">Ejercicios</h2>
+        <details><summary>¿Cuál es la transformada de un pulso rectangular?</summary><p>Una función sinc: sen(πξ)/(πξ). Mientras más angosto el pulso, más ancha la sinc.</p></details>
+        <details><summary>¿Por qué el muestreo debe ser al menos el doble de la frecuencia más alta?</summary><p>Teorema de Nyquist-Shannon: por debajo, frecuencias distintas se vuelven indistinguibles (aliasing).</p></details>
         <p><small>En el pizarrón, <kbd>Shift</kbd> + <kbd>Enter</kbd> evalúa la celda.</small></p>
-        <aside class="doc-notes" aria-label="Notas"><ol><li id="lm-n1">Teorema de Lamé (1844): el número de pasos no pasa de cinco veces la cantidad de dígitos del menor. <a href="#lm-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="lm-n1">Por eso los filtros se aplican multiplicando el espectro, y la FFT hace rápida cualquier convolución larga. <a href="#lm-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
         <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#formulario"><small>Anterior</small>§5 Formulario</a><a class="next" href="#colofon"><small>Siguiente</small>Colofón</a></nav>
       </article>
       <aside class="doc-toc" aria-label="En esta página"></aside>
@@ -395,10 +396,6 @@ SOFTWARE.
     <div class="lm-curve-presets" role="group" aria-label="Curvas de ejemplo"></div>
   </form>
     </aside>
-    <div class="doc-spec">
-      <div class="doc-spec-card"><h3>Tipografía</h3><div id="lm-type"></div></div>
-      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="lm-contrast"></ul></div>
-    </div>
   </div>
   <div class="lm-wrap"><p class="lm-tools-note">Íconos de Simple Icons (CC0); las marcas son de sus dueños. Las que no tienen ícono libre van en monograma.</p></div>
 </section>
@@ -430,7 +427,7 @@ docProse();
 docSpecimen({
   type: { el: '#lm-type', fonts: [
     { name: 'Cormorant Garamond', family: 'var(--serif)', size: 32, weight: 600, use: 'Títulos y texto: la voz del libro' },
-    { name: 'mcd(a, b) = mcd(b, a mod b)', family: 'var(--serif)', size: 24, style: 'italic', use: 'Cursiva para variables y enunciados' },
+    { name: 'f̂(ξ) = ∫ f(t) e^(−2πiξt) dt', family: 'var(--serif)', size: 24, style: 'italic', use: 'Cursiva para variables y enunciados' },
     { name: 'Fira Code', family: 'var(--mono)', size: 20, use: 'Código y trazas' }] },
   contrast: { el: '#lm-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
 });

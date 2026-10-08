@@ -265,6 +265,9 @@ tensorboard --logdir runs/</code></pre>
             <li><button type="button" role="tab" id="tab-avisos" aria-controls="panel-avisos" aria-selected="false" tabindex="-1">Avisos</button></li>
             <li><button type="button" role="tab" id="tab-botones" aria-controls="panel-botones" aria-selected="false" tabindex="-1">Botones</button></li>
             <li><button type="button" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="false" tabindex="-1">Cards</button></li>
+            <li><button type="button" role="tab" id="tab-tipografia" aria-controls="panel-tipografia" aria-selected="false" tabindex="-1">Tipografía</button></li>
+            <li><button type="button" role="tab" id="tab-contraste" aria-controls="panel-contraste" aria-selected="false" tabindex="-1">Contraste</button></li>
+            <li><button type="button" role="tab" id="tab-mapa" aria-controls="panel-mapa" aria-selected="false" tabindex="-1">Mapa del código</button></li>
           </ul>
         </nav>
         <span class="effect filter" aria-hidden="true"></span>
@@ -351,11 +354,19 @@ tensorboard --logdir runs/</code></pre>
           <div class="card"><strong>Scraper async</strong><span class="badge train">activo</span><p class="muted" style="margin:8px 0 0">Extracción concurrente con rate limiting configurable y retry automático.</p></div>
         </div>
       </div>
+      <div class="ex-tabpanel" id="panel-tipografia" role="tabpanel" aria-labelledby="tab-tipografia" hidden>
+        <h3>Tipografía</h3>
+        <div id="ex-type"></div>
       </div>
-      <div class="doc-spec">
-      <div class="doc-spec-card"><h3>Tipografía</h3><div id="ex-type"></div></div>
-      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="ex-contrast"></ul></div>
-    </div>
+      <div class="ex-tabpanel" id="panel-contraste" role="tabpanel" aria-labelledby="tab-contraste" hidden>
+        <h3>Contraste</h3>
+        <ul class="spec-contrast" id="ex-contrast"></ul>
+      </div>
+      <div class="ex-tabpanel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" hidden>
+        <h3>Mapa del código</h3>
+        <p class="doc-ariadne-note">Árbol de archivos, dependencias entre ellos y clases de iroFactory completo, generado con <a href="https://github.com/RemiH06/iroFactory">Ariadne</a>.</p><div class="doc-ariadne"><iframe src="../ariadne/irofactory.html" title="Mapa del código de iroFactory" loading="lazy"></iframe></div>
+      </div>
+      </div>
     </div>
   </div>
 </section>

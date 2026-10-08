@@ -409,3 +409,5 @@ td code { white-space: nowrap; }
 }
 /* Base común de documentación (doc-prose, doc-specimen) con la piel del tema */
 .doc{--doc-head:var(--mono);--doc-radius:var(--radius,4px)}
+/* El manual se lee sin brillo neón */
+#level-manual, #level-manual * { text-shadow: none !important; }

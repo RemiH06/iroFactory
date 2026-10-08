@@ -8,8 +8,8 @@ export function mount() {
 (() => {
   const main = $('#sh-main'), query = $('#sh-query'), pre = query.querySelector('pre');
   const tabs = [...document.querySelectorAll('.sh-tab')], panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
-  const GROUP = { paleta: 'superficie', galeria: 'superficie', avisos: 'corrientes', badges: 'corrientes', botones: 'corrientes', metricas: 'profundidad', codigo: 'profundidad', tabla: 'profundidad', log: 'desembocadura', pipeline: 'desembocadura', cards: 'desembocadura', manual: 'desembocadura' };
-  const ROWS = { paleta: '.swatch', avisos: '.callout', badges: '.badge', botones: '.btn', metricas: '.metric-val', log: '.log-entry', pipeline: '.pipe', cards: '.card', manual: '.doc h2, .doc li' };
+  const GROUP = { paleta: 'superficie', galeria: 'superficie', avisos: 'corrientes', badges: 'corrientes', botones: 'corrientes', metricas: 'profundidad', codigo: 'profundidad', tabla: 'profundidad', log: 'desembocadura', pipeline: 'desembocadura', cards: 'desembocadura', manual: 'desembocadura', mapa: 'desembocadura' };
+  const ROWS = { paleta: '.swatch', avisos: '.callout', badges: '.badge', botones: '.btn', metricas: '.metric-val', log: '.log-entry', pipeline: '.pipe', cards: '.card', manual: '.doc h2, .doc li', mapa: 'iframe' };
   const rowsOf = id => { const el = document.getElementById(id); if (id === 'galeria') return 4; if (id === 'tabla') return el.querySelectorAll('tr').length - 1; if (id === 'codigo') return el.querySelector('pre').textContent.split('\n').length; return el.querySelectorAll(ROWS[id]).length; };
   const narrow = window.matchMedia('(max-width: 999px)');
   panels.forEach((p, i) => { p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', tabs[i].id); p.hidden = i !== 0; });
