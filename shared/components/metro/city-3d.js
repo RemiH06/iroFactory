@@ -236,6 +236,7 @@ export async function mount({ view, sim }) {
   const controls = new OrbitControls(camera, canvas);
   Object.assign(controls, { enableZoom: false, enablePan: false, enableDamping: true, dampingFactor: 0.08, autoRotate: !reduceMotion.matches, autoRotateSpeed: 0.3, minPolarAngle: 0.15, maxPolarAngle: 1.2, minDistance: 25, maxDistance: 9000, zoomToCursor: true, screenSpacePanning: false });
   controls.target.set(0, 0, 0); controls.enabled = !coarse; controls.update();
+  if (coarse) canvas.style.touchAction = 'pan-y';
   let expanded = false;
   const ORBIT = { mouse: { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }, touch: { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN } };
   const MAP = { mouse: { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.ROTATE }, touch: { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_ROTATE } };
@@ -259,18 +260,96 @@ export async function mount({ view, sim }) {
     flyTo(hit, hit.clone().add(off.setLength(d)));
   };
   canvas.addEventListener('dblclick', e => { if (expanded) flyToPoint(e.clientX, e.clientY); });
-  let tap = null; // doble toque (en táctil no siempre llega dblclick)
-  canvas.addEventListener('pointerup', e => {
-    if (!expanded || e.pointerType !== 'touch') return;
+
+  // ── Gestos táctiles al explorar, como en un mapa. OrbitControls no recibe el toque: con dos dedos
+  // tomaba cualquier movimiento del punto medio como giro y la cámara se iba de lado al pellizcar.
+  //  · un dedo: el punto del suelo que tocaste se queda bajo el dedo (y al soltar sigue con inercia)
+  //  · pellizco: el punto del suelo entre los dedos se queda fijo mientras acercas o alejas
+  //  · girar los dedos: rota alrededor de ese punto · subir o bajar los dos dedos juntos: inclina
+  //  · doble toque: vuela hacia ese punto
+  const ndc = new THREE.Vector2(), g0 = new THREE.Vector3(), g1 = new THREE.Vector3(), anchor = new THREE.Vector3(), sph = new THREE.Spherical(), UP = new THREE.Vector3(0, 1, 0);
+  const groundAt = (x, y, out) => { const r = canvas.getBoundingClientRect(); ray.setFromCamera(ndc.set((x - r.left) / r.width * 2 - 1, -((y - r.top) / r.height) * 2 + 1), camera); return ray.ray.intersectPlane(groundPlane, out); };
+  const moveBy = d => { controls.target.add(d); camera.position.add(d); };
+  const scaleAbout = (a, f) => { camera.position.sub(a).multiplyScalar(f).add(a); controls.target.sub(a).multiplyScalar(f).add(a); };
+  const rotateAbout = (a, ang) => { camera.position.sub(a).applyAxisAngle(UP, ang).add(a); controls.target.sub(a).applyAxisAngle(UP, ang).add(a); };
+  const fingers = new Map(), fling = new THREE.Vector3();
+  let gest = null, lastMove = 0, tap = null;
+  const pair = () => { const [a, b] = [...fingers.values()]; return { mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2, d: Math.hypot(a.x - b.x, a.y - b.y), ang: Math.atan2(b.y - a.y, b.x - a.x) }; };
+  const startPair = () => { for (const f of fingers.values()) { f.gx = f.x; f.gy = f.y; } const p = pair(); gest = { ...p, mx0: p.mx, my0: p.my, d0: p.d, ang0: p.ang, mode: null, rot: false }; };
+  const redraw = () => { controls.update(); if (!loop.running) loop.still(); };
+  view.addEventListener('pointerdown', e => {
+    if (!expanded || e.pointerType !== 'touch' || e.target.closest('button')) return;
+    e.stopPropagation(); fly = null; fling.set(0, 0, 0);
+    fingers.set(e.pointerId, { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, st: performance.now() });
+    if (fingers.size === 2) startPair(); else gest = null;
+  }, { capture: true });
+  view.addEventListener('pointermove', e => {
+    const f = fingers.get(e.pointerId); if (!f) return;
+    e.stopPropagation();
+    if (fingers.size === 1) {
+      if (groundAt(f.x, f.y, g0) && groundAt(e.clientX, e.clientY, g1)) {
+        const d = g0.sub(g1);
+        if (d.length() < 1500) { moveBy(d); const now = performance.now(); fling.copy(d).multiplyScalar(1000 / Math.max(8, now - lastMove)); lastMove = now; }
+      }
+      f.x = e.clientX; f.y = e.clientY;
+    } else if (fingers.size === 2 && gest) {
+      f.x = e.clientX; f.y = e.clientY;
+      const p = pair();
+      // decidir el gesto tras un pequeño margen: inclinar (los dos suben o bajan juntos) o mapa (mover, acercar, girar)
+      if (!gest.mode) {
+        // cada dedo llega en su propio evento: se decide con lo que se movió cada uno desde el inicio
+        const [a, b] = [...fingers.values()], ay = a.y - a.gy, by = b.y - b.gy, ax = a.x - a.gx, bx = b.x - b.gx;
+        const ma = Math.hypot(ax, ay), mb = Math.hypot(bx, by);
+        if (Math.min(ma, mb) < 12 && Math.max(ma, mb) < 40) return; // esperar a que se muevan los dos
+        const ratio = Math.abs(ay) / Math.max(1, Math.abs(by)), together = Math.sign(ay) === Math.sign(by) && ratio > 0.4 && ratio < 2.5;
+        gest.mode = together && Math.abs(ax) + Math.abs(bx) < 0.6 * (Math.abs(ay) + Math.abs(by)) && Math.abs(Math.sin(p.ang)) < 0.7 ? 'tilt' : 'map';
+      }
+      if (gest.mode === 'tilt') {
+        sph.setFromVector3(camera.position.clone().sub(controls.target));
+        sph.phi = THREE.MathUtils.clamp(sph.phi - (p.my - gest.my) * 0.004, controls.minPolarAngle, 1.48);
+        camera.position.setFromSpherical(sph).add(controls.target);
+      } else {
+        if (groundAt(gest.mx, gest.my, g0) && groundAt(p.mx, p.my, g1)) { const d = g0.sub(g1); if (d.length() < 1500) moveBy(d); }
+        if (groundAt(p.mx, p.my, anchor)) {
+          const dist = camera.position.distanceTo(controls.target);
+          scaleAbout(anchor, THREE.MathUtils.clamp(gest.d / Math.max(1, p.d), controls.minDistance / dist, controls.maxDistance / dist));
+          // el giro se suelta hasta pasar 10° acumulados, para que un pellizco descuidado no gire el mapa
+          if (!gest.rot && Math.abs(Math.atan2(Math.sin(p.ang - gest.ang0), Math.cos(p.ang - gest.ang0))) > 0.17) { gest.rot = true; gest.ang = p.ang; }
+          const da = Math.atan2(Math.sin(p.ang - gest.ang), Math.cos(p.ang - gest.ang));
+          if (gest.rot && Math.abs(da) > 0.001) rotateAbout(anchor, -da);
+        }
+      }
+      Object.assign(gest, p);
+    }
+    redraw();
+  }, { capture: true });
+  const endTouch = e => {
+    const f = fingers.get(e.pointerId); if (!f) return;
+    e.stopPropagation();
+    const single = fingers.size === 1; fingers.delete(e.pointerId);
+    if (fingers.size === 2) startPair(); else gest = null;
+    if (!single) return;
+    if (performance.now() - lastMove > 90 || reduceMotion.matches) fling.set(0, 0, 0);
+    // toque corto sin moverse: dos seguidos vuelan hacia ese punto
     const now = performance.now();
-    if (tap && now - tap.t < 320 && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 30) { tap = null; flyToPoint(e.clientX, e.clientY); }
-    else tap = { t: now, x: e.clientX, y: e.clientY };
-  });
+    if (e.type === 'pointerup' && now - f.st < 280 && Math.hypot(e.clientX - f.sx, e.clientY - f.sy) < 12) {
+      if (tap && now - tap.t < 350 && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 40) { tap = null; fling.set(0, 0, 0); flyToPoint(e.clientX, e.clientY); }
+      else tap = { t: now, x: e.clientX, y: e.clientY };
+    }
+  };
+  view.addEventListener('pointerup', endTouch, { capture: true });
+  view.addEventListener('pointercancel', endTouch, { capture: true });
+  const stepFling = dt => {
+    if (fingers.size || fling.lengthSq() < 4) return;
+    moveBy(g0.copy(fling).multiplyScalar(dt)); fling.multiplyScalar(Math.exp(-dt * 4.5));
+  };
   const setExpanded = on => {
     expanded = on; fly = null;
     const m = on ? MAP : ORBIT; controls.mouseButtons = m.mouse; controls.touches = m.touch;
     Object.assign(controls, { enableZoom: on, enablePan: on, enabled: on || !coarse, maxPolarAngle: on ? 1.48 : 1.2 });
     if (on) controls.listenToKeyEvents(window); else controls.stopListenToKeyEvents();
+    // OrbitControls deja el canvas en touch-action:none; fuera de explorar, en táctil, el dedo es para el scroll de la página
+    canvas.style.touchAction = on || !coarse ? 'none' : 'pan-y'; fingers.clear(); gest = null; fling.set(0, 0, 0);
     if (labelLayer) labelLayer.hidden = !on;
     loop.still();
   };
@@ -322,6 +401,7 @@ export async function mount({ view, sim }) {
       controls.target.lerpVectors(fly.t0, fly.t1, e); camera.position.lerpVectors(fly.p0, fly.p1, e);
       if (fly.k >= 1) fly = null;
     }
+    stepFling(dt);
     controls.autoRotate = !reduceMotion.matches && !expanded; controls.update(dt);
     // que el centro de la vista no se salga de la zona (si no, uno se pierde en el vacío)
     const tx = THREE.MathUtils.clamp(controls.target.x, bx0, bx1) - controls.target.x, tz = THREE.MathUtils.clamp(controls.target.z, bz0, bz1) - controls.target.z;
