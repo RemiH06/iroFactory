@@ -2,246 +2,313 @@
 <!--
 ludus_theme · iroFactory · https://github.com/RemiH06/iroFactory
 Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+Este tema solo compone: los componentes viven en shared/ y conservan su
+propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riffs de Signa_Lab
+(ITESO) y de Figma (@vdwjulien).
 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ludus_theme — Demo</title>
+<title>ludus_theme · Demo</title>
+<meta name="description" content="ludus: tema de documentación para juegos y proyectos interactivos. Una carpa que se abre, un prisma de seis caras que gira entre vistas y un cubo de Rubik como navegación.">
 <link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=righteous:400&family=fira-code:400,500&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css?family=righteous:400|fira-code:400,500|silkscreen:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/core/core.css">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="ludus.css">
-<link rel="stylesheet" href="../shared/components/ludus/tetris-board.css">
-<link rel="stylesheet" href="../shared/components/ludus/floating-cubes.css">
+<link rel="stylesheet" href="../shared/components/ludus/prism-nav.css">
+<link rel="stylesheet" href="../shared/components/ludus/curtain-intro.css">
+<link rel="stylesheet" href="../shared/components/ludus/pause-menu.css">
+<link rel="stylesheet" href="../shared/components/ludus/cubes-toy.css">
+<link rel="stylesheet" href="../shared/components/ludus/texture-accordion.css">
+<link rel="stylesheet" href="../shared/components/ludus/rubik-dock.css">
 </head>
 <body>
+<canvas id="lx-net" aria-hidden="true"></canvas>
 
-<canvas id="ludus-tetris"></canvas>
-<div id="ludus-cubes"></div>
+<!-- ── La carpa ── -->
+<div class="lx-curtain" id="lx-curtain" aria-hidden="true"><div class="lx-valance"></div><div class="lx-drape left"></div><div class="lx-drape right"></div></div>
 
-<div class="page">
-
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
-  <div style="font-family:var(--display);font-size:38px;letter-spacing:-.5px;line-height:1">
-    <span style="color:var(--piece-t);text-shadow:var(--glow-accent)">lu</span><span style="color:var(--piece-i);text-shadow:var(--glow-cyan)">du</span><span style="color:var(--piece-s);text-shadow:var(--glow-green)">s</span><span style="color:var(--text2)">_theme</span>
+<!-- ── Barra: marca, indicador de cara, modo y pausa ── -->
+<header class="lx-top">
+  <a class="lx-brand" href="#inicio" aria-label="ludus · inicio"><span>lu</span><span>du</span><span>s</span></a>
+  <div class="lx-top-right">
+    <button class="lx-pill" type="button" data-theme-toggle aria-label="Cambiar a modo día">☀ día</button>
+    <button class="lx-pill lx-pause" id="lx-pause" type="button" aria-expanded="false" aria-controls="lx-pausemenu"><span aria-hidden="true">❚❚</span> Pausa</button>
   </div>
-  <button class="theme-btn" id="toggle-btn" aria-label="Cambiar a modo claro">☀ light</button>
-</div>
+</header>
+<nav class="lx-dots" aria-label="Vistas">
+  <button type="button" data-prism-go="inicio" aria-label="Inicio" style="--dot:var(--f)"></button>
+  <button type="button" data-prism-go="paleta" aria-label="Paleta" style="--dot:var(--r)"></button>
+  <button type="button" data-prism-go="juguetes" aria-label="Juguetes" style="--dot:var(--b)"></button>
+  <button type="button" data-prism-go="componentes" aria-label="Componentes" style="--dot:var(--l)"></button>
+  <button type="button" data-prism-go="manual" aria-label="Manual" style="--dot:var(--u)"></button>
+  <button type="button" data-prism-go="fin" aria-label="Fin" style="--dot:var(--d)"></button>
+</nav>
+<button class="lx-side prev" type="button" data-prism-go="prev" aria-label="Vista anterior">‹</button>
+<button class="lx-side next" type="button" data-prism-go="next" aria-label="Vista siguiente">›</button>
 
-<!-- ── Paleta ── -->
-<h2>Paleta de colores</h2>
-<p class="muted">Colores de carpa — rojo carmesí y dorado en oscuro, pasteles de feria en claro.</p>
+<!-- ── El prisma: seis vistas que giran ── -->
+<main class="lx-stage">
+<div class="lx-prism" id="lx-prism">
 
-<h3>Colores</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--piece-i)"><span class="swatch-hex" id="hex-i"></span></div>--piece-i</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--piece-o)"><span class="swatch-hex" id="hex-o"></span></div>--piece-o</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--piece-t)"><span class="swatch-hex" id="hex-t"></span></div>--piece-t</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--piece-s)"><span class="swatch-hex" id="hex-s"></span></div>--piece-s</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--piece-z)"><span class="swatch-hex" id="hex-z"></span></div>--piece-z</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--piece-j)"><span class="swatch-hex" id="hex-j"></span></div>--piece-j</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--piece-l)"><span class="swatch-hex" id="hex-l"></span></div>--piece-l</div>
-</div>
-
-<h3>Estado de juego</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--play)"><span class="swatch-hex" id="hex-play"></span></div>--play</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--pause)"><span class="swatch-hex" id="hex-pause"></span></div>--pause</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--gameover)"><span class="swatch-hex" id="hex-go"></span></div>--gameover</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
-</div>
-
-<h3>Neutros y semánticos</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
-</div>
-
-<hr class="divider">
-
-<!-- ── Callouts ── -->
-<h2>Callouts</h2>
-<div class="callout"><div class="callout-title">Acento (default)</div><p>Notas generales del juego, mecánicas y referencias de diseño.</p></div>
-<div class="callout ok"><div class="callout-title">OK · Dorado</div><p>Número completado. El público aplaude desde las gradas.</p></div>
-<div class="callout warn"><div class="callout-title">Warn · Ámbar</div><p>El equilibrista titubea. La red de seguridad está lista.</p></div>
-<div class="callout danger"><div class="callout-title">Danger · Carmesí</div><p>El cañón humano falló la trayectoria. Evacuar la pista.</p></div>
-<div class="callout play"><div class="callout-title">Play · En escena</div><p>El acto está en curso. Las luces sobre la pista central.</p></div>
-<div class="callout pause"><div class="callout-title">Pause · Intermedio</div><p>Descanso entre actos. El público compra palomitas.</p></div>
-<div class="callout gameover"><div class="callout-title">Telón · Fin de función</div><p>La carpa se cierra. Nos vemos en la próxima parada.</p></div>
-<div class="callout piece-i"><div class="callout-title">Dorado · Spotlight</div><p>La luz del foco. Recae sobre quien merece ser visto.</p></div>
-<div class="callout piece-t"><div class="callout-title">Carmesí · Terciopelo</div><p>Las cortinas de la carpa. Rojo profundo, misterio total.</p></div>
-<div class="callout piece-s"><div class="callout-title">Rojo medio · Pista</div><p>El suelo de la pista central. Alfombra de actos imposibles.</p></div>
-<div class="callout piece-z"><div class="callout-title">Coral · Fuego</div><p>Las antorchas del acto de fuego. Calor y peligro controlado.</p></div>
-<div class="callout piece-l"><div class="callout-title">Ámbar · Resina</div><p>El olor del serrín y la resina. El suelo del circo de toda la vida.</p></div>
-
-<hr class="divider">
-
-<!-- ── Badges ── -->
-<h2>Badges</h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
-  <span class="badge accent">accent</span>
-  <span class="badge ok">ok</span>
-  <span class="badge warn">warn</span>
-  <span class="badge danger">danger</span>
-  <span class="badge play">en escena</span>
-  <span class="badge pause">intermedio</span>
-  <span class="badge gameover">telón</span>
-  <span class="badge piece-i">dorado</span>
-  <span class="badge piece-o">oro</span>
-  <span class="badge piece-t">carmesí</span>
-  <span class="badge piece-s">pista</span>
-  <span class="badge piece-z">fuego</span>
-  <span class="badge piece-j">marrón</span>
-  <span class="badge piece-l">ámbar</span>
-  <span class="badge">default</span>
-</div>
-
-<hr class="divider">
-
-<!-- ── Botones ── -->
-<h2>Botones</h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
-  <button class="btn primary">primary</button>
-  <button class="btn">default</button>
-  <button class="btn play">en escena</button>
-  <button class="btn pause">intermedio</button>
-  <button class="btn ok">ok</button>
-  <button class="btn warn">warn</button>
-  <button class="btn danger">danger</button>
-  <button class="btn piece-i">spotlight</button>
-  <button class="btn piece-t">carmesí</button>
-  <button class="btn piece-s">pista</button>
-  <button class="btn piece-l">ámbar</button>
-</div>
-
-<hr class="divider">
-
-<!-- ── Métricas ── -->
-<h2>Métricas</h2>
-<div class="metrics-row">
-  <div class="metric"><div class="metric-val">3,200</div><div class="metric-lbl">espectadores</div></div>
-  <div class="metric"><div class="metric-val piece-i">12</div><div class="metric-lbl">actos (dorado)</div></div>
-  <div class="metric"><div class="metric-val piece-o">7</div><div class="metric-lbl">números (oro)</div></div>
-  <div class="metric"><div class="metric-val ok">4</div><div class="metric-lbl">noches (ok)</div></div>
-  <div class="metric"><div class="metric-val danger">0</div><div class="metric-lbl">accidentes</div></div>
-  <div class="metric"><div class="metric-val piece-l">∞</div><div class="metric-lbl">asombro</div></div>
-</div>
-
-<hr class="divider">
-
-<!-- ── Código ── -->
-<h2>Código</h2>
-<p class="muted">Inline: <code>toggleTheme()</code> alterna entre carpa y feria de día.</p>
-<pre data-lang="lua"><span class="cm">-- Programación de actos de la noche</span>
-<span class="kw">local</span> ACTOS = { <span class="str">"malabaristas"</span>, <span class="str">"equilibristas"</span>, <span class="str">"cañón humano"</span> }
-
-<span class="kw">function</span> <span class="fn">programarNoche</span>(actos, pista)
-  <span class="kw">for</span> i, acto <span class="kw">in</span> <span class="fn">ipairs</span>(actos) <span class="kw">do</span>
-    <span class="fn">print</span>(<span class="str">"Pista "</span> .. pista .. <span class="str">": "</span> .. acto)
-  <span class="kw">end</span>
-<span class="kw">end</span>
-
-<span class="cm">-- La carpa principal tiene 3 pistas simultáneas</span>
-<span class="fn">programarNoche</span>(ACTOS, <span class="num">1</span>)</pre>
-
-<hr class="divider">
-
-<!-- ── Tabla ── -->
-<h2>Tabla</h2>
-<table>
-  <tr><th>Token</th><th>Carpa</th><th>Feria</th><th>Evocación</th></tr>
-  <tr><td><code>--piece-i</code></td><td>#C8901A</td><td>#40C8D8</td><td>Dorado · spotlight · luz de foco</td></tr>
-  <tr><td><code>--piece-o</code></td><td>#E8A820</td><td>#E8C000</td><td>Oro · escoria brillante</td></tr>
-  <tr><td><code>--piece-t</code></td><td>#901828</td><td>#A030D0</td><td>Carmesí · terciopelo de carpa</td></tr>
-  <tr><td><code>--piece-s</code></td><td>#B82030</td><td>#30B030</td><td>Rojo medio · pista central</td></tr>
-  <tr><td><code>--piece-z</code></td><td>#D04838</td><td>#D03030</td><td>Coral · fuego · antorchas</td></tr>
-  <tr><td><code>--piece-j</code></td><td>#784010</td><td>#2060D0</td><td>Marrón · serrín · suelo de circo</td></tr>
-  <tr><td><code>--piece-l</code></td><td>#A86018</td><td>#E07000</td><td>Ámbar · resina · luz cálida</td></tr>
-</table>
-
-<hr class="divider">
-
-<!-- ── Level Log (timeline) ── -->
-<h2>Registro de la noche</h2>
-<div class="level-log">
-  <div class="level-entry">
-    <div class="level-dot play">▶</div>
-    <div><h4>Primer acto iniciado</h4><p class="muted">Los malabaristas abren la noche. Siete antorchas en el aire.</p></div>
+<!-- 1 · Inicio -->
+<section class="lx-face lx-hero" id="inicio" aria-label="Inicio" tabindex="-1">
+  <img class="lx-hero-img" src="../assets/img/ludus/proun_dark.webp" data-light="../assets/img/ludus/proun_light.webp" data-dark="../assets/img/ludus/proun_dark.webp" alt="Proun de ludus: flores y un insecto en seis colores intensos sobre bloques de color, alrededor de un círculo.">
+  <div class="lx-face-inner">
+    <div class="lx-hero-card hud">
+      <p class="lx-kicker">_theme · iroFactory</p>
+      <h1 class="lx-title" id="lx-title">LUDUS</h1>
+      <p class="lx-lede">Documentación para juegos y proyectos interactivos. La página no baja: gira. Usa el cubo, las flechas de los lados o <kbd>←</kbd> <kbd>→</kbd>; <kbd>Esc</kbd> pone pausa.</p>
+      <div class="lx-actions"><button class="lx-go" type="button" data-prism-go="next">Girar →</button><a class="lx-go ghost" href="#manual">Leer el manual</a></div>
+    </div>
   </div>
-  <div class="level-entry">
-    <div class="level-dot play">▶</div>
-    <div><h4>Segundo acto — equilibristas</h4><p class="muted">La barra a 12 metros de altura. El público contiene la respiración.</p></div>
+</section>
+
+<!-- 2 · Paleta -->
+<section class="lx-face" id="paleta" aria-labelledby="h-paleta" tabindex="-1">
+  <div class="lx-face-inner lx-wrap">
+    <header class="lx-head"><span class="lx-num">02</span><h2 id="h-paleta">Paleta</h2><p>Las seis caras del proun: las del cubo y las del prisma. De noche, el proun invertido.</p></header>
+    <div class="lx-grid">
+      <div class="hud lx-span2"><h3>Caras</h3><div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--f)"><span class="swatch-hex" id="hex-f"></span></div>--f · frente</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--r)"><span class="swatch-hex" id="hex-r"></span></div>--r · derecha</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--b)"><span class="swatch-hex" id="hex-b"></span></div>--b · atrás</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--l)"><span class="swatch-hex" id="hex-l"></span></div>--l · izquierda</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--u)"><span class="swatch-hex" id="hex-u"></span></div>--u · arriba</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--d)"><span class="swatch-hex" id="hex-d"></span></div>--d · abajo</div>
+      </div></div>
+      <div class="hud"><h3>Carpa</h3><div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--curtain)"><span class="swatch-hex" id="hex-curtain"></span></div>--curtain</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
+      </div></div>
+      <div class="hud"><h3>Neutros</h3><div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--bg)"><span class="swatch-hex" id="hex-bg"></span></div>--bg</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--bg3)"><span class="swatch-hex" id="hex-bg3"></span></div>--bg3</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--text)"><span class="swatch-hex" id="hex-text"></span></div>--text</div>
+      </div></div>
+      <div class="hud lx-span2"><h3>Estado del juego</h3><div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok · en juego</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn · pausa</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger · fin del juego</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
+      </div></div>
+      <div class="hud"><h3>Tipografía</h3><div id="lx-type"></div></div>
+      <div class="hud"><h3>Contraste</h3><ul class="spec-contrast" id="lx-contrast"></ul></div>
+    </div>
   </div>
-  <div class="level-entry">
-    <div class="level-dot warn">!</div>
-    <div><h4>Intermedio — advertencia</h4><p class="muted">Viento cruzado en la carpa. El acto de trapecio se pospone.</p></div>
+</section>
+
+<!-- 3 · Juguetes -->
+<section class="lx-face" id="juguetes" aria-labelledby="h-jug" tabindex="-1">
+  <div class="lx-face-inner lx-wrap">
+    <header class="lx-head"><span class="lx-num">03</span><h2 id="h-jug">Juguetes</h2><p>Cosas para tocar. Ninguna sirve para nada, y está bien.</p></header>
+    <div class="lx-grid">
+      <figure class="hud lx-span2 lx-lab-card"><canvas id="lx-lab" aria-hidden="true"></canvas><figcaption>Laboratorio · los nodos crecen y brillan al acercarles el cursor. Parecen botones. No lo son.</figcaption></figure>
+      <div class="hud"><h3>Cubos</h3><div class="lx-cubes" id="lx-cubes"></div><p class="lx-hint">Mueve el cursor encima; un clic los manda al hiperespacio.</p></div>
+      <div class="hud"><h3>Marcador</h3>
+        <div class="metrics-row">
+          <div class="metric"><div class="metric-val" style="color:var(--f)">1,280</div><div class="metric-lbl">puntos</div></div>
+          <div class="metric"><div class="metric-val" style="color:var(--d)">3</div><div class="metric-lbl">vidas</div></div>
+          <div class="metric"><div class="metric-val" style="color:var(--l)">07</div><div class="metric-lbl">nivel</div></div>
+          <div class="metric"><div class="metric-val" style="color:var(--b)">x4</div><div class="metric-lbl">combo</div></div>
+        </div>
+        <p class="lx-hint">Las cifras de juego van en Silkscreen.</p>
+      </div>
+    </div>
   </div>
-  <div class="level-entry">
-    <div class="level-dot pause">⏸</div>
-    <div><h4>Intermedio</div><p class="muted">Descanso de 15 minutos. El payaso entretiene al público.</p></div>
+</section>
+
+<!-- 4 · Componentes -->
+<section class="lx-face" id="componentes" aria-labelledby="h-com" tabindex="-1">
+  <div class="lx-face-inner lx-wrap">
+    <header class="lx-head"><span class="lx-num">04</span><h2 id="h-com">Componentes</h2><p>Un acordeón con textura por renglón; abre uno a la vez.</p></header>
+    <div class="lx-acc">
+      <div class="lx-acc-row" style="--c:var(--f)" data-tex="dots"><button class="lx-acc-btn" type="button"><span class="lx-acc-num">I</span><span class="lx-acc-txt"><small>avisos</small>Callouts</span><span class="lx-acc-chev" aria-hidden="true">⌄</span></button>
+        <div class="lx-acc-body">
+          <div class="callout"><div class="callout-title">Acento</div><p>Notas generales del juego y referencias de diseño.</p></div>
+          <div class="callout ok"><div class="callout-title">En juego</div><p>Nivel superado. Se guardó el progreso.</p></div>
+          <div class="callout warn"><div class="callout-title">Pausa</div><p>Partida detenida: el reloj no corre.</p></div>
+          <div class="callout danger"><div class="callout-title">Fin del juego</div><p>Sin vidas. Inserta otra moneda.</p></div>
+        </div></div>
+      <div class="lx-acc-row" style="--c:var(--r)" data-tex="bars"><button class="lx-acc-btn" type="button"><span class="lx-acc-num">II</span><span class="lx-acc-txt"><small>insignias y botones</small>Badges y botones</span><span class="lx-acc-chev" aria-hidden="true">⌄</span></button>
+        <div class="lx-acc-body">
+          <div class="chips"><span class="badge ok">en juego</span><span class="badge warn">pausa</span><span class="badge danger">game over</span><span class="badge" style="--bc:var(--f)">nivel 7</span><span class="badge" style="--bc:var(--b)">combo</span><span class="badge" style="--bc:var(--u)">récord</span></div>
+          <div class="chips"><button class="btn primary" type="button">Jugar</button><button class="btn" type="button">Opciones</button><button class="btn ok" type="button">Continuar</button><button class="btn danger" type="button">Salir</button></div>
+        </div></div>
+      <div class="lx-acc-row" style="--c:var(--b)" data-tex="hatch"><button class="lx-acc-btn" type="button"><span class="lx-acc-num">III</span><span class="lx-acc-txt"><small>fragmento</small>Código</span><span class="lx-acc-chev" aria-hidden="true">⌄</span></button>
+        <div class="lx-acc-body">
+<pre data-lang="js"><code><span class="cm">// bucle de juego a paso fijo</span>
+<span class="kw">let</span> acc = <span class="num">0</span>, last = performance.now();
+<span class="kw">function</span> <span class="fn">tick</span>(now) {
+  acc += now - last; last = now;
+  <span class="kw">while</span> (acc >= <span class="num">16.67</span>) { <span class="fn">update</span>(); acc -= <span class="num">16.67</span>; }
+  <span class="fn">render</span>(acc / <span class="num">16.67</span>);
+  requestAnimationFrame(tick);
+}</code></pre>
+        </div></div>
+      <div class="lx-acc-row" style="--c:var(--l)" data-tex="grid"><button class="lx-acc-btn" type="button"><span class="lx-acc-num">IV</span><span class="lx-acc-txt"><small>tabla</small>Controles</span><span class="lx-acc-chev" aria-hidden="true">⌄</span></button>
+        <div class="lx-acc-body"><div class="table-wrap"><table>
+          <tr><th>Acción</th><th>Teclado</th><th>Control</th><th>Táctil</th></tr>
+          <tr><td>Mover</td><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></td><td>Palanca izquierda</td><td>Deslizar</td></tr>
+          <tr><td>Saltar</td><td><kbd>Espacio</kbd></td><td>A</td><td>Tocar</td></tr>
+          <tr><td>Pausa</td><td><kbd>Esc</kbd></td><td>Start</td><td>Botón de pausa</td></tr>
+        </table></div></div></div>
+      <div class="lx-acc-row" style="--c:var(--u)" data-tex="checker"><button class="lx-acc-btn" type="button"><span class="lx-acc-num">V</span><span class="lx-acc-txt"><small>bitácora</small>Registro de la partida</span><span class="lx-acc-chev" aria-hidden="true">⌄</span></button>
+        <div class="lx-acc-body"><ol class="lx-log">
+          <li><b style="color:var(--ok)">00:42</b> Nivel 6 superado sin perder vidas.</li>
+          <li><b style="color:var(--warn)">03:10</b> Pausa: el jugador se fue por un café.</li>
+          <li><b style="color:var(--f)">05:57</b> Nuevo récord en el nivel 7.</li>
+          <li><b style="color:var(--danger)">08:21</b> Fin del juego en el jefe final.</li>
+        </ol></div></div>
+    </div>
+    <h3 class="lx-sub">Tarjetas</h3>
+    <div class="lx-grid">
+      <article class="hud card"><span class="badge ok">en juego</span><h4>Serpiente</h4><p>Come, crece, no te muerdas. El clásico de los celulares.</p></article>
+      <article class="hud card"><span class="badge warn">en desarrollo</span><h4>Cubo de Rubik</h4><p>El de la esquina. Revuélvelo y deja que se resuelva solo.</p></article>
+      <article class="hud card"><span class="badge danger">archivado</span><h4>Buscaminas</h4><p>Ganó el buscaminas. Volverá cuando aprenda a perder.</p></article>
+    </div>
   </div>
-  <div class="level-entry">
-    <div class="level-dot gameover">✕</div>
-    <div><h4>Telón — fin de función</h4><p class="muted">3,200 espectadores. Doce actos. Una noche que no se olvida.</p></div>
+</section>
+
+<!-- 5 · Manual (base común de documentación) -->
+<section class="lx-face" id="manual" aria-labelledby="h-man" tabindex="-1">
+  <div class="lx-face-inner lx-wrap">
+    <header class="lx-head"><span class="lx-num">05</span><h2 id="h-man">Manual</h2><p>Así se ve una página de documentación con este tema.</p></header>
+    <div class="doc-layout">
+      <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#inicio">Ludus</a></li><li><a href="#juguetes">Juguetes</a></li><li aria-current="page">Cubo de Rubik</li></ol></nav>
+        <h1>Cubo de Rubik: notación y método</h1>
+        <p class="doc-lede">Cómo se nombran los giros, cómo los entiende el cubo de la esquina y el método por capas para resolverlo a mano.</p>
+        <h2 id="lx-m-notacion">Notación</h2>
+        <p>Cada letra es una cara; sola, el giro va en sentido horario viéndola de frente. Con apóstrofo, al revés. Con el cubo de la esquina enfocado, <kbd>R</kbd> gira la cara derecha y <kbd>Shift</kbd> + <kbd>R</kbd> la regresa.</p>
+        <dl>
+          <dt>R · L</dt><dd>Derecha e izquierda</dd>
+          <dt>U · D</dt><dd>Arriba y abajo</dd>
+          <dt>F · B</dt><dd>Frente y atrás</dd>
+          <dt>R′</dt><dd>R al revés (antihorario)</dd>
+          <dt>R2</dt><dd>Dos giros: media vuelta</dd>
+        </dl>
+        <blockquote><p>Si te confunde, es que estás aprendiendo.</p><footer>Ernő Rubik</footer></blockquote>
+        <h2 id="lx-m-metodo">Método por capas</h2>
+        <ol>
+          <li>La cruz de arriba, con las aristas alineadas con los centros de los lados.</li>
+          <li>Las esquinas de la primera capa.</li>
+          <li>Las aristas de la capa de en medio.</li>
+          <li>La cruz y luego las esquinas de la última capa<sup><a href="#lx-n1" id="lx-r1">1</a></sup>.</li>
+        </ol>
+        <h3 id="lx-m-alg">Un algoritmo</h3>
+        <p>Para subir una arista a la capa de en medio, por la derecha:</p>
+<pre data-lang="notación"><code>U R U′ R′ U′ F′ U F</code></pre>
+        <figure>
+<pre aria-label="Una cara del cubo, resuelta">  ┌───┬───┬───┐
+  │ R │ R │ R │
+  ├───┼───┼───┤
+  │ R │ ● │ R │   ● el centro nunca se mueve:
+  ├───┼───┼───┤     define el color de la cara
+  │ R │ R │ R │
+  └───┴───┴───┘</pre>
+          <figcaption><b>Figura 1.</b> Por qué el cubo de la esquina sirve de menú: los centros nunca cambian de cara.</figcaption>
+        </figure>
+        <h2 id="lx-m-faq">Preguntas</h2>
+        <details><summary>¿Cuántos giros hacen falta como máximo?</summary><p>Veinte: cualquier posición se resuelve en 20 giros o menos (el «número de Dios», demostrado en 2010).</p></details>
+        <details><summary>¿Cómo se resuelve solo el de la esquina?</summary><p>Hace trampa: recuerda cada giro y los deshace en orden inverso. Para resolverlo de verdad desde cualquier posición haría falta un algoritmo de búsqueda como el de Kociemba.</p></details>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="lx-n1">La última capa suele ser la parte lenta: el método CFOP la resuelve en dos pasos con algoritmos memorizados. <a href="#lx-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#componentes"><small>Anterior</small>Componentes</a><a class="next" href="#fin"><small>Siguiente</small>Fin</a></nav>
+      </article>
+      <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
   </div>
+</section>
+
+<!-- 6 · Fin: el proun con el filtro de recorte (riff de @vdwjulien) -->
+<section class="lx-face lx-end" id="fin" aria-labelledby="h-fin" tabindex="-1">
+  <div class="lx-face-inner lx-wrap">
+    <header class="lx-head"><span class="lx-num">06</span><h2 id="h-fin">Fin</h2><p>El proun otra vez, ahora en trama: el recuadro sigue al cursor y deja ver el color.</p></header>
+    <div class="lx-crop-wrap hud">
+      <canvas id="lx-crop" role="img" aria-label="El proun de ludus en gris con trama de puntos; un recuadro con marcas de corte que sigue al cursor deja ver sus colores"></canvas>
+      <div class="lx-duo-row"><canvas id="lx-duo" aria-hidden="true"></canvas><p class="lx-mono-tags"><span>PROUN · LUDUS</span><span>DUOTONO · GRANO</span><span>HECHO EN GDL</span></p></div>
+    </div>
+    <footer class="lx-foot">ludus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>): Shuffle, Bubble Menu, Cubes y Pixel Swap · Red de líneas, grafo de Laboratorio, acordeón con texturas y esquinas de mira inspirados en <a href="https://signalab.mx">Signa_Lab</a> (ITESO) · Filtro de recorte inspirado en <a href="https://www.figma.com/@vdwjulien">@vdwjulien</a> · Cubo con <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> (MIT)</footer>
+  </div>
+</section>
+
+</div>
+</main>
+
+<!-- ── El cubo: navegación ── -->
+<div class="lx-cube" id="lx-cube" tabindex="0" role="group" aria-label="Cubo de navegación: toca una cara para ir a esa vista; con el cubo enfocado, las letras R L U D F B giran capas">
+  <div class="lx-cube-tools"><button type="button" id="lx-scramble">Revolver</button><button type="button" id="lx-solve" disabled>Resolver</button></div>
+  <p class="lx-cube-state" id="lx-cube-state" aria-live="polite">resuelto</p>
 </div>
 
-<hr class="divider">
-
-<!-- ── Stage steps ── -->
-<h2>Actos de la noche</h2>
-<div class="stage-row">
-  <div class="stage-num">1</div>
-  <div><h4>Apertura</h4><p class="muted">El maestro de ceremonias da la bienvenida. Las luces bajan. La magia comienza.</p></div>
-</div>
-<div class="stage-row" style="border-left-color:var(--piece-o)">
-  <div class="stage-num" style="color:var(--piece-o);text-shadow:var(--glow-yellow)">2</div>
-  <div><h4>Malabaristas</h4><p class="muted">Siete objetos en el aire. Fuego, cuchillos y humor en igual medida.</p></div>
-</div>
-<div class="stage-row" style="border-left-color:var(--piece-i)">
-  <div class="stage-num" style="color:var(--piece-i);text-shadow:var(--glow-cyan)">3</div>
-  <div><h4>Trapecio</h4><p class="muted">A doce metros. Sin red. El silencio es parte del acto.</p></div>
-</div>
-<div class="stage-row" style="border-left-color:var(--piece-s)">
-  <div class="stage-num" style="color:var(--piece-s);text-shadow:var(--glow-green)">4</div>
-  <div><h4>Cañón humano</h4><p class="muted">El clímax de la noche. Cuarenta metros de vuelo. El público de pie.</p></div>
+<!-- ── Menú de pausa (Bubble Menu) ── -->
+<div class="lx-pausemenu" id="lx-pausemenu" role="dialog" aria-modal="true" aria-label="Pausa" hidden>
+  <p class="lx-paused" aria-hidden="true">PAUSA</p>
+  <nav class="lx-bubbles" aria-label="Ir a">
+    <a class="lx-bubble" href="#inicio" style="--c:var(--f)">Inicio</a>
+    <a class="lx-bubble" href="#paleta" style="--c:var(--r)">Paleta</a>
+    <a class="lx-bubble" href="#juguetes" style="--c:var(--b)">Juguetes</a>
+    <a class="lx-bubble" href="#componentes" style="--c:var(--l)">Componentes</a>
+    <a class="lx-bubble" href="#manual" style="--c:var(--u)">Manual</a>
+    <a class="lx-bubble" href="#fin" style="--c:var(--d)">Fin</a>
+    <button class="lx-bubble" type="button" data-theme-toggle aria-label="Cambiar a modo día">☀ día</button>
+    <button class="lx-bubble" type="button" data-action="intro">Ver la intro</button>
+    <button class="lx-bubble resume" type="button" data-action="resume">▶ Reanudar</button>
+  </nav>
 </div>
 
-<hr class="divider">
-
-<!-- ── Cards ── -->
-<h2>Cards</h2>
-<div class="grid-2">
-  <div class="card">
-    <strong>Circo de la Noche</strong>
-    <span class="badge piece-i" style="margin-left:8px">carpa central</span>
-    <p class="muted" style="margin-top:8px">Fundado en 1887. Doce actos. Una sola noche. Sin repetición.</p>
-  </div>
-  <div class="card">
-    <strong>El Gran Payaso</strong>
-    <span class="badge play" style="margin-left:8px">en escena</span>
-    <p class="muted" style="margin-top:8px">Nunca habla. Solo actúa. Nadie sabe su nombre real.</p>
-  </div>
-</div>
-
-<hr class="divider">
-<p class="muted" style="text-align:center;margin-top:32px;font-family:var(--display);font-size:11px;letter-spacing:.06em;text-transform:uppercase">
-  ludus_theme · by RemiH06 · iroFactory · MIT
-</p>
-
-</div><!-- .page -->
-
+<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/", "animejs": "../shared/vendor/anime/anime.esm.min.js" } }</script>
 <script type="module">
-import { mount as m0 } from '../shared/components/ludus/tetris-board.js';
-import { mount as m1 } from '../shared/components/ludus/floating-cubes.js';
-import { toggleTheme } from '../shared/components/ludus/kit.js';
-// El marcado llama estas funciones con on…="": van en window.
-Object.assign(window, { toggleTheme });
-m0(); m1();
+import { mount as kit, onTheme } from '../shared/components/ludus/kit.js';
+import { mount as prismNav } from '../shared/components/ludus/prism-nav.js';
+import { mount as lineNet } from '../shared/components/ludus/line-net.js';
+import { mount as labGraph } from '../shared/components/ludus/lab-graph.js';
+import { mount as cubesToy } from '../shared/components/ludus/cubes-toy.js';
+import { mount as shuffleTitle } from '../shared/components/ludus/shuffle-title.js';
+import { mount as pauseMenu } from '../shared/components/ludus/pause-menu.js';
+import { mount as curtainIntro } from '../shared/components/ludus/curtain-intro.js';
+import { mount as accordion } from '../shared/components/ludus/texture-accordion.js';
+import { mount as cropFilter } from '../shared/components/ludus/crop-filter.js';
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
+
+kit();
+// cara del prisma ↔ cara del cubo (R L U D F B): el anillo F R B L va con el prisma, U y D al final
+const CUBE_OF = [4, 0, 5, 1, 2, 3], LABELS = ['Inicio', 'Paleta', 'Juguetes', 'Componentes', 'Manual', 'Fin'];
+let cube = null;
+const dots = [...document.querySelectorAll('.lx-dots button')];
+const nav = prismNav({ onChange: i => { dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i))); cube && cube.show(CUBE_OF[i]); } });
+lineNet(); labGraph(); cubesToy(); accordion(); docProse();
+const title = shuffleTitle();
+const curtain = curtainIntro({ onOpen: () => title && title.play() });
+pauseMenu({ onIntro: () => { nav.go(0); curtain.play(); } });
+cropFilter({ light: '../assets/img/ludus/proun_light.webp', dark: '../assets/img/ludus/proun_dark.webp' });
+docSpecimen({
+  type: { el: '#lx-type', fonts: [
+    { name: 'LUDUS', family: 'var(--display)', size: 38, use: 'Righteous · títulos y el gran título' },
+    { name: 'Fira Code', family: 'var(--mono)', size: 20, use: 'Texto, código y todo lo que se lee' },
+    { name: '1,280 PTS · NIVEL 07', family: 'var(--pixel)', size: 18, use: 'Silkscreen · marcadores, etiquetas y cosas de juego' }] },
+  contrast: { el: '#lx-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent', '--bg', 'Acento'], ['--ok', '--bg', 'En juego'], ['--danger', '--bg', 'Fin del juego'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
+// el proun de la portada cambia con el modo
+const hero = document.querySelector('.lx-hero-img');
+onTheme(() => { hero.src = document.body.classList.contains('light') ? hero.dataset.light : hero.dataset.dark; });
+// el cubo: Three.js después de la primera pintura
+import('../shared/components/rubik-cube/rubik-cube.js').then(m => {
+  const host = document.getElementById('lx-cube'), state = document.getElementById('lx-cube-state'), solve = document.getElementById('lx-solve'), scramble = document.getElementById('lx-scramble');
+  const faces = ['--r', '--l', '--u', '--d', '--f', '--b'].map((token, k) => ({ token, label: LABELS[CUBE_OF.indexOf(k)] }));
+  cube = m.mount({ host, faces, onSelect: f => nav.go(CUBE_OF.indexOf(f)), onChange: s => {
+    state.textContent = s.mode === 'scrambling' ? 'revolviendo…' : s.mode === 'solving' ? 'resolviendo…' : s.moves ? `${s.moves} giros` : 'resuelto';
+    solve.disabled = s.mode !== 'idle' || !s.moves; scramble.disabled = s.mode !== 'idle';
+  } });
+  if (!cube) { host.classList.add('is-flat'); return; }
+  cube.show(CUBE_OF[nav.index]);
+  scramble.addEventListener('click', () => cube.scramble());
+  solve.addEventListener('click', () => cube.solve());
+});
 </script>
 </body>
 </html>

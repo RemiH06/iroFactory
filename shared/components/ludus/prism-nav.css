@@ -1,0 +1,25 @@
+/* ludus · prisma de vistas: las caras de un prisma hexagonal que gira. */
+.lx-stage { position: fixed; inset: 0; z-index: 2; perspective: 2600px; perspective-origin: 50% 50%; overflow: hidden; }
+.lx-prism { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.65, 0, .25, 1); }
+.lx-prism.is-instant { transition: none; }
+.lx-face { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; overscroll-behavior: contain; outline: none; visibility: hidden; }
+.lx-face.is-current, .lx-face.is-arriving { visibility: visible; }
+/* mientras gira, la cara que se va también se ve (es la mitad del efecto) */
+.lx-prism:not(.is-instant) .lx-face { transition: visibility 0s .9s; }
+.lx-prism:not(.is-instant) .lx-face.is-current, .lx-prism:not(.is-instant) .lx-face.is-arriving { transition: visibility 0s 0s; }
+.lx-face-inner { min-height: 100%; padding: 96px clamp(16px, 5vw, 64px) 120px; }
+
+/* flechas de los lados */
+.lx-side { position: fixed; top: 50%; z-index: 20; transform: translateY(-50%); width: 44px; height: 72px; display: grid; place-items: center; border: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 82%, transparent); color: var(--text); font-size: 20px; cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: border-color .2s, color .2s; }
+.lx-side.prev { left: 0; border-left: 0; border-radius: 0 var(--radius) var(--radius) 0; }
+.lx-side.next { right: 0; border-right: 0; border-radius: var(--radius) 0 0 var(--radius); }
+.lx-side:hover { color: var(--accent); border-color: var(--accent); }
+.lx-side:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* indicador de cara (arriba al centro) */
+.lx-dots { position: fixed; top: 22px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 6px; padding: 6px 10px; border-radius: 999px; background: color-mix(in srgb, var(--bg) 80%, transparent); border: 1px solid var(--border); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.lx-dots button { width: 12px; height: 12px; padding: 0; border-radius: 3px; border: 0; background: var(--dot, var(--border)); opacity: .35; cursor: pointer; transition: opacity .2s, transform .2s; }
+.lx-dots button[aria-current="true"] { opacity: 1; transform: scale(1.25); }
+.lx-dots button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 700px) { .lx-side { width: 32px; height: 56px; font-size: 16px; } .lx-dots { top: auto; bottom: 14px; } }
+@media (prefers-reduced-motion: reduce) { .lx-prism { transition: none; } }

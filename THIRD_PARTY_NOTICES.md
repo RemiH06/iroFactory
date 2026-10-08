@@ -8,8 +8,8 @@ iroFactory's own code is MIT licensed (see `LICENSE`). Some themes include code,
 |---|---|---|---|
 | [React Bits](https://github.com/DavidHDev/react-bits) | David Haz ([@DavidHDev](https://github.com/DavidHDev)) | MIT + Commons Clause | apolo, bookworm, disco, elixir, forge, lambda, metro, odysseus, sherry, shui |
 | [WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | Pavel Dobryakov ([@PavelDoGreat](https://github.com/PavelDoGreat)) | MIT (`shared/components/fluid-sim/LICENSE-pavel`) | shui (Splash Cursor is built on it), disco (`fluid-sim`: the simulation with bloom and sunrays, plus its dithering texture) |
-| [Three.js](https://threejs.org) r186 · `shared/vendor/three/` (minified core + GLTFLoader, BufferGeometryUtils, SkeletonUtils, meshopt decoder, RoundedBoxGeometry, RoomEnvironment; WebGPU build as three.core/webgpu/tsl.min.js with the car, person, streetlight and traffic light generators, LoftGeometry, OrbitControls) | three.js authors ([@mrdoob](https://github.com/mrdoob)) | MIT (`shared/vendor/three/LICENSE`) | apolo (3D statue, petals), odysseus (celestial sphere, paper cards, sheet curl), shui (fish school, descent, ice, particles), metro (Guadalajara in 3D), disco (floating 3D objects) |
-| [anime.js](https://animejs.com) v4.5.0 · `shared/vendor/anime/anime.esm.min.js` (ESM bundle) | Julian Garnier ([@juliangarnier](https://github.com/juliangarnier)) | MIT (`shared/vendor/anime/LICENSE.md`) | odysseus, metro (departures board), forge (breakers, cables, titles, scope knobs, cursor) |
+| [Three.js](https://threejs.org) r186 · `shared/vendor/three/` (minified core + GLTFLoader, BufferGeometryUtils, SkeletonUtils, meshopt decoder, RoundedBoxGeometry, RoomEnvironment; WebGPU build as three.core/webgpu/tsl.min.js with the car, person, streetlight and traffic light generators, LoftGeometry, OrbitControls) | three.js authors ([@mrdoob](https://github.com/mrdoob)) | MIT (`shared/vendor/three/LICENSE`) | apolo (3D statue, petals), odysseus (celestial sphere, paper cards, sheet curl), shui (fish school, descent, ice, particles), metro (Guadalajara in 3D), disco (floating 3D objects), ludus (Rubik cube navigation) |
+| [anime.js](https://animejs.com) v4.5.0 · `shared/vendor/anime/anime.esm.min.js` (ESM bundle) | Julian Garnier ([@juliangarnier](https://github.com/juliangarnier)) | MIT (`shared/vendor/anime/LICENSE.md`) | odysseus, metro (departures board), forge (breakers, cables, titles, scope knobs, cursor), ludus (Shuffle title, Bubble Menu, hyperspace cubes) |
 | [Motion](https://motion.dev) v11.18.2, mini build, inlined | Motion B.V. ([@motiondivision](https://github.com/motiondivision)) | MIT | apolo |
 
 React Bits components ported per theme:
@@ -19,6 +19,7 @@ React Bits components ported per theme:
 - **disco** · Halftone Reveal, Prism, Soft Aurora, Split Flap Text, Spotlight Card, Staggered Menu
 - **elixir** · Antigravity, Gooey Nav, Infinite Spiral, Light Pillar, Line Sidebar, Liquid Chrome, Meta Balls, Refine Frame, Tech Text
 - **forge** · Electric Border, Laser Flow, Lightning, Molten Metal, Noise, Split Flap Text, Strands, Target Cursor
+- **ludus** · Bubble Menu, Cubes, Pixel Swap, Shuffle
 - **lambda** · Fluid Glass, Logo Loop, Magnet Lines, Staggered Menu, Stroke Text, Waves
 - **metro** · Border Glow, Cursor Grid, Dock, Dome Gallery, Lattice Loader, Warp Text
 - **odysseus** · Galaxy, Gradient Text, Line Waves, Tear Ticket, Topography
@@ -60,6 +61,9 @@ The React Bits license allows using the components as part of an application, we
 - Figma riffs by [@singhshristi](https://www.figma.com/@singhshristi) (bottle caps pulling focus) and [@dd_uiux](https://www.figma.com/@dd_uiux) (glass bento design system) · disco gallery and component bentos
 - Figma riff "Iconic Cities" by [@ariantaheri](https://www.figma.com/@ariantaheri) · odysseus port carousel
 - motion.dev examples "js-tilt-card" and "Shader Lens" · apolo, rebuilt from the concept
+
+- [Signa_Lab](https://signalab.mx) (ITESO): the line network of its home page, its Laboratorio node graph, its textured accordion and its corner-bracket cards, rebuilt from scratch for ludus (no code copied).
+- Figma riff by [@vdwjulien](https://www.figma.com/@vdwjulien) (grayscale halftone with a crop-marked color window and a duotone with grain) · ludus ending.
 
 ## License texts
 

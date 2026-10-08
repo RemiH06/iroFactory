@@ -1,0 +1,27 @@
+/* ludus · Cubes (React Bits) y los cubos en el hiperespacio. */
+.lx-cubes { max-width: 360px; margin-inline: auto; }
+.lx-cubes-grid { --n: 8; --wave: var(--accent); display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 6px; aspect-ratio: 1; perspective: 900px; outline: none; cursor: pointer; }
+.lx-cubes-grid:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.lx-cube-cell { --flash: 0; --s: calc(min(42vw, 360px) / 16 - 3px); position: relative; aspect-ratio: 1; }
+.lx-c { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .35s cubic-bezier(.2, .8, .3, 1); }
+.lx-c i { position: absolute; inset: 0; border: 1px solid color-mix(in srgb, var(--text2) 40%, transparent); background: color-mix(in srgb, var(--wave) calc(var(--flash) * 100%), var(--bg2)); }
+.lx-c .f { transform: translateZ(var(--s)); }
+.lx-c .k { transform: rotateY(180deg) translateZ(var(--s)); }
+.lx-c .r { transform: rotateY(90deg) translateZ(var(--s)); }
+.lx-c .l { transform: rotateY(-90deg) translateZ(var(--s)); }
+.lx-c .t { transform: rotateX(90deg) translateZ(var(--s)); }
+.lx-c .b { transform: rotateX(-90deg) translateZ(var(--s)); }
+.lx-hyper { position: fixed; inset: 0; z-index: 50; pointer-events: none; perspective: 800px; }
+.lx-hyper-cube { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; transform-style: preserve-3d; }
+.lx-hyper-cube .o { position: absolute; inset: 0; transform-style: preserve-3d; animation: lx-spin 1.4s linear infinite; }
+.lx-hyper-cube i { position: absolute; inset: 0; background: color-mix(in srgb, var(--c) 55%, transparent); border: 2px solid var(--c); }
+.lx-hyper-cube .o > i:nth-child(1) { transform: translateZ(13px); } .lx-hyper-cube .o > i:nth-child(2) { transform: rotateY(180deg) translateZ(13px); }
+.lx-hyper-cube .o > i:nth-child(3) { transform: rotateY(90deg) translateZ(13px); } .lx-hyper-cube .o > i:nth-child(4) { transform: rotateY(-90deg) translateZ(13px); }
+.lx-hyper-cube .o > i:nth-child(5) { transform: rotateX(90deg) translateZ(13px); } .lx-hyper-cube .o > i:nth-child(6) { transform: rotateX(-90deg) translateZ(13px); }
+.lx-hyper-cube .in { position: absolute; inset: 7px; transform-style: preserve-3d; }
+.lx-hyper-cube .in i { background: var(--ci); border-color: var(--ci); }
+.lx-hyper-cube .in i:nth-child(1) { transform: translateZ(6px); } .lx-hyper-cube .in i:nth-child(2) { transform: rotateY(180deg) translateZ(6px); }
+.lx-hyper-cube .in i:nth-child(3) { transform: rotateY(90deg) translateZ(6px); } .lx-hyper-cube .in i:nth-child(4) { transform: rotateY(-90deg) translateZ(6px); }
+.lx-hyper-cube .in i:nth-child(5) { transform: rotateX(90deg) translateZ(6px); } .lx-hyper-cube .in i:nth-child(6) { transform: rotateX(-90deg) translateZ(6px); }
+@keyframes lx-spin { to { transform: rotateX(360deg) rotateY(720deg); } }
+.lx-hyper-bit { position: absolute; width: 5px; height: 5px; border-radius: 1px; }
