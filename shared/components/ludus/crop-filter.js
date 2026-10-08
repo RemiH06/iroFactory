@@ -9,23 +9,28 @@
 //  · y en las dos imágenes, una marca que parpadea: el logo de iroFactory
 //    en un recuadro con marcas de corte y los créditos alrededor, como si
 //    fueran los parámetros del recuadro (autor, licencia, componentes…).
-//    El logo es provisional (el abanico de doce varillas con el sello 色)
-//    hasta que exista el SVG definitivo.
+//    La marca es monocromática (el color del texto de la imagen) y, en la
+//    imagen chica, es solo el sello. El logo es provisional (el abanico de
+//    doce varillas con el sello 色) hasta que exista el SVG definitivo.
 // La trama y el duotono se hornean una vez por modo (canvas 2D).
 // ══════════════════════════════════════════════════════
 import { faceColors, hexRgb, isLight, makeLoop, onTheme, reduceMotion } from './kit.js';
 
-// ── La marca: abanico (Sensu) con doce varillas, una por tema, y el sello 色
-const HUES = [352, 22, 42, 62, 95, 160, 185, 205, 228, 255, 300, 330];
+// ── La marca, en un solo color: abanico (Sensu) de doce varillas y el sello 色
+const seal = (x, cx, cy, s, ink, paper) => {
+  x.fillStyle = ink; x.fillRect(cx - s / 2, cy - s / 2, s, s);
+  x.fillStyle = paper; x.font = `${s * 0.78}px "Shippori Mincho", "Yu Mincho", "MS Mincho", serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('色', cx, cy + s * 0.04);
+};
 function sensu(x, cx, cy, R, ink, paper) {
   const a0 = Math.PI * 1.08, a1 = Math.PI * 1.92, step = (a1 - a0) / 12;
-  HUES.forEach((h, i) => {
-    x.beginPath(); x.moveTo(cx, cy); x.arc(cx, cy, R, a0 + i * step, a0 + (i + 1) * step - step * 0.08); x.closePath();
-    x.fillStyle = `hsl(${h} 72% 56%)`; x.fill();
-  });
+  x.fillStyle = ink;
+  for (let i = 0; i < 12; i++) {
+    x.globalAlpha = i % 2 ? 0.62 : 1; // varillas alternas, para leer el pliegue sin otro color
+    x.beginPath(); x.moveTo(cx, cy); x.arc(cx, cy, R, a0 + i * step, a0 + (i + 1) * step - step * 0.08); x.closePath(); x.fill();
+  }
+  x.globalAlpha = 1;
   x.beginPath(); x.arc(cx, cy, R * 0.34, a0, a1); x.lineTo(cx, cy); x.closePath(); x.fillStyle = paper; x.fill();
-  const s = R * 0.42; x.fillStyle = ink; x.fillRect(cx - s / 2, cy - s * 0.62, s, s);
-  x.fillStyle = paper; x.font = `${s * 0.78}px "Shippori Mincho", "Yu Mincho", "MS Mincho", serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('色', cx, cy - s * 0.1);
+  const s = R * 0.42; seal(x, cx, cy - s * 0.12, s, ink, paper);
 }
 // recuadro con marcas de corte; los créditos van alrededor como parámetros
 const CREDITS = [['MARCA', 'IROFACTORY · LUDUS_THEME'], ['AUTOR', 'REMIH06 · MIT'], ['COMPONENTES', 'REACT BITS (DAVID HAZ): SHUFFLE, BUBBLE MENU, CUBES'], ['RIFF', '@VDWJULIEN · RECORTE Y DUOTONO'], ['3D', 'THREE.JS'], ['ANIMACIÓN', 'ANIME.JS']];
@@ -33,9 +38,12 @@ function mark(x, X, Y, w, dpr, { ink, paper, line, compact = false, t = 0 }) {
   const h = w * 0.78, m = 9 * dpr, g = 4 * dpr;
   x.save();
   x.fillStyle = paper; x.globalAlpha = 0.86; x.fillRect(X, Y, w, h); x.globalAlpha = 1;
-  sensu(x, X + w / 2, Y + h * 0.78, w * 0.4, ink, paper);
-  x.fillStyle = ink; x.font = `${(compact ? 8 : 10) * dpr}px "Silkscreen", monospace`; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
-  x.fillText('iroFactory', X + w / 2, Y + h - 6 * dpr);
+  if (compact) seal(x, X + w / 2, Y + h / 2, h * 0.62, ink, paper); // en chico, solo el sello
+  else {
+    sensu(x, X + w / 2, Y + h * 0.78, w * 0.4, ink, paper);
+    x.fillStyle = ink; x.font = `${10 * dpr}px "Silkscreen", monospace`; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+    x.fillText('iroFactory', X + w / 2, Y + h - 6 * dpr);
+  }
   x.strokeStyle = line; x.lineWidth = 1.2 * dpr; x.beginPath();
   for (const [px, py, sx, sy] of [[X, Y, -1, -1], [X + w, Y, 1, -1], [X, Y + h, -1, 1], [X + w, Y + h, 1, 1]]) {
     x.moveTo(px + sx * g, py); x.lineTo(px + sx * (g + m), py); x.moveTo(px, py + sy * g); x.lineTo(px, py + sy * (g + m));
