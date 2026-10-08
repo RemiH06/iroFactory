@@ -1,5 +1,5 @@
 // ══════════════════════════════════════════════════════
-// Acordeón con texturas (como las Líneas de Signa_Lab): cada renglón lleva
+// Acordeón con texturas: cada renglón lleva
 // su número romano, una etiqueta chica y su propia textura de fondo
 // (puntos enlazados, código de barras, rayado, rejilla, damero…); al abrirlo
 // se enciende su borde con el color de su cara. Uno abierto a la vez.

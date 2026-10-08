@@ -1,0 +1,5 @@
+/* ludus · la rejilla de sólidos (Cubes de React Bits en Three.js) y el hiperespacio. */
+.lx-cubes { max-width: 360px; margin-inline: auto; }
+.lx-cubes-gl { display: block; width: 100%; aspect-ratio: 1; cursor: pointer; outline: none; border-radius: var(--radius); }
+.lx-cubes-gl:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.lx-hyper { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none; }

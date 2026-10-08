@@ -1,0 +1,6 @@
+/* ludus · Constelaciones: el marcador del juego de fondo. */
+.lx-net-hud { position: fixed; left: clamp(12px, 3vw, 24px); bottom: 16px; z-index: 20; font-family: var(--pixel); font-size: 11px; line-height: 1.5; color: var(--text2); padding: 6px 12px; border-radius: var(--radius); background: color-mix(in srgb, var(--bg) 80%, transparent); border: 1px solid var(--border); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); pointer-events: none; }
+.lx-net-hud b { color: var(--accent); font-weight: 400; }
+.lx-net-hud small { display: block; font-size: 9px; opacity: .8; }
+body.lx-star-hot .lx-face.is-current { cursor: pointer; }
+@media (max-width: 700px) { .lx-net-hud { bottom: 56px; font-size: 10px; } .lx-net-hud small { display: none; } }

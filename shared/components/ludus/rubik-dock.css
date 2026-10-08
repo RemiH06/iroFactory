@@ -8,4 +8,7 @@
 .lx-cube-tools button:disabled { opacity: .4; cursor: default; }
 .lx-cube-state { font-family: var(--pixel); font-size: 10px; text-align: center; color: var(--text2); margin-top: 4px; }
 .lx-cube.is-flat { display: none; }
+/* con otro sólido en lugar del cubo: un canvas u otro, y sin revolver */
+.lx-cube.is-solid canvas:not(.lx-solid), .lx-cube:not(.is-solid) canvas.lx-solid { display: none; }
+.lx-cube.is-solid .lx-cube-tools { visibility: hidden; }
 @media (max-width: 700px) { .lx-cube { width: 96px; right: 6px; bottom: 48px; } .lx-cube-tools button { font-size: 9px; padding: 0 7px; min-height: 26px; } .lx-cube-state { display: none; } }

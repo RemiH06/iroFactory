@@ -10,6 +10,8 @@
 //  · scramble(): 20 giros al azar · solve(): deshace todos los giros, en
 //    orden inverso (resolverlo de verdad, paso por paso).
 //  · show(i): gira el cubo entero para dar el frente a la cara i.
+//  · setActive(false): deja de dibujar y de escuchar teclas (cuando otro
+//    objeto ocupa su lugar).
 //   mount({ host, faces: [{ label, token }] ×6 en orden R L U D F B,
 //           onSelect(i), onChange(state) })
 // Sin WebGL, devuelve null y la navegación queda en los demás controles.
@@ -131,7 +133,8 @@ export function mount({ host, faces, onSelect = () => {}, onChange = () => {}, f
     },
     turn(m) { if (mode === 'idle') { turn(m); onChange({ mode, moves: history.length + 1 }); settle(); } },
     get moves() { return history.length; },
-    show(i) { target = faceQuat(i); settle(); }
+    show(i) { target = faceQuat(i); settle(); },
+    setActive(on) { active = on; if (on) loop.still(); }
   };
 
   // ── Orientación del cubo entero: arrastre con inercia y cara al frente
@@ -167,6 +170,7 @@ export function mount({ host, faces, onSelect = () => {}, onChange = () => {}, f
     if (moved < 6) { const f = pick(e); if (f >= 0) { onSelect(f); target = faceQuat(f); w.set(0, 0, 0); settle(); } }
   });
   host.addEventListener('keydown', e => {
+    if (!active) return;
     const l = e.key.toUpperCase(); if (!LETTERS.includes(l) || e.ctrlKey || e.metaKey || e.altKey) return;
     e.preventDefault(); api.turn(l + (e.shiftKey ? "'" : ''));
   });
@@ -174,8 +178,9 @@ export function mount({ host, faces, onSelect = () => {}, onChange = () => {}, f
   const resize = () => { const r = host.getBoundingClientRect(); renderer.setSize(r.width, r.width, false); camera.aspect = 1; camera.updateProjectionMatrix(); };
   resize(); new ResizeObserver(resize).observe(host);
 
-  let last = 0, loop = null;
+  let last = 0, loop = null, active = true;
   const frame = now => {
+    if (!active) return;
     const dt = last ? Math.min(0.05, Math.max(0, now - last) / 1000) : 0.016; last = Math.max(last, now);
     if (!turning && queue.length) startTurn();
     if (turning) { turning.k = Math.min(1, turning.k + dt * 1000 / turning.dur); const e = 1 - (1 - turning.k) ** 3; pivot.setRotationFromAxisAngle(AX[turning.axis], turning.angle * e); if (turning.k >= 1) endTurn(); }

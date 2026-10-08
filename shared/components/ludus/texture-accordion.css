@@ -1,4 +1,4 @@
-/* ludus · acordeón con texturas (como las Líneas de Signa_Lab). */
+/* ludus · acordeón con texturas. */
 .lx-acc { display: grid; gap: 12px; }
 .lx-acc-row { --c: var(--accent); position: relative; border: 1px solid var(--border); border-radius: var(--radius); background-color: color-mix(in srgb, var(--bg2) 92%, transparent); transition: border-color .25s, box-shadow .25s; }
 .lx-acc-row::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: .5; }

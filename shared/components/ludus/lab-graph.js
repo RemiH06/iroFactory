@@ -1,5 +1,5 @@
 // ══════════════════════════════════════════════════════
-// Grafo de Laboratorio (como la sección Laboratorio de Signa_Lab, réplica):
+// Grafo de Laboratorio:
 // 120 nodos con brillo y profundidad (tamaño y opacidad según z), enlaces
 // con degradado entre los colores de sus nodos, polígonos grises casi
 // transparentes al fondo y líneas del cursor a los nodos a menos de 180 px.

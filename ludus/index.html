@@ -3,8 +3,8 @@
 ludus_theme · iroFactory · https://github.com/RemiH06/iroFactory
 Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
 Este tema solo compone: los componentes viven en shared/ y conservan su
-propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riffs de Signa_Lab
-(ITESO) y de Figma (@vdwjulien).
+propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
+(@vdwjulien).
 -->
 <html lang="es">
 <head>
@@ -21,12 +21,15 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riffs de Signa_Lab
 <link rel="stylesheet" href="../shared/components/ludus/prism-nav.css">
 <link rel="stylesheet" href="../shared/components/ludus/curtain-intro.css">
 <link rel="stylesheet" href="../shared/components/ludus/pause-menu.css">
-<link rel="stylesheet" href="../shared/components/ludus/cubes-toy.css">
+<link rel="stylesheet" href="../shared/components/ludus/solid-toy.css">
+<link rel="stylesheet" href="../shared/components/ludus/coaster.css">
+<link rel="stylesheet" href="../shared/components/ludus/star-link.css">
 <link rel="stylesheet" href="../shared/components/ludus/texture-accordion.css">
 <link rel="stylesheet" href="../shared/components/ludus/rubik-dock.css">
 </head>
 <body>
 <canvas id="lx-net" aria-hidden="true"></canvas>
+<p class="lx-net-hud" id="lx-net-hud" role="status"></p>
 
 <!-- ── La carpa ── -->
 <div class="lx-curtain" id="lx-curtain" aria-hidden="true"><div class="lx-valance"></div><div class="lx-drape left"></div><div class="lx-drape right"></div></div>
@@ -35,6 +38,7 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riffs de Signa_Lab
 <header class="lx-top">
   <a class="lx-brand" href="#inicio" aria-label="ludus · inicio"><span>lu</span><span>du</span><span>s</span></a>
   <div class="lx-top-right">
+    <button class="lx-pill lx-shape" id="lx-shape" type="button">▣ cubo</button>
     <button class="lx-pill" type="button" data-theme-toggle aria-label="Cambiar a modo día">☀ día</button>
     <button class="lx-pill lx-pause" id="lx-pause" type="button" aria-expanded="false" aria-controls="lx-pausemenu"><span aria-hidden="true">❚❚</span> Pausa</button>
   </div>
@@ -104,7 +108,7 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riffs de Signa_Lab
 <!-- 3 · Juguetes -->
 <section class="lx-face" id="juguetes" aria-labelledby="h-jug" tabindex="-1">
   <div class="lx-face-inner lx-wrap">
-    <header class="lx-head"><span class="lx-num">03</span><h2 id="h-jug">Juguetes</h2><p>Cosas para tocar. Ninguna sirve para nada, y está bien.</p></header>
+    <header class="lx-head"><span class="lx-num">03</span><h2 id="h-jug">Juguetes</h2><p>Cosas para tocar. Ninguna sirve para nada, y está bien. El fondo también: une estrellas (arrastra de una a otra, o toca una y luego otra) hasta cerrar una figura, antes de que se estiren y se rompan.</p></header>
     <div class="lx-grid">
       <figure class="hud lx-span2 lx-lab-card"><canvas id="lx-lab" aria-hidden="true"></canvas><figcaption>Laboratorio · los nodos crecen y brillan al acercarles el cursor. Parecen botones. No lo son.</figcaption></figure>
       <div class="hud"><h3>Cubos</h3><div class="lx-cubes" id="lx-cubes"></div><p class="lx-hint">Mueve el cursor encima; un clic los manda al hiperespacio.</p></div>
@@ -117,6 +121,16 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riffs de Signa_Lab
         </div>
         <p class="lx-hint">Las cifras de juego van en Silkscreen.</p>
       </div>
+      <figure class="hud lx-span2 lx-coaster" id="lx-coaster">
+        <h3>Montaña rusa</h3>
+        <svg viewBox="0 4 60 26" role="img" aria-label="Montaña rusa: vagones que dan vueltas a una vía con una caída, un rizo y una colina"><path class="lx-track base"/><path class="lx-track ties"/><path class="lx-track-path"/><g class="lx-carts"></g></svg>
+        <div class="lx-engine">
+          <span>Vagones <button type="button" data-cart="-" aria-label="Quitar un vagón">−</button> <output data-out="carts">3</output> <button type="button" data-cart="+" aria-label="Agregar un vagón">+</button></span>
+          <label>Velocidad del tiempo <input type="range" min="0.1" max="3" step="0.1" value="1" data-engine="speed"> <output data-out="speed">1.0×</output></label>
+          <label><input type="checkbox" data-engine="bits"> 8 bits</label>
+        </div>
+        <figcaption class="lx-hint">Baja rápido y sube lento: la velocidad sale de la energía, no de una curva inventada. La velocidad del tiempo y los 8 bits mueven toda la página (todo lo que anima anime.js).</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -231,7 +245,7 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riffs de Signa_Lab
       <canvas id="lx-crop" role="img" aria-label="El proun de ludus en gris con trama de puntos; un recuadro con marcas de corte que sigue al cursor deja ver sus colores"></canvas>
       <div class="lx-duo-row"><canvas id="lx-duo" aria-hidden="true"></canvas><p class="lx-mono-tags"><span>PROUN · LUDUS</span><span>DUOTONO · GRANO</span><span>HECHO EN GDL</span></p></div>
     </div>
-    <footer class="lx-foot">ludus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>): Shuffle, Bubble Menu, Cubes y Pixel Swap · Red de líneas, grafo de Laboratorio, acordeón con texturas y esquinas de mira inspirados en <a href="https://signalab.mx">Signa_Lab</a> (ITESO) · Filtro de recorte inspirado en <a href="https://www.figma.com/@vdwjulien">@vdwjulien</a> · Cubo con <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> (MIT)</footer>
+    <footer class="lx-foot">ludus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>): Shuffle, Bubble Menu y Cubes · Filtro de recorte inspirado en <a href="https://www.figma.com/@vdwjulien">@vdwjulien</a> · Sólidos con <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> y su adaptador para Three (MIT)</footer>
   </div>
 </section>
 
@@ -260,13 +274,15 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riffs de Signa_Lab
   </nav>
 </div>
 
-<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/", "animejs": "../shared/vendor/anime/anime.esm.min.js" } }</script>
+<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/", "animejs": "../shared/vendor/anime/anime-three.esm.min.js" } }</script>
 <script type="module">
 import { mount as kit, onTheme } from '../shared/components/ludus/kit.js';
 import { mount as prismNav } from '../shared/components/ludus/prism-nav.js';
-import { mount as lineNet } from '../shared/components/ludus/line-net.js';
+import { mount as starLink } from '../shared/components/ludus/star-link.js';
+import { mountToggle, shape } from '../shared/components/ludus/solids.js';
+import { mount as coaster } from '../shared/components/ludus/coaster.js';
 import { mount as labGraph } from '../shared/components/ludus/lab-graph.js';
-import { mount as cubesToy } from '../shared/components/ludus/cubes-toy.js';
+import { mount as solidToy } from '../shared/components/ludus/solid-toy.js';
 import { mount as shuffleTitle } from '../shared/components/ludus/shuffle-title.js';
 import { mount as pauseMenu } from '../shared/components/ludus/pause-menu.js';
 import { mount as curtainIntro } from '../shared/components/ludus/curtain-intro.js';
@@ -278,10 +294,11 @@ import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-spec
 kit();
 // cara del prisma ↔ cara del cubo (R L U D F B): el anillo F R B L va con el prisma, U y D al final
 const CUBE_OF = [4, 0, 5, 1, 2, 3], LABELS = ['Inicio', 'Paleta', 'Juguetes', 'Componentes', 'Manual', 'Fin'];
-let cube = null;
+const VIEW_TOKENS = ['--f', '--r', '--b', '--l', '--u', '--d'];
+let cube = null, solidNav = null;
 const dots = [...document.querySelectorAll('.lx-dots button')];
-const nav = prismNav({ onChange: i => { dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i))); cube && cube.show(CUBE_OF[i]); } });
-lineNet(); labGraph(); cubesToy(); accordion(); docProse();
+const nav = prismNav({ onChange: i => { dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i))); cube && cube.show(CUBE_OF[i]); solidNav && solidNav.show(i); } });
+mountToggle(); starLink(); labGraph(); solidToy(); coaster(); accordion(); docProse();
 const title = shuffleTitle();
 const curtain = curtainIntro({ onOpen: () => title && title.play() });
 pauseMenu({ onIntro: () => { nav.go(0); curtain.play(); } });
@@ -297,8 +314,10 @@ docSpecimen({
 const hero = document.querySelector('.lx-hero-img');
 onTheme(() => { hero.src = document.body.classList.contains('light') ? hero.dataset.light : hero.dataset.dark; });
 // el cubo: Three.js después de la primera pintura
-import('../shared/components/rubik-cube/rubik-cube.js').then(m => {
-  const host = document.getElementById('lx-cube'), state = document.getElementById('lx-cube-state'), solve = document.getElementById('lx-solve'), scramble = document.getElementById('lx-scramble');
+const host = document.getElementById('lx-cube'), state = document.getElementById('lx-cube-state');
+const cubeState = () => (cube.moves ? `${cube.moves} giros` : 'resuelto');
+const cubeReady = import('../shared/components/rubik-cube/rubik-cube.js').then(m => {
+  const solve = document.getElementById('lx-solve'), scramble = document.getElementById('lx-scramble');
   const faces = ['--r', '--l', '--u', '--d', '--f', '--b'].map((token, k) => ({ token, label: LABELS[CUBE_OF.indexOf(k)] }));
   cube = m.mount({ host, faces, onSelect: f => nav.go(CUBE_OF.indexOf(f)), onChange: s => {
     state.textContent = s.mode === 'scrambling' ? 'revolviendo…' : s.mode === 'solving' ? 'resolviendo…' : s.moves ? `${s.moves} giros` : 'resuelto';
@@ -309,6 +328,24 @@ import('../shared/components/rubik-cube/rubik-cube.js').then(m => {
   scramble.addEventListener('click', () => cube.scramble());
   solve.addEventListener('click', () => cube.solve());
 });
+// otra forma en la barra: el sólido toma el lugar del cubo (rígido, sin revolver)
+const PLACES = { tetraedro: 'seis aristas', octaedro: 'seis vértices', dodecaedro: 'seis pares de caras', icosaedro: 'seis pares de vértices' };
+const useShape = async name => {
+  await cubeReady; if (!cube) return;
+  const on = name !== 'cubo';
+  if (on && !solidNav) {
+    const m = await import('../shared/components/ludus/solid-nav.js');
+    solidNav = m.mount({ host, views: LABELS.map((label, i) => ({ label, token: VIEW_TOKENS[i] })), onSelect: i => nav.go(i) });
+    if (!solidNav) return;
+  }
+  if (on) { solidNav.setShape(name); solidNav.show(nav.index); }
+  solidNav?.setActive(on); cube.setActive(!on); if (!on) cube.show(CUBE_OF[nav.index]);
+  host.classList.toggle('is-solid', on);
+  state.textContent = on ? PLACES[name] : cubeState();
+  host.setAttribute('aria-label', on ? `Navegación con un ${name}: toca uno de sus ${PLACES[name]} para ir a esa vista` : 'Cubo de navegación: toca una cara para ir a esa vista; con el cubo enfocado, las letras R L U D F B giran capas');
+};
+document.addEventListener('ludus:shape', e => useShape(e.detail));
+if (shape() !== 'cubo') useShape(shape());
 </script>
 </body>
 </html>

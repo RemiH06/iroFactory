@@ -17,4 +17,8 @@
 .lx-curtain.is-open .lx-drape.right { transform: translateX(62%) scaleX(.38); filter: brightness(.7); }
 .lx-curtain.is-open .lx-valance { transform: translateY(-110%); }
 .lx-curtain.is-open { pointer-events: none; }
+/* el cambio de modo: el mismo telón, más rápido y sin espera en la bambalina */
+.lx-curtain.is-quick .lx-drape { transition-duration: .45s; }
+.lx-curtain.is-quick .lx-valance { transition-duration: .4s; transition-delay: 0s; }
+.lx-curtain.is-snap .lx-drape, .lx-curtain.is-snap .lx-valance { transition: none; }
 @media (prefers-reduced-motion: reduce) { .lx-curtain { display: none; } }

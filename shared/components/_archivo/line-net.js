@@ -1,12 +1,14 @@
 // ══════════════════════════════════════════════════════
-// Red de líneas (como la portada de Signa_Lab, réplica sin tsParticles):
+// ARCHIVADO (2026-10-08): fue el fondo de ludus; se guarda solo para tenerlo.
+// Ningún tema lo importa. Si se rescata, va de vuelta a shared/components/.
+// Red de líneas (sin tsParticles):
 // puntos que derivan y se enlazan con líneas cuando quedan a menos de 150 px;
 // el cursor jala líneas hacia los puntos cercanos (modo «grab», 140 px).
 // Mismos números del original: 80 puntos por cada 800×800 px, velocidad 1.5,
 // grosor 1.5, opacidad de enlace .6 y .8 al jalar. Colores: las seis caras.
 // Fondo fijo de todo ludus; con reduced motion, un cuadro quieto.
 // ══════════════════════════════════════════════════════
-import { faceColors, hexRgb, makeLoop, onTheme, reduceMotion } from './kit.js';
+import { faceColors, hexRgb, makeLoop, onTheme, reduceMotion } from '../ludus/kit.js';
 
 export function mount({ canvas = document.getElementById('lx-net') } = {}) {
   if (!canvas) return;
