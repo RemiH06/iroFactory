@@ -179,7 +179,7 @@ export function mount({ root = document.getElementById('lx-board') } = {}) {
       animate(d.g, { z: [{ to: 2.4, duration: 300, ease: 'out(2)' }, { to: 0, duration: 330, ease: 'in(2)' }, { to: 0.7, duration: 220, ease: 'out(2)' }, { to: 0, duration: 230, ease: 'in(2)' }, { to: 0.15, duration: 90 }, { to: 0, duration: 90 }], delay: i * 60, onComplete: () => { if (!--left) done(); } });
     });
   };
-  const resize = () => { if (!renderer) return; const s = canvas.clientWidth || 1; renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); renderer.setSize(s, s, false); };
+  const resize = () => { if (!renderer) return; const w = canvas.clientWidth || 1, h = canvas.clientHeight || 1; renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
   const face = root.closest('.lx-face');
   const loop = renderer ? makeLoop(center, () => {
     if (face && !face.matches('.is-current, .is-arriving')) return;
@@ -190,7 +190,7 @@ export function mount({ root = document.getElementById('lx-board') } = {}) {
   build();
 
   // ── El cubilete: draggable que se suelta para tirar
-  createDraggable(cup, {
+  const cupDrag = createDraggable(cup, {
     releaseStiffness: 200, cursor: { onHover: 'grab', onGrab: 'grabbing' },
     onRelease: self => {
       const power = Math.hypot(self.velocity || 0) / 6; // más fuerte, más vueltas
@@ -206,5 +206,10 @@ export function mount({ root = document.getElementById('lx-board') } = {}) {
   onTheme(() => { tint(); loop?.still(); paint(); });
   document.fonts?.load('64px "Silkscreen"').then(() => { Object.entries(numTex).forEach(([n, t]) => drawNum(t, +n)); loop?.still(); });
   new ResizeObserver(place).observe(root);
+  // El draggable de anime.js guarda la transformación de sus ancestros al
+  // crearse; aquí los ancestros son la cara del prisma, que en ese momento
+  // estaba girada (120° en Juguetes), y el arrastre salía al revés. Se vuelve
+  // a medir al agarrar, cuando la cara ya está de frente.
+  root.addEventListener('pointerdown', () => [cupDrag, ...players.map(p => p.drag)].forEach(d => { d.transforms.inversedMatrix = d.transforms.getMatrix().inverse(); }), { capture: true });
   place(); paint(); say('Arrastra el cubilete y suéltalo para tirar.');
 }

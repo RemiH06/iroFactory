@@ -5,15 +5,65 @@
 //    (en táctil, al dedo) y si nadie lo toca, deriva solo,
 //  · debajo, otra lectura del proun en duotono con grano,
 //  · las dos parpadean, cada una con su propio ritmo,
-//  · rótulos chicos en mono, como en el riff.
+//  · rótulos chicos en mono, como en el riff,
+//  · y en las dos imágenes, una marca que parpadea: el logo de iroFactory
+//    en un recuadro con marcas de corte y los créditos alrededor, como si
+//    fueran los parámetros del recuadro (autor, licencia, componentes…).
+//    El logo es provisional (el abanico de doce varillas con el sello 色)
+//    hasta que exista el SVG definitivo.
 // La trama y el duotono se hornean una vez por modo (canvas 2D).
 // ══════════════════════════════════════════════════════
 import { faceColors, hexRgb, isLight, makeLoop, onTheme, reduceMotion } from './kit.js';
 
+// ── La marca: abanico (Sensu) con doce varillas, una por tema, y el sello 色
+const HUES = [352, 22, 42, 62, 95, 160, 185, 205, 228, 255, 300, 330];
+function sensu(x, cx, cy, R, ink, paper) {
+  const a0 = Math.PI * 1.08, a1 = Math.PI * 1.92, step = (a1 - a0) / 12;
+  HUES.forEach((h, i) => {
+    x.beginPath(); x.moveTo(cx, cy); x.arc(cx, cy, R, a0 + i * step, a0 + (i + 1) * step - step * 0.08); x.closePath();
+    x.fillStyle = `hsl(${h} 72% 56%)`; x.fill();
+  });
+  x.beginPath(); x.arc(cx, cy, R * 0.34, a0, a1); x.lineTo(cx, cy); x.closePath(); x.fillStyle = paper; x.fill();
+  const s = R * 0.42; x.fillStyle = ink; x.fillRect(cx - s / 2, cy - s * 0.62, s, s);
+  x.fillStyle = paper; x.font = `${s * 0.78}px "Shippori Mincho", "Yu Mincho", "MS Mincho", serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('色', cx, cy - s * 0.1);
+}
+// recuadro con marcas de corte; los créditos van alrededor como parámetros
+const CREDITS = [['MARCA', 'IROFACTORY · LUDUS_THEME'], ['AUTOR', 'REMIH06 · MIT'], ['COMPONENTES', 'REACT BITS (DAVID HAZ): SHUFFLE, BUBBLE MENU, CUBES'], ['RIFF', '@VDWJULIEN · RECORTE Y DUOTONO'], ['3D', 'THREE.JS'], ['ANIMACIÓN', 'ANIME.JS']];
+function mark(x, X, Y, w, dpr, { ink, paper, line, compact = false, t = 0 }) {
+  const h = w * 0.78, m = 9 * dpr, g = 4 * dpr;
+  x.save();
+  x.fillStyle = paper; x.globalAlpha = 0.86; x.fillRect(X, Y, w, h); x.globalAlpha = 1;
+  sensu(x, X + w / 2, Y + h * 0.78, w * 0.4, ink, paper);
+  x.fillStyle = ink; x.font = `${(compact ? 8 : 10) * dpr}px "Silkscreen", monospace`; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+  x.fillText('iroFactory', X + w / 2, Y + h - 6 * dpr);
+  x.strokeStyle = line; x.lineWidth = 1.2 * dpr; x.beginPath();
+  for (const [px, py, sx, sy] of [[X, Y, -1, -1], [X + w, Y, 1, -1], [X, Y + h, -1, 1], [X + w, Y + h, 1, 1]]) {
+    x.moveTo(px + sx * g, py); x.lineTo(px + sx * (g + m), py); x.moveTo(px, py + sy * g); x.lineTo(px, py + sy * (g + m));
+  }
+  x.stroke();
+  // parámetros a la izquierda, alineados a la derecha, con su guía hasta el recuadro
+  const rows = compact ? CREDITS.filter(([k]) => k === 'MARCA' || k === 'AUTOR' || k === 'COMPONENTES') : CREDITS, lh = (compact ? 11 : 14) * dpr;
+  x.font = `${(compact ? 7 : 9) * dpr}px "Silkscreen", monospace`; x.textAlign = 'right'; x.textBaseline = 'middle';
+  const y0 = Y + h / 2 - (rows.length - 1) * lh / 2;
+  // placa oscura detrás de los parámetros, para que se lean sobre la trama
+  const tw = Math.max(...rows.map(([k, v]) => x.measureText(`${k} · ${compact && k === 'COMPONENTES' ? 'REACT BITS' : v}`).width));
+  x.fillStyle = ink; x.globalAlpha = 0.82; x.fillRect(X - 22 * dpr - tw, y0 - lh * 0.8, tw + 16 * dpr, rows.length * lh + lh * 0.6); x.globalAlpha = 1;
+  rows.forEach(([k, v], i) => {
+    const y = y0 + i * lh, tx = X - 16 * dpr, txt = compact && k === 'COMPONENTES' ? 'REACT BITS' : v;
+    x.fillStyle = line; x.fillText(`${k} · ${txt}`, tx, y);
+    x.globalAlpha = 0.5; x.beginPath(); x.moveTo(tx + 4 * dpr, y); x.lineTo(X - 3 * dpr, y); x.stroke(); x.globalAlpha = 1;
+  });
+  x.textAlign = 'left'; x.fillStyle = line; x.font = `${(compact ? 7 : 9) * dpr}px "Silkscreen", monospace`;
+  if (!compact) x.fillText(`W ${Math.round(w / dpr)} · H ${Math.round(h / dpr)} · ${String(Math.floor(t * 24) % 1000).padStart(3, '0')}`, X, Y + h + 14 * dpr);
+  x.restore();
+}
+// intermitente: se ve un rato, se apaga, y a veces titila al volver
+const blink = (t, k = 1) => { const p = (t * k) % 3.2; return p < 2.1 && !(p > 0.05 && p < 0.12) && !(p > 0.2 && p < 0.26); };
+
 export function mount({ canvas = document.getElementById('lx-crop'), duo = document.getElementById('lx-duo'), light, dark }) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d'), face = canvas.closest('.lx-face');
-  let img = null, gray = null, W = 1, H = 1, dpr = 1, box = { x: 0.55, y: 0.35 }, aim = null, t0 = performance.now();
+  let img = null, gray = null, duoBase = null, W = 1, H = 1, dpr = 1, box = { x: 0.55, y: 0.35 }, aim = null, t0 = performance.now();
   const load = src => new Promise(res => { const im = new Image(); im.onload = () => res(im); im.src = src; });
   // gris con trama: luminancia en celdas de 7 px dibujada como puntos
   const bake = () => {
@@ -34,6 +84,7 @@ export function mount({ canvas = document.getElementById('lx-crop'), duo = docum
       dc.drawImage(img, 0, 0, w, h); const id = dc.getImageData(0, 0, w, h), p = id.data, [a, b] = [hexRgb(faceColors()[5]), hexRgb(faceColors()[2])];
       for (let k = 0; k < p.length; k += 4) { const L = (0.2126 * p[k] + 0.7152 * p[k + 1] + 0.0722 * p[k + 2]) / 255 + (Math.random() - 0.5) * 0.12; for (let q = 0; q < 3; q++) p[k + q] = a[q] + (b[q] - a[q]) * Math.max(0, Math.min(1, L)); }
       dc.putImageData(id, 0, 0);
+      duoBase = document.createElement('canvas'); duoBase.width = w; duoBase.height = h; duoBase.getContext('2d').drawImage(duo, 0, 0);
     }
   };
   const size = () => { dpr = Math.min(devicePixelRatio || 1, 2); W = canvas.clientWidth || 1; H = canvas.clientHeight || 1; /* tamaño de diseño: la cara puede estar girada */ canvas.width = W * dpr; canvas.height = H * dpr; bake(); };
@@ -60,7 +111,14 @@ export function mount({ canvas = document.getElementById('lx-crop'), duo = docum
     ctx.stroke();
     ctx.font = `${10 * dpr}px "Silkscreen", monospace`; ctx.fillStyle = ctx.strokeStyle;
     ctx.fillText('LIGHT · FOCUS · SHINE', x0, y0 - 10 * dpr); ctx.fillText(`${Math.round(box.x * 100)}.${Math.round(box.y * 100)}`, x0 + bw - 40 * dpr, y0 + bh + 18 * dpr);
-    if (duo && !reduceMotion.matches) duo.style.opacity = Math.sin(t * 2.1) > 0.97 ? 0.55 : 1; // su propio parpadeo
+    // la marca con los créditos, abajo a la derecha
+    const ink = isLight ? '#1E1A22' : '#F2EEE6', paper = isLight ? '#F3EFE8' : '#16141A', still = reduceMotion.matches;
+    if (still || blink(t)) { const mw = Math.max(80, Math.min(150, W * 0.2)) * dpr; mark(ctx, W * dpr - mw - 22 * dpr, H * dpr - mw * 0.78 - 34 * dpr, mw, dpr, { ink: paper, paper: ink, line: ink, t, compact: W < 600 }); }
+    if (duo && duoBase) {
+      const dx = duo.getContext('2d'), dw = duo.width, dh = duo.height; dx.drawImage(duoBase, 0, 0);
+      if (still || blink(t + 1.3, 1.1)) { const mw = Math.min(90, dw / dpr * 0.3) * dpr; mark(dx, dw - mw - 12 * dpr, dh - mw * 0.78 - 12 * dpr, mw, dpr, { ink: paper, paper: ink, line: '#F2EEE6', compact: true }); }
+      if (!still) duo.style.opacity = Math.sin(t * 2.1) > 0.97 ? 0.55 : 1; // su propio parpadeo
+    }
   };
   canvas.addEventListener('pointermove', e => { const r = canvas.getBoundingClientRect(); aim = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }; });
   canvas.addEventListener('pointerleave', () => { aim = null; });

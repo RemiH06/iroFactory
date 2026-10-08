@@ -100,7 +100,7 @@ export function mount({ root = document.getElementById('lx-track') } = {}) {
   reduceMotion.addEventListener('change', () => field.forEach(c => (reduceMotion.matches ? c.a.pause() : c.a.play())));
 
   // ── El motor
-  const speed = root.querySelector('[data-engine="speed"]'), speedOut = root.querySelector('[data-out="speed"]'), bits = root.querySelector('[data-engine="bits"]');
+  const speed = document.querySelector('[data-engine="speed"]'), speedOut = document.querySelector('[data-out="speed"]'), bits = document.querySelector('[data-engine="bits"]');
   speed?.addEventListener('input', () => { engine.speed = +speed.value; speedOut.textContent = (+speed.value).toFixed(1) + '×'; });
   bits?.addEventListener('change', () => { engine.precision = bits.checked ? 0 : 4; root.classList.toggle('is-8bit', bits.checked); });
 }

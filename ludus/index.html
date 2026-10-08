@@ -100,6 +100,15 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
         <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger · fin del juego</div>
         <div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div>
       </div></div>
+      <div class="hud"><h3>Marcador</h3>
+        <div class="metrics-row">
+          <div class="metric"><div class="metric-val" style="color:var(--f)">1,280</div><div class="metric-lbl">puntos</div></div>
+          <div class="metric"><div class="metric-val" style="color:var(--d)">3</div><div class="metric-lbl">vidas</div></div>
+          <div class="metric"><div class="metric-val" style="color:var(--l)">07</div><div class="metric-lbl">nivel</div></div>
+          <div class="metric"><div class="metric-val" style="color:var(--b)">x4</div><div class="metric-lbl">combo</div></div>
+        </div>
+        <p class="lx-hint">Las cifras de juego van en Silkscreen.</p>
+      </div>
       <div class="hud"><h3>Tipografía</h3><div id="lx-type"></div></div>
       <div class="hud"><h3>Contraste</h3><ul class="spec-contrast" id="lx-contrast"></ul></div>
     </div>
@@ -113,15 +122,6 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
     <div class="lx-grid">
       <figure class="hud lx-span2 lx-lab-card"><canvas id="lx-lab" aria-hidden="true"></canvas><figcaption>Laboratorio · los nodos crecen y brillan al acercarles el cursor. Parecen botones. No lo son.</figcaption></figure>
       <div class="hud"><h3>Cubos</h3><div class="lx-cubes" id="lx-cubes"></div><p class="lx-hint">Mueve el cursor encima; un clic los manda al hiperespacio.</p></div>
-      <div class="hud"><h3>Marcador</h3>
-        <div class="metrics-row">
-          <div class="metric"><div class="metric-val" style="color:var(--f)">1,280</div><div class="metric-lbl">puntos</div></div>
-          <div class="metric"><div class="metric-val" style="color:var(--d)">3</div><div class="metric-lbl">vidas</div></div>
-          <div class="metric"><div class="metric-val" style="color:var(--l)">07</div><div class="metric-lbl">nivel</div></div>
-          <div class="metric"><div class="metric-val" style="color:var(--b)">x4</div><div class="metric-lbl">combo</div></div>
-        </div>
-        <p class="lx-hint">Las cifras de juego van en Silkscreen.</p>
-      </div>
       <figure class="hud lx-span2 lx-circuit" id="lx-track">
         <h3>Circuito</h3>
         <div class="lx-circuit-wrap">
@@ -130,23 +130,27 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
         </div>
         <div class="lx-engine">
           <span>Autos <button type="button" data-car="-" aria-label="Quitar un auto">−</button> <output data-out="cars">4</output> <button type="button" data-car="+" aria-label="Agregar un auto">+</button></span>
+
+        </div>
+        <figcaption class="lx-hint">Acelera en las rectas y frena antes de cada curva: la velocidad sale del radio de la curva (el agarre de las llantas) con límites de aceleración y de frenado, no de una curva inventada. Cada auto tiene su ritmo, así que se rebasan.</figcaption>
+      </figure>
+      <div class="hud lx-motor"><h3>Motor</h3>
+        <div class="lx-engine lx-engine-col">
           <label>Velocidad del tiempo <input type="range" min="0.1" max="3" step="0.1" value="1" data-engine="speed"> <output data-out="speed">1.0×</output></label>
           <label><input type="checkbox" data-engine="bits"> 8 bits</label>
         </div>
-        <figcaption class="lx-hint">Acelera en las rectas y frena antes de cada curva: la velocidad sale del radio de la curva (el agarre de las llantas) con límites de aceleración y de frenado, no de una curva inventada. Cada auto tiene su ritmo, así que se rebasan. La velocidad del tiempo y los 8 bits mueven toda la página (todo lo que anima anime.js).</figcaption>
-      </figure>
-      <div class="hud lx-span2 lx-board-card">
+        <p class="lx-hint">Mueven toda la página: todo lo que anima anime.js (el circuito, los dados, las fichas, el título, las burbujas de la pausa). La velocidad del tiempo es <code>engine.speed</code>; «8 bits» pone <code>engine.precision</code> en 0, sin decimales, y los autos avanzan a saltos.</p>
+      </div>
+      <div class="hud lx-board-card">
         <h3>Tablero</h3>
         <div class="lx-board" id="lx-board">
-          <div class="lx-board-center"><canvas aria-hidden="true"></canvas><p class="lx-board-msg" aria-live="polite"></p><div class="lx-cup" tabindex="0" role="button" aria-label="Cubilete: arrástralo y suéltalo para tirar los dados, o Enter"></div></div>
+          <div class="lx-board-center">
+            <div class="lx-dice"><canvas aria-hidden="true"></canvas><p class="lx-board-msg" aria-live="polite"></p><div class="lx-cup" tabindex="0" role="button" aria-label="Cubilete: arrástralo y suéltalo para tirar los dados, o Enter"></div></div>
+            <div class="lx-board-side"><div class="lx-players"></div><button class="lx-roll" type="button">Tirar</button><p class="lx-hint">Los dados son el sólido de la barra: con el cubo, dos d6; con los demás, un d4, d8, d12 o d20.</p></div>
+          </div>
           <div class="lx-tokens"></div>
         </div>
-        <div class="lx-board-side">
-          <div class="lx-players"></div>
-          <button class="lx-roll" type="button">Tirar</button>
-          <p class="lx-hint">Para dos. Los dados son el sólido de la barra: con el cubo, dos d6; con los demás, un d4, d8, d12 o d20. Las fichas se pueden arrastrar a cualquier casilla, pero queda anotado como trampa.</p>
-          <p class="lx-hint">Caer en un juego libre lo compra (20 fichas); caer en uno ajeno paga 10. Salida da 20 al pasar, Bonus 50, Pausa quita un turno, Atajo regresa a Salida y Suerte mueve de 3 atrás a 3 adelante.</p>
-        </div>
+        <p class="lx-hint">Para dos. Caer en un juego libre lo compra (20 fichas); caer en uno ajeno paga 10. Salida da 20 al pasar, Bonus 50, Pausa quita un turno, Atajo regresa a Salida y Suerte mueve de 3 atrás a 3 adelante. Las fichas se pueden arrastrar a cualquier casilla, pero queda anotado como trampa.</p>
       </div>
     </div>
   </div>
@@ -259,10 +263,10 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
   <div class="lx-face-inner lx-wrap">
     <header class="lx-head"><span class="lx-num">06</span><h2 id="h-fin">Fin</h2><p>El proun otra vez, ahora en trama: el recuadro sigue al cursor y deja ver el color.</p></header>
     <div class="lx-crop-wrap hud">
-      <canvas id="lx-crop" role="img" aria-label="El proun de ludus en gris con trama de puntos; un recuadro con marcas de corte que sigue al cursor deja ver sus colores"></canvas>
+      <canvas id="lx-crop" role="img" aria-label="El proun de ludus en gris con trama de puntos; un recuadro con marcas de corte que sigue al cursor deja ver sus colores. Abajo a la derecha parpadea la marca de iroFactory con los créditos: RemiH06, MIT, React Bits, @vdwjulien, Three.js y anime.js"></canvas>
       <div class="lx-duo-row"><canvas id="lx-duo" aria-hidden="true"></canvas><p class="lx-mono-tags"><span>PROUN · LUDUS</span><span>DUOTONO · GRANO</span><span>HECHO EN GDL</span></p></div>
     </div>
-    <footer class="lx-foot">ludus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>): Shuffle, Bubble Menu y Cubes · Filtro de recorte inspirado en <a href="https://www.figma.com/@vdwjulien">@vdwjulien</a> · Sólidos con <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> y su adaptador para Three (MIT)</footer>
+    <footer class="lx-foot sr-only">ludus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz: Shuffle, Bubble Menu y Cubes · Filtro de recorte inspirado en <a href="https://www.figma.com/@vdwjulien">@vdwjulien</a> · Sólidos con <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> (MIT). Los mismos créditos van en la marca que parpadea sobre las dos imágenes.</footer>
   </div>
 </section>
 

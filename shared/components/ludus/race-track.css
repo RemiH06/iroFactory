@@ -28,3 +28,5 @@
 .lx-engine button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
 .lx-engine button:disabled { opacity: .4; cursor: default; }
 @media (max-width: 560px) { .lx-circuit-wrap { grid-template-columns: 1fr; } .lx-standings { grid-template-columns: repeat(3, auto); } }
+.lx-engine-col { flex-direction: column; align-items: flex-start; margin-top: 0; }
+.lx-motor code { font-family: var(--mono); font-size: 12px; color: var(--accent); }
