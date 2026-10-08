@@ -12,7 +12,9 @@ body {
   --voltage:#FF6820;--signal:#F0A020;--current:#E86010;--core:#C84010;--interrupt:#FF4010;--flux:#D06030;--ground:#706050;
   --ok:#80B040;--warn:#F0A020;--danger:#FF4010;--accent:#E86010;--accent2:#F0A020;
   --black:#080604;--white:#F8E8D0;--gray:#604830;
-  /* Los nixies son neón: no cambian de color con el modo (como en Nixie hex). */
+  /* Los nixies son neón: naranja en la forja. En el taller, nixies con vapor de mercurio
+     (los tardíos lo llevaban para que el cátodo no se pulverizara sobre el vidrio), que
+     dejan un halo azul violáceo alrededor del dígito. */
   --nixie:#FFB070;--nixie-glow:#FF5A10;--tube:#2A2018;
   --mono:'Azeret Mono',ui-monospace,monospace;
   /* Cátodos de alambre: trazo fino y uniforme, cifras altas y angostas (IN-14/IN-15). */
@@ -32,7 +34,7 @@ body.light {
   --voltage:#4593FF;--signal:#00FF80;--current:#2080D0;--core:#4090FF;--interrupt:#FF538D;--flux:#00C8A0;--ground:#607080;
   --ok:#00FF80;--warn:#FFD040;--danger:#FF538D;--accent:#4593FF;--accent2:#00FF80;
   --black:#0C1018;--white:#D0E8F8;--gray:#405870;
-  --tube:#1E2228;
+  --nixie:#DCE6FF;--nixie-glow:#5A6CFF;--tube:#1E2228;
   /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
      para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
      token original se queda para rellenos y muestras de la paleta. */
