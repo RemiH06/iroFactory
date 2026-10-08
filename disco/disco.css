@@ -272,26 +272,86 @@ td code { white-space: nowrap; }
 .swatch-hex { position: absolute; bottom: 4px; left: 6px; font-size: 12px; line-height: 1; pointer-events: none; font-family: var(--mono); }
 
 /* ══════════════════════════════════════════════════════
-   ÍNDICE · corcholatas como navegación (riff de @singhshristi)
-   sobre la simulación de fluidos de Pavel Dobryakov, entre la
-   cerveza y la lata
+   ÍNDICE · corcholatas como navegación (riff de @singhshristi),
+   sobre el fondo de siempre
 ══════════════════════════════════════════════════════ */
-.ds-index { overflow: hidden; color-scheme: dark; }
-.ds-fluid { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
-/* El fluido es una escena oscura en los dos modos: el encabezado va en placa para leerse. */
-.ds-index .ds-head { display: inline-flex; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: 18px 24px; max-width: 100%; }
-.ds-index-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr) minmax(0, 1fr); align-items: center; gap: 18px; }
-.ds-index-grid .model-cell { min-height: clamp(240px, 34vh, 380px); }
-.ds-index-caps .caps-stage { height: clamp(360px, 52vh, 540px); }
+.ds-index-caps .caps-stage { height: clamp(380px, 56vh, 560px); }
 .caps-go-row { display: flex; justify-content: center; margin: 14px 0 0; }
 .caps-stage:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 6px; }
 nav.caps-fallback { display: none; }
 html:not(.js) nav.caps-fallback { display: flex; flex-wrap: wrap; gap: 10px; }
-@media (max-width: 760px) {
-  .ds-index-grid { grid-template-columns: 1fr 1fr; }
-  .ds-index-caps { grid-column: 1 / -1; grid-row: 1; }
-  .ds-index-grid .model-cell { min-height: 200px; }
+
+/* ══════════════════════════════════════════════════════
+   FLUJOS · sobre la simulación de fluidos de Pavel Dobryakov
+   (escena oscura en los dos modos; sin hilos de aurora pegados)
+══════════════════════════════════════════════════════ */
+.ds-fluid-sec { overflow: hidden; }
+.ds-fluid { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+.ds-fluid-sec .ds-head { display: inline-flex; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: 18px 24px; max-width: 100%; }
+/* Sobre el fluido el vidrio se vuelve casi opaco para que el texto se lea. */
+.ds-fluid-sec .card-b { background: color-mix(in srgb, var(--bg) 92%, transparent); }
+
+/* ══════════════════════════════════════════════════════
+   PALETA · bento de tres columnas con la bola disco al centro
+══════════════════════════════════════════════════════ */
+.bento.b3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bento.b3 > .c1 { grid-column: 1; }
+.bento.b3 > .c2 { grid-column: 2; grid-row: 1 / span 2; }
+.bento.b3 > .c3 { grid-column: 3; }
+.bento.b3 > .c12 { grid-column: 1 / span 2; }
+/* En angosto, las columnas fijas se sueltan (misma especificidad que las de arriba) */
+@media (max-width: 900px) {
+  .bento.b3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bento.b3 > .c1, .bento.b3 > .c3 { grid-column: auto; grid-row: auto; }
+  .bento.b3 > .c2 { grid-column: 1 / -1; grid-row: auto; min-height: 320px; order: -1; }
+  .bento.b3 > .c12 { grid-column: 1 / -1; }
 }
+@media (max-width: 680px) {
+  .bento.b3 { grid-template-columns: minmax(0, 1fr); }
+  .bento.b3 > .c1, .bento.b3 > .c2, .bento.b3 > .c3, .bento.b3 > .c12 { grid-column: 1 / -1; }
+}
+
+/* Estados: qué significa cada uno */
+.state-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
+.state-list li { display: grid; grid-template-columns: 10px auto; column-gap: 10px; align-items: baseline; }
+.state-list i { width: 10px; height: 10px; border-radius: 50%; align-self: center; }
+.state-list b { font-size: 14px; color: var(--text); }
+.state-list span { grid-column: 2; font-size: 13px; color: var(--text2); line-height: 1.45; }
+/* Contraste: pares de tokens con su razón WCAG */
+.contrast-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.contrast-list li { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto auto; align-items: center; gap: 10px; font-size: 14px; }
+.contrast-chip { display: grid; place-items: center; height: 30px; border-radius: 8px; border: 1px solid var(--glass-edge); font-weight: 700; }
+.contrast-name { color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.contrast-ratio { font-family: var(--mono); font-size: 13px; color: var(--text2); font-variant-numeric: tabular-nums; }
+/* Tipografía y radios */
+.type-spec { padding: 10px 0; border-bottom: 1px solid var(--glass-edge); }
+.type-spec:last-child { border-bottom: 0; }
+.type-spec p { margin: 0; }
+.type-display { font-family: var(--display); font-size: 40px; line-height: 1.05; color: var(--text); }
+.type-sans { font-family: var(--sans); font-size: 26px; font-weight: 700; color: var(--text); }
+.type-mono { font-family: var(--mono); font-size: 22px; color: var(--accent-ink); }
+.type-meta { font-size: 13px; color: var(--text2); }
+.radius-row { display: grid; gap: 10px; }
+.radius-box { display: grid; place-items: center; height: 56px; border: 1.5px solid var(--border); background: color-mix(in srgb, var(--sky) 10%, transparent); }
+/* Formularios */
+.form-demo { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px 18px; align-items: end; }
+.field { display: grid; gap: 6px; font-size: 13px; color: var(--text2); }
+.field input, .field select { font: inherit; font-size: 15px; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; min-height: 44px; }
+.field input:focus-visible, .field select:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; border-color: var(--accent-ink); }
+.switch, .check { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; color: var(--text); cursor: pointer; }
+.switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.switch-track { position: relative; width: 44px; height: 26px; border-radius: 999px; background: var(--border); transition: background .2s; flex: none; }
+.switch-track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); box-shadow: 0 1px 3px color-mix(in srgb, var(--black) 30%, transparent); transition: transform .2s; }
+.switch input:checked + .switch-track { background: var(--done); }
+.switch input:checked + .switch-track::after { transform: translateX(18px); }
+.switch input:focus-visible + .switch-track { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.check input { width: 20px; height: 20px; accent-color: var(--accent-ink); }
+/* Notificaciones */
+.toast { display: grid; gap: 2px; padding: 10px 14px; margin: 8px 0; border-radius: var(--radius-sm); border: 1px solid var(--glass-edge); border-left: 4px solid var(--accent); background: color-mix(in srgb, var(--bg) 80%, transparent); box-shadow: 0 8px 20px color-mix(in srgb, var(--black) 10%, transparent); }
+.toast b { font-size: 14px; color: var(--text); }
+.toast span { font-size: 13px; color: var(--text2); }
+.toast.ok { border-left-color: var(--ok); } .toast.warn { border-left-color: var(--warn); } .toast.danger { border-left-color: var(--danger); }
+
 /* La bola disco flota sobre la pirámide de Prism (antes al pie). */
 .model-cell.has-prism { overflow: hidden; }
 .model-cell [data-prism] { position: absolute; inset: 0; left: 0; width: 100%; height: 100%; transform: none; pointer-events: none; -webkit-mask-image: radial-gradient(closest-side, rgb(128 128 128) 62%, transparent); mask-image: radial-gradient(closest-side, rgb(128 128 128) 62%, transparent); }

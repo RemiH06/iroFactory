@@ -51,7 +51,8 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#indice"><span class="sm-panel-itemLabel">Índice</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#paleta"><span class="sm-panel-itemLabel">Paleta</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#componentes"><span class="sm-panel-itemLabel">Componentes</span></a></li>
-      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#datos"><span class="sm-panel-itemLabel">Datos</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#codigo"><span class="sm-panel-itemLabel">Código</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#flujos"><span class="sm-panel-itemLabel">Flujos</span></a></li>
     </ul>
     <div class="sm-extras">
       <p class="sm-extras-title">iroFactory</p>
@@ -78,42 +79,67 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
 </section>
 <div class="aurora-thread" data-thread="0" aria-hidden="true"><canvas></canvas></div>
 
-<!-- ── Índice: corcholatas como navegación sobre fluidos (Pavel Dobryakov) ── -->
+<!-- ── Índice: corcholatas como navegación ── -->
 <section class="ds-sec ds-index" id="indice">
-  <canvas class="ds-fluid" data-fluid aria-hidden="true"></canvas>
   <div class="ds-wrap">
-    <div class="ds-head"><span class="ds-num">01</span><h2 class="ds-h2">Índice</h2><p class="ds-sub">Gira las corcholatas y toca la del centro para ir a esa sección. El fondo responde al cursor; un clic lo hace estallar.</p></div>
-    <div class="ds-index-grid">
-      <div class="model-cell" data-model="beer" role="img" tabindex="0" aria-label="Botella de cerveza en 3D: arrástrala o usa las flechas para girarla"></div>
-      <div class="ds-index-caps">
-        <div class="caps-stage" tabindex="0" role="group" aria-label="Corcholatas: flechas para elegir sección, Enter para ir"><canvas data-bottlecaps aria-hidden="true"></canvas></div>
-        <div class="caps-ui">
-          <button class="caps-btn" type="button" id="caps-prev" aria-label="Sección anterior">←</button>
-          <p class="caps-caption" id="caps-caption" aria-live="polite"><b>Paleta</b><span>Tokens de color</span></p>
-          <button class="caps-btn" type="button" id="caps-next" aria-label="Sección siguiente">→</button>
-        </div>
-        <p class="caps-go-row"><a class="ds-go" id="caps-go" href="#paleta">Ir a Paleta →</a></p>
+    <div class="ds-head"><span class="ds-num">01</span><h2 class="ds-h2">Índice</h2><p class="ds-sub">Gira las corcholatas y toca la del centro para ir a esa sección.</p></div>
+    <div class="ds-index-caps">
+      <div class="caps-stage" tabindex="0" role="group" aria-label="Corcholatas: flechas para elegir sección, Enter para ir"><canvas data-bottlecaps aria-hidden="true"></canvas></div>
+      <div class="caps-ui">
+        <button class="caps-btn" type="button" id="caps-prev" aria-label="Sección anterior">←</button>
+        <p class="caps-caption" id="caps-caption" aria-live="polite"><b>Paleta</b><span>Tokens de color</span></p>
+        <button class="caps-btn" type="button" id="caps-next" aria-label="Sección siguiente">→</button>
       </div>
-      <div class="model-cell" data-model="soda" role="img" tabindex="0" aria-label="Lata de refresco en 3D: arrástrala o usa las flechas para girarla"></div>
+      <p class="caps-go-row"><a class="ds-go" id="caps-go" href="#paleta">Ir a Paleta →</a></p>
     </div>
-    <nav class="caps-fallback" aria-label="Índice"><a href="#paleta">Paleta</a><a href="#componentes">Componentes</a><a href="#datos">Datos</a><a href="#inicio">Inicio</a><a href="https://github.com/RemiH06/iroFactory">Repositorio</a></nav>
+    <nav class="caps-fallback" aria-label="Índice"><a href="#paleta">Paleta</a><a href="#componentes">Componentes</a><a href="#codigo">Código</a><a href="#flujos">Flujos</a><a href="#inicio">Inicio</a><a href="https://github.com/RemiH06/iroFactory">Repositorio</a></nav>
   </div>
 </section>
 <div class="aurora-thread" data-thread="4" data-rev aria-hidden="true"><canvas></canvas></div>
 
-<!-- ── Paleta ── -->
+<!-- ── Paleta: tres columnas, la bola disco al centro en dos filas ── -->
 <section class="ds-sec" id="paleta">
   <div class="ds-wrap">
     <div class="ds-head"><span class="ds-num">02</span><h2 class="ds-h2">Paleta</h2><p class="ds-sub">Tokens como variables CSS. Cambian solos con el modo.</p></div>
-    <div class="bento">
-      <article class="card-b s4" style="--spot:var(--tomato)">
-        <div class="b-head"><h3 class="b-title"><i></i>Paleta app</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: paleta">+</button></div>
-        <div class="swatch-group"><p class="swatch-label">Estado de interacción</p><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--new)"><span class="swatch-hex" id="hex-new"></span></div>--new</div><div class="swatch"><div class="swatch-box" style="background:var(--active)"><span class="swatch-hex" id="hex-active"></span></div>--active</div><div class="swatch"><div class="swatch-box" style="background:var(--done)"><span class="swatch-hex" id="hex-done"></span></div>--done</div></div></div>
-        <div class="swatch-group"><p class="swatch-label">Paleta app</p><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--tomato)"><span class="swatch-hex" id="hex-tomato"></span></div>--tomato</div><div class="swatch"><div class="swatch-box" style="background:var(--indigo)"><span class="swatch-hex" id="hex-indigo"></span></div>--indigo</div><div class="swatch"><div class="swatch-box" style="background:var(--mint)"><span class="swatch-hex" id="hex-mint"></span></div>--mint</div><div class="swatch"><div class="swatch-box" style="background:var(--mustard)"><span class="swatch-hex" id="hex-mustard"></span></div>--mustard</div><div class="swatch"><div class="swatch-box" style="background:var(--lila)"><span class="swatch-hex" id="hex-lila"></span></div>--lila</div><div class="swatch"><div class="swatch-box" style="background:var(--peach)"><span class="swatch-hex" id="hex-peach"></span></div>--peach</div><div class="swatch"><div class="swatch-box" style="background:var(--sky)"><span class="swatch-hex" id="hex-sky"></span></div>--sky</div><div class="swatch"><div class="swatch-box" style="background:var(--rose)"><span class="swatch-hex" id="hex-rose"></span></div>--rose</div></div></div>
-        <div class="swatch-group"><p class="swatch-label">Neutros y semánticos</p><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div><div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div><div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div><div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div><div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div><div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div><div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div></div></div>
-        <div class="b-more" hidden><p>Usa el estado, no el color: <code>var(--new)</code> para lo nuevo, <code>var(--active)</code> para lo seleccionado, <code>var(--done)</code> para lo terminado. Los ocho colores de la app son para categorías.</p></div>
+    <div class="bento b3" data-traces>
+      <article class="card-b c1" style="--spot:var(--active)">
+        <div class="b-head"><h3 class="b-title"><i></i>Estados</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: estados">+</button></div>
+        <div class="swatch-group"><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--new)"><span class="swatch-hex" id="hex-new"></span></div>--new</div><div class="swatch"><div class="swatch-box" style="background:var(--active)"><span class="swatch-hex" id="hex-active"></span></div>--active</div><div class="swatch"><div class="swatch-box" style="background:var(--done)"><span class="swatch-hex" id="hex-done"></span></div>--done</div></div></div>
+        <ul class="state-list">
+          <li><i style="background:var(--new)"></i><b>Nuevo</b><span>Sin ver: lugar recién agregado, reseña sin leer.</span></li>
+          <li><i style="background:var(--active)"></i><b>En uso</b><span>Seleccionado, abierto o en curso.</span></li>
+          <li><i style="background:var(--done)"></i><b>Terminado</b><span>Visto, guardado o completado.</span></li>
+        </ul>
+        <div class="b-more" hidden><p>Usa el estado, no el color: <code>var(--new)</code> para lo nuevo, <code>var(--active)</code> para lo seleccionado, <code>var(--done)</code> para lo terminado.</p></div>
       </article>
-      <div class="model-cell s2 has-prism" data-model="discoball" role="img" tabindex="0" aria-label="Bola disco en 3D cuyos espejos llevan los colores de la paleta: arrástrala o usa las flechas para girarla"><canvas data-prism aria-hidden="true"></canvas></div>
+      <div class="model-cell c2 has-prism" data-model="discoball" role="img" tabindex="0" aria-label="Bola disco en 3D cuyos espejos llevan los colores de la paleta: arrástrala o usa las flechas para girarla"><canvas data-prism aria-hidden="true"></canvas></div>
+      <article class="card-b c3" style="--spot:var(--tomato)">
+        <div class="b-head"><h3 class="b-title"><i></i>Paleta app</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: paleta app">+</button></div>
+        <div class="swatch-group"><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--tomato)"><span class="swatch-hex" id="hex-tomato"></span></div>--tomato</div><div class="swatch"><div class="swatch-box" style="background:var(--indigo)"><span class="swatch-hex" id="hex-indigo"></span></div>--indigo</div><div class="swatch"><div class="swatch-box" style="background:var(--mint)"><span class="swatch-hex" id="hex-mint"></span></div>--mint</div><div class="swatch"><div class="swatch-box" style="background:var(--mustard)"><span class="swatch-hex" id="hex-mustard"></span></div>--mustard</div><div class="swatch"><div class="swatch-box" style="background:var(--lila)"><span class="swatch-hex" id="hex-lila"></span></div>--lila</div><div class="swatch"><div class="swatch-box" style="background:var(--peach)"><span class="swatch-hex" id="hex-peach"></span></div>--peach</div><div class="swatch"><div class="swatch-box" style="background:var(--sky)"><span class="swatch-hex" id="hex-sky"></span></div>--sky</div><div class="swatch"><div class="swatch-box" style="background:var(--rose)"><span class="swatch-hex" id="hex-rose"></span></div>--rose</div></div></div>
+        <div class="b-more" hidden><p>Los ocho colores de la app son para categorías: cada sección o tipo de contenido toma uno.</p></div>
+      </article>
+      <article class="card-b c1" style="--spot:var(--gray)">
+        <div class="b-head"><h3 class="b-title"><i></i>Neutros</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: neutros">+</button></div>
+        <div class="swatch-group"><div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--black)"><span class="swatch-hex" id="hex-black"></span></div>--black</div><div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div><div class="swatch"><div class="swatch-box" style="background:var(--white)"><span class="swatch-hex" id="hex-white"></span></div>--white</div><div class="swatch"><div class="swatch-box" style="background:var(--accent)"><span class="swatch-hex" id="hex-accent"></span></div>--accent</div><div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div><div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div><div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div></div></div>
+        <div class="b-more" hidden><p>Neutros para texto y superficies; <code>--accent</code>, <code>--ok</code>, <code>--warn</code> y <code>--danger</code> para estados del sistema.</p></div>
+      </article>
+      <article class="card-b c3" style="--spot:var(--mint)">
+        <div class="b-head"><h3 class="b-title"><i></i>Contraste</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: contraste">+</button></div>
+        <ul class="contrast-list" data-contrast></ul>
+        <div class="b-more" hidden><p>Razón de contraste WCAG calculada en vivo con los tokens del modo actual: AA pide 4.5 en texto normal y 3 en texto grande o íconos; AAA pide 7.</p></div>
+      </article>
+      <article class="card-b c12" style="--spot:var(--lila)">
+        <div class="b-head"><h3 class="b-title"><i></i>Tipografía</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: tipografía">+</button></div>
+        <div class="type-spec"><p class="type-display">Boogie Nights</p><p class="type-meta">Títulos, encabezados y métricas · una sola palabra o cifra</p></div>
+        <div class="type-spec"><p class="type-sans">Plus Jakarta Sans</p><p class="type-meta">Texto, botones y etiquetas · 400 a 700</p></div>
+        <div class="type-spec"><p class="type-mono">Fira Code</p><p class="type-meta">Código, tokens y valores</p></div>
+        <div class="b-more" hidden><p>Familias en <code>--display</code>, <code>--sans</code> y <code>--mono</code>. Boogie Nights no lleva minúsculas largas: úsala en palabras sueltas.</p></div>
+      </article>
+      <article class="card-b c3" style="--spot:var(--sky)">
+        <div class="b-head"><h3 class="b-title"><i></i>Radios</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: radios">+</button></div>
+        <div class="radius-row"><div class="radius-box" style="border-radius:var(--radius-sm)"><code>--radius-sm</code></div><div class="radius-box" style="border-radius:var(--radius)"><code>--radius</code></div><div class="radius-box" style="border-radius:var(--radius-lg)"><code>--radius-lg</code></div></div>
+        <div class="b-more" hidden><p>Tres pasos de redondeo: controles, tarjetas y contenedores grandes.</p></div>
+      </article>
     </div>
   </div>
 </section>
@@ -159,18 +185,28 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
         <div class="b-more" hidden><p><code>.metric</code> con <code>.metric-val</code> (en Boogie Nights) y <code>.metric-lbl</code>; <code>data-count</code> anima la cifra al aparecer.</p></div>
       </article>
       <div class="model-cell s2" data-model="vinyl" role="img" tabindex="0" aria-label="Disco de vinil en 3D con la paleta en la etiqueta: arrástralo o usa las flechas para girarlo"></div>
+      <article class="card-b s6" style="--spot:var(--indigo)">
+        <div class="b-head"><h3 class="b-title"><i></i>Formularios</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: formularios">+</button></div>
+        <div class="form-demo">
+          <label class="field"><span>Nombre del lugar</span><input type="text" value="Taquería El Padrino"></label>
+          <label class="switch"><input type="checkbox" checked><span class="switch-track" aria-hidden="true"></span>Abierto ahora</label>
+          <label class="check"><input type="checkbox"> Acepta tarjeta</label>
+          <label class="field"><span>Tipo</span><select><option>Tacos de canasta</option><option>Al pastor</option><option>Birria</option></select></label>
+        </div>
+        <div class="b-more" hidden><p><code>.field</code> envuelve etiqueta y control; <code>.switch</code> y <code>.check</code> usan el input nativo, así el teclado y los lectores de pantalla funcionan solos.</p></div>
+      </article>
     </div>
   </div>
 </section>
 <div class="aurora-thread" data-thread="2" aria-hidden="true"><canvas></canvas></div>
 
-<!-- ── Datos ── -->
-<section class="ds-sec" id="datos">
+<!-- ── Código y tokens ── -->
+<section class="ds-sec" id="codigo">
   <div class="ds-wrap">
-    <div class="ds-head"><span class="ds-num">04</span><h2 class="ds-h2">Datos</h2><p class="ds-sub">Código, tokens, actividad y flujos de la app de ejemplo (tacology).</p></div>
+    <div class="ds-head"><span class="ds-num">04</span><h2 class="ds-h2">Código</h2><p class="ds-sub">Fragmentos y la tabla de tokens de la app de ejemplo (tacology).</p></div>
     <div class="bento" data-traces>
       <span class="orb a" style="top:30%;right:-50px" aria-hidden="true"></span>
-      <article class="card-b" style="--spot:var(--lila)">
+      <article class="card-b s4" style="--spot:var(--lila)">
         <div class="b-head"><h3 class="b-title"><i></i>Código</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: código">+</button></div>
         <p>Inline: <code>toggleTheme()</code> alterna día y noche.</p>
 <pre data-lang="swift"><code><span class="cm">// Vista de detalle de lugar · tacology</span>
@@ -186,7 +222,8 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
 }</code></pre>
         <div class="b-more" hidden><p><code>pre</code> con <code>data-lang</code>; resaltado con <code>.kw</code>, <code>.fn</code>, <code>.str</code>, <code>.num</code>, <code>.tp</code> y <code>.cm</code>.</p></div>
       </article>
-      <article class="card-b" style="--spot:var(--sky)">
+      <div class="model-cell s2" data-model="soda" role="img" tabindex="0" aria-label="Lata de refresco en 3D: arrástrala o usa las flechas para girarla"></div>
+      <article class="card-b s6" style="--spot:var(--sky)">
         <div class="b-head"><h3 class="b-title"><i></i>Tokens</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: tabla">+</button></div>
         <div class="table-wrap"><table>
           <tr><th>Token</th><th>Día</th><th>Noche</th><th>Uso</th></tr>
@@ -199,6 +236,15 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
         </table></div>
         <div class="b-more" hidden><p>Tabla dentro de <code>.table-wrap</code>: en pantallas chicas se desliza sin romper la página.</p></div>
       </article>
+    </div>
+  </div>
+</section>
+<!-- ── Actividad y flujos: sobre la simulación de fluidos (Pavel Dobryakov) ── -->
+<section class="ds-sec ds-fluid-sec" id="flujos">
+  <canvas class="ds-fluid" data-fluid aria-hidden="true"></canvas>
+  <div class="ds-wrap">
+    <div class="ds-head"><span class="ds-num">05</span><h2 class="ds-h2">Flujos</h2><p class="ds-sub">Actividad, pasos y avisos de la app de ejemplo. El fondo responde al cursor; un clic lo hace estallar.</p></div>
+    <div class="bento" data-traces>
       <article class="card-b" style="--spot:var(--tomato)">
         <div class="b-head"><h3 class="b-title"><i></i>Actividad</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: actividad">+</button></div>
         <div class="feed">
@@ -224,11 +270,17 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
         <div class="b-more" hidden><p><code>.place</code> con <code>.place-top</code> para el nombre y su badge.</p></div>
       </article>
       <div class="model-cell s2" data-model="taco" role="img" tabindex="0" aria-label="Taco en 3D: arrástralo o usa las flechas para girarlo"></div>
+      <div class="model-cell s2" data-model="beer" role="img" tabindex="0" aria-label="Tarro de cerveza en 3D: arrástralo o usa las flechas para girarlo"></div>
+      <article class="card-b s4" style="--spot:var(--rose)">
+        <div class="b-head"><h3 class="b-title"><i></i>Notificaciones</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: notificaciones">+</button></div>
+        <div class="toast ok"><b>Reseña publicada</b><span>Ya aparece en Taquería El Padrino.</span></div>
+        <div class="toast warn"><b>Sin conexión</b><span>Tus cambios se guardan cuando vuelva la red.</span></div>
+        <div class="toast danger"><b>No se pudo subir la foto</b><span>Pesa más de 10 MB. Intenta con una más ligera.</span></div>
+        <div class="b-more" hidden><p><code>.toast</code> con <code>.ok</code>, <code>.warn</code> o <code>.danger</code>: título en <code>b</code> y detalle en <code>span</code>. Aparecen arriba a la derecha y se van solos a los 5 s, salvo los de error.</p></div>
+      </article>
     </div>
   </div>
 </section>
-<div class="aurora-thread" data-thread="3" data-rev aria-hidden="true"><canvas></canvas></div>
-
 </main>
 
 <footer class="ds-footer">
@@ -237,7 +289,7 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
 
 <script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/" } }</script>
 <script type="module">
-import { initTheme, stickyHeader } from '../shared/core/core.js';
+import { initTheme, stickyHeader, onTheme, contrast, hexRgb, cssVar } from '../shared/core/core.js';
 import { mount as asanoha } from '../shared/components/asanoha/asanoha.js';
 import { mount as ambientLights } from '../shared/components/ambient-lights/ambient-lights.js';
 import { mount as staggeredMenu } from '../shared/components/staggered-menu/staggered-menu.js';
@@ -264,16 +316,26 @@ halftoneReveal();
 spotlightCard({ onToggle: drawTraces });
 bentoTraces();
 cardReveal();
-fluidSim({ canvas: '[data-fluid]', host: document.getElementById('indice'), colors: PALETTE, dither: `${IMG}fluid-dither.png` });
+fluidSim({ canvas: '[data-fluid]', host: document.getElementById('flujos'), colors: PALETTE, dither: `${IMG}fluid-dither.png` });
 auroraThread({ pairs: [['--mustard', '--rose', '--peach', '--lila'], ['--sky', '--lila', '--sky', '--rose'], ['--mint', '--indigo', '--mint', '--indigo'], ['--peach', '--tomato', '--mustard', '--tomato'], ['--rose', '--lila', '--rose', '--lila']] });
 prism();
 bottlecapGallery({ items: [
     { name: 'Paleta', note: 'Tokens de color', href: '#paleta', light: `${IMG}cap0_light.webp`, dark: `${IMG}cap0_dark.webp` },
-    { name: 'Componentes', note: 'Avisos, badges, botones, métricas', href: '#componentes', light: `${IMG}cap1_light.webp`, dark: `${IMG}cap1_dark.webp` },
-    { name: 'Datos', note: 'Código, tokens, actividad, flujos', href: '#datos', light: `${IMG}cap2_light.webp`, dark: `${IMG}cap2_dark.webp` },
+    { name: 'Componentes', note: 'Avisos, badges, botones, formularios', href: '#componentes', light: `${IMG}cap1_light.webp`, dark: `${IMG}cap1_dark.webp` },
+    { name: 'Código', note: 'Fragmentos y tabla de tokens', href: '#codigo', light: `${IMG}cap2_light.webp`, dark: `${IMG}cap2_dark.webp` },
+    { name: 'Flujos', note: 'Actividad, pasos y avisos', href: '#flujos', light: `${IMG}cap4_light.webp`, dark: `${IMG}cap4_dark.webp` },
     { name: 'Inicio', note: 'Portada', href: '#inicio', light: `${IMG}cap3_light.webp`, dark: `${IMG}cap3_dark.webp` },
     { name: 'Repositorio', note: 'iroFactory en GitHub', href: 'https://github.com/RemiH06/iroFactory', light: `${IMG}cap5_light.webp`, dark: `${IMG}cap5_dark.webp` }
   ] });
+// Contraste: pares de tokens con su razón WCAG, recalculados en cada modo
+const PAIRS = [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent-ink', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']];
+const paintContrast = () => document.querySelectorAll('[data-contrast]').forEach(ul => {
+  ul.innerHTML = PAIRS.map(([f, b, n]) => {
+    const r = contrast(hexRgb(cssVar(f)), hexRgb(cssVar(b))), lvl = r >= 7 ? 'AAA' : r >= 4.5 ? 'AA' : r >= 3 ? 'AA grande' : 'no pasa';
+    return `<li><span class="contrast-chip" style="color:var(${f});background:var(${b})">Aa</span><span class="contrast-name">${n}</span><span class="contrast-ratio">${r.toFixed(1)}:1</span><span class="badge ${r >= 4.5 ? 'ok' : r >= 3 ? 'warn' : 'danger'}">${lvl}</span></li>`;
+  }).join('');
+});
+paintContrast(); onTheme(paintContrast);
 // Objetos 3D: Three.js se carga después de la primera pintura
 import('../shared/components/model-stage/model-stage.js').then(m => m.mount({ colors: PALETTE, base: '../assets/models/disco/', models: {
   discoball: { build: 'discoball', spin: 0.3 },
