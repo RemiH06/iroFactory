@@ -262,11 +262,21 @@ SOFTWARE.
     </div>
   </div>
   <div class="metro-city" id="metro-city">
+    <header class="metro-city-head">
+      <h2>Guadalajara en 3D</h2>
+      <p class="muted">El cruce de las tres líneas del Tren Ligero: Juárez, Plaza Universidad y Ávila Camacho.</p>
+    </header>
     <div class="metro-city-view" role="region" aria-label="Guadalajara en 3D: el cruce de las líneas 1, 2 y 3 del Tren Ligero">
       <p class="sr-only">Maqueta de la zona entre Juárez, Plaza Universidad y Ávila Camacho, con calles de OpenStreetMap. Se arrastra para girar; el botón Explorar la abre a pantalla completa con zoom.</p>
       <div class="metro-city-labels" aria-hidden="true" hidden></div>
       <button class="metro-city-expand" type="button" aria-expanded="false" hidden>Explorar ⤢</button>
       <button class="metro-city-close" type="button" hidden>Cerrar · Esc</button>
+      <div class="metro-city-tools" hidden>
+        <button type="button" data-z="in" aria-label="Acercar">+</button>
+        <button type="button" data-z="out" aria-label="Alejar">−</button>
+        <button type="button" data-z="home" aria-label="Vista inicial">⌂</button>
+      </div>
+      <p class="metro-city-hint" hidden></p>
     </div>
     <section class="metro-board" aria-labelledby="metro-board-title">
       <h3 id="metro-board-title">Tren Ligero · ZMG</h3>

@@ -230,14 +230,45 @@ export async function mount({ view, sim }) {
     for (const l of lines) l.ghost.opacity = n ? 0.4 : 0.8; // de día el túnel compite con la ciudad clara
   };
 
-  // ── Cámara: se arrastra para girar y gira sola despacio; expandida, zoom y desplazamiento
+  // ── Cámara: se arrastra para girar y gira sola despacio. Expandida funciona como mapa: un dedo
+  // (o arrastrar) mueve, dos dedos (o la rueda) acercan y giran, clic derecho gira, doble toque vuela a un punto.
   const coarse = matchMedia('(pointer: coarse)').matches;
   const controls = new OrbitControls(camera, canvas);
-  Object.assign(controls, { enableZoom: false, enablePan: false, enableDamping: true, dampingFactor: 0.08, autoRotate: !reduceMotion.matches, autoRotateSpeed: 0.3, minPolarAngle: 0.15, maxPolarAngle: 1.2, minDistance: 25, maxDistance: 6500, zoomToCursor: true, screenSpacePanning: false });
+  Object.assign(controls, { enableZoom: false, enablePan: false, enableDamping: true, dampingFactor: 0.08, autoRotate: !reduceMotion.matches, autoRotateSpeed: 0.3, minPolarAngle: 0.15, maxPolarAngle: 1.2, minDistance: 25, maxDistance: 9000, zoomToCursor: true, screenSpacePanning: false });
   controls.target.set(0, 0, 0); controls.enabled = !coarse; controls.update();
   let expanded = false;
+  const ORBIT = { mouse: { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }, touch: { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN } };
+  const MAP = { mouse: { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.ROTATE }, touch: { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_ROTATE } };
+  const HOME = { pos: camera.position.clone(), target: controls.target.clone() };
+  // vuelo suave de la cámara (doble toque, botones + y −, vista inicial)
+  let fly = null;
+  const flyTo = (target, pos, dur = 0.7) => {
+    if (reduceMotion.matches) { controls.target.copy(target); camera.position.copy(pos); controls.update(); loop.still(); return; }
+    fly = { p0: camera.position.clone(), t0: controls.target.clone(), p1: pos.clone(), t1: target.clone(), k: 0, dur }; loop.still();
+  };
+  const zoomBy = f => {
+    const off = camera.position.clone().sub(controls.target), d = THREE.MathUtils.clamp(off.length() * f, controls.minDistance, controls.maxDistance);
+    flyTo(controls.target, controls.target.clone().add(off.setLength(d)), 0.35);
+  };
+  const ray = new THREE.Raycaster(), groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), hit = new THREE.Vector3();
+  const flyToPoint = (cx, cy) => {
+    const r = canvas.getBoundingClientRect();
+    ray.setFromCamera(new THREE.Vector2((cx - r.left) / r.width * 2 - 1, -((cy - r.top) / r.height) * 2 + 1), camera);
+    if (!ray.ray.intersectPlane(groundPlane, hit)) return;
+    const off = camera.position.clone().sub(controls.target), d = Math.max(90, off.length() * 0.42);
+    flyTo(hit, hit.clone().add(off.setLength(d)));
+  };
+  canvas.addEventListener('dblclick', e => { if (expanded) flyToPoint(e.clientX, e.clientY); });
+  let tap = null; // doble toque (en táctil no siempre llega dblclick)
+  canvas.addEventListener('pointerup', e => {
+    if (!expanded || e.pointerType !== 'touch') return;
+    const now = performance.now();
+    if (tap && now - tap.t < 320 && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 30) { tap = null; flyToPoint(e.clientX, e.clientY); }
+    else tap = { t: now, x: e.clientX, y: e.clientY };
+  });
   const setExpanded = on => {
-    expanded = on;
+    expanded = on; fly = null;
+    const m = on ? MAP : ORBIT; controls.mouseButtons = m.mouse; controls.touches = m.touch;
     Object.assign(controls, { enableZoom: on, enablePan: on, enabled: on || !coarse, maxPolarAngle: on ? 1.48 : 1.2 });
     if (on) controls.listenToKeyEvents(window); else controls.stopListenToKeyEvents();
     if (labelLayer) labelLayer.hidden = !on;
@@ -286,7 +317,15 @@ export async function mount({ view, sim }) {
     const time = (now - t0) / 1000, dt = last ? Math.min(0.05, Math.max(0, now - last) / 1000) : 0; last = Math.max(last, now);
     placeTrains();
     signals(reduceMotion.matches ? 0 : time);
+    if (fly) {
+      fly.k = Math.min(1, fly.k + dt / fly.dur); const e = fly.k < 0.5 ? 4 * fly.k ** 3 : 1 - (-2 * fly.k + 2) ** 3 / 2;
+      controls.target.lerpVectors(fly.t0, fly.t1, e); camera.position.lerpVectors(fly.p0, fly.p1, e);
+      if (fly.k >= 1) fly = null;
+    }
     controls.autoRotate = !reduceMotion.matches && !expanded; controls.update(dt);
+    // que el centro de la vista no se salga de la zona (si no, uno se pierde en el vacío)
+    const tx = THREE.MathUtils.clamp(controls.target.x, bx0, bx1) - controls.target.x, tz = THREE.MathUtils.clamp(controls.target.z, bz0, bz1) - controls.target.z;
+    if (tx || tz) { controls.target.x += tx; controls.target.z += tz; camera.position.x += tx; camera.position.z += tz; }
     renderer.render(scene, camera);
     drawLabels();
     inFrame = false;
@@ -306,6 +345,9 @@ export async function mount({ view, sim }) {
     setDrawn: (i, v) => { setDrawn(lines[i], v); loop.still(); },
     setSignals: mode => { signalMode = mode; loop.still(); },
     setExpanded,
+    zoomBy,
+    // vista inicial; en pantalla vertical, desde el sur mirando al norte para que la zona (larga de norte a sur) quepa completa
+    home: () => flyTo(HOME.target, view.clientWidth / view.clientHeight < 0.8 ? new THREE.Vector3(0, 5200, 4300) : HOME.pos),
     loop
   };
 }

@@ -141,13 +141,19 @@ export async function mount() {
 
   // ── Explorar: la ciudad ocupa la pantalla con zoom y desplazamiento
   const openBtn = view.querySelector('.metro-city-expand'), closeBtn = view.querySelector('.metro-city-close');
+  const tools = view.querySelector('.metro-city-tools'), hint = view.querySelector('.metro-city-hint');
+  hint.textContent = matchMedia('(pointer: coarse)').matches
+    ? 'Un dedo mueve el mapa · dos dedos acercan y giran · doble toque se acerca a un punto'
+    : 'Arrastra para moverte · rueda para acercar · clic derecho para girar · doble clic se acerca a un punto';
+  tools.addEventListener('click', e => { const z = e.target.closest('button')?.dataset.z; if (!z || !city) return; z === 'home' ? city.home() : city.zoomBy(z === 'in' ? 0.55 : 1.8); });
   let expanded = false;
   const setExpanded = on => {
     if (!city || on === expanded) return;
     expanded = on;
     view.classList.toggle('is-expanded', on); document.documentElement.classList.toggle('metro-city-open', on);
-    openBtn.setAttribute('aria-expanded', on); closeBtn.hidden = !on;
+    openBtn.setAttribute('aria-expanded', on); closeBtn.hidden = tools.hidden = hint.hidden = !on;
     city.setExpanded(on);
+    if (on && innerWidth < innerHeight) requestAnimationFrame(() => city.home()); // en teléfono vertical, encuadrar la zona completa al abrir
     (on ? closeBtn : openBtn).focus({ preventScroll: true });
   };
   openBtn.addEventListener('click', () => setExpanded(true));

@@ -154,6 +154,10 @@ html.js-pin .metro-hero{position:sticky;top:0}
 }
 .metro-stage{padding:24px 0 80px}
 .metro-panel[hidden]{display:none}
+/* Panel de las pestañas: recuadro propio y alto mínimo de casi una pantalla, para que al cambiar
+   a una pestaña corta lo de abajo (la ciudad) no suba y baje con cada cambio. */
+.metro-panel{min-height:max(680px,calc(100svh - 190px));padding:4px 28px 28px;border:1px solid var(--border);border-radius:var(--radius-lg);background:color-mix(in srgb,var(--bg2) 72%,transparent)}
+@media(max-width:600px){.metro-panel{padding:2px 16px 20px}}
 .metro-panel>h2:first-child{margin-top:8px}
 .metro-footer{padding:22px 0 30px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--text2);background:color-mix(in srgb,var(--bg) 92%,transparent);border-top:1px solid var(--border)}
 .metro-footer a{text-underline-offset:3px}
