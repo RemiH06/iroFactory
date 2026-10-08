@@ -1,12 +1,13 @@
 // ══════════════════════════════════════════════════════
 // El mar en 3D · Three.js r186 (shared/vendor/three, MIT).
 // Una capa fija detrás del contenido, encima del agua de Ferrofluid:
-//  · Cardumen de peces navaja (Centriscus scutatus) recortados de su
-//    radiografía. Cada pez es una tira de malla que ondula a lo largo del
-//    cuerpo (la cola mueve más que la cabeza) y nada con reglas simples de
-//    cardumen: separación, alineación, cohesión y huir del puntero.
-//    La radiografía da la forma: su luminancia es la opacidad. De día, hueso
-//    claro como las radiografías del hero; de noche, brillo cian.
+//  · Animales en rayos X: modelos 3D animados (Animated Fish Pack de
+//    Quaternius, CC0) con un material que solo deja ver el cuerpo en sus
+//    bordes, como tejido en una placa. Tres cardúmenes de peces chicos con
+//    reglas de cardumen (separación, alineación, cohesión, huir del puntero)
+//    y cuatro animales grandes que cruzan cada uno a su profundidad: el
+//    delfín cerca de la superficie, el tiburón a media agua, la mantarraya y
+//    la ballena en lo profundo. De día, hueso claro; de noche, brillo cian.
 //  · Descenso: la profundidad sigue al scroll y a la corriente abierta
 //    (superficie, corrientes, profundidad, desembocadura). Al bajar, el agua
 //    se oscurece hacia --deep, los rayos de luz se apagan y los peces se
@@ -20,6 +21,9 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
 import { isDark, makeLoop, onTheme, reduceMotion } from './kit.js';
 
 const cssVar = n => getComputedStyle(document.body).getPropertyValue(n).trim();
@@ -27,34 +31,48 @@ const rnd = (a, b) => a + Math.random() * (b - a);
 const smooth = (a, b, v) => { const x = Math.min(1, Math.max(0, (v - a) / (b - a))); return x * x * (3 - 2 * x); };
 const DEPTH = { superficie: 0.2, corrientes: 0.45, profundidad: 0.72, desembocadura: 1 };
 
-const fishVs = `
-uniform float uTime; uniform float uPhase; uniform float uSwim;
-varying vec2 vUv; varying float vZ;
+// Rayos X: opacidad por el borde (fresnel) con el esqueleto animado del modelo.
+// Las partes claras del modelo original (panza, franjas) quedan un poco más densas.
+const xrayVs = `
+#include <common>
+#include <skinning_pars_vertex>
+varying vec3 vN; varying vec3 vV; varying vec3 vC; varying float vZ;
 void main() {
-  vUv = uv;
-  vec3 p = position;
-  // La cabeza va a la izquierda de la textura (uv.x = 0); la ola crece hacia la cola.
-  float k = pow(uv.x, 1.5);
-  float w = sin(uTime * (5.0 + 3.0 * uSwim) - uv.x * 7.0 + uPhase);
-  p.z += w * k * 0.16;
-  p.y += w * k * 0.03;
-  vec4 mv = modelViewMatrix * vec4(p, 1.0);
-  vZ = -mv.z;
-  gl_Position = projectionMatrix * mv;
+  #include <beginnormal_vertex>
+  #include <skinbase_vertex>
+  #include <skinnormal_vertex>
+  #include <begin_vertex>
+  #include <skinning_vertex>
+  #include <project_vertex>
+  vN = normalize(normalMatrix * objectNormal); vV = normalize(-mvPosition.xyz); vZ = -mvPosition.z;
+  #ifdef USE_COLOR
+  vC = color;
+  #else
+  vC = vec3(0.6);
+  #endif
 }`;
-const fishFs = `
-uniform sampler2D uMap; uniform vec3 uColor; uniform float uAlpha; uniform float uNight; uniform float uFogNear; uniform float uFogFar;
-varying vec2 vUv; varying float vZ;
+const xrayFs = `
+uniform vec3 uColor; uniform float uAlpha; uniform float uFogNear; uniform float uFogFar;
+varying vec3 vN; varying vec3 vV; varying vec3 vC; varying float vZ;
 void main() {
-  float l = texture2D(uMap, vUv).r;
+  float rim = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.0);
+  float dens = 0.75 + 0.5 * dot(vC, vec3(0.299, 0.587, 0.114));
   float fog = 1.0 - smoothstep(uFogNear, uFogFar, vZ);
-  float a = smoothstep(0.08, 0.7, l) * uAlpha * fog;
-  if (a < 0.003) discard;
-  gl_FragColor = vec4(uColor * (uNight > 0.5 ? (0.55 + l) : 1.0), a);
+  float a = (0.1 + 0.9 * rim) * dens * uAlpha * fog;
+  if (a < 0.004) discard;
+  gl_FragColor = vec4(uColor * (0.75 + 0.5 * rim), a);
 }`;
 
-// Peces: recortes de la radiografía de Centriscus scutatus (src/img/fish), la cabeza a la izquierda.
-const FISH = [1, 2, 3, 4].map(i => `../assets/img/shui/razorfish-${i}.webp`);
+// Modelos: Animated Fish Pack de Quaternius (CC0), convertidos de FBX a GLB con meshopt. Todos miran a +Z.
+const MODELS = '../assets/models/shui/';
+const SCHOOLS = [{ file: 'fish1', n: 12, len: [70, 95] }, { file: 'fish2', n: 6, len: [62, 80] }, { file: 'fish3', n: 4, len: [50, 64] }];
+// Animales grandes: cruzan de lado a lado a su profundidad (band: tramo del descenso donde se ven).
+const CRUISERS = [
+  { file: 'dolphin', len: 260, band: [0, 0.4], z: -260, y: 0.18, speed: 1.7 },
+  { file: 'shark', len: 340, band: [0.3, 0.8], z: -420, y: -0.04, speed: 1.15 },
+  { file: 'manta-ray', len: 300, band: [0.55, 1], z: -380, y: -0.22, speed: 0.8, roll: 1.05 },
+  { file: 'whale', len: 600, band: [0.78, 1.01], z: -900, y: 0.1, speed: 0.5, alpha: 0.45 }
+];
 
 export function mount() {
   const canvas = document.createElement('canvas'); canvas.id = 'sh-sea'; canvas.setAttribute('aria-hidden', 'true');
@@ -83,20 +101,39 @@ export function mount() {
     m.userData = { x: (i / 5 - 0.5) * 1.6 + rnd(-0.1, 0.1), w: rnd(0.08, 0.2), tilt: rnd(0.12, 0.3), ph: rnd(0, 6) }; m.position.z = -600; m.renderOrder = -1; scene.add(m); return m;
   });
 
-  // ── Cardumen
-  const loader = new THREE.TextureLoader(), N = 18, fish = [];
-  const texs = FISH.map(src => { const tex = loader.load(src, () => loop && loop.still()); tex.colorSpace = THREE.NoColorSpace; return tex; });
-  // Un material por pez (fase y nado propios) que comparte la textura de su recorte.
-  const fishMat = tex => new THREE.ShaderMaterial({ vertexShader: fishVs, fragmentShader: fishFs, transparent: true, depthWrite: false, side: THREE.DoubleSide,
-    uniforms: { uMap: { value: tex }, uTime: { value: 0 }, uPhase: { value: 0 }, uSwim: { value: 0 }, uColor: { value: new THREE.Color() }, uAlpha: { value: 0.5 }, uNight: { value: 0 }, uFogNear: { value: 700 }, uFogFar: { value: 1500 } } });
-  const fishGeo = new THREE.PlaneGeometry(1, 1, 28, 1);
-  for (let i = 0; i < N; i++) {
-    const mat = fishMat(texs[i % texs.length]);
-    const mesh = new THREE.Mesh(fishGeo, mat); scene.add(mesh);
-    const len = rnd(110, 175);
-    fish.push({ mesh, mat, len, pos: new THREE.Vector3(rnd(-500, 500), rnd(-250, 250), rnd(-350, 120)), vel: new THREE.Vector3(rnd(-1, 1) > 0 ? 1.2 : -1.2, rnd(-0.2, 0.2), rnd(-0.2, 0.2)), phase: rnd(0, 6.28) });
-    mat.uniforms.uPhase.value = fish[i].phase;
-  }
+  // ── Animales en rayos X
+  const xray = () => new THREE.ShaderMaterial({ vertexShader: xrayVs, fragmentShader: xrayFs, vertexColors: true, transparent: true, depthWrite: false, side: THREE.DoubleSide,
+    uniforms: { uColor: { value: new THREE.Color() }, uAlpha: { value: 0 }, uFogNear: { value: 700 }, uFogFar: { value: 1500 } } });
+  const mats = [], fish = [], cruisers = [], mixers = [];
+  // Copia del modelo con su esqueleto, centrada y escalada a `len`, dentro de un grupo que se orienta con lookAt.
+  const spawn = (gltf, mat, len) => {
+    const model = cloneSkinned(gltf.scene); model.updateMatrixWorld(true);
+    // Caja con los huesos aplicados: la armadura del FBX trae su propia escala y la geometría sola mide otra cosa.
+    const box = new THREE.Box3().setFromObject(model, true), size = box.getSize(new THREE.Vector3()), k = len / size.z;
+    model.scale.setScalar(k); model.position.copy(box.getCenter(new THREE.Vector3()).multiplyScalar(-k));
+    model.traverse(o => { if (o.isMesh) { o.material = mat; o.frustumCulled = false; } });
+    const g = new THREE.Group(); g.add(model); scene.add(g);
+    const clip = gltf.animations[0], mixer = new THREE.AnimationMixer(model), act = mixer.clipAction(clip);
+    act.play(); act.time = Math.random() * clip.duration; mixers.push(mixer);
+    return { g, act };
+  };
+  const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+  Promise.all([...SCHOOLS, ...CRUISERS].map(m => loader.loadAsync(MODELS + m.file + '.glb'))).then(gltfs => {
+    SCHOOLS.forEach((sc, si) => {
+      const mat = xray(); mats.push({ mat, kind: 'school' });
+      for (let i = 0; i < sc.n; i++) {
+        const { g, act } = spawn(gltfs[si], mat, rnd(...sc.len));
+        fish.push({ g, act, school: si, pos: new THREE.Vector3(rnd(-500, 500), rnd(-250, 250), rnd(-350, 120)), vel: new THREE.Vector3(rnd(-1, 1) > 0 ? 1.2 : -1.2, rnd(-0.2, 0.2), rnd(-0.2, 0.2)) });
+      }
+    });
+    CRUISERS.forEach((c, ci) => {
+      const mat = xray(); mats.push({ mat, kind: 'cruiser' });
+      const { g, act } = spawn(gltfs[SCHOOLS.length + ci], mat, c.len);
+      // Empiezan a media pasada (así el que toca a esa profundidad ya se ve) y alternan sentido.
+      cruisers.push({ ...c, g, act, mat, dir: ci % 2 ? -1 : 1, x: (ci % 2 ? 1 : -1) * 0.3 * (visibleAt(c.z) * camera.aspect / 2), wait: 0, dy: 0 });
+    });
+    palette(); loop && loop.still();
+  }).catch(e => console.warn('shui: modelos', e));
   const goal = new THREE.Vector3(), mouse = new THREE.Vector3(1e5, 1e5, 0), tmp = new THREE.Vector3(), acc = new THREE.Vector3();
   let wanderT = 0;
   addEventListener('pointermove', e => { mouse.set((e.clientX / W - 0.5) * visibleAt(0) * camera.aspect, -(e.clientY / H - 0.5) * visibleAt(0), 0); }, { passive: true });
@@ -131,7 +168,7 @@ export function mount() {
   const palette = () => {
     night = isDark; cols = bioCols();
     const ink = new THREE.Color(cssVar('--foam') || '#c8f0f8'), glow = new THREE.Color(cssVar('--biolum-cyan') || '#00e8d8');
-    for (const f of fish) { f.mat.uniforms.uColor.value.copy(night ? glow : ink); f.mat.uniforms.uNight.value = night ? 1 : 0; }
+    for (const { mat } of mats) { mat.uniforms.uColor.value.copy(night ? glow : ink); mat.blending = night ? THREE.AdditiveBlending : THREE.NormalBlending; }
     veilMat.color.set(cssVar('--deep') || '#062030');
     for (let i = 0; i < PN; i++) seedBio(i, true);
     bioGeo.attributes.position.needsUpdate = bioGeo.attributes.aColor.needsUpdate = true;
@@ -162,31 +199,42 @@ export function mount() {
       const u = r.userData; r.scale.set(rw * u.w, rh * 1.15, 1); r.position.x = u.x * rw * 0.5 + Math.sin(t * 0.15 + u.ph) * rw * 0.02; r.position.y = rh * 0.05; r.rotation.z = u.tilt;
       r.material.opacity = (night ? 0.06 : 0.22) * (1 - smooth(0.1, 0.75, depth)) * (0.75 + 0.25 * Math.sin(t * 0.4 + u.ph));
     }
-    // Cardumen: un objetivo que deriva; cada pez busca el grupo y huye del puntero.
+    // Cardúmenes: cada uno con un objetivo que deriva; cada pez busca a su grupo y huye del puntero.
     if (!still) wanderT += dt;
     const hw = visibleAt(0) * camera.aspect * 0.55, hh = visibleAt(0) * 0.42;
-    goal.set(Math.sin(wanderT * 0.13) * hw * 0.8, Math.sin(wanderT * 0.21 + 1) * hh * 0.6, -150 + Math.sin(wanderT * 0.17) * 180);
+    const goals = SCHOOLS.map((_, i) => goal.clone().set(Math.sin(wanderT * 0.13 + i * 2.1) * hw * 0.8, Math.sin(wanderT * 0.21 + 1 + i * 1.3) * hh * 0.6, -150 + Math.sin(wanderT * 0.17 + i) * 180));
     const fogFar = 1550 - depth * 650;
+    for (const { mat, kind } of mats) if (kind === 'school') { const u = mat.uniforms; u.uAlpha.value = (night ? 0.75 : 0.6) * (1 - depth * 0.35); u.uFogFar.value = fogFar; u.uFogNear.value = fogFar - 800; }
     for (const f of fish) {
       if (!still) {
         acc.set(0, 0, 0);
         let n = 0; const sep = new THREE.Vector3(), ali = new THREE.Vector3(), coh = new THREE.Vector3();
-        for (const o of fish) { if (o === f) continue; const d = f.pos.distanceTo(o.pos); if (d < 220) { n++; ali.add(o.vel); coh.add(o.pos); if (d < 70) sep.add(tmp.copy(f.pos).sub(o.pos).divideScalar(d * d + 1)); } }
+        for (const o of fish) { if (o === f) continue; const d = f.pos.distanceTo(o.pos); if (d < 70) sep.add(tmp.copy(f.pos).sub(o.pos).divideScalar(d * d + 1)); if (o.school === f.school && d < 220) { n++; ali.add(o.vel); coh.add(o.pos); } }
         if (n) { acc.add(ali.divideScalar(n).sub(f.vel).multiplyScalar(0.07)); acc.add(coh.divideScalar(n).sub(f.pos).multiplyScalar(0.0012)); }
         acc.add(sep.multiplyScalar(60));
-        acc.add(tmp.copy(goal).sub(f.pos).multiplyScalar(0.00035));
+        acc.add(tmp.copy(goals[f.school]).sub(f.pos).multiplyScalar(0.00035));
         const dm = tmp.copy(f.pos).setZ(0).distanceTo(mouse); if (dm < 220) acc.add(tmp.copy(f.pos).setZ(0).sub(mouse).normalize().multiplyScalar((220 - dm) * 0.012));
         f.vel.add(acc); const sp = f.vel.length(), max = 2.6, min = 0.9; if (sp > max) f.vel.multiplyScalar(max / sp); else if (sp < min) f.vel.multiplyScalar(min / sp);
         f.vel.z *= 0.96; f.vel.y *= 0.97; f.pos.addScaledVector(f.vel, dt * 60);
       }
-      // Orientación: el pez mira hacia donde nada (la textura mira a la izquierda).
-      const left = f.vel.x < 0, ang = Math.atan2(f.vel.y, Math.abs(f.vel.x));
-      f.mesh.position.copy(f.pos);
-      f.mesh.scale.set(f.len * (left ? 1 : -1), f.len * 0.17, 1);
-      f.mesh.rotation.set(0, f.vel.z * 0.25, left ? -ang : ang);
-      const u = f.mat.uniforms; u.uTime.value = still ? 0 : t; u.uSwim.value = Math.min(1, f.vel.length() / 2.6);
-      u.uAlpha.value = (night ? 0.6 : 0.5) * (1 - depth * 0.35); u.uFogFar.value = fogFar; u.uFogNear.value = fogFar - 800;
+      f.g.position.copy(f.pos); f.g.lookAt(tmp.copy(f.pos).add(f.vel));
+      f.act.timeScale = 0.7 + f.vel.length() / 2.6;
     }
+    // Animales grandes: cruzan, esperan fuera de cuadro y vuelven en sentido contrario.
+    for (const c of cruisers) {
+      const edge = visibleAt(c.z) * camera.aspect / 2 + c.len;
+      if (!still) {
+        if (c.wait > 0) c.wait -= dt;
+        else { c.x += c.dir * c.speed * dt * 60; if (Math.abs(c.x) > edge) { c.x = Math.sign(c.x) * edge; c.dir *= -1; c.wait = rnd(5, 12); c.dy = rnd(-0.08, 0.08); } }
+      }
+      const y = (c.y + c.dy) * visibleAt(c.z) + Math.sin(t * 0.25 + c.len) * 18;
+      c.g.position.set(c.x, y, c.z); c.g.lookAt(c.x + c.dir * 100, y + Math.cos(t * 0.25 + c.len) * 4, c.z);
+      if (c.roll) c.g.rotateZ(c.roll * c.dir);
+      const w = smooth(c.band[0] - 0.12, c.band[0], depth) * (1 - smooth(c.band[1], c.band[1] + 0.12, depth));
+      const u = c.mat.uniforms; u.uAlpha.value = (night ? 0.7 : 0.55) * (c.alpha ?? 1) * w; u.uFogNear.value = 1400; u.uFogFar.value = 2700;
+      c.g.visible = w > 0.01;
+    }
+    if (!still) for (const m of mixers) m.update(dt);
     // Partículas: suben y vuelven abajo; más visibles cuanto más profundo.
     bio.visible = night; bioU.uTime.value = t; bioU.uAlpha.value = 0.55 + depth * 0.45;
     if (night && !still) { const top = visibleAt(-300) * 0.62; for (let i = 0; i < PN; i++) { pPos[i * 3 + 1] += pVy[i] * dt * 30; pPos[i * 3] += Math.sin(t * 0.5 + pPh[i]) * 0.08; if (pPos[i * 3 + 1] > top) seedBio(i, false); } bioGeo.attributes.position.needsUpdate = true; }
