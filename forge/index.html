@@ -150,6 +150,10 @@ SOFTWARE.
       <div>
         <h3 style="margin-top:0">Osciloscopio</h3>
         <canvas id="fg-scope" aria-label="Osciloscopio con tres señales: señal, núcleo e interrupción" role="img"></canvas>
+        <div class="fg-knobs">
+          <div class="fg-knob" data-k="time" role="slider" tabindex="0" aria-label="Base de tiempo, TIME/DIV" aria-valuenow="3"><span class="fg-knob-dial" aria-hidden="true"><span class="fg-knob-cap"></span></span><span class="fg-knob-lbl" aria-hidden="true">TIME/DIV</span><span class="fg-knob-val" aria-hidden="true">5 ms</span></div>
+          <div class="fg-knob" data-k="volts" role="slider" tabindex="0" aria-label="Escala vertical, VOLTS/DIV" aria-valuenow="2"><span class="fg-knob-dial" aria-hidden="true"><span class="fg-knob-cap"></span></span><span class="fg-knob-lbl" aria-hidden="true">VOLTS/DIV</span><span class="fg-knob-val" aria-hidden="true">1 V</span></div>
+        </div>
         <p class="fg-scope-cap">CH1 señal · CH2 núcleo · CH3 interrupción · 5 ms/div</p>
       </div>
     </div>
@@ -233,6 +237,7 @@ SOFTWARE.
 
 <footer class="fg-foot">forge_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Cables inspirados en <a href="https://www.figma.com/@hardikgondhiya">@hardikgondhiya</a>, tormenta en <a href="https://www.figma.com/@nellucci">@nellucci</a> y ASCII en <a href="https://www.figma.com/@quanhoangindex">@quanhoangindex</a> · Títulos en BPdots de George Triantafyllakos y nixies en Universe de Vincent Labonne</footer>
 
+<script type="importmap">{ "imports": { "animejs": "../shared/vendor/anime/anime.esm.min.js" } }</script>
 <script type="module">
 import { mount as m0 } from '../shared/components/forge/kit.js';
 import { mount as m1 } from '../shared/components/forge/noise.js';
