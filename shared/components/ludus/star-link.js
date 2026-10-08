@@ -7,7 +7,9 @@
 // pentágono con el dodecaedro) la rellena y suma puntos; cerrar otra antes
 // de 4 s sube el combo. Pero las estrellas siguen derivando: un enlace que
 // se estira demasiado se tensa (parpadea en rojo) y se rompe, y se lleva
-// las figuras que sostenía.
+// las figuras que sostenía. El cielo también teje solo: arranca con enlaces
+// entre vecinas y cada tanto nace uno nuevo entre dos que se acercan.
+// Un clic sobre un enlace lo corta.
 // Se juega en los huecos: donde no hay tarjeta, texto ni control. En la
 // portada no (la tapa el proun). Con reduced motion, las estrellas no se
 // mueven y nada se rompe, pero se puede jugar.
@@ -21,14 +23,19 @@ export function mount({ canvas = document.getElementById('lx-net'), hud = docume
   const ctx = canvas.getContext('2d');
   let W = 1, H = 1, dpr = 1, SNAP = 360, nodes = [], edges = [], polys = [], pops = [], pal = [], rgb = [];
   let sel = null, armed = false, ptr = { x: -1e4, y: -1e4 }, score = 0, closed = 0, combo = 1, lastClose = 0, form = solid(shape());
-  const HIT = 24, key = (a, b) => (a < b ? `${a}-${b}` : `${b}-${a}`);
+  const HIT = 26, EDGE_HIT = 7, key = (a, b) => (a < b ? `${a}-${b}` : `${b}-${a}`);
   const seed = () => {
     const n = Math.max(24, Math.min(64, Math.round(W * H / 26000)));
     nodes = Array.from({ length: n }, (_, i) => {
       const a = Math.random() * Math.PI * 2, v = 6 + Math.random() * 10;
-      return { id: i, x: 30 + Math.random() * (W - 60), y: 80 + Math.random() * (H - 160), vx: Math.cos(a) * v, vy: Math.sin(a) * v, ax: Math.random() * 6, ay: Math.random() * 6, spin: 0.3 + Math.random() * 0.5, c: i % 6, r: 6 + Math.random() * 3 };
+      return { id: i, x: 30 + Math.random() * (W - 60), y: 80 + Math.random() * (H - 160), vx: Math.cos(a) * v, vy: Math.sin(a) * v, ax: Math.random() * 6, ay: Math.random() * 6, spin: 0.3 + Math.random() * 0.5, c: i % 6, r: (6 + Math.random() * 3) * 1.15 };
     });
     edges = []; polys = [];
+    // enlaces de arranque: cada estrella con una o dos vecinas cercanas
+    for (const p of nodes) {
+      const near2 = nodes.filter(q => q !== p).map(q => [q, Math.hypot(q.x - p.x, q.y - p.y)]).filter(([, d]) => d < 170).sort((a, b) => a[1] - b[1]).slice(0, 1 + (Math.random() < 0.5));
+      near2.forEach(([q]) => join(p, q, false));
+    }
   };
   const size = () => {
     dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
@@ -57,9 +64,24 @@ export function mount({ canvas = document.getElementById('lx-net'), hud = docume
     };
     return dfs(b);
   };
+  // un enlace sin reglas (los de arranque y los que nacen solos no puntúan)
+  const join = (p, q, fade = true) => {
+    if (p === q || has(p.id, q.id)) return null;
+    const e = { a: p.id, b: q.id, k: key(p.id, q.id), f: fade ? 0 : 1 }; edges.push(e);
+    if (fade) animate(e, { f: 1, duration: 700, ease: 'out(2)' });
+    return e;
+  };
+  // nace un enlace entre dos estrellas cercanas que no estaban unidas
+  const sprout = () => {
+    if (edges.length > nodes.length * 1.3) return;
+    for (let t = 0; t < 12; t++) {
+      const p = nodes[(Math.random() * nodes.length) | 0];
+      const q = nodes.filter(o => o !== p && !has(p.id, o.id)).map(o => [o, Math.hypot(o.x - p.x, o.y - p.y)]).filter(([, d]) => d < 150).sort((a, b) => a[1] - b[1])[0];
+      if (q) { join(p, q[0]); return; }
+    }
+  };
   const link = (p, q) => {
-    if (p === q || has(p.id, q.id)) return;
-    edges.push({ a: p.id, b: q.id, k: key(p.id, q.id) });
+    if (!join(p, q)) return;
     const k = SIDES[shape()], ring = cycle(p.id, q.id, k);
     if (ring) {
       const id = [...ring].sort((x, y) => x - y).join(',');
@@ -75,12 +97,24 @@ export function mount({ canvas = document.getElementById('lx-net'), hud = docume
     }
     say(); loop.still();
   };
-  const snap = e => {
+  // quitar un enlace: se rompe solo (¡crac!, y se va el combo) o se corta con un clic
+  const cut = (e, broke = true) => {
     edges.splice(edges.indexOf(e), 1);
     polys = polys.filter(f => !f.ring.some((id, i) => key(id, f.ring[(i + 1) % f.ring.length]) === e.k));
-    const pa = nodes[e.a], pb = nodes[e.b], pop = { x: (pa.x + pb.x) / 2, y: (pa.y + pb.y) / 2, t: '¡crac!', a: 1, c: -1 }; pops.push(pop);
+    const pa = nodes[e.a], pb = nodes[e.b], pop = { x: (pa.x + pb.x) / 2, y: (pa.y + pb.y) / 2, t: broke ? '¡crac!' : 'corte', a: 1, c: broke ? -1 : pa.c }; pops.push(pop);
     animate(pop, { y: pop.y + 30, a: [1, 0], duration: 900, ease: 'in(2)', onComplete: () => pops.splice(pops.indexOf(pop), 1) });
-    combo = 1; say();
+    if (broke) combo = 1; say(); loop.still();
+  };
+  const snap = e => cut(e, true);
+  // el enlace más cercano a un punto (distancia al segmento)
+  const nearEdge = (x, y) => {
+    let best = null, bd = EDGE_HIT;
+    for (const e of edges) {
+      const a = nodes[e.a], b = nodes[e.b], dx = b.x - a.x, dy = b.y - a.y, l2 = dx * dx + dy * dy || 1;
+      const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (y - a.y) * dy) / l2)), d = Math.hypot(a.x + t * dx - x, a.y + t * dy - y);
+      if (d < bd) { bd = d; best = e; }
+    }
+    return best;
   };
 
   // ── Entrada: solo en los huecos de la vista actual
@@ -89,13 +123,16 @@ export function mount({ canvas = document.getElementById('lx-net'), hud = docume
     if (!free(e.target)) { if (armed) { sel = null; armed = false; loop.still(); } return; }
     const p = near(e.clientX, e.clientY);
     if (armed && sel && p && p !== sel) { link(sel, p); sel = null; armed = false; e.preventDefault(); return; }
+    if (!p) { const ed = nearEdge(e.clientX, e.clientY); if (ed) { cut(ed, false); sel = null; armed = false; e.preventDefault(); return; } }
     sel = p; armed = false; ptr = { x: e.clientX, y: e.clientY };
     if (p) e.preventDefault(); // sin seleccionar texto al arrastrar
     loop.still();
   });
   addEventListener('pointermove', e => {
     ptr = { x: e.clientX, y: e.clientY };
-    document.body.classList.toggle('lx-star-hot', free(e.target) && !!near(e.clientX, e.clientY));
+    const on = free(e.target), p = on && near(e.clientX, e.clientY);
+    hotEdge = on && !p ? nearEdge(e.clientX, e.clientY) : null;
+    document.body.classList.toggle('lx-star-hot', !!(p || hotEdge));
     if (sel || reduceMotion.matches) loop.still();
   });
   addEventListener('pointerup', e => {
@@ -110,7 +147,7 @@ export function mount({ canvas = document.getElementById('lx-net'), hud = docume
 
   // ── Dibujo
   const A = isL => (isL ? 0.75 : 1);
-  let last = 0;
+  let last = 0, grow = 2, hotEdge = null;
   const draw = now => {
     const dt = last ? Math.min(0.05, Math.max(0, now - last) / 1000) : 0; last = Math.max(last, now);
     const moving = !reduceMotion.matches;
@@ -119,6 +156,7 @@ export function mount({ canvas = document.getElementById('lx-net'), hud = docume
       if (p.x < 16 || p.x > W - 16) p.vx *= -1; if (p.y < 60 || p.y > H - 16) p.vy *= -1;
     }
     if (moving) for (const e of [...edges]) { const a = nodes[e.a], b = nodes[e.b]; if (Math.hypot(a.x - b.x, a.y - b.y) > SNAP) snap(e); }
+    if (moving && (grow -= dt) <= 0) { grow = 1.5 + Math.random() * 2.5; sprout(); }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
     const al = A(isLight);
     // figuras cerradas
@@ -130,10 +168,12 @@ export function mount({ canvas = document.getElementById('lx-net'), hud = docume
     // enlaces (se tensan cerca de romperse)
     for (const e of edges) {
       const a = nodes[e.a], b = nodes[e.b], len = Math.hypot(a.x - b.x, a.y - b.y), tense = Math.max(0, (len / SNAP - 0.78) / 0.22);
-      const g = ctx.createLinearGradient(a.x, a.y, b.x, b.y); g.addColorStop(0, `rgba(${rgb[a.c]},${0.6 * al})`); g.addColorStop(1, `rgba(${rgb[b.c]},${0.6 * al})`);
+      const hot = e === hotEdge, o = (hot ? 1 : 0.6) * e.f * al;
+      const g = ctx.createLinearGradient(a.x, a.y, b.x, b.y); g.addColorStop(0, `rgba(${rgb[a.c]},${o})`); g.addColorStop(1, `rgba(${rgb[b.c]},${o})`);
       ctx.strokeStyle = tense > 0 && Math.sin(now / 70) > 0 ? `rgba(255,84,102,${0.85 * al})` : g;
-      ctx.lineWidth = 1.6 * (1 - tense * 0.6); ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      ctx.setLineDash(hot ? [4, 4] : []); ctx.lineWidth = (hot ? 3 : 1.6) * (1 - tense * 0.6); ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
     }
+    ctx.setLineDash([]);
     // el enlace que se está tendiendo
     if (sel) {
       const p = armed ? null : ptr; ctx.setLineDash([5, 6]); ctx.strokeStyle = `rgba(${rgb[sel.c]},.8)`; ctx.lineWidth = 1.5;

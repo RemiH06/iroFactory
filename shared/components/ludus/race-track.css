@@ -1,0 +1,30 @@
+/* ludus · circuito (createMotionPath) y el motor de anime.js. */
+.lx-circuit-wrap { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; }
+.lx-circuit-wrap svg { display: block; width: 100%; height: auto; }
+.lx-limits { fill: none; stroke: var(--text2); stroke-width: 3.5; stroke-linejoin: round; opacity: .55; }
+.lx-asphalt { fill: none; stroke: var(--asphalt); stroke-width: 3; stroke-linejoin: round; }
+.lx-line { fill: none; stroke: var(--text2); stroke-width: .12; stroke-dasharray: .8 .8; opacity: .45; }
+.lx-kerb { fill: none; stroke: var(--danger); stroke-width: .4; }
+.lx-kerb-stripe { fill: none; stroke: var(--white); stroke-width: .4; stroke-dasharray: .45 .45; }
+.lx-start .lt { fill: var(--white); } .lx-start .dk { fill: var(--black); }
+.lx-car { transform-box: view-box; transform-origin: 0 0; }
+.lx-car .body { fill: var(--c); }
+.lx-car .wing { fill: color-mix(in srgb, var(--c) 70%, var(--black)); }
+.lx-car .tyre { fill: var(--black); }
+.lx-car .helmet { fill: var(--u); stroke: var(--black); stroke-width: .05; }
+.lx-standings { list-style: none; font-family: var(--pixel); font-size: 11px; display: grid; gap: 4px; min-width: 92px; }
+.lx-standings li { display: flex; align-items: center; gap: 6px; color: var(--text2); }
+.lx-standings li span { color: var(--text); min-width: 2.4ch; }
+.lx-standings li i { width: 14px; height: 8px; border-radius: 2px; background: var(--c); }
+.lx-lap { font-family: var(--pixel); font-size: 11px; color: var(--text2); margin-bottom: 8px; }
+.lx-lap output { color: var(--accent); }
+.lx-circuit.is-8bit svg { shape-rendering: crispEdges; }
+.lx-engine { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 14px; font-family: var(--pixel); font-size: 11px; color: var(--text2); }
+.lx-engine label { display: inline-flex; align-items: center; gap: 8px; }
+.lx-engine output { color: var(--text); min-width: 4ch; }
+.lx-engine input[type=range] { accent-color: var(--accent); width: 140px; }
+.lx-engine input[type=checkbox] { accent-color: var(--accent); width: 18px; height: 18px; }
+.lx-engine button { font-family: var(--pixel); font-size: 11px; min-width: 32px; min-height: 30px; border-radius: 999px; border: 1px solid var(--border); background: var(--glass); color: var(--text); cursor: pointer; }
+.lx-engine button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.lx-engine button:disabled { opacity: .4; cursor: default; }
+@media (max-width: 560px) { .lx-circuit-wrap { grid-template-columns: 1fr; } .lx-standings { grid-template-columns: repeat(3, auto); } }

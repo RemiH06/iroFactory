@@ -1,0 +1,26 @@
+/* ludus · tablero de vuelta al tablero, dados en Three.js y fichas arrastrables. */
+.lx-board-card { display: grid; grid-template-columns: minmax(0, 560px) minmax(180px, 1fr); gap: 18px 22px; align-items: start; }
+.lx-board-card h3 { grid-column: 1 / -1; margin-bottom: 0; }
+.lx-board { position: relative; display: grid; grid-template: repeat(6, 1fr) / repeat(6, 1fr); gap: 3px; aspect-ratio: 1; width: 100%; }
+.lx-cell { --g: var(--border); --own: transparent; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; padding: 4px 2px; text-align: center; border-radius: 4px; background: var(--bg3); border-top: 6px solid var(--g); box-shadow: inset 0 -4px 0 var(--own); overflow: hidden; min-width: 0; }
+.lx-cell b { font-family: var(--pixel); font-weight: 400; font-size: clamp(7px, 1.3vw, 10px); line-height: 1.15; color: var(--text); overflow-wrap: anywhere; }
+.lx-cell small { font-family: var(--pixel); font-size: clamp(6px, 1.05vw, 9px); color: var(--text2); }
+.lx-cell:not(.is-game) { border-top-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--bg3)); }
+.lx-cell.is-start { border-top-color: var(--ok); } .lx-cell.is-pause { border-top-color: var(--warn); } .lx-cell.is-jump { border-top-color: var(--danger); }
+.lx-board-center { grid-area: 2 / 2 / 6 / 6; position: relative; display: grid; place-items: center; border-radius: var(--radius); background: radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--d) 22%, var(--bg2)), var(--bg2) 72%); border: 1px solid var(--border); overflow: hidden; }
+.lx-board-center canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.lx-cup { position: absolute; left: 50%; bottom: 10px; translate: -50% 0; width: 44px; height: 52px; border-radius: 6px 6px 14px 14px; background: linear-gradient(90deg, var(--curtain-dk), var(--curtain) 45%, var(--curtain-dk)); border-top: 4px solid var(--gold); box-shadow: 0 6px 14px color-mix(in srgb, var(--black) 40%, transparent); touch-action: none; transition: rotate .3s; z-index: 2; }
+.lx-cup:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.lx-board-msg { position: absolute; top: 8px; left: 8px; right: 8px; font-family: var(--pixel); font-size: 10px; text-align: center; color: var(--text); z-index: 2; pointer-events: none; }
+.lx-tokens { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+.lx-token { position: absolute; left: 0; top: 0; width: 22px; height: 22px; margin: -11px 0 0 -11px; pointer-events: auto; touch-action: none; }
+.lx-pawn { display: block; width: 100%; height: 100%; border-radius: 50% 50% 40% 40%; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 60%, var(--white)), var(--c) 55%, color-mix(in srgb, var(--c) 70%, var(--black))); box-shadow: 0 3px 6px color-mix(in srgb, var(--black) 45%, transparent); border: 2px solid var(--white); }
+.lx-board-side { display: grid; gap: 12px; align-content: start; }
+.lx-players p { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text2); padding: 6px 10px; border-radius: var(--radius); border: 1px solid transparent; }
+.lx-players p b { font-family: var(--pixel); font-weight: 400; color: var(--text); }
+.lx-players p i { width: 12px; height: 12px; border-radius: 50%; background: var(--c); flex: none; }
+.lx-players p.is-turn { border-color: var(--c); color: var(--text); }
+.lx-roll { font-family: var(--pixel); font-size: 11px; min-height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--glass); color: var(--text); cursor: pointer; justify-self: start; }
+.lx-roll:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.lx-roll:disabled { opacity: .45; cursor: default; }
+@media (max-width: 760px) { .lx-board-card { grid-template-columns: 1fr; } }

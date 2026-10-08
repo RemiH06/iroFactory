@@ -22,7 +22,8 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
 <link rel="stylesheet" href="../shared/components/ludus/curtain-intro.css">
 <link rel="stylesheet" href="../shared/components/ludus/pause-menu.css">
 <link rel="stylesheet" href="../shared/components/ludus/solid-toy.css">
-<link rel="stylesheet" href="../shared/components/ludus/coaster.css">
+<link rel="stylesheet" href="../shared/components/ludus/race-track.css">
+<link rel="stylesheet" href="../shared/components/ludus/board-game.css">
 <link rel="stylesheet" href="../shared/components/ludus/star-link.css">
 <link rel="stylesheet" href="../shared/components/ludus/texture-accordion.css">
 <link rel="stylesheet" href="../shared/components/ludus/rubik-dock.css">
@@ -108,7 +109,7 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
 <!-- 3 · Juguetes -->
 <section class="lx-face" id="juguetes" aria-labelledby="h-jug" tabindex="-1">
   <div class="lx-face-inner lx-wrap">
-    <header class="lx-head"><span class="lx-num">03</span><h2 id="h-jug">Juguetes</h2><p>Cosas para tocar. Ninguna sirve para nada, y está bien. El fondo también: une estrellas (arrastra de una a otra, o toca una y luego otra) hasta cerrar una figura, antes de que se estiren y se rompan.</p></header>
+    <header class="lx-head"><span class="lx-num">03</span><h2 id="h-jug">Juguetes</h2><p>Cosas para tocar. Ninguna sirve para nada, y está bien. El fondo también: une estrellas (arrastra de una a otra, o toca una y luego otra) hasta cerrar una figura, antes de que se estiren y se rompan; un clic sobre un enlace lo corta.</p></header>
     <div class="lx-grid">
       <figure class="hud lx-span2 lx-lab-card"><canvas id="lx-lab" aria-hidden="true"></canvas><figcaption>Laboratorio · los nodos crecen y brillan al acercarles el cursor. Parecen botones. No lo son.</figcaption></figure>
       <div class="hud"><h3>Cubos</h3><div class="lx-cubes" id="lx-cubes"></div><p class="lx-hint">Mueve el cursor encima; un clic los manda al hiperespacio.</p></div>
@@ -121,16 +122,32 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
         </div>
         <p class="lx-hint">Las cifras de juego van en Silkscreen.</p>
       </div>
-      <figure class="hud lx-span2 lx-coaster" id="lx-coaster">
-        <h3>Montaña rusa</h3>
-        <svg viewBox="0 4 60 26" role="img" aria-label="Montaña rusa: vagones que dan vueltas a una vía con una caída, un rizo y una colina"><path class="lx-track base"/><path class="lx-track ties"/><path class="lx-track-path"/><g class="lx-carts"></g></svg>
+      <figure class="hud lx-span2 lx-circuit" id="lx-track">
+        <h3>Circuito</h3>
+        <div class="lx-circuit-wrap">
+          <svg role="img" aria-label="Circuito visto desde arriba: autos que dan vueltas, frenan antes de cada curva y aceleran en las rectas"></svg>
+          <div><p class="lx-lap">Vuelta <output data-out="lap">1</output></p><ol class="lx-standings" aria-label="Posiciones"></ol></div>
+        </div>
         <div class="lx-engine">
-          <span>Vagones <button type="button" data-cart="-" aria-label="Quitar un vagón">−</button> <output data-out="carts">3</output> <button type="button" data-cart="+" aria-label="Agregar un vagón">+</button></span>
+          <span>Autos <button type="button" data-car="-" aria-label="Quitar un auto">−</button> <output data-out="cars">4</output> <button type="button" data-car="+" aria-label="Agregar un auto">+</button></span>
           <label>Velocidad del tiempo <input type="range" min="0.1" max="3" step="0.1" value="1" data-engine="speed"> <output data-out="speed">1.0×</output></label>
           <label><input type="checkbox" data-engine="bits"> 8 bits</label>
         </div>
-        <figcaption class="lx-hint">Baja rápido y sube lento: la velocidad sale de la energía, no de una curva inventada. La velocidad del tiempo y los 8 bits mueven toda la página (todo lo que anima anime.js).</figcaption>
+        <figcaption class="lx-hint">Acelera en las rectas y frena antes de cada curva: la velocidad sale del radio de la curva (el agarre de las llantas) con límites de aceleración y de frenado, no de una curva inventada. Cada auto tiene su ritmo, así que se rebasan. La velocidad del tiempo y los 8 bits mueven toda la página (todo lo que anima anime.js).</figcaption>
       </figure>
+      <div class="hud lx-span2 lx-board-card">
+        <h3>Tablero</h3>
+        <div class="lx-board" id="lx-board">
+          <div class="lx-board-center"><canvas aria-hidden="true"></canvas><p class="lx-board-msg" aria-live="polite"></p><div class="lx-cup" tabindex="0" role="button" aria-label="Cubilete: arrástralo y suéltalo para tirar los dados, o Enter"></div></div>
+          <div class="lx-tokens"></div>
+        </div>
+        <div class="lx-board-side">
+          <div class="lx-players"></div>
+          <button class="lx-roll" type="button">Tirar</button>
+          <p class="lx-hint">Para dos. Los dados son el sólido de la barra: con el cubo, dos d6; con los demás, un d4, d8, d12 o d20. Las fichas se pueden arrastrar a cualquier casilla, pero queda anotado como trampa.</p>
+          <p class="lx-hint">Caer en un juego libre lo compra (20 fichas); caer en uno ajeno paga 10. Salida da 20 al pasar, Bonus 50, Pausa quita un turno, Atajo regresa a Salida y Suerte mueve de 3 atrás a 3 adelante.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -280,7 +297,8 @@ import { mount as kit, onTheme } from '../shared/components/ludus/kit.js';
 import { mount as prismNav } from '../shared/components/ludus/prism-nav.js';
 import { mount as starLink } from '../shared/components/ludus/star-link.js';
 import { mountToggle, shape } from '../shared/components/ludus/solids.js';
-import { mount as coaster } from '../shared/components/ludus/coaster.js';
+import { mount as raceTrack } from '../shared/components/ludus/race-track.js';
+import { mount as boardGame } from '../shared/components/ludus/board-game.js';
 import { mount as labGraph } from '../shared/components/ludus/lab-graph.js';
 import { mount as solidToy } from '../shared/components/ludus/solid-toy.js';
 import { mount as shuffleTitle } from '../shared/components/ludus/shuffle-title.js';
@@ -298,7 +316,7 @@ const VIEW_TOKENS = ['--f', '--r', '--b', '--l', '--u', '--d'];
 let cube = null, solidNav = null;
 const dots = [...document.querySelectorAll('.lx-dots button')];
 const nav = prismNav({ onChange: i => { dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i))); cube && cube.show(CUBE_OF[i]); solidNav && solidNav.show(i); } });
-mountToggle(); starLink(); labGraph(); solidToy(); coaster(); accordion(); docProse();
+mountToggle(); starLink(); labGraph(); solidToy(); raceTrack(); boardGame(); accordion(); docProse();
 const title = shuffleTitle();
 const curtain = curtainIntro({ onOpen: () => title && title.play() });
 pauseMenu({ onIntro: () => { nav.go(0); curtain.play(); } });

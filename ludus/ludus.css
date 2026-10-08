@@ -12,6 +12,7 @@ body {
   --text: #F1ECE4; --text2: #A59DAF; --border: #312A3A;
   --accent: #E7F087; --ok: #3FD43A; --warn: #F0A22A; --danger: #FF5466;
   --black: #08070A; --white: #F6F2EA;
+  --asphalt: #2B2632;
   --display: 'Righteous', system-ui, sans-serif;
   --mono: 'Fira Code', ui-monospace, monospace;
   --pixel: 'Silkscreen', 'Fira Code', monospace;
@@ -25,6 +26,7 @@ body.light {
   --text: #18151C; --text2: #5D5765; --border: #D8D0C3;
   --accent: #2B3BC8; --ok: #1E7D38; --warn: #A65A0C; --danger: #C81C2E;
   --black: #120F15; --white: #FBF9F4;
+  --asphalt: #4A4452;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

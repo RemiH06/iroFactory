@@ -60,7 +60,7 @@ export function mount({ onChange = () => {} } = {}) {
   prism.addEventListener('touchstart', e => { const t = e.touches[0]; sw = e.touches.length === 1 ? { x: t.clientX, y: t.clientY } : null; }, { passive: true });
   prism.addEventListener('touchend', e => {
     if (!sw) return; const t = e.changedTouches[0], dx = t.clientX - sw.x, dy = t.clientY - sw.y; sw = null;
-    if (Math.abs(dx) > 70 && Math.abs(dx) > 2 * Math.abs(dy) && !e.target.closest('canvas, pre, .table-wrap, .lx-cubes')) go(cur + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 70 && Math.abs(dx) > 2 * Math.abs(dy) && !e.target.closest('canvas, pre, .table-wrap, .lx-cubes, .lx-board, .lx-circuit')) go(cur + (dx < 0 ? 1 : -1));
   }, { passive: true });
   new ResizeObserver(place).observe(prism);
   place(); settle();

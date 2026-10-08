@@ -16,7 +16,7 @@ export function geometry(name, r = 1) {
 }
 
 // Caras poligonales (no triángulos), vértices únicos y aristas
-function polyhedron(name) {
+export function polyhedron(name) {
   const g = geometry(name), p = g.attributes.position, idx = g.index;
   const verts = [], key = v => v.toArray().map(x => Math.round(x * 1e3) + 0).join(','), vmap = new Map();
   const vid = v => { const k = key(v); if (!vmap.has(k)) { vmap.set(k, verts.length); verts.push(v.clone()); } return vmap.get(k); };
