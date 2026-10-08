@@ -42,6 +42,8 @@ SOFTWARE.
 <title>metro_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=space-mono:400,700&family=dm-sans:300,400,500,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="metro.css">
 <link rel="stylesheet" href="../shared/components/metro/cursor-grid.css">
 <link rel="stylesheet" href="../shared/components/metro/hero.css">
@@ -105,6 +107,7 @@ SOFTWARE.
         <button class="metro-dock-item" role="tab" id="tab-proceso" aria-controls="panel-proceso" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12h20"/><circle cx="5" cy="12" r="2.5" fill="currentColor"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/></svg></span><span class="metro-dock-label" role="tooltip">Proceso</span></button>
         <button class="metro-dock-item" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="13" height="13" rx="1"/><path d="M8 4h13v13"/></svg></span><span class="metro-dock-label" role="tooltip">Cards</span></button>
         <button class="metro-dock-item" role="tab" id="tab-galeria" aria-controls="panel-galeria" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 18a9 9 0 0 1 18 0M3 18h18"/><path d="M7.5 18a4.5 9 0 0 1 9 0M12 9v9"/></svg></span><span class="metro-dock-label" role="tooltip">Galería</span></button>
+        <button class="metro-dock-item" role="tab" id="tab-manual" aria-controls="panel-manual" aria-selected="false" tabindex="-1"><span class="metro-dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h11l3 3v13H5z"/><path d="M9 10h7M9 14h7M9 18h4"/></svg></span><span class="metro-dock-label" role="tooltip">Guía de guardia</span></button>
       </div>
     </div>
 
@@ -137,6 +140,10 @@ SOFTWARE.
           <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
           <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
         </div>
+        <div class="doc-spec">
+      <div class="doc-spec-card"><h2>Tipografía</h2><div id="mt-type"></div></div>
+      <div class="doc-spec-card"><h2>Contraste</h2><ul class="spec-contrast" id="mt-contrast"></ul></div>
+    </div>
       </div>
     </div>
 
@@ -260,6 +267,46 @@ SOFTWARE.
         <div class="dg-root" id="metro-dome"></div>
       </div>
     </div>
+
+    <div class="metro-panel" id="panel-manual" role="tabpanel" aria-labelledby="tab-manual" data-pattern="snake" hidden>
+      <div class="metro-panel-loader"></div>
+      <div class="metro-panel-body">
+      <div class="doc-layout">
+      <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#detalles">Metro</a></li><li><a href="#detalles">Guías de guardia</a></li><li aria-current="page">Latencia alta en la API</li></ol></nav>
+        <h1>Guía de guardia: latencia alta en la API</h1>
+        <p class="doc-lede">Qué hacer cuando la API responde lento: de la alerta al análisis posterior.</p>
+        <h2 id="mt-r-sintomas">Síntomas</h2>
+        <ul><li>La alerta <code>api-latency-p95</code> pasa de 800 ms durante 5 minutos.</li><li>El tablero de estado marca <b>Demora</b> en la API pública.</li><li>Aumentan los reintentos en el cliente móvil.</li></ul>
+        <h2 id="mt-r-pasos">Qué hacer</h2>
+        <ol>
+          <li>Declara el incidente en el canal <code>#incidentes</code> y asigna quién coordina.</li>
+          <li>Revisa el último despliegue: si fue hace menos de una hora, regrésalo antes de investigar.</li>
+          <li>Mira la base de datos: conexiones activas y consultas lentas.</li>
+          <li>Actualiza la página de estado cada 30 minutos aunque no haya novedades<sup><a href="#mt-n1" id="mt-r1">1</a></sup>.</li>
+        </ol>
+<pre data-lang="bash"><code>kubectl rollout undo deployment/api -n prod
+kubectl rollout status deployment/api -n prod</code></pre>
+        <p>En la terminal del tablero, <kbd>g</kbd> luego <kbd>s</kbd> abre el estado y <kbd>/</kbd> busca un servicio.</p>
+        <h3 id="mt-r-niveles">Niveles de severidad</h3>
+        <dl><dt>SEV1</dt><dd>Servicio caído para todos. Se avisa a dirección.</dd><dt>SEV2</dt><dd>Función principal degradada o caída para una parte.</dd><dt>SEV3</dt><dd>Molestia menor con solución alterna.</dd></dl>
+        <figure>
+<pre aria-label="Disponibilidad de 30 días">API pública   ████████████████████████▓█████  99.94 %
+Pagos         ██████████████████████████████ 100.00 %
+Notificac.    ████████████████▒▒████████████  99.71 %</pre>
+          <figcaption><b>Figura 1.</b> Disponibilidad de los últimos 30 días; cada bloque es un día.</figcaption>
+        </figure>
+        <blockquote><p>La esperanza no es una estrategia.</p><footer>Lema de los equipos de confiabilidad de sitios (SRE)</footer></blockquote>
+        <h2 id="mt-r-despues">Después</h2>
+        <details><summary>¿Cuándo se escribe el análisis?</summary><p>En los tres días hábiles siguientes, sin culpables: qué pasó, por qué, y qué cambia para que no se repita.</p></details>
+        <details><summary>¿Quién cierra el incidente?</summary><p>Quien coordina, cuando la métrica lleva 30 minutos estable y la página de estado ya dice <b>Resuelto</b>.</p></details>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="mt-n1">Un estado sin cambios también informa: la gente deja de preguntar por otros canales. <a href="#mt-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#detalles"><small>Anterior</small>Galería</a><a class="next" href="#metro-city"><small>Siguiente</small>Guadalajara en 3D</a></nav>
+      </article>
+      <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
+      </div>
+    </div>
   </div>
   <div class="metro-city" id="metro-city">
     <header class="metro-city-head">
@@ -321,7 +368,16 @@ import { mount as m1 } from '../shared/components/metro/dome-gallery.js';
 import { metroToggle } from '../shared/components/metro/kit.js';
 // El marcado llama estas funciones con on…="": van en window.
 Object.assign(window, { metroToggle });
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1();
+docProse();
+docSpecimen({
+  type: { el: '#mt-type', fonts: [
+    { name: 'Space Mono', family: 'var(--mono)', size: 26, weight: 700, use: 'Títulos, etiquetas, cifras y código' },
+    { name: 'DM Sans para leer', family: 'var(--sans)', size: 22, use: 'Texto corrido' }] },
+  contrast: { el: '#mt-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
 // Ciudad y tablero: anime.js al momento, la ciudad (Three.js) cuando el contenedor se acerca.
 import('../shared/components/metro/departures.js').then(m => m.mount());
 </script>

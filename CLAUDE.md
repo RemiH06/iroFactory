@@ -53,7 +53,7 @@ Cada tema es la piel de documentación de un tipo de proyecto; lo que se le agre
 | `shui` | Flujos de datos |
 | `ludus`, `tarot` | Se define en su rework |
 
-Base común de documentación (en curso, 2026-10-08): todos llevan prosa (encabezados, listas, cita, notas al pie, definiciones, `kbd`, desplegables, figura), tipografía y contraste en vivo, y navegación de documento; cada tema la viste con su piel.
+Base común de documentación (2026-10-08, en los 10 temas rehechos; ludus y tarot la reciben en su rework): componentes `doc-prose` y `doc-specimen`; todos llevan prosa (encabezados, listas, cita, notas al pie, definiciones, `kbd`, desplegables, figura), tipografía y contraste en vivo, y navegación de documento; cada tema la viste con su piel.
 
 ## Referencia por tema
 

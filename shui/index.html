@@ -68,6 +68,8 @@ SOFTWARE.
 <title>shui_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=recursive:400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="shui.css">
 <link rel="stylesheet" href="../shared/components/shui/bio-particles.css">
 <link rel="stylesheet" href="../shared/components/shui/module-tabs.css">
@@ -118,7 +120,7 @@ SOFTWARE.
         </div>
         <div class="sh-graph" id="sh-graph"><canvas role="img" aria-label="Grafo de módulos: desde el manantial salen cuatro corrientes (superficie, corrientes, profundidad y desembocadura). Tocar un nodo abre su módulo; las pestañas hacen lo mismo."></canvas></div>
       </div>
-      <nav class="sh-tabs" role="tablist" aria-label="Módulos"><a class="sh-tab" role="tab" id="tab-paleta" href="#paleta" aria-controls="paleta" aria-selected="true">Paleta</a><a class="sh-tab" role="tab" id="tab-galeria" href="#galeria" aria-controls="galeria" aria-selected="false" tabindex="-1">Galería</a><a class="sh-tab" role="tab" id="tab-avisos" href="#avisos" aria-controls="avisos" aria-selected="false" tabindex="-1">Avisos</a><a class="sh-tab" role="tab" id="tab-badges" href="#badges" aria-controls="badges" aria-selected="false" tabindex="-1">Badges</a><a class="sh-tab" role="tab" id="tab-botones" href="#botones" aria-controls="botones" aria-selected="false" tabindex="-1">Botones</a><a class="sh-tab" role="tab" id="tab-metricas" href="#metricas" aria-controls="metricas" aria-selected="false" tabindex="-1">Métricas</a><a class="sh-tab" role="tab" id="tab-codigo" href="#codigo" aria-controls="codigo" aria-selected="false" tabindex="-1">Código</a><a class="sh-tab" role="tab" id="tab-tabla" href="#tabla" aria-controls="tabla" aria-selected="false" tabindex="-1">Tabla</a><a class="sh-tab" role="tab" id="tab-log" href="#log" aria-controls="log" aria-selected="false" tabindex="-1">Pipeline log</a><a class="sh-tab" role="tab" id="tab-pipeline" href="#pipeline" aria-controls="pipeline" aria-selected="false" tabindex="-1">Pipeline</a><a class="sh-tab" role="tab" id="tab-cards" href="#cards" aria-controls="cards" aria-selected="false" tabindex="-1">Cards</a></nav>
+      <nav class="sh-tabs" role="tablist" aria-label="Módulos"><a class="sh-tab" role="tab" id="tab-paleta" href="#paleta" aria-controls="paleta" aria-selected="true">Paleta</a><a class="sh-tab" role="tab" id="tab-galeria" href="#galeria" aria-controls="galeria" aria-selected="false" tabindex="-1">Galería</a><a class="sh-tab" role="tab" id="tab-avisos" href="#avisos" aria-controls="avisos" aria-selected="false" tabindex="-1">Avisos</a><a class="sh-tab" role="tab" id="tab-badges" href="#badges" aria-controls="badges" aria-selected="false" tabindex="-1">Badges</a><a class="sh-tab" role="tab" id="tab-botones" href="#botones" aria-controls="botones" aria-selected="false" tabindex="-1">Botones</a><a class="sh-tab" role="tab" id="tab-metricas" href="#metricas" aria-controls="metricas" aria-selected="false" tabindex="-1">Métricas</a><a class="sh-tab" role="tab" id="tab-codigo" href="#codigo" aria-controls="codigo" aria-selected="false" tabindex="-1">Código</a><a class="sh-tab" role="tab" id="tab-tabla" href="#tabla" aria-controls="tabla" aria-selected="false" tabindex="-1">Tabla</a><a class="sh-tab" role="tab" id="tab-log" href="#log" aria-controls="log" aria-selected="false" tabindex="-1">Pipeline log</a><a class="sh-tab" role="tab" id="tab-pipeline" href="#pipeline" aria-controls="pipeline" aria-selected="false" tabindex="-1">Pipeline</a><a class="sh-tab" role="tab" id="tab-cards" href="#cards" aria-controls="cards" aria-selected="false" tabindex="-1">Cards</a><a class="sh-tab" role="tab" id="tab-manual" href="#manual" aria-controls="manual" aria-selected="false" tabindex="-1">Manual</a></nav>
     </div>
     <div class="sh-app-main" id="sh-main">
       <div class="sh-query ice" id="sh-query" aria-hidden="true"><pre></pre></div>
@@ -131,6 +133,10 @@ SOFTWARE.
       <div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--deep)"><span class="swatch-hex" id="hex-deep"></span></div>--deep</div><div class="swatch"><div class="swatch-box" style="background:var(--current)"><span class="swatch-hex" id="hex-current"></span></div>--current</div><div class="swatch"><div class="swatch-box" style="background:var(--surface)"><span class="swatch-hex" id="hex-surface"></span></div>--surface</div><div class="swatch"><div class="swatch-box" style="background:var(--foam)"><span class="swatch-hex" id="hex-foam"></span></div>--foam</div><div class="swatch"><div class="swatch-box" style="background:var(--kelp)"><span class="swatch-hex" id="hex-kelp"></span></div>--kelp</div><div class="swatch"><div class="swatch-box" style="background:var(--coral)"><span class="swatch-hex" id="hex-coral"></span></div>--coral</div><div class="swatch"><div class="swatch-box" style="background:var(--sand)"><span class="swatch-hex" id="hex-sand"></span></div>--sand</div><div class="swatch"><div class="swatch-box" style="background:var(--turquoise)"><span class="swatch-hex" id="hex-turquoise"></span></div>--turquoise</div><div class="swatch"><div class="swatch-box" style="background:var(--aqua)"><span class="swatch-hex" id="hex-aqua"></span></div>--aqua</div><div class="swatch"><div class="swatch-box" style="background:var(--light-ray)"><span class="swatch-hex" id="hex-light-ray"></span></div>--light-ray</div></div>
       <h3>Datos</h3>
       <div class="swatch-row"><div class="swatch"><div class="swatch-box" style="background:var(--stream)"><span class="swatch-hex" id="hex-stream"></span></div>--stream</div><div class="swatch"><div class="swatch-box" style="background:var(--cache)"><span class="swatch-hex" id="hex-cache"></span></div>--cache</div><div class="swatch"><div class="swatch-box" style="background:var(--query)"><span class="swatch-hex" id="hex-query"></span></div>--query</div><div class="swatch"><div class="swatch-box" style="background:var(--index)"><span class="swatch-hex" id="hex-index"></span></div>--index</div><div class="swatch"><div class="swatch-box" style="background:var(--schema)"><span class="swatch-hex" id="hex-schema"></span></div>--schema</div><div class="swatch"><div class="swatch-box" style="background:var(--scrape)"><span class="swatch-hex" id="hex-scrape"></span></div>--scrape</div><div class="swatch"><div class="swatch-box" style="background:var(--store)"><span class="swatch-hex" id="hex-store"></span></div>--store</div></div>
+    </div>
+    <div class="doc-spec">
+      <div class="doc-spec-card"><h3>Tipografía</h3><div id="sw-type"></div></div>
+      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="sw-contrast"></ul></div>
     </div>
   </section>
 
@@ -261,6 +267,33 @@ SOFTWARE.
       <div class="ice card"><strong style="color:var(--cache)">Redis</strong><span class="badge cache">in-memory</span><p class="muted" style="margin:6px 0 0">Caché L1 · 94% de aciertos · LRU al 87% de memoria.</p></div>
     </div>
   </section>
+  <section class="sh-sec" id="manual" data-group="desembocadura">
+    <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#corrientes">Shui</a></li><li><a href="#pipeline">Flujos</a></li><li aria-current="page">Ventas diarias</li></ol></nav>
+        <h1>Flujo: ventas diarias</h1>
+        <p class="doc-lede">Del CSV nocturno a una tabla lista para consultar: esquema, pasos y qué hacer cuando algo falla.</p>
+        <h2 id="sw-c-origen">Origen</h2>
+        <p>Cada noche llega un CSV de ventas a <code>s3://shui-crudo/ventas/</code>. El flujo lo valida, lo limpia y lo guarda en Cassandra para las consultas del tablero.</p>
+        <h2 id="sw-c-esquema">Esquema</h2>
+        <dl><dt>venta_id</dt><dd><code>uuid</code> · llave de partición</dd><dt>fecha</dt><dd><code>date</code> · columna de agrupamiento, descendente</dd><dt>tienda</dt><dd><code>text</code></dd><dt>monto</dt><dd><code>decimal</code>, nunca negativo</dd></dl>
+        <h2 id="sw-c-pasos">Pasos</h2>
+        <ol><li>Validar: columnas, tipos y que no haya fechas futuras.</li><li>Limpiar: quitar duplicados por <code>venta_id</code>.</li><li>Cargar: escribir en lotes de 500<sup><a href="#sw-n1" id="sw-r1">1</a></sup>.</li></ol>
+<pre data-lang="cql"><code>SELECT tienda, sum(monto) FROM ventas
+ WHERE fecha = '2026-10-08' GROUP BY tienda;</code></pre>
+        <figure>
+<pre aria-label="Diagrama del flujo">  CSV ──▶ validar ──▶ limpiar ──▶ Cassandra
+              │
+              └──▶ rechazados/ (con el motivo)</pre>
+          <figcaption><b>Figura 1.</b> Las filas que no pasan la validación no se pierden: van a una carpeta aparte.</figcaption>
+        </figure>
+        <blockquote><p>El agua toma la forma del recipiente.</p><footer>Bruce Lee</footer></blockquote>
+        <details><summary>¿Qué pasa si el archivo llega dos veces?</summary><p>Nada: la carga es idempotente porque la llave es <code>venta_id</code>.</p></details>
+        <details><summary>¿Cómo reproceso un día?</summary><p>Borra la partición de ese día y vuelve a correr el flujo con <code>--fecha</code>.</p></details>
+        <p><small>En cqlsh, <kbd>Tab</kbd> completa nombres de tablas y <kbd>Ctrl</kbd> + <kbd>R</kbd> busca en el historial.</small></p>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="sw-n1">Lotes más grandes cruzan particiones y Cassandra los penaliza. <a href="#sw-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#cards"><small>Anterior</small>Cards</a><a class="next" href="#paleta"><small>Siguiente</small>Paleta</a></nav>
+      </article>
+  </section>
     </div>
   </div>
 </section>
@@ -279,7 +312,16 @@ import { mount as m4 } from '../shared/components/shui/current-graph.js';
 import { mount as m5 } from '../shared/components/shui/morph-gallery.js';
 import { mount as m6 } from '../shared/components/shui/bio-particles.js';
 import { mount as m7 } from '../shared/components/shui/module-tabs.js';
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7();
+docProse();
+docSpecimen({
+  type: { el: '#sw-type', fonts: [
+    { name: 'SHUI', family: "'Y2KBUG', var(--mono)", size: 34, use: 'Y2KBUG · título, subtítulos y botón, en mayúsculas' },
+    { name: 'Recursive casual', family: 'var(--mono)', size: 22, use: 'Texto y código (CASL 1)' }] },
+  contrast: { el: '#sw-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
 // El mar en 3D llega después de la primera pintura (Three.js pesa).
 import('../shared/components/shui/sea-3d.js').then(m => m.mount());
 </script>

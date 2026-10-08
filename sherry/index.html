@@ -42,6 +42,8 @@ SOFTWARE.
 <title>sherry_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700|doto:700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="sherry.css">
 <link rel="stylesheet" href="../shared/components/sherry/ascii-title.css">
 <link rel="stylesheet" href="../shared/components/sherry/dither.css">
@@ -325,6 +327,46 @@ SOFTWARE.
   </div>
 </section>
 
+<!-- ── Nivel: Manual · base común de documentación ── -->
+<section class="sherry-level is-opaque" id="level-manual">
+  <div class="sherry-level-wrap">
+    <div class="sherry-level-header"><h2>Manual</h2></div>
+    <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#">Sherry</a></li><li><a href="#level-manual">Herramientas</a></li><li aria-current="page">sherry-tri</li></ol></nav>
+        <h1>sherry-tri</h1>
+        <p class="doc-lede">Un juguete de línea de comandos: cualquier foto, convertida en triángulos que brillan.</p>
+        <h2 id="sh-r-instalar">Instalar</h2>
+<pre data-lang="bash"><code>pipx install sherry-tri
+sherry --version</code></pre>
+        <h2 id="sh-r-uso">Uso</h2>
+        <p><code>sherry</code> toma una imagen y la convierte en un mosaico de triángulos neón listo para fondo de pantalla.</p>
+<pre data-lang="bash"><code>sherry foto.jpg --tri 1800 --neon --out fondo.png</code></pre>
+        <h3 id="sh-r-opciones">Opciones</h3>
+        <dl><dt>--tri N</dt><dd>Número de triángulos. Más da detalle; menos, abstracción. 1200 por omisión.</dd><dt>--neon</dt><dd>Bordes brillantes con la paleta del tema.</dd><dt>--seed N</dt><dd>Repite exactamente el mismo mosaico.</dd><dt>--out RUTA</dt><dd>Archivo de salida; sin ella, se abre la vista previa.</dd></dl>
+        <h3 id="sh-r-atajos">Atajos de la vista previa</h3>
+        <ul><li><kbd>R</kbd> otro mosaico con semilla nueva</li><li><kbd>+</kbd> y <kbd>−</kbd> más o menos triángulos</li><li><kbd>Ctrl</kbd> + <kbd>S</kbd> guardar</li><li><kbd>Q</kbd> salir</li></ul>
+        <figure>
+<pre aria-label="Salida de la terminal">$ sherry gato.jpg --tri 900
+  leyendo gato.jpg ........ 2048 × 1365
+  triangulando ............ 900 triángulos
+  pintando ................ 0.42 s
+  ✓ vista previa abierta</pre>
+          <figcaption><b>Figura 1.</b> Salida típica en la terminal.</figcaption>
+        </figure>
+        <blockquote><p>Haz una cosa y hazla bien.</p><footer>Filosofía de Unix, Doug McIlroy</footer></blockquote>
+        <h2 id="sh-r-cambios">Cambios</h2>
+        <ol reversed><li><b>0.3</b>: opción <code>--seed</code><sup><a href="#sh-n1" id="sh-r1">1</a></sup>.</li><li><b>0.2</b>: bordes neón.</li><li><b>0.1</b>: primera versión, solo blanco y negro.</li></ol>
+        <details><summary>¿Funciona con video?</summary><p>Todavía no. Por ahora, extrae cuadros con <code>ffmpeg</code> y procésalos uno por uno.</p></details>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="sh-n1">Pedida para poder regenerar el mismo fondo en otra resolución. <a href="#sh-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#level-cards"><small>Anterior</small>Cards</a><a class="next" href="#"><small>Siguiente</small>Inicio</a></nav>
+      </article>
+    <div class="doc-spec">
+      <div class="doc-spec-card"><h3>Tipografía</h3><div id="sy-type"></div></div>
+      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="sy-contrast"></ul></div>
+    </div>
+  </div>
+</section>
+
 <footer class="sherry-level">
   <div class="sherry-level-wrap">
     <p class="muted prompt" style="font-size:12px">
@@ -341,7 +383,16 @@ import { mount as m1 } from '../shared/components/sherry/ascii-title.js';
 import { toggleTri, toggleCRT, toggleTheme } from '../shared/components/sherry/kit.js';
 // El marcado llama estas funciones con on…="": van en window.
 Object.assign(window, { toggleTri, toggleCRT, toggleTheme });
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1();
+docProse();
+docSpecimen({
+  type: { el: '#sy-type', fonts: [
+    { name: 'SHERRY', family: 'var(--display)', size: 34, weight: 700, use: 'Doto · títulos, en puntos como una matriz de LEDs' },
+    { name: 'JetBrains Mono', family: 'var(--mono)', size: 22, use: 'Texto, código y todo lo demás' }] },
+  contrast: { el: '#sy-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
 </script>
 </body>
 </html>

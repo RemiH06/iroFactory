@@ -44,6 +44,8 @@ SOFTWARE.
 <title>odysseus_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=im-fell-english:400,400i|fira-code:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="odysseus.css">
 <link rel="stylesheet" href="../shared/components/odysseus/desk.css">
 <link rel="stylesheet" href="../shared/components/odysseus/world-map.css">
@@ -273,6 +275,46 @@ ruta = [
     <p class="od-osm">Mapas: © OpenStreetMap contributors (ODbL) · Natural Earth</p>
   </aside>
 </section>
+
+<!-- ── CUADERNO · base común de documentación ── -->
+<section class="od-notebook" id="cuaderno" aria-labelledby="h-cuaderno">
+  <div class="od-wrap">
+    <h2 class="od-notebook-title" id="h-cuaderno">Cuaderno de viaje</h2>
+    <div class="doc-layout">
+      <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#inicio">Odysseus</a></li><li><a href="#cuaderno">Itinerarios</a></li><li aria-current="page">Yucatán</li></ol></nav>
+        <h1>Itinerario: Yucatán en cuatro días</h1>
+        <p class="doc-lede">De Mérida a Río Lagartos pasando por Chichén Itzá: ruta, ficha del lugar y qué llevar.</p>
+        <h2 id="od-i-ruta">La ruta</h2>
+        <ol><li><b>Mérida</b>: llegada, dos noches. Base para Chichén Itzá.</li><li><b>Chichén Itzá</b>: entrada a las 8, antes del calor y de los camiones.</li><li><b>Valladolid</b>: cenote Zací por la tarde.</li><li><b>Río Lagartos</b>: flamencos al amanecer<sup><a href="#od-n1" id="od-r1">1</a></sup>.</li></ol>
+        <h2 id="od-i-ficha">Ficha del lugar</h2>
+        <dl><dt>Coordenadas</dt><dd>20.6843° N, 88.5678° O</dd><dt>Horario</dt><dd>8:00 a 17:00, todos los días</dd><dt>Altitud</dt><dd>30 m</dd><dt>Mejor época</dt><dd>Noviembre a marzo</dd></dl>
+        <figure>
+<pre aria-label="Ruta en el mapa">  Río Lagartos ●
+              ╲
+  Mérida ●─────● Valladolid
+          ╲   ╱
+           ● Chichén Itzá</pre>
+          <figcaption><b>Figura 1.</b> Ruta del recorrido; 320 km en total.</figcaption>
+        </figure>
+        <blockquote><p>Viajar es descubrir que todos están equivocados sobre los otros países.</p><footer>Aldous Huxley</footer></blockquote>
+        <h2 id="od-i-llevar">Qué llevar</h2>
+        <ul><li>Agua y sombrero: la explanada no tiene sombra.</li><li>Efectivo para los cenotes.</li><li>Traje de baño debajo de la ropa.</li></ul>
+        <h2 id="od-i-faq">Preguntas</h2>
+        <details><summary>¿Se puede subir a El Castillo?</summary><p>No desde 2008: se cuida la escalinata.</p></details>
+        <details><summary>¿Vale la pena el equinoccio?</summary><p>Sí, si soportas la multitud: la sombra de la serpiente baja por la escalinata hacia las 16:00.</p></details>
+        <p><small>En el mapa, <kbd>+</kbd> y <kbd>−</kbd> cambian la escala y <kbd>Esc</kbd> regresa al mapamundi.</small></p>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="od-n1">En lancha desde el muelle; los flamencos están en la ría de marzo a octubre. <a href="#od-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#viaje"><small>Anterior</small>El mapa</a><a class="next" href="#inicio"><small>Siguiente</small>Inicio</a></nav>
+      </article>
+      <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
+    <div class="doc-spec">
+      <div class="doc-spec-card"><h3>Tipografía</h3><div id="od-type"></div></div>
+      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="od-contrast"></ul></div>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer class="od-footer">odysseus_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Carrusel inspirado en <a href="https://www.figma.com/@ariantaheri">@ariantaheri</a> · 3D con <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> (MIT) · Mapas © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> · Natural Earth · Puertos y tarjetas en Debonair Inline de Nick Curtis · "Cabaret Voltaire" Designed by Haimeluna (<a href="http://www.morbofly.com">www.morbofly.com</a>)</footer>
@@ -283,7 +325,18 @@ import { mount as m0 } from '../shared/components/odysseus/kit.js';
 import { mount as m1 } from '../shared/components/odysseus/geography.js';
 import { mount as m2 } from '../shared/components/odysseus/desk.js';
 import { mount as m3 } from '../shared/components/odysseus/voyage.js';
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1(); m2(); m3();
+docProse();
+docSpecimen({
+  type: { el: '#od-type', fonts: [
+    { name: 'IM Fell English', family: 'var(--display)', size: 30, use: 'Títulos y texto: la voz de la bitácora' },
+    { name: 'Chichén Itzá', family: "'Debonair Inline', var(--display)", size: 34, use: 'Debonair Inline · puertos y tarjetas' },
+    { name: 'MÉRIDA · 20.68 N', family: "'Cabaret Voltaire', var(--display)", size: 24, use: 'Cabaret Voltaire · pase de abordar y mapa' },
+    { name: 'Fira Code', family: 'var(--mono)', size: 20, use: 'Coordenadas y código' }] },
+  contrast: { el: '#od-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
 </script>
 </body>
 </html>

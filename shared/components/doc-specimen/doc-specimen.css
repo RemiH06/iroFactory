@@ -12,3 +12,8 @@
 .spec-ratio { font-family: var(--doc-mono, var(--mono, monospace)); font-size: 13px; color: var(--doc-muted, var(--text2)); font-variant-numeric: tabular-nums; }
 .spec-pill { font-size: 12px; font-weight: 600; white-space: nowrap; padding: 2px 9px; border-radius: 999px; border: 1px solid currentColor; }
 .spec-pill.ok { color: var(--ok); } .spec-pill.warn { color: var(--warn); } .spec-pill.danger { color: var(--danger); }
+
+/* Las dos tarjetas juntas, con la piel del tema (variables --doc-*) */
+.doc-spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 32px; }
+.doc-spec-card { border: 1px solid var(--doc-line, var(--border)); border-radius: var(--doc-radius, 8px); background: color-mix(in srgb, var(--doc-surface, var(--bg2)) 90%, transparent); padding: 18px 20px; min-width: 0; }
+.doc-spec-card > :is(h2, h3) { margin: 0 0 10px; font-size: 15px; border: 0; padding: 0; }

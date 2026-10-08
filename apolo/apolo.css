@@ -412,3 +412,6 @@ th{font-size:12px;letter-spacing:.06em}
 table{display:block;overflow-x:auto}
 td code{white-space:nowrap}
 }
+/* Base común de documentación (doc-prose, doc-specimen) con la piel del tema */
+.doc{--doc-head:var(--display);--doc-accent:var(--gold-ink);--doc-radius:var(--radius)}
+.ap-panel .doc h1{font-family:var(--title);font-weight:400}

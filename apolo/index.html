@@ -68,6 +68,8 @@ SOFTWARE.
 <meta name="description" content="apolo: tema griego enmarcado por columnas jónicas dibujadas en SVG (éntasis, estrías, volutas) y rosetas, con pétalos derivando sobre un cielo Egeo de día o un atardecer púrpura y naranja de noche.">
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css2?family=Cinzel:wght@400;700&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="apolo.css">
 <link rel="stylesheet" href="../shared/components/apolo/sky.css">
 <link rel="stylesheet" href="../shared/components/apolo/single-canvas.css">
@@ -257,6 +259,12 @@ SOFTWARE.
         </span>
         <span class="ap-tab-label">Mapa del código</span>
       </button>
+      <button class="ap-tab" role="tab" id="tab-ensayo" aria-controls="panel-ensayo" aria-selected="false" tabindex="-1" data-index="5">
+        <span class="ap-tab-preview" aria-hidden="true" style="display:flex;flex-direction:column;gap:3px;width:40px">
+          <span style="height:3px;border-radius:2px;background:var(--gold)"></span><span style="height:3px;border-radius:2px;background:var(--text2)"></span><span style="height:3px;width:70%;border-radius:2px;background:var(--text2)"></span>
+        </span>
+        <span class="ap-tab-label">Ensayo</span>
+      </button>
     </div>
   </div>
 
@@ -308,6 +316,10 @@ SOFTWARE.
         <tr><td><code>--rose</code></td><td>#E87080</td><td>#D06070</td><td>Rosa · Afrodita · pétalos</td></tr>
         <tr><td><code>--yellow</code></td><td>#F0C840</td><td>#E0A820</td><td>Amarillo · flores del campo</td></tr>
       </table>
+      <div class="doc-spec">
+      <div class="doc-spec-card"><h3>Tipografía</h3><div id="ap-type"></div></div>
+      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="ap-contrast"></ul></div>
+    </div>
     </div>
 
     <div class="ap-panel" id="panel-componentes" role="tabpanel" aria-labelledby="tab-componentes" hidden>
@@ -403,6 +415,43 @@ config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
       </div>
     </div>
 
+    <div class="ap-panel" id="panel-ensayo" role="tabpanel" aria-labelledby="tab-ensayo" hidden>
+      <div class="doc-layout">
+      <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#detalles">Apolo</a></li><li><a href="#detalles">Ensayos</a></li><li aria-current="page">Apolo del Belvedere</li></ol></nav>
+        <h1>Ficha de obra: <i>Apolo del Belvedere</i></h1>
+        <p class="doc-lede">Una lectura de la estatua que fijó el canon de la belleza clásica durante tres siglos.</p>
+        <h2 id="ap-e-obra">La obra</h2>
+        <dl>
+          <dt>Título</dt><dd>Apolo del Belvedere</dd>
+          <dt>Autor</dt><dd>Copia romana en mármol de un bronce perdido atribuido a Leócares</dd>
+          <dt>Fecha</dt><dd>Hacia 120 a 140 d. C.; el original, hacia 330 a 320 a. C.</dd>
+          <dt>Ubicación</dt><dd>Museos Vaticanos, Patio Octágono</dd>
+        </dl>
+        <h2 id="ap-e-lectura">Lectura</h2>
+        <p>El dios acaba de disparar: el brazo izquierdo sigue extendido y el cuerpo ya gira para mirar dónde cayó la flecha. Esa <mark>pausa entre dos movimientos</mark> es lo que la escultura griega del siglo IV buscaba: el instante que contiene al anterior y al siguiente.</p>
+        <blockquote><p>De todas las obras de la Antigüedad que han escapado a la destrucción, la estatua de Apolo es el ideal más alto del arte.</p><footer>Johann Joachim Winckelmann, Historia del arte de la Antigüedad, 1764</footer></blockquote>
+        <h3 id="ap-e-claves">Qué observar</h3>
+        <ol>
+          <li>El contrapposto: el peso en la pierna derecha y la cadera que responde.</li>
+          <li>La clámide que cae del brazo y equilibra la diagonal del cuerpo.</li>
+          <li>El tronco junto a la pierna, añadido por el copista para que el mármol aguante<sup><a href="#ap-n1" id="ap-r1">1</a></sup>.</li>
+        </ol>
+        <figure>
+          <img src="../assets/img/apolo/56aedbd715.webp" alt="Estatua de Apolo con lira, en mármol" loading="lazy" style="max-height:320px;width:auto">
+          <figcaption><b>Figura 1.</b> Apolo con lira. Compárese la postura con la del Belvedere.</figcaption>
+        </figure>
+        <h2 id="ap-e-preguntas">Para la discusión</h2>
+        <details><summary>¿Copia u original?</summary><p>Casi toda la escultura griega que conocemos son copias romanas en mármol de bronces fundidos después. Lo que admiramos es una traducción.</p></details>
+        <details><summary>¿Por qué fue tan influyente?</summary><p>Winckelmann la convirtió en modelo del Neoclasicismo; durante dos siglos fue la medida de la belleza masculina en las academias.</p></details>
+        <p><small>En la visita virtual, <kbd>←</kbd> y <kbd>→</kbd> recorren la sala y <kbd>Espacio</kbd> acerca la obra.</small></p>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="ap-n1">Los bronces se sostenían solos; el mármol, más pesado y frágil, necesita apoyos. <a href="#ap-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#detalles"><small>Anterior</small>Narrativa</a><a class="next" href="#detalles"><small>Siguiente</small>Mapa del código</a></nav>
+      </article>
+      <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
+    </div>
+
     </div>
     <aside class="ap-stage-statue">
       <figure class="ap-statue ap-statue-apollo">
@@ -426,7 +475,18 @@ import { mount as m1 } from '../shared/components/apolo/circular-gallery-tabs.js
 import { toggleTheme } from '../shared/components/apolo/kit.js';
 // El marcado llama estas funciones con on…="": van en window.
 Object.assign(window, { toggleTheme });
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1();
+docProse();
+docSpecimen({
+  type: { el: '#ap-type', fonts: [
+    { name: 'Apolo', family: 'var(--title)', size: 36, use: 'Dolphian · títulos de sección' },
+    { name: 'Capitular', family: 'var(--display)', size: 26, weight: 700, use: 'Cinzel · etiquetas y capitulares, solo mayúsculas' },
+    { name: 'Newsreader para leer', family: 'var(--serif)', size: 24, use: 'Texto corrido, notas y citas' },
+    { name: 'Fira Code', family: 'var(--mono)', size: 20, use: 'Código y tokens' }] },
+  contrast: { el: '#ap-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--gold-ink', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
 import('../shared/components/statue-3d/statue-3d.js').then(m => m.mount({ el: '.ap-statue-apollo .ap-statue-media', src: '../assets/models/apolo/apollo-statue.glb', tint: '--sky' }));
 </script>
 </body>

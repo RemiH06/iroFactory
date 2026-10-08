@@ -299,3 +299,5 @@ html.js .morph-fallback { display: none; }
 body { font-size: 16px; }
 .sh-lede { font-size: 17px; }
 }
+/* Base común de documentación (doc-prose, doc-specimen) con la piel del tema */
+.doc{--doc-radius:var(--radius,12px)}

@@ -407,3 +407,5 @@ a { color: var(--accent); text-underline-offset: 3px; }
 table { display: block; overflow-x: auto; }
 td code { white-space: nowrap; }
 }
+/* Base común de documentación (doc-prose, doc-specimen) con la piel del tema */
+.doc{--doc-head:var(--mono);--doc-radius:var(--radius,4px)}

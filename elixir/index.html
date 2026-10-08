@@ -43,6 +43,8 @@ SOFTWARE.
 <title>elixir_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=iosevka:400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="elixir.css">
 <link rel="stylesheet" href="../shared/components/elixir/line-sidebar.css">
 <link rel="stylesheet" href="../shared/components/elixir/refine-frame.css">
@@ -76,7 +78,8 @@ SOFTWARE.
     <li class="line-sidebar__item"><a href="#inicio"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">01</span><span>Inicio</span></span></a></li>
     <li class="line-sidebar__item"><a href="#paleta"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">02</span><span>Paleta</span></span></a></li>
     <li class="line-sidebar__item"><a href="#pipeline"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">03</span><span>Pipeline</span></span></a></li>
-    <li class="line-sidebar__item"><a href="#componentes"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">04</span><span>Componentes</span></span></a></li>
+    <li class="line-sidebar__item"><a href="#manual"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">04</span><span>Manual</span></span></a></li>
+    <li class="line-sidebar__item"><a href="#componentes"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">05</span><span>Componentes</span></span></a></li>
   </ul>
 </nav>
 <button class="ex-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo claro">◑ claro</button>
@@ -197,12 +200,63 @@ SOFTWARE.
   </div>
 </section>
 
-<!-- ── 04 · COMPONENTES ── -->
-<section class="ex-seg ex-seg--pillar" id="componentes" data-seg="3">
+<!-- ── 04 · MANUAL · base común de documentación ── -->
+<section class="ex-seg" id="manual" data-seg="3">
+  <div class="ex-wrap">
+    <div class="ex-panel">
+      <div class="ex-seg-head"><span class="ex-seg-index">04</span><h2 class="ex-seg-title">Manual</h2></div>
+      <div class="doc-layout">
+      <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#inicio">Elixir</a></li><li><a href="#pipeline">Modelos</a></li><li aria-current="page">Ficha del modelo</li></ol></nav>
+        <h1>Ficha del modelo: clasificador de radiografías</h1>
+        <p class="doc-lede">Qué aprende, con qué datos, cómo se entrena y dónde falla.</p>
+        <h2 id="ex-m-datos">Datos</h2>
+        <p>Clasificador de radiografías de peces: dado el corte, decir la especie. Tres conjuntos separados por ejemplar, no por imagen, para que ningún pez aparezca en dos<sup><a href="#ex-n1" id="ex-r1">1</a></sup>.</p>
+        <dl>
+          <dt>train</dt><dd>4 812 imágenes, 31 especies</dd>
+          <dt>valid</dt><dd>602 imágenes, para elegir hiperparámetros</dd>
+          <dt>test</dt><dd>598 imágenes, se abre una sola vez al final</dd>
+        </dl>
+        <h2 id="ex-m-entrenar">Entrenar</h2>
+        <ol>
+          <li>Congelar el esqueleto preentrenado y ajustar solo la cabeza 5 épocas.</li>
+          <li>Descongelar todo con tasa de aprendizaje 10 veces menor.</li>
+          <li>Detener cuando la pérdida de validación no mejore en 4 épocas.</li>
+        </ol>
+<pre data-lang="bash"><code>python train.py --config configs/fish-xray.yaml --seed 7
+tensorboard --logdir runs/</code></pre>
+        <p>Para cortar el entrenamiento sin perder el último punto de control, <kbd>Ctrl</kbd> + <kbd>C</kbd> una sola vez: el script guarda y sale.</p>
+        <h3 id="ex-m-hp">Hiperparámetros</h3>
+        <ul><li>Tasa de aprendizaje: <code>3e-4</code> con calentamiento de 500 pasos</li><li>Lote: 64</li><li>Aumentos: giro horizontal, brillo ±15 %; nunca recortes, la cola cuenta</li></ul>
+        <figure>
+<pre aria-label="Curva de pérdida">pérdida
+ 1.2 │█
+ 0.8 │ ██▄
+ 0.4 │    ▀▀█▄▄▄▄▄▄▄▄▄  valid
+ 0.2 │        ▀▀▀▀▀▀▀▀▀ train
+     └────────────────── época
+      1    5    10   15</pre>
+          <figcaption><b>Figura 1.</b> Pérdida por época: la validación se estanca hacia la 12; se usa ese punto de control.</figcaption>
+        </figure>
+        <blockquote><p>All models are wrong, but some are useful.</p><footer>George E. P. Box, 1976</footer></blockquote>
+        <h2 id="ex-m-faq">Problemas frecuentes</h2>
+        <details><summary>La validación mejora y luego empeora</summary><p>Sobreajuste: sube el abandono (dropout) o los aumentos, o detente antes.</p></details>
+        <details><summary>Los resultados cambian entre corridas</summary><p>Fija la semilla en PyTorch, NumPy y el cargador de datos; aun así la GPU deja ruido pequeño.</p></details>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="ex-n1">Si el mismo pez cae en entrenamiento y prueba, el modelo memoriza individuos y la exactitud se infla. <a href="#ex-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#pipeline"><small>Anterior</small>03 Pipeline</a><a class="next" href="#componentes"><small>Siguiente</small>05 Componentes</a></nav>
+      </article>
+      <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 · COMPONENTES ── -->
+<section class="ex-seg ex-seg--pillar" id="componentes" data-seg="4">
   <div class="ex-seg-bg"><canvas id="ex-pillar" aria-hidden="true"></canvas><canvas id="ex-anti" aria-hidden="true"></canvas></div>
   <div class="ex-wrap">
     <div class="ex-panel">
-      <div class="ex-seg-head"><span class="ex-seg-index">04</span><h2 class="ex-seg-title">Componentes</h2></div>
+      <div class="ex-seg-head"><span class="ex-seg-index">05</span><h2 class="ex-seg-title">Componentes</h2></div>
       <div class="gooey-nav" id="ex-gooey">
         <nav aria-label="Componentes">
           <ul role="tablist">
@@ -298,6 +352,10 @@ SOFTWARE.
         </div>
       </div>
       </div>
+      <div class="doc-spec">
+      <div class="doc-spec-card"><h3>Tipografía</h3><div id="ex-type"></div></div>
+      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="ex-contrast"></ul></div>
+    </div>
     </div>
   </div>
 </section>
@@ -317,7 +375,16 @@ import { mount as m7 } from '../shared/components/elixir/infinite-spiral.js';
 import { mount as m8 } from '../shared/components/elixir/light-pillar-meta-balls.js';
 import { mount as m9 } from '../shared/components/elixir/antigravity.js';
 import { mount as m10 } from '../shared/components/elixir/gooey-nav-tabs.js';
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7(); m8(); m9(); m10();
+docProse();
+docSpecimen({
+  type: { el: '#ex-type', fonts: [
+    { name: 'Iosevka', family: 'var(--mono)', size: 26, weight: 700, use: 'Títulos' },
+    { name: 'Iosevka para leer y para el código', family: 'var(--mono)', size: 18, use: 'Una sola familia: texto, tablas, código y métricas' }] },
+  contrast: { el: '#ex-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
 </script>
 </body>
 </html>

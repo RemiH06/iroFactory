@@ -314,3 +314,8 @@ body{font-size:17px}
 .lm-chap{padding:88px 0 72px}
 .lm-lede{font-size:20px}
 }
+/* Base común de documentación (doc-prose, doc-specimen) con la piel del tema */
+.doc{--doc-head:var(--serif);--doc-radius:var(--radius,4px)}
+.lm-chap .doc{font-size:17px}
+.lm-chap .doc h2{font-size:clamp(26px,3vw,34px);margin:1.6em 0 .5em;text-shadow:none;letter-spacing:0}
+.lm-chap .doc h1{font-size:clamp(30px,3.6vw,42px)}

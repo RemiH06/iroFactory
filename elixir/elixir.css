@@ -448,3 +448,5 @@ tr:hover td { background: var(--bg3); }
 body { font-size: 16px; }
 p.muted, .callout p { font-size: 14px; }
 }
+/* Base común de documentación (doc-prose, doc-specimen) con la piel del tema */
+.doc{--doc-radius:var(--radius)}

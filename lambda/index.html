@@ -45,6 +45,8 @@ SOFTWARE.
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,400i,700,700i&family=fira-code:400,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/components/staggered-menu/staggered-menu.css">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="lambda.css">
 <link rel="stylesheet" href="../shared/components/lambda/chalkboard.css">
 <link rel="stylesheet" href="../shared/components/lambda/stroke-text.css">
@@ -80,6 +82,7 @@ SOFTWARE.
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#demostraciones"><span class="sm-panel-itemLabel"><span class="sm-sec">§3</span> Demostraciones</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#resultados"><span class="sm-panel-itemLabel"><span class="sm-sec">§4</span> Resultados</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#formulario"><span class="sm-panel-itemLabel"><span class="sm-sec">§5</span> Formulario</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#apuntes"><span class="sm-panel-itemLabel"><span class="sm-sec">§6</span> Apuntes</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#colofon"><span class="sm-panel-itemLabel"><span class="sm-sec">fin</span> Colofón</span></a></li>
     </ul>
     <div class="sm-extras">
@@ -279,6 +282,53 @@ SOFTWARE.
   </div>
 </section>
 
+<!-- ── §6 APUNTES · base común de documentación ── -->
+<section class="lm-chap" id="apuntes" aria-labelledby="h-apu">
+  <div class="lm-wrap">
+    <canvas class="lm-curio" data-curve="adn" aria-hidden="true"></canvas>
+    <div class="lm-chap-head">
+      <span class="lm-chap-num">§6</span>
+      <h2 id="h-apu">Apuntes</h2>
+      <p class="lm-chap-lede">Así se ve una página de apuntes con este tema: problema, idea, algoritmo, costo y ejercicios.</p>
+    </div>
+    <div class="doc-layout">
+      <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#inicio">Lambda</a></li><li><a href="#apuntes">Apuntes</a></li><li aria-current="page">Algoritmo de Euclides</li></ol></nav>
+        <h1>Algoritmo de Euclides</h1>
+        <p class="doc-lede">El algoritmo no trivial más antiguo que se sigue usando: el máximo común divisor en pocas líneas.</p>
+        <h2 id="lm-a-problema">Problema</h2>
+        <p>Dados dos enteros positivos <i>a</i> y <i>b</i>, encontrar su máximo común divisor: el mayor entero que divide a ambos.</p>
+        <h2 id="lm-a-idea">Idea</h2>
+        <blockquote><p>Si <i>a</i> = <i>bq</i> + <i>r</i>, todo divisor común de <i>a</i> y <i>b</i> divide también a <i>r</i>.</p><footer>Euclides, Elementos, libro VII, proposición 2</footer></blockquote>
+        <p>Por eso mcd(<i>a</i>, <i>b</i>) = mcd(<i>b</i>, <i>a</i> mod <i>b</i>), y el residuo baja hasta llegar a cero.</p>
+        <h2 id="lm-a-algoritmo">Algoritmo</h2>
+        <ol><li>Si <i>b</i> = 0, el resultado es <i>a</i>.</li><li>Si no, reemplaza (<i>a</i>, <i>b</i>) por (<i>b</i>, <i>a</i> mod <i>b</i>) y repite.</li></ol>
+<pre data-lang="python"><code>def mcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a</code></pre>
+        <h3 id="lm-a-costo">Costo</h3>
+        <dl><dt>Tiempo</dt><dd>O(log min(<i>a</i>, <i>b</i>)) divisiones<sup><a href="#lm-n1" id="lm-r1">1</a></sup></dd><dt>Memoria</dt><dd>O(1)</dd><dt>Peor caso</dt><dd>Dos números de Fibonacci consecutivos</dd></dl>
+        <figure>
+<pre aria-label="Traza de mcd(252, 105)">  a     b    a mod b
+ 252   105     42
+ 105    42     21
+  42    21      0
+  21     0   → mcd = 21</pre>
+          <figcaption><b>Figura 1.</b> Traza de mcd(252, 105).</figcaption>
+        </figure>
+        <h2 id="lm-a-ejercicios">Ejercicios</h2>
+        <details><summary>Calcula mcd(1071, 462)</summary><p>1071 = 2 · 462 + 147; 462 = 3 · 147 + 21; 147 = 7 · 21. El resultado es 21.</p></details>
+        <details><summary>¿Por qué termina siempre?</summary><p>El residuo es estrictamente menor que <i>b</i> y nunca negativo: una sucesión decreciente de naturales llega a cero.</p></details>
+        <p><small>En el pizarrón, <kbd>Shift</kbd> + <kbd>Enter</kbd> evalúa la celda.</small></p>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="lm-n1">Teorema de Lamé (1844): el número de pasos no pasa de cinco veces la cantidad de dígitos del menor. <a href="#lm-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#formulario"><small>Anterior</small>§5 Formulario</a><a class="next" href="#colofon"><small>Siguiente</small>Colofón</a></nav>
+      </article>
+      <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
+  </div>
+</section>
+
 <!-- ── COLOFÓN ── -->
 <section class="lm-colofon" id="colofon" aria-labelledby="h-col">
   <div class="lm-wrap">
@@ -345,6 +395,10 @@ SOFTWARE.
     <div class="lm-curve-presets" role="group" aria-label="Curvas de ejemplo"></div>
   </form>
     </aside>
+    <div class="doc-spec">
+      <div class="doc-spec-card"><h3>Tipografía</h3><div id="lm-type"></div></div>
+      <div class="doc-spec-card"><h3>Contraste</h3><ul class="spec-contrast" id="lm-contrast"></ul></div>
+    </div>
   </div>
   <div class="lm-wrap"><p class="lm-tools-note">Íconos de Simple Icons (CC0); las marcas son de sus dueños. Las que no tienen ícono libre van en monograma.</p></div>
 </section>
@@ -369,7 +423,17 @@ import { mount as m7 } from '../shared/components/lambda/raimei-hakke.js';
 import { mount as m8 } from '../shared/components/lambda/fluid-glass-formulas.js';
 import { mount as m9 } from '../shared/components/lambda/formula-fullscreen.js';
 import { mount as m10 } from '../shared/components/lambda/logo-loop.js';
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7(); m8(); m9(); m10();
+docProse();
+docSpecimen({
+  type: { el: '#lm-type', fonts: [
+    { name: 'Cormorant Garamond', family: 'var(--serif)', size: 32, weight: 600, use: 'Títulos y texto: la voz del libro' },
+    { name: 'mcd(a, b) = mcd(b, a mod b)', family: 'var(--serif)', size: 24, style: 'italic', use: 'Cursiva para variables y enunciados' },
+    { name: 'Fira Code', family: 'var(--mono)', size: 20, use: 'Código y trazas' }] },
+  contrast: { el: '#lm-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
 </script>
 </body>
 </html>

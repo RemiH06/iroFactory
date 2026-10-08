@@ -202,3 +202,6 @@ html.js-pin .metro-hero{position:sticky;top:0}
 table{display:block;overflow-x:auto}
 td code{white-space:nowrap}
 }
+/* Base común de documentación (doc-prose, doc-specimen) con la piel del tema */
+.doc{--doc-head:var(--mono);--doc-radius:var(--radius-lg)}
+.metro .doc h2{font-size:20px;margin:1.6em 0 .5em}
