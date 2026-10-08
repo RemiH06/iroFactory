@@ -291,9 +291,6 @@ html.js .mh-reveal{display:block}
 .bw-toggle{position:absolute;top:18px;right:20px;font-family:var(--serif);font-size:13px;font-style:italic;padding:6px 16px;border-radius:999px;border:1px solid var(--glass-edge);background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--text);cursor:pointer;transition:transform .16s ease-out,border-color .2s ease-out}
 .bw-toggle:hover{border-color:var(--moss-ink)}
 .bw-toggle:active{transform:scale(.97)}
-body.mode-desktop #bw-desktop,body.is-switching #bw-desktop{visibility:visible}
-/* Durante el cambio el escritorio va encima del hero: el círculo crece (o se encoge) sobre él. */
-body.is-switching #bw-desktop{z-index:20}
 .bw-wall{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
 .bw-menubar{position:absolute;top:0;left:0;right:0;height:40px;z-index:3000;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--glass);border-bottom:1px solid var(--glass-edge);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
 .bw-brand{font-family:var(--serif);font-style:italic;font-weight:700;font-size:15px;color:var(--moss-ink)}

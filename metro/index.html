@@ -48,6 +48,7 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/metro/warp-text.css">
 <link rel="stylesheet" href="../shared/components/metro/border-glow.css">
 <link rel="stylesheet" href="../shared/components/metro/dock.css">
+<link rel="stylesheet" href="../shared/components/metro/departures.css">
 <link rel="stylesheet" href="../shared/components/metro/lattice-loader.css">
 <link rel="stylesheet" href="../shared/components/metro/dome-gallery.css">
 </head>
@@ -260,12 +261,37 @@ SOFTWARE.
       </div>
     </div>
   </div>
+  <div class="metro-city" id="metro-city">
+    <div class="metro-city-view" aria-label="Ciudad generada con tres líneas de metro elevado; arrastra para girarla." role="img"></div>
+    <section class="metro-board" aria-labelledby="metro-board-title">
+      <div class="metro-board-head">
+        <h3 id="metro-board-title">Salidas</h3>
+        <div class="metro-board-filter" role="group" aria-label="Filtrar por estado">
+          <button type="button" data-f="all" aria-pressed="true">Todas</button>
+          <button type="button" data-f="ok" aria-pressed="false">A tiempo</button>
+          <button type="button" data-f="warn" aria-pressed="false">Demora</button>
+          <button type="button" data-f="danger" aria-pressed="false">Detenido</button>
+        </div>
+      </div>
+      <div class="metro-board-cols" aria-hidden="true"><span>Línea</span><span>Siguiente</span><span>Llega</span><span>Estado</span></div>
+      <ol class="metro-board-list">
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--blue)">L1</span><span class="metro-board-cell">Zócalo</span><span class="metro-board-cell">3 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--blue)">L1</span><span class="metro-board-cell">Hidalgo</span><span class="metro-board-cell">5 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--purple)">L2</span><span class="metro-board-cell">Tacubaya</span><span class="metro-board-cell">7 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--purple)">L2</span><span class="metro-board-cell">Insurgentes</span><span class="metro-board-cell">9 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--orange)">L3</span><span class="metro-board-cell">Pino Suárez</span><span class="metro-board-cell">11 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--orange)">L3</span><span class="metro-board-cell">Chapultepec</span><span class="metro-board-cell">13 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+      </ol>
+      <p class="metro-board-note">El filtro también cambia los semáforos de la ciudad.</p>
+    </section>
+  </div>
 </section>
 
-<footer class="metro-footer">metro_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>)</footer>
+<footer class="metro-footer">metro_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Ciudad con los generadores de <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> (MIT)</footer>
 
 </main>
 
+<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.webgpu.min.js", "three/webgpu": "../shared/vendor/three/three.webgpu.min.js", "three/tsl": "../shared/vendor/three/three.tsl.min.js", "three/addons/": "../shared/vendor/three/addons/", "animejs": "../shared/vendor/anime/anime.esm.min.js" } }</script>
 <script type="module">
 import { mount as m0 } from '../shared/components/metro/kit.js';
 import { mount as m1 } from '../shared/components/metro/dome-gallery.js';
@@ -273,6 +299,8 @@ import { metroToggle } from '../shared/components/metro/kit.js';
 // El marcado llama estas funciones con on…="": van en window.
 Object.assign(window, { metroToggle });
 m0(); m1();
+// Ciudad y tablero: anime.js al momento, la ciudad (Three.js) cuando el contenedor se acerca.
+import('../shared/components/metro/departures.js').then(m => m.mount());
 </script>
 </body>
 </html>

@@ -12,3 +12,6 @@ html.js #bw-hero{position:fixed;inset:0;min-height:0}
 ══════════════════════════════════════════════════════ */
 #bw-desktop{display:none}
 html.js #bw-desktop{display:block;position:fixed;inset:0;z-index:5;visibility:hidden;overflow:hidden}
+body.mode-desktop #bw-desktop,body.is-switching #bw-desktop{visibility:visible}
+/* Durante el cambio el escritorio va encima del hero: el círculo crece (o se encoge) sobre él. */
+body.is-switching #bw-desktop{z-index:20}

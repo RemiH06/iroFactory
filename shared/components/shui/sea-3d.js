@@ -152,7 +152,7 @@ export function mount() {
 
   let last = 0, loop = null;
   const frame = now => {
-    const t = (now - t0) / 1000, dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016; last = now;
+    const t = (now - t0) / 1000, dt = last ? Math.min(0.05, Math.max(0, now - last) / 1000) : 0.016; last = Math.max(last, now);
     readDepth(); depth += (depthT - depth) * Math.min(1, dt * 1.5);
     const still = reduceMotion.matches;
     // Velo y rayos
