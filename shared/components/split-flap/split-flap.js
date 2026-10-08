@@ -3,7 +3,8 @@
 // del original: volteo de 0.12 s, 0.06 s entre fichas, 8 volteos al azar
 // antes de la letra final y 2.4 s entre frases. Cada ficha voltea sus dos
 // mitades con CSS; el JS solo cambia las letras. Se detiene fuera de
-// pantalla y con reduced motion se queda en «DISCO».
+// pantalla y con reduced motion se queda en «DISCO». Con `once`, voltea una
+// sola vez hasta la primera palabra y se queda quieto.
 // ══════════════════════════════════════════════════════
 import { $, $$, theme, cssVar, hexRgb, rgb01, rgba, onTheme, reduceMotion, makeLoop, glProgram, EASE } from '../../core/core.js';
 
@@ -44,9 +45,10 @@ export function mount(opts = {}) {
     raf = requestAnimationFrame(tick);
     return plans.reduce((m, p) => Math.max(m, p.start + p.seq.length * FLIP), 0);
   };
-  const schedule = delay => { clearTimeout(timer); timer = setTimeout(() => { if (!visible || document.hidden) return; idx = (idx + 1) % WORDS.length; schedule(CYCLE + animateTo(WORDS[idx])); }, delay); };
+  const schedule = delay => { if (opts.once) return; clearTimeout(timer); timer = setTimeout(() => { if (!visible || document.hidden) return; idx = (idx + 1) % WORDS.length; schedule(CYCLE + animateTo(WORDS[idx])); }, delay); };
   if (reduceMotion.matches) { show(WORDS[0]); return; }
   show('');
+  if (opts.once) { setTimeout(() => animateTo(WORDS[0]), 300); return; }
   schedule(CYCLE + animateTo(WORDS[0]) - CYCLE + 300);
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !running) schedule(CYCLE); else if (!visible) clearTimeout(timer); }).observe(host);
   document.addEventListener('visibilitychange', () => { if (!document.hidden && visible && !running) schedule(CYCLE); });

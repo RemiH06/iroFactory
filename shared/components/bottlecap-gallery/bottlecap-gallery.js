@@ -5,6 +5,9 @@
 // corcholata se dibuja una vez a sprite (21 pliegues, borde metálico,
 // sombra) y su versión desenfocada se hornea con la estela y los tres
 // canales separados; al dibujar solo se gira hacia afuera.
+// Como navegación: cada corcholata puede llevar `href`; la del centro es
+// la elegida, y tocarla (o Enter) lleva a su destino. El enlace «Ir a…»
+// de `opts.go` se actualiza con la elegida.
 // ══════════════════════════════════════════════════════
 import { $, $$, theme, cssVar, hexRgb, rgb01, rgba, onTheme, reduceMotion, makeLoop, glProgram, EASE } from '../../core/core.js';
 
@@ -93,15 +96,23 @@ export function mount(opts = {}) {
     });
   };
   const loop = makeLoop(canvas, draw, 30);
-  const select = i => { focus = (i + N) % N; cap.innerHTML = `<b>${DATA[focus].name}</b><span>${focus + 1} de ${N}</span>`; loop.still(); loop.start(); };
+  const go = $(opts.go ?? '#caps-go');
+  const select = i => {
+    focus = (i + N) % N; const d = DATA[focus];
+    cap.innerHTML = `<b>${d.name}</b><span>${d.note ?? `${focus + 1} de ${N}`}</span>`;
+    if (go && d.href) { go.href = d.href; go.textContent = `Ir a ${d.name} →`; if (/^https?:/.test(d.href)) { go.target = '_blank'; go.rel = 'noopener'; } else { go.removeAttribute('target'); go.removeAttribute('rel'); } }
+    loop.still(); loop.start();
+  };
+  const activate = () => { const d = DATA[focus]; if (!d.href) return; if (/^https?:/.test(d.href)) window.open(d.href, '_blank', 'noopener'); else document.querySelector(d.href)?.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' }); };
   $(opts.prev ?? '#caps-prev').addEventListener('click', () => select(focus - 1));
   $(opts.next ?? '#caps-next').addEventListener('click', () => select(focus + 1));
   canvas.addEventListener('click', e => {
     const r = canvas.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top;
     let best = -1, bd = Infinity; st.forEach((s, i) => { const d = Math.hypot(s.x - px, s.y - py); if (d < s.s * .6 && d < bd) { bd = d; best = i; } });
-    if (best >= 0 && best !== focus) select(best);
+    if (best >= 0 && best !== focus) select(best); else if (best === focus) activate();
   });
-  canvas.parentElement.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') select(focus - 1); if (e.key === 'ArrowRight') select(focus + 1); });
+  canvas.parentElement.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') select(focus - 1); if (e.key === 'ArrowRight') select(focus + 1); if (e.key === 'Enter') activate(); });
+  select(0);
   new ResizeObserver(resize).observe(canvas);
   onTheme(() => { built = false; build(); });
 }

@@ -272,21 +272,35 @@ td code { white-space: nowrap; }
 .swatch-hex { position: absolute; bottom: 4px; left: 6px; font-size: 12px; line-height: 1; pointer-events: none; font-family: var(--mono); }
 
 /* ══════════════════════════════════════════════════════
-   CORCHOLATAS · galería que se enfoca (riff de @singhshristi)
-   sobre Prismatic Burst
+   ÍNDICE · corcholatas como navegación (riff de @singhshristi)
+   sobre la simulación de fluidos de Pavel Dobryakov, entre la
+   cerveza y la lata
 ══════════════════════════════════════════════════════ */
-.ds-gallery { position: relative; overflow: hidden; }
-.ds-gallery .ds-wrap { position: relative; z-index: 1; }
-/* Sobre el estallido, el encabezado va en una placa para leerse. */
-.ds-gallery .ds-head { display: inline-flex; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: 18px 24px; max-width: 100%; }
+.ds-index { overflow: hidden; color-scheme: dark; }
+.ds-fluid { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+/* El fluido es una escena oscura en los dos modos: el encabezado va en placa para leerse. */
+.ds-index .ds-head { display: inline-flex; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: 18px 24px; max-width: 100%; }
+.ds-index-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr) minmax(0, 1fr); align-items: center; gap: 18px; }
+.ds-index-grid .model-cell { min-height: clamp(240px, 34vh, 380px); }
+.ds-index-caps .caps-stage { height: clamp(360px, 52vh, 540px); }
+.caps-go-row { display: flex; justify-content: center; margin: 14px 0 0; }
+.caps-stage:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 6px; }
+nav.caps-fallback { display: none; }
+html:not(.js) nav.caps-fallback { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 760px) {
+  .ds-index-grid { grid-template-columns: 1fr 1fr; }
+  .ds-index-caps { grid-column: 1 / -1; grid-row: 1; }
+  .ds-index-grid .model-cell { min-height: 200px; }
+}
+/* La bola disco flota sobre la pirámide de Prism (antes al pie). */
+.model-cell.has-prism { overflow: hidden; }
+.model-cell [data-prism] { position: absolute; inset: 0; left: 0; width: 100%; height: 100%; transform: none; pointer-events: none; -webkit-mask-image: radial-gradient(closest-side, rgb(128 128 128) 62%, transparent); mask-image: radial-gradient(closest-side, rgb(128 128 128) 62%, transparent); }
 
 /* ══════════════════════════════════════════════════════
    PIE
 ══════════════════════════════════════════════════════ */
-/* Fin de la pista: la pirámide de Prism detrás de los créditos. */
-.ds-footer { position: relative; overflow: hidden; min-height: clamp(420px, 62vh, 620px); display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 18px; padding: 40px var(--gutter) 48px; text-align: center; font-size: 14px; color: var(--text2); }
+.ds-footer { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 18px; padding: 40px var(--gutter) 48px; text-align: center; font-size: 14px; color: var(--text2); }
 .ds-footer > :not(canvas) { position: relative; z-index: 1; }
-.ds-end { font-family: var(--display); font-size: clamp(40px, 7vw, 76px); line-height: 1; color: var(--text); background: color-mix(in srgb, var(--bg) 88%, transparent); border-radius: var(--radius-lg); padding: 10px 26px; }
 .ds-footer p { max-width: 90ch; margin-inline: auto; background: color-mix(in srgb, var(--bg) 90%, transparent); border: 1px solid var(--glass-edge); border-radius: var(--radius-lg); padding: 12px 20px; }
 
 @media (max-width: 900px) {

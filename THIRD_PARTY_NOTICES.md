@@ -7,8 +7,8 @@ iroFactory's own code is MIT licensed (see `LICENSE`). Some themes include code,
 | Source | Author | License | Used in |
 |---|---|---|---|
 | [React Bits](https://github.com/DavidHDev/react-bits) | David Haz ([@DavidHDev](https://github.com/DavidHDev)) | MIT + Commons Clause | apolo, bookworm, disco, elixir, forge, lambda, metro, odysseus, sherry, shui |
-| [WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | Pavel Dobryakov ([@PavelDoGreat](https://github.com/PavelDoGreat)) | MIT | shui (Splash Cursor is built on it) |
-| [Three.js](https://threejs.org) r186 · `shared/vendor/three/` (minified core + GLTFLoader, BufferGeometryUtils, SkeletonUtils, meshopt decoder, RoundedBoxGeometry, RoomEnvironment; WebGPU build as three.core/webgpu/tsl.min.js with the car, person, streetlight and traffic light generators, LoftGeometry, OrbitControls) | three.js authors ([@mrdoob](https://github.com/mrdoob)) | MIT (`shared/vendor/three/LICENSE`) | apolo (3D statue, petals), odysseus (celestial sphere, paper cards, sheet curl), shui (fish school, descent, ice, particles), metro (Guadalajara in 3D) |
+| [WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | Pavel Dobryakov ([@PavelDoGreat](https://github.com/PavelDoGreat)) | MIT (`shared/components/fluid-sim/LICENSE-pavel`) | shui (Splash Cursor is built on it), disco (`fluid-sim`: the simulation with bloom and sunrays, plus its dithering texture) |
+| [Three.js](https://threejs.org) r186 · `shared/vendor/three/` (minified core + GLTFLoader, BufferGeometryUtils, SkeletonUtils, meshopt decoder, RoundedBoxGeometry, RoomEnvironment; WebGPU build as three.core/webgpu/tsl.min.js with the car, person, streetlight and traffic light generators, LoftGeometry, OrbitControls) | three.js authors ([@mrdoob](https://github.com/mrdoob)) | MIT (`shared/vendor/three/LICENSE`) | apolo (3D statue, petals), odysseus (celestial sphere, paper cards, sheet curl), shui (fish school, descent, ice, particles), metro (Guadalajara in 3D), disco (floating 3D objects) |
 | [anime.js](https://animejs.com) v4.5.0 · `shared/vendor/anime/anime.esm.min.js` (ESM bundle) | Julian Garnier ([@juliangarnier](https://github.com/juliangarnier)) | MIT (`shared/vendor/anime/LICENSE.md`) | odysseus, metro (departures board), forge (breakers, cables, titles, scope knobs, cursor) |
 | [Motion](https://motion.dev) v11.18.2, mini build, inlined | Motion B.V. ([@motiondivision](https://github.com/motiondivision)) | MIT | apolo |
 
@@ -16,7 +16,7 @@ React Bits components ported per theme:
 
 - **apolo** · Circular Gallery, LightRays, Ripple Distortion
 - **bookworm** · Ghost Fibers, Glass Icons, Masked Heading, Paper Crumple, Side Rays
-- **disco** · Halftone Reveal, Prism, Prismatic Burst, Soft Aurora, Split Flap Text, Spotlight Card, Staggered Menu
+- **disco** · Halftone Reveal, Prism, Soft Aurora, Split Flap Text, Spotlight Card, Staggered Menu
 - **elixir** · Antigravity, Gooey Nav, Infinite Spiral, Light Pillar, Line Sidebar, Liquid Chrome, Meta Balls, Refine Frame, Tech Text
 - **forge** · Electric Border, Laser Flow, Lightning, Molten Metal, Noise, Split Flap Text, Strands, Target Cursor
 - **lambda** · Fluid Glass, Logo Loop, Magnet Lines, Staggered Menu, Stroke Text, Waves
@@ -35,6 +35,7 @@ The React Bits license allows using the components as part of an application, we
 | [Natural Earth](https://www.naturalearthdata.com) | Public domain | odysseus (world map and coastlines) |
 | [Simple Icons](https://simpleicons.org) v16.34.0 · tool logos | CC0 1.0 (the brands belong to their owners) | lambda (tool strip) |
 | "Apollo Statue" · 3D scan by artfletch ([Sketchfab](https://sketchfab.com/3d-models/apollo-statue-a01dbaf0b7db4c308c9fcecade6d4283)) · reduced to 142k triangles, 2048 px texture, meshopt compression | CC BY 4.0 | apolo (`assets/models/apolo/apollo-statue.glb`) |
+| Taco · [Poly by Google](https://poly.pizza/m/56s2tfG_ofG), BEER · [sugamo](https://poly.pizza/m/40Ke6-N0q7l), Soda Can · [jeremy](https://poly.pizza/m/cNjAaDY27fQ) (via Poly Pizza) · `assets/models/disco/*.glb` (meshopt) | CC BY 3.0 | disco (floating 3D objects) |
 | [Animated Fish Pack](https://quaternius.com) by Quaternius · `assets/models/shui/*.glb` (FBX converted to GLB, materials merged into vertex colors, meshopt) | CC0 1.0 | shui (x-ray sea animals) |
 | Fish radiographs · photos by Sandra Raredon, from the Smithsonian exhibition «X-Ray Vision: Fish Inside Out» | Credited to the photographer and the exhibition | elixir, shui |
 
