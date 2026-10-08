@@ -262,32 +262,45 @@ SOFTWARE.
     </div>
   </div>
   <div class="metro-city" id="metro-city">
-    <div class="metro-city-view" aria-label="Ciudad generada con tres líneas de metro elevado; arrastra para girarla." role="img"></div>
+    <div class="metro-city-view" role="region" aria-label="Guadalajara en 3D: el cruce de las líneas 1, 2 y 3 del Tren Ligero">
+      <p class="sr-only">Maqueta de la zona entre Juárez, Plaza Universidad y Ávila Camacho, con calles de OpenStreetMap. Se arrastra para girar; el botón Explorar la abre a pantalla completa con zoom.</p>
+      <div class="metro-city-labels" aria-hidden="true" hidden></div>
+      <button class="metro-city-expand" type="button" aria-expanded="false" hidden>Explorar ⤢</button>
+      <button class="metro-city-close" type="button" hidden>Cerrar · Esc</button>
+    </div>
     <section class="metro-board" aria-labelledby="metro-board-title">
-      <div class="metro-board-head">
-        <h3 id="metro-board-title">Salidas</h3>
+      <h3 id="metro-board-title">Tren Ligero · ZMG</h3>
+      <div class="metro-board-tabs" role="tablist" aria-label="Vista del tablero">
+        <button type="button" role="tab" id="mb-tab-salidas" aria-controls="mb-salidas" aria-selected="true">Salidas</button>
+        <button type="button" role="tab" id="mb-tab-mapa" aria-controls="mb-mapa" aria-selected="false" tabindex="-1">Mapa</button>
+      </div>
+      <div id="mb-salidas" role="tabpanel" aria-labelledby="mb-tab-salidas">
         <div class="metro-board-filter" role="group" aria-label="Filtrar por estado">
           <button type="button" data-f="all" aria-pressed="true">Todas</button>
           <button type="button" data-f="ok" aria-pressed="false">A tiempo</button>
           <button type="button" data-f="warn" aria-pressed="false">Demora</button>
           <button type="button" data-f="danger" aria-pressed="false">Detenido</button>
         </div>
+        <div class="metro-board-cols" aria-hidden="true"><span>Línea</span><span>Siguiente</span><span>Llega</span><span>Estado</span></div>
+        <ol class="metro-board-list">
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--orange)">L1</span><span class="metro-board-cell">Refugio</span><span class="metro-board-cell">3 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--orange)">L1</span><span class="metro-board-cell">Mexicaltzingo</span><span class="metro-board-cell">5 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--blue)">L2</span><span class="metro-board-cell">Plaza Universidad</span><span class="metro-board-cell">2 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--blue)">L2</span><span class="metro-board-cell">Juárez</span><span class="metro-board-cell">6 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--pink)">L3</span><span class="metro-board-cell">Guadalajara Centro</span><span class="metro-board-cell">4 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--pink)">L3</span><span class="metro-board-cell">Santuario</span><span class="metro-board-cell">3 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
+        </ol>
+        <p class="metro-board-note">El filtro también cambia los semáforos de la ciudad.</p>
       </div>
-      <div class="metro-board-cols" aria-hidden="true"><span>Línea</span><span>Siguiente</span><span>Llega</span><span>Estado</span></div>
-      <ol class="metro-board-list">
-        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--blue)">L1</span><span class="metro-board-cell">Zócalo</span><span class="metro-board-cell">3 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
-        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--blue)">L1</span><span class="metro-board-cell">Hidalgo</span><span class="metro-board-cell">5 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
-        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--purple)">L2</span><span class="metro-board-cell">Tacubaya</span><span class="metro-board-cell">7 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
-        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--purple)">L2</span><span class="metro-board-cell">Insurgentes</span><span class="metro-board-cell">9 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
-        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--orange)">L3</span><span class="metro-board-cell">Pino Suárez</span><span class="metro-board-cell">11 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
-        <li class="metro-board-row" data-status="ok"><span class="metro-board-cell metro-board-line" style="--line:var(--orange)">L3</span><span class="metro-board-cell">Chapultepec</span><span class="metro-board-cell">13 min</span><span class="metro-board-cell metro-board-st">A tiempo</span></li>
-      </ol>
-      <p class="metro-board-note">El filtro también cambia los semáforos de la ciudad.</p>
+      <div id="mb-mapa" role="tabpanel" aria-labelledby="mb-tab-mapa" hidden>
+        <svg class="metro-map" role="img" aria-label="Mapa del Tren Ligero alrededor del centro de Guadalajara: líneas 1, 2 y 3, sus estaciones, los trenes en movimiento y el recuadro de la zona que se ve en 3D"></svg>
+        <p class="metro-board-note">Cada bolita es un tren; el borde amarillo o rojo marca demora o retención. El recuadro es la zona de la ciudad 3D: tócalo para explorarla.</p>
+      </div>
     </section>
   </div>
 </section>
 
-<footer class="metro-footer">metro_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Ciudad con los generadores de <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> (MIT)</footer>
+<footer class="metro-footer">metro_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Guadalajara con datos de © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL) y los generadores de <a href="https://threejs.org">Three.js</a> y animación con <a href="https://animejs.com">anime.js</a> (MIT)</footer>
 
 </main>
 
