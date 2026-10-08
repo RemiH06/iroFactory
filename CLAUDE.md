@@ -35,6 +35,26 @@ No romper sin discutirlo primero.
 
 **No aplicar el checklist anti-vibecode mecánicamente.** Varios temas cruzan señales literales (neón en sherry, franja lateral, gis de lambda) pero cada una se sostiene en una frase de justificación ligada al concepto del tema, no a una moda. Antes de tocar el diseño visual de un tema, verificar si el elemento en cuestión es la estética completa del concepto (se queda) o una decoración suelta encima de un diseño distinto (se quita).
 
+## Propósito de cada tema
+
+Cada tema es la piel de documentación de un tipo de proyecto; lo que se le agrega sale de aquí. La investigación cae en elixir, lambda o bookworm según su tipo.
+
+| Tema | Para documentar |
+|---|---|
+| `apolo` | Artes y humanidades |
+| `bookworm` | Libros, escritura y lectura |
+| `disco` | Apps y sistemas de diseño |
+| `elixir` | Modelos y pipelines de datos |
+| `forge` | Hardware y firmware |
+| `lambda` | Algoritmos, matemáticas, lógica y dialéctica |
+| `metro` | Sistemas en operación: estado, incidentes, monitoreo |
+| `odysseus` | Proyectos con lugares y mapas |
+| `sherry` | Herramientas y juguetes personales (por ahora, la mayoría de los proyectos) |
+| `shui` | Flujos de datos |
+| `ludus`, `tarot` | Se define en su rework |
+
+Base común de documentación (en curso, 2026-10-08): todos llevan prosa (encabezados, listas, cita, notas al pie, definiciones, `kbd`, desplegables, figura), tipografía y contraste en vivo, y navegación de documento; cada tema la viste con su piel.
+
 ## Referencia por tema
 
 | Tema | Fuente | Default | Técnica de fondo |

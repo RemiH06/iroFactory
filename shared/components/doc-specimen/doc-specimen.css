@@ -1,0 +1,14 @@
+/* Doc Specimen: familias tipográficas y contraste en vivo (tokens comunes de cada tema). */
+.spec-type { padding: 10px 0; border-bottom: 1px solid var(--doc-line, var(--border)); }
+.spec-type:last-child { border-bottom: 0; }
+.spec-type p { margin: 0; }
+.spec-sample { line-height: 1.1; color: var(--doc-ink, var(--text)); }
+.spec-meta { font-size: 13px; color: var(--doc-muted, var(--text2)); margin-top: 4px !important; }
+
+.spec-contrast { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.spec-contrast li { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto auto; align-items: center; gap: 10px; font-size: 14px; }
+.spec-chip { display: grid; place-items: center; height: 30px; border-radius: 8px; border: 1px solid var(--doc-line, var(--border)); font-weight: 700; }
+.spec-name { color: var(--doc-ink, var(--text)); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spec-ratio { font-family: var(--doc-mono, var(--mono, monospace)); font-size: 13px; color: var(--doc-muted, var(--text2)); font-variant-numeric: tabular-nums; }
+.spec-pill { font-size: 12px; font-weight: 600; white-space: nowrap; padding: 2px 9px; border-radius: 999px; border: 1px solid currentColor; }
+.spec-pill.ok { color: var(--ok); } .spec-pill.warn { color: var(--warn); } .spec-pill.danger { color: var(--danger); }

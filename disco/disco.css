@@ -317,20 +317,6 @@ html:not(.js) nav.caps-fallback { display: flex; flex-wrap: wrap; gap: 10px; }
 .state-list i { width: 10px; height: 10px; border-radius: 50%; align-self: center; }
 .state-list b { font-size: 14px; color: var(--text); }
 .state-list span { grid-column: 2; font-size: 13px; color: var(--text2); line-height: 1.45; }
-/* Contraste: pares de tokens con su razón WCAG */
-.contrast-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.contrast-list li { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto auto; align-items: center; gap: 10px; font-size: 14px; }
-.contrast-chip { display: grid; place-items: center; height: 30px; border-radius: 8px; border: 1px solid var(--glass-edge); font-weight: 700; }
-.contrast-name { color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.contrast-ratio { font-family: var(--mono); font-size: 13px; color: var(--text2); font-variant-numeric: tabular-nums; }
-/* Tipografía y radios */
-.type-spec { padding: 10px 0; border-bottom: 1px solid var(--glass-edge); }
-.type-spec:last-child { border-bottom: 0; }
-.type-spec p { margin: 0; }
-.type-display { font-family: var(--display); font-size: 40px; line-height: 1.05; color: var(--text); }
-.type-sans { font-family: var(--sans); font-size: 26px; font-weight: 700; color: var(--text); }
-.type-mono { font-family: var(--mono); font-size: 22px; color: var(--accent-ink); }
-.type-meta { font-size: 13px; color: var(--text2); }
 .radius-row { display: grid; gap: 10px; }
 .radius-box { display: grid; place-items: center; height: 56px; border: 1.5px solid var(--border); background: color-mix(in srgb, var(--sky) 10%, transparent); }
 /* Formularios */

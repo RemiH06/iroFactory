@@ -26,6 +26,7 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
 <link rel="stylesheet" href="../shared/components/aurora-thread/aurora-thread.css">
 <link rel="stylesheet" href="../shared/components/bottlecap-gallery/bottlecap-gallery.css">
 <link rel="stylesheet" href="../shared/components/model-stage/model-stage.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="disco.css">
 </head>
 <body>
@@ -125,14 +126,12 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
       </article>
       <article class="card-b c3" style="--spot:var(--mint)">
         <div class="b-head"><h3 class="b-title"><i></i>Contraste</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: contraste">+</button></div>
-        <ul class="contrast-list" data-contrast></ul>
+        <ul class="spec-contrast" id="disco-contrast"></ul>
         <div class="b-more" hidden><p>Razón de contraste WCAG calculada en vivo con los tokens del modo actual: AA pide 4.5 en texto normal y 3 en texto grande o íconos; AAA pide 7.</p></div>
       </article>
       <article class="card-b c12" style="--spot:var(--lila)">
         <div class="b-head"><h3 class="b-title"><i></i>Tipografía</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: tipografía">+</button></div>
-        <div class="type-spec"><p class="type-display">Boogie Nights</p><p class="type-meta">Títulos, encabezados y métricas · una sola palabra o cifra</p></div>
-        <div class="type-spec"><p class="type-sans">Plus Jakarta Sans</p><p class="type-meta">Texto, botones y etiquetas · 400 a 700</p></div>
-        <div class="type-spec"><p class="type-mono">Fira Code</p><p class="type-meta">Código, tokens y valores</p></div>
+        <div id="disco-type"></div>
         <div class="b-more" hidden><p>Familias en <code>--display</code>, <code>--sans</code> y <code>--mono</code>. Boogie Nights no lleva minúsculas largas: úsala en palabras sueltas.</p></div>
       </article>
       <article class="card-b c3" style="--spot:var(--sky)">
@@ -289,7 +288,8 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
 
 <script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/" } }</script>
 <script type="module">
-import { initTheme, stickyHeader, onTheme, contrast, hexRgb, cssVar } from '../shared/core/core.js';
+import { initTheme, stickyHeader } from '../shared/core/core.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 import { mount as asanoha } from '../shared/components/asanoha/asanoha.js';
 import { mount as ambientLights } from '../shared/components/ambient-lights/ambient-lights.js';
 import { mount as staggeredMenu } from '../shared/components/staggered-menu/staggered-menu.js';
@@ -327,15 +327,14 @@ bottlecapGallery({ items: [
     { name: 'Inicio', note: 'Portada', href: '#inicio', light: `${IMG}cap3_light.webp`, dark: `${IMG}cap3_dark.webp` },
     { name: 'Repositorio', note: 'iroFactory en GitHub', href: 'https://github.com/RemiH06/iroFactory', light: `${IMG}cap5_light.webp`, dark: `${IMG}cap5_dark.webp` }
   ] });
-// Contraste: pares de tokens con su razón WCAG, recalculados en cada modo
-const PAIRS = [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent-ink', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']];
-const paintContrast = () => document.querySelectorAll('[data-contrast]').forEach(ul => {
-  ul.innerHTML = PAIRS.map(([f, b, n]) => {
-    const r = contrast(hexRgb(cssVar(f)), hexRgb(cssVar(b))), lvl = r >= 7 ? 'AAA' : r >= 4.5 ? 'AA' : r >= 3 ? 'AA grande' : 'no pasa';
-    return `<li><span class="contrast-chip" style="color:var(${f});background:var(${b})">Aa</span><span class="contrast-name">${n}</span><span class="contrast-ratio">${r.toFixed(1)}:1</span><span class="badge ${r >= 4.5 ? 'ok' : r >= 3 ? 'warn' : 'danger'}">${lvl}</span></li>`;
-  }).join('');
+// Tipografía y contraste (componente compartido de la base de documentación)
+docSpecimen({
+  type: { el: '#disco-type', fonts: [
+    { name: 'Boogie Nights', family: 'var(--display)', size: 40, use: 'Títulos, encabezados y métricas · una sola palabra o cifra' },
+    { name: 'Plus Jakarta Sans', family: 'var(--sans)', size: 26, weight: 700, use: 'Texto, botones y etiquetas · 400 a 700' },
+    { name: 'Fira Code', family: 'var(--mono)', size: 22, use: 'Código, tokens y valores' }] },
+  contrast: { el: '#disco-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--accent-ink', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
 });
-paintContrast(); onTheme(paintContrast);
 // Objetos 3D: Three.js se carga después de la primera pintura
 import('../shared/components/model-stage/model-stage.js').then(m => m.mount({ colors: PALETTE, base: '../assets/models/disco/', models: {
   discoball: { build: 'discoball', spin: 0.3 },

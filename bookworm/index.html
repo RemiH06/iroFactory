@@ -47,6 +47,8 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/bookworm/hero-desktop.css">
 <link rel="stylesheet" href="../shared/components/bookworm/masked-heading.css">
 <link rel="stylesheet" href="../shared/components/bookworm/desktop.css">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="../shared/components/bookworm/paper-crumple.css">
 </head>
 <body>
@@ -90,6 +92,7 @@ SOFTWARE.
     <button class="gi" data-win="codigo" style="--gi-a:var(--stone);--gi-b:var(--canopy)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14"/></svg></span></span><span class="gi-label">Código</span></button>
     <button class="gi" data-win="lectura" style="--gi-a:var(--amber);--gi-b:var(--earth)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg></span></span><span class="gi-label">Tabla y reading log</span></button>
     <button class="gi" data-win="capitulos" style="--gi-a:var(--dew);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v18l-5-4-5 4z"/></svg></span></span><span class="gi-label">Capítulos y cards</span></button>
+    <button class="gi" data-win="manuscrito" style="--gi-a:var(--ochre);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4c-6 1-11 6-13 13l-2 3"/><path d="M8 15c3-1 6-4 8-8"/><path d="M5 20h6"/></svg></span></span><span class="gi-label">Manuscrito</span></button>
   </nav>
   <div class="bw-windows" id="bw-windows"></div>
   <div class="bw-trash" id="bw-trash">
@@ -231,13 +234,61 @@ SOFTWARE.
       <div class="card"><strong>Cien años de soledad</strong><span class="badge ok" style="margin-left:8px">terminado</span><p class="muted" style="margin:8px 0 0">García Márquez · 432 páginas · El árbol genealógico más frondoso de la literatura.</p></div>
     </div>
   </section>
+  <section class="bw-doc" id="doc-manuscrito" data-title="Manuscrito" data-w="760" data-h="620">
+    <article class="doc">
+      <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#bw-library">Biblioteca</a></li><li><a href="#doc-lectura">Fichas</a></li><li aria-current="page">Don Quijote</li></ol></nav>
+      <h1>Ficha de lectura: <i>Don Quijote de la Mancha</i></h1>
+      <p class="doc-lede">Primera parte, capítulos I a VIII: del hidalgo que pierde el juicio leyendo a la aventura de los molinos.</p>
+      <aside class="doc-toc" aria-label="En esta ficha"></aside>
+
+      <h2 id="mq-datos">Datos del libro</h2>
+      <dl>
+        <dt>Autor</dt><dd>Miguel de Cervantes Saavedra</dd>
+        <dt>Publicación</dt><dd>1605 la primera parte, 1615 la segunda</dd>
+        <dt>Edición</dt><dd>Dominio público, texto modernizado</dd>
+        <dt>Leído</dt><dd>Del 2 al 19 de octubre</dd>
+      </dl>
+
+      <h2 id="mq-resumen">Resumen</h2>
+      <p>Alonso Quijano lee tantos libros de caballerías que decide <mark>hacerse caballero andante</mark>: limpia unas armas viejas, rebautiza a su rocín y elige una dama a quien dedicar sus hazañas.</p>
+      <blockquote><p>En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor.</p><footer>Cervantes, capítulo I</footer></blockquote>
+      <h3 id="mq-personajes">Personajes</h3>
+      <ul>
+        <li>Don Quijote, el hidalgo que se cree caballero.</li>
+        <li>Sancho Panza, su escudero, que lo sigue por la promesa de una ínsula.</li>
+        <li>Dulcinea del Toboso, dama imaginada a partir de una labradora<sup><a href="#mq-nota-1" id="mq-ref-1">1</a></sup>.</li>
+      </ul>
+
+      <h2 id="mq-club">Para el club de lectura</h2>
+      <details><summary>¿Quién está loco: él o los demás?</summary><p>Fíjate en cómo reaccionan el cura y el barbero cuando queman la biblioteca en el capítulo VI.</p></details>
+      <details><summary>¿Por qué los molinos son gigantes?</summary><p>Don Quijote no ve otra cosa; Sancho sí. La novela juega todo el tiempo con esas dos miradas.</p></details>
+      <p><small>En el lector, <kbd>←</kbd> y <kbd>→</kbd> cambian de capítulo; <kbd>Ctrl</kbd> + <kbd>F</kbd> busca dentro del libro.</small></p>
+
+      <aside class="doc-notes" aria-label="Notas"><ol><li id="mq-nota-1">Aldonza Lorenzo, «moza labradora de muy buen parecer». <a href="#mq-ref-1" aria-label="Volver al texto">↩</a></li></ol></aside>
+      <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#doc-capitulos"><small>Anterior</small>Capítulos</a><a class="next" href="#doc-lectura"><small>Siguiente</small>Reading log</a></nav>
+    </article>
+    <h2>Tipografía</h2>
+    <div id="bw-type"></div>
+    <h2>Contraste</h2>
+    <ul class="spec-contrast" id="bw-contrast"></ul>
+  </section>
   <p class="bw-library-foot">bookworm_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>)</p>
 </main>
 
 <script type="module">
 import { mount as m0 } from '../shared/components/bookworm/kit.js';
 import { mount as m1 } from '../shared/components/bookworm/hero-desktop.js';
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1();
+docProse();
+docSpecimen({
+  type: { el: '#bw-type', fonts: [
+    { name: 'Libre Baskerville', family: 'var(--serif)', size: 26, use: 'Texto, títulos y todo lo que se lee' },
+    { name: 'Libre Baskerville cursiva', family: 'var(--serif)', style: 'italic', weight: 700, size: 22, use: 'Encabezados y títulos de obras' },
+    { name: 'Fira Code', family: 'var(--mono)', size: 20, use: 'Código y datos' }] },
+  contrast: { el: '#bw-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--moss-ink', '--bg', 'Musgo'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en ventana']] }
+});
 </script>
 </body>
 </html>
