@@ -75,8 +75,8 @@ SOFTWARE.
   <a class="breaker" href="#senales" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§2</b> <span>Señales</span></span></a>
   <a class="breaker" href="#instrumentos" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§3</b> <span>Instrumentos</span></span></a>
   <a class="breaker" href="#firmware" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§4</b> <span>Firmware</span></span></a>
-  <a class="breaker" href="#crisol" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§5</b> <span>Crisol</span></span></a>
-  <a class="breaker" href="#manual" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§6</b> <span>Manual</span></span></a>
+  <a class="breaker" href="#manual" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§5</b> <span>Manual</span></span></a>
+  <a class="breaker" href="#crisol" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§6</b> <span>Crisol</span></span></a>
 </nav>
 
 <main>
@@ -212,35 +212,10 @@ SOFTWARE.
   </div>
 </section>
 
-<!-- ── §5 CRISOL ── -->
-<section class="fg-sec fg-crisol" id="crisol" aria-labelledby="h-cri">
-  <canvas id="fg-molten" aria-hidden="true"></canvas>
-  <canvas id="fg-storm" aria-hidden="true"></canvas>
-  <div class="fg-wrap">
-    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-cri"><small>§5</small>Crisol</h2></div>
-    <div class="fg-table-wrap">
-      <table>
-        <tr><th>Token</th><th>Forja</th><th>Taller</th><th>Semántica</th></tr>
-        <tr><td><code>--voltage</code></td><td>#FF6820</td><td>#4090FF</td><td>Tensión · peligro eléctrico</td></tr>
-        <tr><td><code>--signal</code></td><td>#F0A020</td><td>#00FF80</td><td>Señal analógica · osciloscopio</td></tr>
-        <tr><td><code>--current</code></td><td>#E86010</td><td>#2080D0</td><td>Corriente eléctrica</td></tr>
-        <tr><td><code>--core</code></td><td>#C84010</td><td>#4090FF</td><td>Núcleo del procesador</td></tr>
-        <tr><td><code>--interrupt</code></td><td>#FF4010</td><td>#FF4080</td><td>Interrupción · IRQ</td></tr>
-        <tr><td><code>--flux</code></td><td>#D06030</td><td>#00C8A0</td><td>Flujo magnético</td></tr>
-        <tr><td><code>--ground</code></td><td>#706050</td><td>#607080</td><td>Tierra · GND</td></tr>
-      </table>
-    </div>
-    <div class="grid-2">
-      <div class="card hot" data-eb><strong>STM32F407</strong> <span class="badge core">Cortex-M4</span><p class="muted">168 MHz · 1 MB Flash · 192 KB RAM · FPU · Ethernet</p></div>
-      <div class="card hot" data-eb><strong>ROS 2 Humble</strong> <span class="badge flux">robótica</span><p class="muted">DDS middleware · topics · services · tiempo real</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ── §6 MANUAL · base común de documentación ── -->
+<!-- ── §5 MANUAL · base común de documentación ── -->
 <section class="fg-sec" id="manual" aria-labelledby="h-man">
   <div class="fg-wrap">
-    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-man"><small>§6</small>Manual</h2></div>
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-man"><small>§5</small>Manual</h2></div>
     <p class="fg-intro"><span>Así se ve una página de documentación con este tema: prosa, listas, teclas, notas, preguntas y figuras.</span></p>
     <div class="doc-layout">
       <article class="doc">
@@ -293,9 +268,34 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg \
         <details><summary>«Verify failed» en la última sección</summary><p>La memoria Flash quedó protegida contra escritura. Desbloquéala con <code>stm32f4x unlock 0</code> y vuelve a intentar.</p></details>
 
         <aside class="doc-notes" aria-label="Notas"><ol><li id="nota-1">Las versiones anteriores a 0.12 no reconocen el ST-LINK v3. <a href="#ref-1" aria-label="Volver al texto">↩</a></li></ol></aside>
-        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#crisol"><small>Anterior</small>§5 Crisol</a><a class="next" href="#portada"><small>Siguiente</small>Volver a la portada</a></nav>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#firmware"><small>Anterior</small>§4 Firmware</a><a class="next" href="#crisol"><small>Siguiente</small>§6 Crisol</a></nav>
       </article>
       <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
+  </div>
+</section>
+
+<!-- ── §6 CRISOL ── -->
+<section class="fg-sec fg-crisol" id="crisol" aria-labelledby="h-cri">
+  <canvas id="fg-molten" aria-hidden="true"></canvas>
+  <canvas id="fg-storm" aria-hidden="true"></canvas>
+  <div class="fg-wrap">
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-cri"><small>§6</small>Crisol</h2></div>
+    <div class="fg-table-wrap">
+      <table>
+        <tr><th>Token</th><th>Forja</th><th>Taller</th><th>Semántica</th></tr>
+        <tr><td><code>--voltage</code></td><td>#FF6820</td><td>#4090FF</td><td>Tensión · peligro eléctrico</td></tr>
+        <tr><td><code>--signal</code></td><td>#F0A020</td><td>#00FF80</td><td>Señal analógica · osciloscopio</td></tr>
+        <tr><td><code>--current</code></td><td>#E86010</td><td>#2080D0</td><td>Corriente eléctrica</td></tr>
+        <tr><td><code>--core</code></td><td>#C84010</td><td>#4090FF</td><td>Núcleo del procesador</td></tr>
+        <tr><td><code>--interrupt</code></td><td>#FF4010</td><td>#FF4080</td><td>Interrupción · IRQ</td></tr>
+        <tr><td><code>--flux</code></td><td>#D06030</td><td>#00C8A0</td><td>Flujo magnético</td></tr>
+        <tr><td><code>--ground</code></td><td>#706050</td><td>#607080</td><td>Tierra · GND</td></tr>
+      </table>
+    </div>
+    <div class="grid-2">
+      <div class="card hot" data-eb><strong>STM32F407</strong> <span class="badge core">Cortex-M4</span><p class="muted">168 MHz · 1 MB Flash · 192 KB RAM · FPU · Ethernet</p></div>
+      <div class="card hot" data-eb><strong>ROS 2 Humble</strong> <span class="badge flux">robótica</span><p class="muted">DDS middleware · topics · services · tiempo real</p></div>
     </div>
     <div class="grid-2 fg-spec">
       <div class="card hot" data-eb><h3 style="margin-top:0">Tipografía</h3><div id="fg-type"></div></div>
@@ -303,6 +303,7 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg \
     </div>
   </div>
 </section>
+
 </main>
 
 <footer class="fg-foot">forge_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Cables inspirados en <a href="https://www.figma.com/@hardikgondhiya">@hardikgondhiya</a>, tormenta en <a href="https://www.figma.com/@nellucci">@nellucci</a> y ASCII en <a href="https://www.figma.com/@quanhoangindex">@quanhoangindex</a> · Títulos en BPdots de George Triantafyllakos y nixies en Universe de Vincent Labonne</footer>
