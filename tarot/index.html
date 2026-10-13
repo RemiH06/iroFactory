@@ -87,7 +87,7 @@ Natural de la Universitat de València (MUVHN), CC BY 4.0.
         <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger · rechazada</div>
       </div></div>
       <div class="tr-panel tr-span2"><h3 class="tr-label">Los nueve biomas</h3><p class="tr-note">Tres colores por bioma, como las franjas del proun: de día, tonos de lámina; de noche, saturados. Tocar uno cambia la vitrina.</p><ul class="tr-triads" id="tr-triads"></ul></div>
-      <div class="tr-panel"><h3 class="tr-label">Tipografía</h3><div id="tr-type"></div></div>
+      <div class="tr-panel"><h3 class="tr-label" data-compose>Tipografía</h3><div id="tr-type"></div></div>
       <div class="tr-panel"><h3 class="tr-label">Contraste</h3><ul class="spec-contrast" id="tr-contrast"></ul></div>
     </div>
   </div>
@@ -106,7 +106,7 @@ Natural de la Universitat de València (MUVHN), CC BY 4.0.
       </div>
       <div class="tr-panel"><h3 class="tr-label">Insignias</h3><p class="tr-chips"><span class="tr-badge ok">aceptada</span><span class="tr-badge warn">propuesta</span><span class="tr-badge danger">rechazada</span><span class="tr-badge">reemplazada</span><span class="tr-badge biome">bioma</span><span class="tr-badge">XIII · La Muerte</span></p>
         <h3 class="tr-label" style="margin-top:22px">Botones</h3><p class="tr-chips"><button class="tr-btn" type="button">Repartir</button><button class="tr-btn ghost" type="button">Barajar</button></p></div>
-      <div class="tr-panel"><h3 class="tr-label">Código</h3>
+      <div class="tr-panel"><h3 class="tr-label" data-compose>Código</h3>
 <pre data-lang="js"><code><span class="cm">// una tirada de tres, del bioma vigente</span>
 <span class="kw">const</span> b = <span class="fn">biome</span>();
 <span class="kw">const</span> mano = [...b.arcana, ...<span class="fn">resto</span>()]
@@ -178,29 +178,23 @@ El estado hoy, sin adornos.
 <!-- VII · Fin -->
 <section class="tr-section" id="fin" aria-labelledby="tr-h-fin">
   <div class="vitrina">
-    <header class="tr-head"><span class="tr-num">VII</span><h2 id="tr-h-fin">Fin</h2><p>El proun del gabinete y los créditos.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
-    <figure class="tr-proun">
-      <img src="../assets/img/tarot/proun_dark.webp" data-light="../assets/img/tarot/proun_light.webp" data-dark="../assets/img/tarot/proun_dark.webp" alt="Proun de tarot: un cráneo de ave repetido en tres franjas de color sobre texturas de hueso y liquen." loading="lazy">
-      <figcaption class="tr-label">Proun · tarot</figcaption>
-    </figure>
-    <div class="tr-plaque">
-      <p class="tr-label">Créditos del gabinete</p>
-      <dl>
-        <dt>Tema</dt><dd>tarot_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT</dd>
-        <dt>Cráneos</dt><dd>Escaneos del <a href="https://sketchfab.com/MUVHN">Museo de Historia Natural de la Universitat de València</a> (MUVHN), CC BY 4.0, reducidos para la web.</dd>
-        <dt>Fuentes</dt><dd>CassandraTwo (Manfred Klein), Grenadier NF (Nick Curtis), Busorama (A. Carr) y Josefin Sans.</dd>
-        <dt>Código</dt><dd><a href="https://threejs.org">Three.js</a> y <a href="https://animejs.com">anime.js</a> con su adaptador para Three (MIT). Tapices, cartas y vitrinas: diseño propio.</dd>
-      </dl>
+    <header class="tr-head"><span class="tr-num">VII</span><h2 id="tr-h-fin">Fin</h2><p>Una pieza invitada sobre el proun del gabinete, y los créditos.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
+    <div class="tr-end">
+      <div class="tr-coda" aria-labelledby="tr-coda-name">
+        <div class="tr-case-stage tr-coda-stage" id="tr-coda-stage" role="img" aria-label="Una vitrina con un cráneo de ave sobre el proun de tarot: un cráneo de ave repetido en tres franjas de color sobre texturas de hueso y liquen"></div>
+        <div class="tr-coda-info"><p class="tr-label">Pieza invitada</p><p class="tr-coda-name" id="tr-coda-name"></p><button class="tr-btn ghost" type="button" id="tr-coda-next">Otra pieza</button></div>
+      </div>
+      <div class="tr-plaque">
+        <p class="tr-label" data-compose>Créditos del gabinete</p>
+        <dl>
+          <dt>Tema</dt><dd>tarot_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT</dd>
+          <dt data-compose>Cráneos</dt><dd>Escaneos del <a href="https://sketchfab.com/MUVHN">Museo de Historia Natural de la Universitat de València</a> (MUVHN), CC BY 4.0, reducidos para la web.</dd>
+          <dt>Fuentes</dt><dd>CassandraTwo (Manfred Klein), Grenadier NF (Nick Curtis), Busorama (A. Carr) y Josefin Sans.</dd>
+          <dt data-compose>Código</dt><dd><a href="https://threejs.org">Three.js</a> y <a href="https://animejs.com">anime.js</a> con su adaptador para Three (MIT). Tapices, cartas y vitrinas: diseño propio.</dd>
+        </dl>
+      </div>
     </div>
   </div>
-</section>
-
-<!-- Coda · una vitrina más, entre los créditos y la mano: una pieza invitada de otro bioma -->
-<section class="tr-coda" aria-labelledby="tr-coda-name">
-  <div class="tr-case-stage" id="tr-coda-stage"></div>
-  <p class="tr-label">Pieza invitada</p>
-  <p class="tr-coda-name" id="tr-coda-name"></p>
-  <button class="tr-btn ghost" type="button" id="tr-coda-next">Otra pieza</button>
 </section>
 
 </main>
@@ -242,9 +236,10 @@ import('../shared/components/tarot/skull-vitrine.js').then(m => {
   document.getElementById('tr-coda-next').addEventListener('click', () => { i = (i + 1) % all.length; show(); });
   show();
 });
-// el proun cambia con el modo
-const proun = document.querySelector('.tr-proun img');
-onTheme(() => { proun.src = night() ? proun.dataset.dark : proun.dataset.light; });
+// el proun, de fondo de la pieza invitada, cambia con el modo
+const coda = document.getElementById('tr-coda-stage');
+const prounBg = () => { coda.style.backgroundImage = `url(../assets/img/tarot/proun_${night() ? 'dark' : 'light'}.webp)`; };
+prounBg(); onTheme(prounBg);
 const showBiome = () => { document.getElementById('tr-biome-name').textContent = biome().name; document.getElementById('tr-biome-pill').setAttribute('aria-label', `Vitrina: ${biome().name}. Ver el catálogo`); };
 showBiome(); document.addEventListener('tarot:biome', showBiome);
 

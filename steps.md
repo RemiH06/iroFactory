@@ -1046,4 +1046,4 @@ Propósito: cartas, decisiones y retrospectivas. Concepto: gabinete de historia 
 - **Fuera:** el lienzo art deco y las cartas flotantes de antes.
 - Verificado con la GPU real: noche y día, nueve biomas, vitrinas centradas, tiradas, móvil sin scroll horizontal, reduced motion. Sin errores.
 
-- **Pieza invitada** (después): entre los créditos y la mano, una vitrina más como la del catálogo con un cráneo de otro bioma al azar y el botón «Otra pieza».
+- **Pieza invitada** (después): en Fin, una vitrina como la del catálogo con el proun de fondo y un cráneo de otro bioma al azar («Otra pieza»), al lado de la placa de créditos; sale el proun enmarcado. Al llegar abajo se ven la pieza y los créditos completos sobre la mano.

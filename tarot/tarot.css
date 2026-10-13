@@ -132,21 +132,25 @@ td { padding: 9px 12px; border-bottom: 1px solid color-mix(in srgb, var(--gold) 
 .doc blockquote { border-left: 0; border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold); text-align: center; font-family: var(--sub); font-size: 22px; padding: 14px 0; }
 .doc-toc { font-family: var(--sub); }
 
-/* ── fin: el proun enmarcado y la placa de créditos */
-.tr-proun { position: relative; margin: 0 auto 28px; padding: 14px; border: 1px solid var(--gold); outline: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); outline-offset: 6px; }
-.tr-proun img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
-.tr-proun figcaption { text-align: center; margin-top: 10px; }
-.tr-plaque { max-width: 760px; margin: 0 auto; padding: 24px 28px; text-align: center; background: linear-gradient(180deg, color-mix(in srgb, var(--gold) 16%, var(--bg2)), var(--bg2)); border: 1px solid var(--gold); }
+/* ── fin: la pieza invitada sobre el proun y la placa de créditos, lado a lado (al llegar abajo se ve todo) */
+.tr-end { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(18px, 3vw, 36px); align-items: stretch; }
+.tr-plaque { margin: 0; padding: 24px 28px; text-align: center; background: linear-gradient(180deg, color-mix(in srgb, var(--gold) 16%, var(--bg2)), var(--bg2)); border: 1px solid var(--gold); }
 .tr-plaque dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; text-align: left; margin-top: 14px; font-size: 14px; }
 .tr-plaque dt { font-family: var(--deco); font-size: 12px; letter-spacing: .14em; color: var(--gold); padding-top: 2px; }
 .tr-plaque dd { color: var(--text2); }
 
 @media (max-width: 560px) { #tr-biome-name { display: none; } .tr-pill .dot { margin-right: 0; width: 14px; height: 14px; } .tr-pill { padding: 0 12px; } .tr-brand { font-size: 20px; } }
 
-/* ── coda: una vitrina más al pie, antes de la mano */
-.tr-coda { position: relative; z-index: 2; width: min(460px, calc(100% - 32px)); margin: -60px auto 0; padding: 18px 18px 22px; display: grid; justify-items: center; gap: 6px; text-align: center; background: var(--glass); border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); outline: 1px solid color-mix(in srgb, var(--gold) 30%, transparent); outline-offset: 6px; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
-.tr-coda .tr-case-stage { width: 100%; margin-bottom: 10px; }
-.tr-coda-name { font-family: var(--sub); font-size: 24px; line-height: 1.2; display: grid; }
-.tr-coda-name i { font-family: var(--read); font-size: 15px; color: var(--text2); }
+/* la pieza invitada: el proun de fondo de la vitrina, el cráneo encima */
+.tr-coda { display: grid; gap: 12px; }
+.tr-case-stage.tr-coda-stage { aspect-ratio: 16 / 9; background: center / cover no-repeat; border: 1px solid var(--gold); outline: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); outline-offset: 6px; }
+.tr-case-stage.tr-coda-stage::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 55%, transparent 35%, color-mix(in srgb, var(--black) 45%, transparent)); pointer-events: none; }
+.tr-coda-info { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; }
+.tr-coda-name { font-family: var(--sub); font-size: 22px; line-height: 1.2; display: grid; flex: 1 1 220px; }
+.tr-coda-name i { font-family: var(--read); font-size: 14px; color: var(--text2); }
 .tr-coda-name small { font-family: var(--read); font-size: 13px; color: var(--text2); }
-.tr-coda .tr-btn { margin-top: 6px; }
+.tr-coda-info .tr-label { flex-basis: 100%; }
+#fin { margin-bottom: 0; }
+main { padding-bottom: 130px; }
+.tr-plaque { display: flex; flex-direction: column; justify-content: center; }
+@media (max-width: 860px) { .tr-end { grid-template-columns: 1fr; } }
