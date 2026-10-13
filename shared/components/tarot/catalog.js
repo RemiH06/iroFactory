@@ -1,5 +1,5 @@
 // ══════════════════════════════════════════════════════
-// Catálogo · las nueve vitrinas. Arriba, la vitrina abierta: el cráneo en
+// Catálogo · las diez vitrinas. Arriba, la vitrina abierta: el cráneo en
 // 3D (skull-vitrine.js) y su ficha (nombre, especie, sigla del museo,
 // licencia), con flechas si el bioma tiene más de un cráneo a esa hora.
 // Abajo, una lámina por bioma: una miniatura de su tapiz y su nombre;
@@ -8,7 +8,7 @@
 // navegador está libre.
 //   mount({ el })
 // ══════════════════════════════════════════════════════
-import { BIOMES, biome, setBiome, skullsFor } from './biomes.js';
+import { BIOMES, baseOf, biome, setBiome, skullsFor } from './biomes.js';
 import { paint } from './deco-pattern.js';
 import { composeAccents, night, onTheme } from './kit.js';
 
@@ -33,7 +33,7 @@ export function mount({ el = document.getElementById('tr-catalog') } = {}) {
     <ul class="tr-biomes" role="list"></ul>`;
   composeAccents(el);
   const list = el.querySelector('.tr-biomes'), stage = el.querySelector('#tr-case-stage');
-  const MEMENTO = { orchid: 'orquídea marchita', candle: 'vela consumida', hourglass: 'reloj de arena', shell: 'concha vacía', feather: 'pluma caída', wheel: 'rueda', moth: 'polilla', scythe: 'guadaña', skull: 'cráneo' };
+  const MEMENTO = { orchid: 'orquídea marchita', candle: 'vela consumida', hourglass: 'reloj de arena', shell: 'concha vacía', feather: 'pluma caída', wheel: 'rueda', moth: 'polilla', scythe: 'guadaña', skull: 'cráneo', urn: 'urna funeraria' };
   const tiles = BIOMES.map(b => {
     const li = document.createElement('li');
     li.innerHTML = `<button class="tr-biome" type="button" data-id="${b.id}" aria-pressed="false"><canvas width="384" height="216" aria-hidden="true"></canvas><span class="tr-biome-name">${b.name}</span><span class="tr-biome-meta">${b.skulls.map(s => s.name).join(' · ')}</span></button>`;
@@ -41,7 +41,7 @@ export function mount({ el = document.getElementById('tr-catalog') } = {}) {
   });
   // miniaturas del tapiz, una por una cuando el navegador está libre
   const idle = window.requestIdleCallback || (fn => setTimeout(fn, 60));
-  const thumbs = () => { let i = 0; const next = () => { if (i >= BIOMES.length) return; const b = BIOMES[i], t = tiles[i++], n = night(); const { color } = paint({ w: 384, h: 216, colors: b[n ? 'night' : 'day'], base: n ? '#0E1016' : '#EFE8DA', gold: n ? ['#B8913E', '#F2D894'] : ['#8C6A22', '#C9A04A'], motif: b.motif, memento: b.memento }); t.querySelector('canvas').getContext('2d').drawImage(color, 0, 0); idle(next); }; idle(next); };
+  const thumbs = () => { let i = 0; const next = () => { if (i >= BIOMES.length) return; const b = BIOMES[i], t = tiles[i++], n = night(); const { color } = paint({ w: 384, h: 216, colors: b[n ? 'night' : 'day'], base: baseOf(b, n), gold: n ? ['#B8913E', '#F2D894'] : ['#8C6A22', '#C9A04A'], motif: b.motif, memento: b.memento }); t.querySelector('canvas').getContext('2d').drawImage(color, 0, 0); idle(next); }; idle(next); };
   thumbs(); onTheme(thumbs);
 
   let vitrine = null, idx = 0;

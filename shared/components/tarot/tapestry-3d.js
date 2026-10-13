@@ -9,7 +9,6 @@
 //    reflejos sobre los biseles del oro,
 //  · una luz que sigue al cursor muy cerca de la placa (en táctil, al dedo
 //    o al giroscopio) y otra que barre sola,
-//  · la cámara que se inclina un poco con el cursor (profundidad).
 // Al cambiar de bioma o de modo, el tapiz nuevo entra con un fundido.
 // Canvas fijo detrás de toda la página. Sin WebGL, el tapiz plano.
 //   mount({ host, palette: () => opts de paint }) → { set(), preload(opts) }
@@ -62,7 +61,7 @@ export function mount({ host = document.body, palette }) {
   const texOf = (img, srgb) => { const t = img instanceof ImageBitmap ? new THREE.Texture(img) : new THREE.CanvasTexture(img); if (img instanceof ImageBitmap) t.flipY = false; t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace; t.anisotropy = 8; t.needsUpdate = true; return t; };
   const dispose = o => { const m = o.material; m.map.dispose(); m.normalMap.dispose(); m.roughnessMap.dispose(); m.dispose(); };
 
-  // ── tamaño: la placa cubre la vista, con margen para la inclinación
+  // ── tamaño: la placa cubre la vista (la cámara no se mueve: solo la luz sigue al cursor)
   const fit = () => {
     const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
     const dist = 9 / 2 / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 0.985;
@@ -70,7 +69,7 @@ export function mount({ host = document.body, palette }) {
   };
   fit(); addEventListener('resize', () => { fit(); loop.still(); });
 
-  // ── luces y cámara siguen al cursor (suavizado); en táctil, el dedo o el giroscopio
+  // ── la luz sigue al cursor (suavizado); en táctil, el dedo o el giroscopio
   const aim = { x: 0.2, y: 0.1 }, cur = { x: 0, y: 0 };
   addEventListener('pointermove', e => { aim.x = e.clientX / innerWidth * 2 - 1; aim.y = -(e.clientY / innerHeight * 2 - 1); });
   addEventListener('deviceorientation', e => { if (e.gamma == null) return; aim.x = Math.max(-1, Math.min(1, e.gamma / 30)); aim.y = Math.max(-1, Math.min(1, (45 - e.beta) / 30)); });
@@ -81,7 +80,6 @@ export function mount({ host = document.body, palette }) {
     cursor.position.set(cur.x * 8, cur.y * 4.5, 1.1);
     sweep.position.set(Math.sin(t * 0.21) * 9, Math.cos(t * 0.13) * 4, 1.6);
     scene.environmentRotation.set(Math.sin(t * 0.07) * 0.5, t * 0.05, 0);
-    camera.position.x = cur.x * 0.35; camera.position.y = cur.y * 0.2; camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
   };
   const loop = makeLoop(document.body, frame, 60);

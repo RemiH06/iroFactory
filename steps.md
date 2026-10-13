@@ -1047,3 +1047,4 @@ Propósito: cartas, decisiones y retrospectivas. Concepto: gabinete de historia 
 - Verificado con la GPU real: noche y día, nueve biomas, vitrinas centradas, tiradas, móvil sin scroll horizontal, reduced motion. Sin errores.
 
 - **Pieza invitada** (después): en Fin, una vitrina como la del catálogo con el proun de fondo y un cráneo de otro bioma al azar («Otra pieza»), al lado de la placa de créditos; sale el proun enmarcado. Al llegar abajo se ven la pieza y los créditos completos sobre la mano.
+- **Monumental** (después): décimo bioma, el mausoleo; mármol muy blanco de día y piedra negra de noche con rojo sangre, base propia (`baseOf`), motivo obelisco, memento urna funeraria, solo el cuervo (sale de montaña), arcanos La Muerte y El Juicio. La pastilla de la barra ahora pasa a la vitrina siguiente en vez de llevar al catálogo. El tapiz ya no se inclina con el cursor: solo la luz lo sigue.

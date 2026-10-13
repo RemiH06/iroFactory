@@ -58,6 +58,7 @@ export function pen(C, M, { u, w, h, gold }) {
     sun: (x, y, s) => { const p = P(); p.arc(x, y - s * 0.4, s * 0.16, 0, TAU); for (let i = 0; i < 16; i++) { const a = i * TAU / 16; p.moveTo(x + Math.cos(a) * s * 0.24, y - s * 0.4 + Math.sin(a) * s * 0.24); p.lineTo(x + Math.cos(a) * s * (i % 2 ? 0.34 : 0.44), y - s * 0.4 + Math.sin(a) * s * (i % 2 ? 0.34 : 0.44)); } line(p, 0.24 * u); },
     pine: (x, y, s) => { const p = P(); for (let k = 0; k < 4; k++) { const ww = s * (0.45 - k * 0.1), yy = y - s * 0.15 - k * s * 0.2; p.moveTo(x - ww, yy); p.lineTo(x, yy - s * 0.24); p.lineTo(x + ww, yy); } p.moveTo(x, y); p.lineTo(x, y - s * 0.15); line(p, 0.26 * u); },
     wheat: (x, y, s) => { const p = P(); p.moveTo(x, y); p.lineTo(x, y - s); for (let k = 0; k < 6; k++) { const yy = y - s * 0.35 - k * s * 0.11; p.moveTo(x, yy); p.quadraticCurveTo(x - s * 0.12, yy - s * 0.02, x - s * 0.14, yy - s * 0.1); p.moveTo(x, yy); p.quadraticCurveTo(x + s * 0.12, yy - s * 0.02, x + s * 0.14, yy - s * 0.1); } line(p, 0.24 * u); },
+    obelisk: (x, y, s) => { const p = P(); p.moveTo(x - s * 0.13, y - s * 0.1); p.lineTo(x - s * 0.08, y - s * 0.82); p.lineTo(x, y - s); p.lineTo(x + s * 0.08, y - s * 0.82); p.lineTo(x + s * 0.13, y - s * 0.1); p.closePath(); p.moveTo(x - s * 0.08, y - s * 0.82); p.lineTo(x + s * 0.08, y - s * 0.82); p.rect(x - s * 0.24, y - s * 0.1, s * 0.48, s * 0.1); line(p, 0.26 * u); },
     ziggurat: (x, y, s) => { const p = P(); for (let k = 0; k < 4; k++) { const ww = s * (0.5 - k * 0.11), hh = s * 0.16; p.rect(x - ww, y - (k + 1) * hh, 2 * ww, hh); } line(p, 0.26 * u); }
   };
   const MEMENTO = (cx, ey, es) => ({
@@ -69,6 +70,7 @@ export function pen(C, M, { u, w, h, gold }) {
     shell: () => { const p = P(); for (let i = 0; i <= 8; i++) { const a = Math.PI + i * Math.PI / 8; p.moveTo(cx, ey + es * 0.4); p.lineTo(cx + Math.cos(a) * es * 0.6, ey + es * 0.1 + Math.sin(a) * es * 0.55); } p.moveTo(cx - es * 0.6, ey + es * 0.1); p.arc(cx, ey + es * 0.1, es * 0.6, Math.PI, 0); line(p, 0.26 * u); },
     feather: () => { const p = P(); p.moveTo(cx - es * 0.2, ey + es * 0.6); p.quadraticCurveTo(cx, ey, cx + es * 0.2, ey - es * 0.6); for (let k = 1; k < 8; k++) { const t = k / 8, x = cx - es * 0.2 + es * 0.4 * t, y = ey + es * 0.6 - es * 1.2 * t; p.moveTo(x, y); p.lineTo(x - es * 0.28, y - es * 0.05); p.moveTo(x, y); p.lineTo(x + es * 0.22, y + es * 0.12); } line(p, 0.22 * u); },
     wheel: () => { const p = P(); p.arc(cx, ey, es * 0.5, 0, TAU); p.moveTo(cx + es * 0.18, ey); p.arc(cx, ey, es * 0.18, 0, TAU); for (let i = 0; i < 8; i++) { const a = i * TAU / 8; p.moveTo(cx + Math.cos(a) * es * 0.18, ey + Math.sin(a) * es * 0.18); p.lineTo(cx + Math.cos(a) * es * 0.5, ey + Math.sin(a) * es * 0.5); } line(p, 0.28 * u); },
+    urn: () => { const p = P(); p.rect(cx - es * 0.14, ey - es * 0.64, es * 0.28, es * 0.08); mirror(sg => { p.moveTo(cx + sg * es * 0.12, ey - es * 0.56); p.bezierCurveTo(cx + sg * es * 0.12, ey - es * 0.42, cx + sg * es * 0.46, ey - es * 0.3, cx + sg * es * 0.42, ey + es * 0.05); p.bezierCurveTo(cx + sg * es * 0.38, ey + es * 0.32, cx + sg * es * 0.14, ey + es * 0.36, cx + sg * es * 0.1, ey + es * 0.46); p.lineTo(cx + sg * es * 0.24, ey + es * 0.62); p.lineTo(cx, ey + es * 0.62); p.moveTo(cx + sg * es * 0.4, ey - es * 0.18); p.quadraticCurveTo(cx + sg * es * 0.58, ey - es * 0.16, cx + sg * es * 0.52, ey); }); p.moveTo(cx - es * 0.4, ey - es * 0.06); p.lineTo(cx + es * 0.4, ey - es * 0.06); p.moveTo(cx - es * 0.38, ey + es * 0.08); p.lineTo(cx + es * 0.38, ey + es * 0.08); line(p, 0.28 * u); },
     scythe: () => { const p = P(); p.moveTo(cx + es * 0.3, ey + es * 0.65); p.lineTo(cx - es * 0.1, ey - es * 0.6); p.moveTo(cx - es * 0.1, ey - es * 0.6); p.quadraticCurveTo(cx + es * 0.5, ey - es * 0.75, cx + es * 0.6, ey - es * 0.2); p.quadraticCurveTo(cx + es * 0.35, ey - es * 0.5, cx - es * 0.05, ey - es * 0.45); line(p, 0.3 * u); }
   });
   const bird = (cx, by, bs) => { const p = P();
@@ -104,7 +106,7 @@ export function paint({ w = 2048, h = 1152, colors, base, gold, motif = 'scallop
     // rayas verticales con remate en punta
     stripe: () => { const sw = 3.2 * u; for (let i = 0, x = sw / 2; x < w; i++, x += sw) { const p = P(); p.rect(x - sw / 2, 0, sw, h); tile(p, tone(pick(i), 0.16)); const q = P(); q.moveTo(x - sw / 2, 0); q.lineTo(x - sw / 2, h); line(q, 0.22 * u); } }
   };
-  const FIELD = { scallop: 'scallop', ripple: 'chevron', crystal: 'chevron', sun: 'fan', frond: 'fan', ziggurat: 'step', pine: 'step', reed: 'stripe', wheat: 'stripe' };
+  const FIELD = { obelisk: 'stripe', scallop: 'scallop', ripple: 'chevron', crystal: 'chevron', sun: 'fan', frond: 'fan', ziggurat: 'step', pine: 'step', reed: 'stripe', wheat: 'stripe' };
   field[FIELD[motif] || 'scallop']();
 
   // ── 2 · el panel: velo de base, bandas de color como las franjas del proun y marco doble punteado

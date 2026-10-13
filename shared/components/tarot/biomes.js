@@ -1,5 +1,5 @@
 // ══════════════════════════════════════════════════════
-// El catálogo del gabinete · nueve biomas, cada uno una vitrina con su
+// El catálogo del gabinete · diez biomas, cada uno una vitrina con su
 // tapiz, sus colores, su objeto de memento mori, sus cráneos (escaneos del
 // Museo de Historia Natural de la Universitat de València, CC BY), su palo
 // de la baraja y sus arcanos mayores, repartidos por su sentido.
@@ -37,8 +37,16 @@ export const BIOMES = [
     skulls: [SKULL('faisan', 'Faisán común', 'Phasianus colchicus', 'VER0000424', '6fce323c573244a9bc62ea3b50325c97')], arcana: [8, 5] },
   { id: 'montana', name: 'Roquedo y montaña', motif: 'ziggurat', memento: 'skull', suit: 'Cumbres', deal: 'cruz',
     day: ['#4E5568', '#93562F', '#8E9870'], night: ['#8A94C8', '#FF7A3A', '#C8D48A'],
-    skulls: [SKULL('milano', 'Milano negro', 'Milvus migrans', 'VER0000545', '53b22bc10bba405294c685f206275810'), SKULL('cuervo', 'Cuervo grande', 'Corvus corax', 'VER0000641', 'e208d125f5b144ddab6334c6b50f3c26'), SKULL('buho', 'Búho real', 'Bubo bubo', 'VER0000575', 'ace84e9892744faaa7abf99a9cc67366', true)], arcana: [13, 12, 15, 0, 20, 11] }
+    skulls: [SKULL('milano', 'Milano negro', 'Milvus migrans', 'VER0000545', '53b22bc10bba405294c685f206275810'), SKULL('buho', 'Búho real', 'Bubo bubo', 'VER0000575', 'ace84e9892744faaa7abf99a9cc67366', true)], arcana: [12, 15, 0, 11] },
+  // Monumental: el mausoleo. Mármol muy blanco de día y piedra negra de noche, con rojo sangre;
+  // trae su propia base (no la del gabinete) y un solo cráneo, el cuervo.
+  { id: 'monumental', name: 'Monumental', motif: 'obelisk', memento: 'urn', suit: 'Obeliscos', deal: 'cruz',
+    base: { day: '#F7F5F2', night: '#0A090B' },
+    day: ['#E9E5DF', '#8A1420', '#C9C3BA'], night: ['#1C1A1D', '#B0122A', '#3A3236'],
+    skulls: [SKULL('cuervo', 'Cuervo grande', 'Corvus corax', 'VER0000641', 'e208d125f5b144ddab6334c6b50f3c26')], arcana: [13, 20] }
 ];
+// base del tapiz y de las miniaturas: la del gabinete o la propia del bioma
+export const baseOf = (b, night) => (b.base ? b.base[night ? 'night' : 'day'] : night ? '#0E1016' : '#EFE8DA');
 
 // Los 22 arcanos mayores (número romano, nombre)
 export const ARCANA = ['El Loco', 'El Mago', 'La Sacerdotisa', 'La Emperatriz', 'El Emperador', 'El Hierofante', 'Los Enamorados', 'El Carro', 'La Fuerza', 'El Ermitaño', 'La Rueda', 'La Justicia', 'El Colgado', 'La Muerte', 'La Templanza', 'El Diablo', 'La Torre', 'La Estrella', 'La Luna', 'El Sol', 'El Juicio', 'El Mundo'];

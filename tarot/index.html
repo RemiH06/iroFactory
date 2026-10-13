@@ -11,7 +11,7 @@ Natural de la Universitat de València (MUVHN), CC BY 4.0.
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>tarot_theme · Demo</title>
-<meta name="description" content="tarot: tema de documentación para cartas, decisiones y retrospectivas. Un gabinete de historia natural art deco con nueve biomas, tapices de oro en relieve, cráneos de ave en 3D y una mano de cartas como navegación.">
+<meta name="description" content="tarot: tema de documentación para cartas, decisiones y retrospectivas. Un gabinete de historia natural art deco con diez biomas, tapices de oro en relieve, cráneos de ave en 3D y una mano de cartas como navegación.">
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=josefin-sans:300,400,600|fira-code:400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/core/core.css">
@@ -27,7 +27,7 @@ Natural de la Universitat de València (MUVHN), CC BY 4.0.
 <header class="tr-top">
   <a class="tr-brand" href="#portada" aria-label="tarot · portada">TAROT</a>
   <div class="tr-tools">
-    <a class="tr-pill" href="#catalogo" id="tr-biome-pill"><span class="dot" aria-hidden="true"></span><span id="tr-biome-name">Selva tropical</span></a>
+    <button class="tr-pill" type="button" id="tr-biome-pill"><span class="dot" aria-hidden="true"></span><span id="tr-biome-name">Selva tropical</span></button>
     <button class="tr-pill" type="button" data-theme-toggle aria-label="Cambiar al gabinete de día">☀ d<span class="acc">i</span>a</button>
   </div>
 </header>
@@ -41,7 +41,7 @@ Natural de la Universitat de València (MUVHN), CC BY 4.0.
       <p class="tr-kicker">_THEME · IROFACTORY</p>
       <h1 class="tr-title" id="tr-h-portada">TAROT</h1>
       <p class="tr-subtitle">Gabinete de historia natural</p>
-      <p class="tr-lede">Documentación para cartas, decisiones y retrospectivas. Nueve vitrinas, una por bioma, cada una con su tapiz de oro y mosaico y sus cráneos de ave. La tirada de tres cartas es la forma de documentar una retrospectiva: pasado, presente y futuro.</p>
+      <p class="tr-lede">Documentación para cartas, decisiones y retrospectivas. Diez vitrinas, una por bioma, cada una con su tapiz de oro y mosaico y sus cráneos de ave. La tirada de tres cartas es la forma de documentar una retrospectiva: pasado, presente y futuro.</p>
       <div class="tr-actions"><button class="tr-btn" type="button" id="tr-redeal">Barajar otra vez</button><a class="tr-btn ghost" href="#catalogo">Ver las vitrinas</a></div>
     </div>
     <div class="tr-deck" aria-label="Tirada de tres cartas"><p class="tr-deck-note" id="tr-deck-note" aria-live="polite"></p></div>
@@ -51,7 +51,7 @@ Natural de la Universitat de València (MUVHN), CC BY 4.0.
 <!-- II · Catálogo -->
 <section class="tr-section" id="catalogo" aria-labelledby="tr-h-catalogo">
   <div class="vitrina">
-    <header class="tr-head"><span class="tr-num">II</span><h2 id="tr-h-catalogo" data-compose>Catálogo</h2><p>Nueve biomas, trece cráneos. Elige una vitrina: el tapiz, los colores, las cartas y la mano cambian con ella.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
+    <header class="tr-head"><span class="tr-num">II</span><h2 id="tr-h-catalogo" data-compose>Catálogo</h2><p>Diez biomas, trece cráneos. Elige una vitrina: el tapiz, los colores, las cartas y la mano cambian con ella.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
     <div class="tr-catalog" id="tr-catalog"></div>
   </div>
 </section>
@@ -86,7 +86,7 @@ Natural de la Universitat de València (MUVHN), CC BY 4.0.
         <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn · propuesta</div>
         <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger · rechazada</div>
       </div></div>
-      <div class="tr-panel tr-span2"><h3 class="tr-label">Los nueve biomas</h3><p class="tr-note">Tres colores por bioma, como las franjas del proun: de día, tonos de lámina; de noche, saturados. Tocar uno cambia la vitrina.</p><ul class="tr-triads" id="tr-triads"></ul></div>
+      <div class="tr-panel tr-span2"><h3 class="tr-label">Los diez biomas</h3><p class="tr-note">Tres colores por bioma, como las franjas del proun: de día, tonos de lámina; de noche, saturados. Tocar uno cambia la vitrina.</p><ul class="tr-triads" id="tr-triads"></ul></div>
       <div class="tr-panel"><h3 class="tr-label" data-compose>Tipografía</h3><div id="tr-type"></div></div>
       <div class="tr-panel"><h3 class="tr-label">Contraste</h3><ul class="spec-contrast" id="tr-contrast"></ul></div>
     </div>
@@ -209,7 +209,7 @@ import { mount as catalog } from '../shared/components/tarot/catalog.js';
 import { mount as spreads } from '../shared/components/tarot/card-spreads.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
-import { BIOMES, setBiome } from '../shared/components/tarot/biomes.js';
+import { BIOMES, baseOf, setBiome } from '../shared/components/tarot/biomes.js';
 import { biome } from '../shared/components/tarot/biomes.js';
 
 kit();
@@ -240,11 +240,13 @@ import('../shared/components/tarot/skull-vitrine.js').then(m => {
 const coda = document.getElementById('tr-coda-stage');
 const prounBg = () => { coda.style.backgroundImage = `url(../assets/img/tarot/proun_${night() ? 'dark' : 'light'}.webp)`; };
 prounBg(); onTheme(prounBg);
-const showBiome = () => { document.getElementById('tr-biome-name').textContent = biome().name; document.getElementById('tr-biome-pill').setAttribute('aria-label', `Vitrina: ${biome().name}. Ver el catálogo`); };
+const showBiome = () => { document.getElementById('tr-biome-name').textContent = biome().name; const nx = BIOMES[(BIOMES.indexOf(biome()) + 1) % BIOMES.length]; document.getElementById('tr-biome-pill').setAttribute('aria-label', `Vitrina: ${biome().name}. Cambiar a ${nx.name}`); };
+// la pastilla del bioma pasa a la vitrina siguiente
+document.getElementById('tr-biome-pill').addEventListener('click', () => setBiome(BIOMES[(BIOMES.indexOf(biome()) + 1) % BIOMES.length].id));
 showBiome(); document.addEventListener('tarot:biome', showBiome);
 
 // el tapiz y el mazo: Three.js después de la primera pintura
-const palette = () => { const b = biome(), n = night(); return { colors: b[n ? 'night' : 'day'], base: n ? '#0E1016' : '#EFE8DA', gold: n ? ['#B8913E', '#F2D894'] : ['#8C6A22', '#C9A04A'], motif: b.motif, memento: b.memento }; };
+const palette = () => { const b = biome(), n = night(); return { colors: b[n ? 'night' : 'day'], base: baseOf(b, n), gold: n ? ['#B8913E', '#F2D894'] : ['#8C6A22', '#C9A04A'], motif: b.motif, memento: b.memento }; };
 import('../shared/components/tarot/tapestry-3d.js').then(m => {
   const tp = m.mount({ palette }); tp.set();
   onTheme(() => tp.set()); document.addEventListener('tarot:biome', () => tp.set());
