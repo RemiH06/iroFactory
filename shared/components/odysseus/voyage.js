@@ -27,6 +27,7 @@ export function mount() {
     worldBtn.hidden = i < 0;
     flip(where, p ? `${p.wonder} · ${p.place}` : 'Mapamundi · 7 puertos');
     flip(kicker, p ? `Puerto ${i + 1} de 7 · por visitar` : 'Bitácora · 7 puertos por visitar');
+    if (p) document.dispatchEvent(new CustomEvent('od:port', { detail: { id: p.id } }));
     busy = false;
     if (queued !== null) { const q = queued; queued = null; travel(q); }
   };
@@ -44,6 +45,8 @@ export function mount() {
   ports.onPick = i => travel(i);
   ticket.onUserTear = () => travel(current >= 0 ? nextOf(current) : (last >= 0 ? nextOf(last) : 0), true);
   worldBtn.addEventListener('click', () => travel(-1));
+  // La bitácora pide ver su ruta: regresar al mapamundi (si ya se está ahí, world-map.js recentra).
+  document.addEventListener('od:world', () => { if (current >= 0) travel(-1); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && current >= 0) travel(-1); });
   arrive(-1);
 })();

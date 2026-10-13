@@ -1,0 +1,85 @@
+/* odysseus · bitácora de navegación: libro de a bordo con renglones, códigos
+   en Cabaret Voltaire (no trae acentos: solo van ahí las siglas) y cifras en Fira Code. */
+.od-log { position: relative; padding: clamp(56px, 8vw, 96px) 0; border-top: 1px solid var(--border);
+  background: repeating-linear-gradient(0deg, transparent 0 31px, color-mix(in srgb, var(--sea-dk) 22%, transparent) 31px 32px), var(--bg); }
+.od-log-title { font-family: 'Debonair Inline', var(--display); font-weight: 400; font-size: clamp(34px, 5vw, 56px); line-height: 1.1; word-spacing: -.22em; color: var(--text); }
+.od-log-lede { max-width: 62ch; font-size: 17px; margin: 10px 0 26px; }
+.od-log-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.5fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+.od-log h3 { margin-top: 0; }
+.od-log-plan h3 + * { margin-bottom: 22px; }
+.od-log-iata { font-family: 'Cabaret Voltaire', var(--display); font-size: 17px; letter-spacing: .04em; color: var(--route-ink); }
+.od-log-ports { display: flex; flex-wrap: wrap; gap: 6px; }
+.od-log-port { display: inline-flex; gap: 8px; align-items: baseline; font: italic 14px var(--display); color: var(--text); background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 5px 12px; min-height: 36px; cursor: pointer; transition: border-color .2s ease-out, transform .16s ease-out; }
+.od-log-port:active { transform: scale(.97); }
+.od-log-stops { list-style: none; border-top: 1px solid var(--border); }
+.od-log-stop { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); }
+.od-log-pick { flex: 1; min-width: 0; display: grid; grid-template-columns: 22px 46px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; text-align: left; font: inherit; color: var(--text); background: none; border: 0; padding: 7px 4px; cursor: pointer; }
+.od-log-stop.is-sel { background: color-mix(in srgb, var(--compass) 14%, transparent); }
+.od-log-stop.is-sel .od-log-n { color: var(--compass-ink); }
+.od-log-n { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.od-log-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.od-log-tz { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.od-log-tools { display: flex; gap: 2px; }
+.od-log-mini { width: 32px; height: 32px; font: 15px var(--mono); line-height: 1; color: var(--text2); background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; }
+.od-log-mini:disabled { opacity: .35; cursor: default; }
+.od-log-x { color: var(--route-ink); }
+.od-log-empty { padding: 10px 4px; color: var(--text2); font-style: italic; }
+.od-log-presets { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0; }
+.od-log-params { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; font-size: 14px; color: var(--text2); font-style: italic; }
+.od-log-params label { display: inline-flex; gap: 6px; align-items: center; }
+.od-log-params input { font: 13px var(--mono); color: var(--text); background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 5px 8px; min-height: 34px; color-scheme: light; }
+body.dark .od-log-params input { color-scheme: dark; }
+.od-log-nights { display: inline-flex; gap: 6px; align-items: center; }
+.od-log-nights output { font: 15px var(--mono); color: var(--text); min-width: 2ch; text-align: center; font-style: normal; }
+.od-log-totals { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 0; }
+.od-log-totals .metric-val { font-size: 24px; }
+.od-log-legs td small { display: block; font-family: var(--mono); font-size: 12px; color: var(--text2); font-style: normal; }
+.od-log-legs b { font-family: 'Cabaret Voltaire', var(--display); font-weight: 400; font-size: 16px; color: var(--route-ink); }
+.od-log-num { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+.od-log-arrow { display: inline-block; color: var(--compass-ink); transform: rotate(var(--b)); }
+/* Línea de tiempo: vuelos en rojo de ruta, estancias en tierra, un tic por día. */
+.od-log-line { margin: 8px 0 26px; }
+.od-log-bar { position: relative; height: 18px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); }
+.od-log-fly, .od-log-stay, .od-log-tick { position: absolute; top: 0; bottom: 0; }
+.od-log-fly { background: var(--route); z-index: 1; }
+.od-log-stay { background: color-mix(in srgb, var(--land-dk) 70%, transparent); }
+.od-log-tick { width: 1px; background: color-mix(in srgb, var(--ink) 25%, transparent); }
+.od-log-marks { position: relative; height: 104px; }
+.od-log-mark { --row: 0; position: absolute; top: calc(4px + var(--row) * 32px); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; line-height: 1.2; white-space: nowrap; }
+.od-log-mark::before { content: ''; width: 1px; height: calc(6px + var(--row) * 32px); margin-top: calc(var(--row) * -32px); background: color-mix(in srgb, var(--ink) 55%, transparent); margin-bottom: 2px; }
+/* En las orillas el rótulo se recarga hacia dentro para no salirse de la línea. */
+.od-log-mark.is-start { transform: none; align-items: flex-start; }
+.od-log-mark.is-end { transform: translateX(-100%); align-items: flex-end; }
+.od-log-mark b { font: 400 14px 'Cabaret Voltaire', var(--display); color: var(--text); }
+.od-log-mark small { font: 11px var(--mono); color: var(--text2); }
+.od-log-ficha-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; margin-bottom: 8px; }
+.od-log-ficha-head .od-log-iata { font-size: 30px; }
+.od-log-ficha h3 { margin: 0; font-size: 20px; color: var(--text); font-style: normal; font-family: 'Debonair Inline', var(--display); word-spacing: -.22em; }
+.od-log-ficha p.muted { margin: 0; }
+.od-log-clock { font: 26px var(--mono); color: var(--compass-ink); }
+.od-log-ficha dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; font-size: 14px; }
+.od-log-ficha dt { font-style: italic; color: var(--rust); }
+.od-log-ficha dd { font-family: var(--mono); font-size: 13px; overflow-wrap: anywhere; }
+.od-log-note { margin-top: 14px; }
+@media (hover: hover) and (pointer: fine){
+.od-log-port:hover, .od-log-mini:not(:disabled):hover { border-color: var(--route-ink); }
+.od-log-pick:hover .od-log-name { color: var(--route-ink); }
+}
+@media (max-width: 900px){
+.od-log-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px){
+.od-log-totals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.od-log-ficha-head { grid-template-columns: auto minmax(0, 1fr); }
+/* La tabla de tramos se vuelve una tarjeta por tramo. */
+.od-log-legs thead { display: none; }
+.od-log-legs tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.od-log-legs td { display: block; padding: 0; border: 0; white-space: normal; }
+.od-log-legs td[data-k]::before { content: attr(data-k); display: block; font: italic 12px var(--display); color: var(--rust); }
+.od-log-legs .od-log-i { display: none; }
+.od-log-legs .od-log-leg { grid-column: 1 / -1; }
+.od-log-legs .od-log-empty { grid-column: 1 / -1; }
+.od-log-clock { grid-column: 1 / -1; font-size: 22px; }
+.od-log-ficha dl { grid-template-columns: 1fr; gap: 0; }
+.od-log-ficha dd { margin-bottom: 6px; }
+}

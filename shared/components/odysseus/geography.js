@@ -17,15 +17,15 @@ export const cityLayers = id => {
   return (CITY[id] = L);
 };
 export const PORTS = [
-  { id: 'chichen', name: 'Chichén Itzá', wonder: 'Chichén Itzá', place: 'Yucatán, México', iata: 'CZA' },
-  { id: 'machu', name: 'Machu Picchu', wonder: 'Machu Picchu', place: 'Cusco, Perú', iata: 'CUZ' },
-  { id: 'cristo', name: 'Río de Janeiro', wonder: 'Cristo Redentor', place: 'Brasil', iata: 'GIG' },
-  { id: 'coliseo', name: 'Roma', wonder: 'Coliseo', place: 'Italia', iata: 'FCO' },
-  { id: 'petra', name: 'Petra', wonder: 'Petra', place: "Ma'an, Jordania", iata: 'AQJ' },
-  { id: 'taj', name: 'Agra', wonder: 'Taj Mahal', place: 'Uttar Pradesh, India', iata: 'AGR' },
-  { id: 'muralla', name: 'Badaling', wonder: 'Gran Muralla', place: 'Pekín, China', iata: 'PEK' },
+  { id: 'chichen', name: 'Chichén Itzá', wonder: 'Chichén Itzá', place: 'Yucatán, México', iata: 'CZA', tz: 'America/Merida' },
+  { id: 'machu', name: 'Machu Picchu', wonder: 'Machu Picchu', place: 'Cusco, Perú', iata: 'CUZ', tz: 'America/Lima' },
+  { id: 'cristo', name: 'Río de Janeiro', wonder: 'Cristo Redentor', place: 'Brasil', iata: 'GIG', tz: 'America/Sao_Paulo' },
+  { id: 'coliseo', name: 'Roma', wonder: 'Coliseo', place: 'Italia', iata: 'FCO', tz: 'Europe/Rome' },
+  { id: 'petra', name: 'Petra', wonder: 'Petra', place: "Ma'an, Jordania", iata: 'AQJ', tz: 'Asia/Amman' },
+  { id: 'taj', name: 'Agra', wonder: 'Taj Mahal', place: 'Uttar Pradesh, India', iata: 'AGR', tz: 'Asia/Kolkata' },
+  { id: 'muralla', name: 'Badaling', wonder: 'Gran Muralla', place: 'Pekín, China', iata: 'PEK', tz: 'Asia/Shanghai' },
 ].map(p => ({ ...p, lat: GEO.sites[p.id].lat, lon: GEO.sites[p.id].lon, r: GEO.sites[p.id].r }));
-export const HOME = { id: 'gdl', name: 'Guadalajara', iata: 'GDL', lat: 20.6597, lon: -103.3496 };
+export const HOME = { id: 'gdl', name: 'Guadalajara', iata: 'GDL', tz: 'America/Mexico_City', place: 'Jalisco, México', lat: 20.6597, lon: -103.3496 };
 export const fmtCoords = p => `${Math.abs(p.lat).toFixed(2)}° ${p.lat >= 0 ? 'N' : 'S'}, ${Math.abs(p.lon).toFixed(2)}° ${p.lon >= 0 ? 'E' : 'O'}`;
 export function mount() {
 for (const [id, s] of Object.entries(GEO.world.regions)) WORLD.regions[id] = pathOf(ringsOf(s, 50), true);
