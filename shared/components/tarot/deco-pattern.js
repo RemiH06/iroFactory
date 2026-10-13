@@ -11,44 +11,20 @@
 //  · color: los mosaicos con los colores del bioma y el oro encima,
 //  · mask: solo el oro, en blanco sobre negro (de ahí salen el relieve,
 //    el metal y el brillo en tapestry-3d.js).
+// Es el pintor de la placa compartida (relief-plate/plate-3d.js), que lo
+// corre en un Worker para no congelar la página.
 //   paint({ w, h, colors: [c1, c2, c3], base, gold, motif, memento })
-// Corre en un Worker (tapestry-worker.js) para no congelar la página.
 // ══════════════════════════════════════════════════════
-const TAU = Math.PI * 2;
-// lienzo: OffscreenCanvas si existe (así corre también dentro de un Worker)
-export const canvas = (w, h) => (typeof OffscreenCanvas !== 'undefined' ? new OffscreenCanvas(w, h) : Object.assign(document.createElement('canvas'), { width: w, height: h }));
-const hex = h => { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
-const mix = (a, b, t) => { const x = hex(a), y = hex(b); return `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(',')})`; };
+import { TAU, canvas, mix, pen as basePen } from '../relief-plate/pen.js';
+export { canvas };
 
-// ── El pincel deco: primitivas de oro y color sobre dos lienzos a la vez
-// (color y máscara del oro), los motivos de cada bioma, los emblemas de
-// memento mori y el cráneo de ave. Lo usan el tapiz y las cartas.
+// ── El pincel deco: las primitivas compartidas (relief-plate/pen.js) más
+// los motivos de cada bioma, los emblemas de memento mori y el cráneo de
+// ave. Lo usan el tapiz y las cartas.
 //   pen(C, M, { u, w, h, gold }) → { line, solid, tile, P, mirror, dots,
 //     archPath, hatch, ring, zig, rays, dotRing, MOTIF, MEMENTO, bird }
 export function pen(C, M, { u, w, h, gold }) {
-  const goldGrad = () => { const g = C.createLinearGradient(0, 0, w, h); g.addColorStop(0, gold[0]); g.addColorStop(0.5, gold[1]); g.addColorStop(1, gold[0]); return g; };
-  const G = goldGrad();
-  const line = (path, lw) => { C.strokeStyle = G; C.lineWidth = lw; C.stroke(path); M.strokeStyle = '#fff'; M.lineWidth = lw; M.stroke(path); };
-  const solid = path => { C.fillStyle = G; C.fill(path); M.fillStyle = '#fff'; M.fill(path); };
-  const tile = (path, fill) => { C.fillStyle = fill; C.fill(path); };
-  const P = () => new Path2D();
-  const mirror = fn => { fn(1); fn(-1); }; // dibuja algo y su reflejo respecto al eje central
-  const dots = (x0, y0, x1, y1, step, r) => { const n = Math.max(1, Math.round(Math.hypot(x1 - x0, y1 - y0) / step)); const p = P(); for (let i = 0; i <= n; i++) { const t = i / n, x = x0 + (x1 - x0) * t, y = y0 + (y1 - y0) * t; p.moveTo(x + r, y); p.arc(x, y, r, 0, TAU); } solid(p); };
-  // arco (rectángulo con remate semicircular)
-  const archPath = (x, y, aw, ah) => { const p = P(), r = aw / 2; p.moveTo(x - r, y); p.lineTo(x - r, y - ah + r); p.arc(x, y - ah + r, r, Math.PI, 0); p.lineTo(x + r, y); return p; };
-
-  // rayado dentro de una forma, anillos, zigzag, rayos y punteado en anillo
-  const clipBoth = (path, fn) => { C.save(); M.save(); C.clip(path); M.clip(path); fn(); C.restore(); M.restore(); };
-  const hatch = (path, gap, ang, lw, box = [0, 0, w, h]) => clipBoth(path, () => {
-    const [x0, y0, x1, y1] = box, mx = (x0 + x1) / 2, my = (y0 + y1) / 2, R = Math.hypot(x1 - x0, y1 - y0) / 2, ca = Math.cos(ang), sa = Math.sin(ang), q = P();
-    for (let d = -R; d <= R; d += gap) { q.moveTo(mx + ca * -R - sa * d, my + sa * -R + ca * d); q.lineTo(mx + ca * R - sa * d, my + sa * R + ca * d); }
-    line(q, lw);
-  });
-  const ring = (x, y, r, a0, a1, lw) => { const q = P(); q.arc(x, y, r, a0, a1); line(q, lw); };
-  const zig = (x, y, r0, r1, n, a0, a1, lw) => { const q = P(); for (let k = 0; k <= n; k++) { const a = a0 + (a1 - a0) * k / n, rr = k % 2 ? r1 : r0; k ? q.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr) : q.moveTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); } line(q, lw); };
-  const rays = (x, y, r0, r1, n, a0, a1, lw) => { const q = P(); for (let k = 0; k <= n; k++) { const a = a0 + (a1 - a0) * k / n; q.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0); q.lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1); } line(q, lw); };
-  const dotRing = (x, y, r, n, a0, a1, rd) => { const q = P(); for (let k = 0; k <= n; k++) { const a = a0 + (a1 - a0) * k / n, xx = x + Math.cos(a) * r, yy = y + Math.sin(a) * r; q.moveTo(xx + rd, yy); q.arc(xx, yy, rd, 0, TAU); } solid(q); };
-
+  const base = basePen(C, M, { u, w, h, gold }), { line, solid, P, mirror } = base;
   const MOTIF = {
     frond: (x, y, s) => { const p = P(); for (let i = -3; i <= 3; i++) { const a = -Math.PI / 2 + i * 0.32; p.moveTo(x, y); p.quadraticCurveTo(x + Math.cos(a) * s * 0.5 + i * s * 0.05, y + Math.sin(a) * s * 0.5, x + Math.cos(a) * s, y + Math.sin(a) * s); } line(p, 0.26 * u); const b = P(); b.arc(x, y, s * 0.08, 0, TAU); solid(b); },
     reed: (x, y, s) => { const p = P(); [-0.3, 0, 0.3].forEach((d, i) => { const hh = s * (1 - Math.abs(d)); p.moveTo(x + d * s * 0.4, y); p.lineTo(x + d * s * 0.4, y - hh); p.moveTo(x + d * s * 0.4 + s * 0.06, y - hh * 0.9); p.ellipse(x + d * s * 0.4, y - hh * 0.9, s * 0.06, s * 0.16, 0, 0, TAU); }); line(p, 0.24 * u); },
@@ -80,7 +56,7 @@ export function pen(C, M, { u, w, h, gold }) {
     line(p, 0.3 * u);
     const o = P(); o.arc(cx - bs * 0.12, by - bs * 0.04, bs * 0.13, 0, TAU); line(o, 0.24 * u);
     const pd = P(); pd.rect(cx - bs * 0.9, by + bs * 0.42, bs * 1.8, 0.5 * u); pd.rect(cx - bs * 0.7, by + bs * 0.42 + 1.4 * u, bs * 1.4, 0.5 * u); solid(pd); };
-  return { line, solid, tile, P, mirror, dots, archPath, clipBoth, hatch, ring, zig, rays, dotRing, MOTIF, MEMENTO, bird };
+  return { ...base, MOTIF, MEMENTO, bird };
 }
 
 export function paint({ w = 2048, h = 1152, colors, base, gold, motif = 'scallop', memento = 'hourglass' }) {

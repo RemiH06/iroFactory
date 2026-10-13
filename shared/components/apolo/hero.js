@@ -5,7 +5,7 @@
 // scroll, recién al soltarse el contenido real avanza). Sin
 // física de scroll-timeline nueva: un solo listener de scroll
 // con throttle por rAF (mismo patrón que el mousemove del
-// tilt-card), progreso lineal 0→1 mapeado a blur+zoom+fade.
+// resto del tema), progreso lineal 0→1 mapeado a blur+zoom+fade.
 // Si `prefers-reduced-motion` está activo, ni se expande el
 // wrap ni se agrega la clase · el hero se queda como un bloque
 // estático de una pantalla, igual que el fallback "sin JS" de

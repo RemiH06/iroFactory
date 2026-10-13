@@ -1,18 +1,13 @@
 // ══════════════════════════════════════════════════════
-// CAPA 2 · Light Rays: rayos de sol fijos desde arriba
+// CAPA 2 · Light Rays: rayos de sol desde arriba
 // (React Bits "LightRays" · es OGL, no Three.js: su shader ya
-// es GLSL plano, mismo patrón que el Shader Lens de abajo, así
-// que el fragment shader es un puerto casi literal. Se fija el
-// origen a "top-center" siempre · Apolo es el dios del sol, los
-// rayos vienen de arriba · y se quita la rama "lightMode" del
-// original (tonemap a tinta sobre blanco: no aplica, apolo ya
-// tiene su propio claro/oscuro). "Luz constante en toda la
-// vista no importa el scroll" ya lo resuelve position:fixed,
-// igual que cada otra capa de fondo de este archivo.
+// es GLSL plano, así que el fragment shader es un puerto casi
+// literal). El origen sigue al sol del pórtico (portico-3d.js):
+// los rayos caen desde donde va el sol y se apagan de noche. Se
+// quita la rama "lightMode" del original (tonemap a tinta sobre
+// blanco: no aplica, apolo ya tiene su propio claro/oscuro).
 // ══════════════════════════════════════════════════════
-import { glLink } from '../../core/core.js';
-import { hexToRgb } from './sky.js';
-import { cssVar } from './kit.js';
+import { glLink, rgb01, smooth } from '../../core/core.js';
 
 export function initRays() {
   const canvas = document.getElementById('ap-rays');
@@ -115,6 +110,13 @@ export function initRays() {
   };
 
   let mx = 0.5, my = 0.2;
+  // los rayos bajan desde el sol del pórtico (portico-3d.js): siguen su
+  // posición en la vista y se apagan cuando se pone
+  let sunX = 0.5, light = 1;
+  document.addEventListener('ap:hour', ({ detail }) => {
+    const a = (detail.hour - 6) / 12 * Math.PI, px = 0.5 - 0.41 * Math.cos(a), k = (16 / 9) / Math.max(innerWidth / innerHeight, 1e-3);
+    sunX = (px - 0.5) * Math.max(1, k) + 0.5; light = smooth(-0.02, 0.3, detail.sun);
+  });
   function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -126,10 +128,10 @@ export function initRays() {
   function render(ts) {
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    const rgb = hexToRgb(cssVar('--gold-lt'));
+    const rgb = rgb01('--gold-lt');
     gl.uniform1f(u.time, ts * 0.001);
     gl.uniform2f(u.res, canvas.width, canvas.height);
-    gl.uniform2f(u.pos, canvas.width * 0.5, -0.2 * canvas.height);
+    gl.uniform2f(u.pos, canvas.width * sunX, -0.2 * canvas.height);
     gl.uniform2f(u.dir, 0, 1);
     gl.uniform3f(u.col, ...rgb);
     gl.uniform1f(u.speed, 0.35);
@@ -144,7 +146,7 @@ export function initRays() {
     gl.uniform1f(u.mouseInf, 0.12);
     gl.uniform1f(u.noiseAmt, 0.08);
     gl.uniform1f(u.dist, 0.12);
-    gl.uniform1f(u.op, 0.85);
+    gl.uniform1f(u.op, 0.85 * light);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
   render(0);

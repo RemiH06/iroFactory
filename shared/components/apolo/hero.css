@@ -8,8 +8,8 @@
    estado roto a medio cargar (mismo principio defensivo que
    Proun: sin la clase que agrega el script, se ve normal).
 ══════════════════════════════════════════════════════ */
-/* z-index:5 · arriba de las 5 capas fijas de fondo (sky/beams/rays/
-   texture/tilt, 0-4: son position:fixed;inset:0, cubren todo el
+/* z-index:5 · arriba de las capas fijas de fondo (pórtico 0, rayos 4:
+   son position:fixed;inset:0, cubren todo el
    viewport, y sin esto pintarían encima del hero por estar más
    abajo en el DOM con z-index:auto). Abajo de #ap-toggle-wrap (30)
    y de .page (10), que sí deben quedar siempre por encima. */

@@ -17,10 +17,6 @@
 import { cssVar, reduceMotion, updateHexes } from './kit.js';
 import { glLink } from '../../core/core.js';
 import { drawPetals, resizePetals, seedAvalanche } from './petals.js';
-import { buildSky } from './sky.js';
-import { buildTexture } from './single-canvas.js';
-import { buildBackStripes } from './strip-layer.js';
-import { buildTiltColumns, updateTilt } from './tilt-card.js';
 import { initRays } from './light-rays.js';
 import { initRipple } from './ripple-distortion.js';
 import { initHero } from './hero.js';
@@ -256,14 +252,8 @@ export function animLoop(ts) {
 }
 export function mount() {
 // ── Init ───────────────────────────────────────────────
-window.addEventListener('resize', () => {
-  buildSky(); resizePetals(); buildTexture(); buildBackStripes(); buildTiltColumns();
-});
-buildSky();
+window.addEventListener('resize', resizePetals);
 resizePetals();
-buildTexture();
-buildBackStripes();
-buildTiltColumns();
 updateHexes();
 raysFx = initRays();
 rippleFx = initRipple();
@@ -273,20 +263,6 @@ document.querySelectorAll('.ap-statue').forEach(f => { const s = initStatueRippl
 if (!reduceMotion.matches) seedAvalanche();
 animLoop();
 reduceMotion.addEventListener('change', () => { if (!reduceMotion.matches) requestAnimationFrame(animLoop); });
-// ── Tilt-card + Light Rays · reaccionan al puntero ───────
-// Lente desactivado por ahora (probando solo tilt-card, a pedido
-// del usuario) · el módulo shader-lens.js se quitó; está en el historial de git.
-// Se desactiva del todo si el usuario prefiere menos movimiento.
-if (!reduceMotion.matches) {
-  let tiltRaf = null;
-  window.addEventListener('mousemove', (e) => {
-    if (raysFx) raysFx.setMouse(e.clientX, e.clientY);
-    if (tiltRaf) return;
-    tiltRaf = requestAnimationFrame(() => {
-      updateTilt(e.clientX, e.clientY);
-      tiltRaf = null;
-    });
-  });
-  window.addEventListener('mouseleave', () => updateTilt(-9999, -9999));
-}
+// ── Light Rays · reaccionan al puntero (no con reduced motion)
+if (!reduceMotion.matches) window.addEventListener('mousemove', e => { if (raysFx) raysFx.setMouse(e.clientX, e.clientY); });
 }

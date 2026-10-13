@@ -1,0 +1,56 @@
+/* ══════════════════════════════════════════════════════
+   Doc Edition · edición comentada (texto, traducción y escolios).
+   Mismas variables que doc-prose; además:
+     --doc-src-font   fuente del original (la del texto)
+   ══════════════════════════════════════════════════════ */
+.doc-ed { --_src: var(--doc-src-font, inherit); font-size: 17px; }
+.doc-ed-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 0 0 14px; }
+.doc-ed-views { display: inline-flex; border: 1px solid var(--_line); border-radius: var(--_r); overflow: hidden; }
+.doc-ed-views button { font: inherit; font-size: 14px; padding: 6px 14px; min-height: 32px; background: transparent; color: var(--_muted); border: 0; cursor: pointer; }
+.doc-ed-views button + button { border-left: 1px solid var(--_line); }
+.doc-ed-views button[aria-checked="true"] { background: var(--_surface); color: var(--_ink); box-shadow: inset 0 -2px 0 var(--_accent); }
+.doc-ed-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--_muted); cursor: pointer; }
+.doc-ed-toggle input { accent-color: var(--_accent); width: 16px; height: 16px; }
+.doc-ed-status { font-size: 13px; color: var(--_accent); min-height: 1em; }
+
+/* una fila por verso: número · original · traducción · margen */
+.doc-ed-head, .doc-ed-row { display: grid; grid-template-columns: 2.6em minmax(0, 1fr) minmax(0, 1fr) minmax(0, .8fr); gap: 0 22px; align-items: baseline; }
+.doc-ed-head { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--_muted); border-bottom: 1px solid var(--_line); padding-bottom: 6px; margin-bottom: 6px; font-family: var(--_head); }
+.doc-ed-text { list-style: none; margin: 0; padding: 0; }
+.doc .doc-ed-row { padding: 3px 0; border-radius: var(--_r); max-width: none; }
+.doc-ed-row:hover { background: color-mix(in srgb, var(--_accent) 7%, transparent); }
+.doc-ed-src { font-family: var(--_src); font-size: 1.06em; }
+.doc-ed-tr { color: var(--_ink); }
+.doc-ed-row:hover .doc-ed-tr, .doc-ed-row:hover .doc-ed-src { color: var(--_ink); }
+
+/* números: cada `every` a la vista, el resto al pasar */
+.doc-ed-n { font: 12px/1 var(--_mono); color: var(--_muted); background: none; border: 0; padding: 4px 2px; min-width: 24px; min-height: 24px; text-align: right; cursor: copy; opacity: 0; }
+.doc-ed-row.is-mark .doc-ed-n, .doc-ed-row:hover .doc-ed-n, .doc-ed-n:focus-visible { opacity: 1; }
+.doc-ed-n:hover { color: var(--_accent); }
+
+/* lemas y escolios */
+.doc-ed-lemma { background: none; color: inherit; border-bottom: 1px dotted var(--_accent); padding: 0 1px; }
+.doc-ed-lemma.is-hot { background: color-mix(in srgb, var(--_accent) 20%, transparent); }
+.doc-ed-note { font-size: 13px; line-height: 1.5; color: var(--_muted); }
+.doc-ed-scholion { display: block; padding: 2px 0 6px 8px; border-left: 2px solid var(--_line); margin-bottom: 4px; }
+.doc-ed-scholion b { font: 12px var(--_mono); color: var(--_accent); margin-right: 2px; }
+.doc-ed-scholion [lang] { font-family: var(--_src); font-style: italic; color: var(--_ink); }
+.doc-ed-scholion.is-hot { border-left-color: var(--_accent); color: var(--_ink); }
+
+/* vistas */
+.doc-ed[data-view="src"] .doc-ed-tr, .doc-ed[data-view="tr"] .doc-ed-src { display: none; }
+.doc-ed[data-view="src"] :is(.doc-ed-head, .doc-ed-row), .doc-ed[data-view="tr"] :is(.doc-ed-head, .doc-ed-row) { grid-template-columns: 2.6em minmax(0, 1.6fr) minmax(0, 1fr); }
+.doc-ed[data-notes="off"] .doc-ed-note { display: none; }
+.doc-ed[data-notes="off"] :is(.doc-ed-head, .doc-ed-row) { grid-template-columns: 2.6em minmax(0, 1fr) minmax(0, 1fr); }
+.doc-ed[data-notes="off"]:is([data-view="src"], [data-view="tr"]) :is(.doc-ed-head, .doc-ed-row) { grid-template-columns: 2.6em minmax(0, 1fr); }
+
+/* angosto: original y traducción uno bajo otro, el escolio bajo su verso */
+@media (max-width: 760px) {
+  .doc-ed { font-size: 16px; }
+  .doc-ed-head { display: none; }
+  .doc-ed .doc-ed-row, .doc-ed[data-view] .doc-ed-row { grid-template-columns: 2.2em minmax(0, 1fr); padding: 6px 0; }
+  .doc-ed-row > :not(.doc-ed-n) { grid-column: 2; }
+  .doc-ed-tr { color: var(--_muted); font-size: .94em; }
+  .doc-ed-n { opacity: 1; }
+  .doc-ed-note:empty { display: none; }
+}

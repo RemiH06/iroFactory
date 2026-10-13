@@ -9,7 +9,6 @@ iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
 · React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
   Componentes portados: Circular Gallery, LightRays, Ripple Distortion.
 · Motion v11.18.2 (build mini, incrustado) · https://motion.dev · https://github.com/motiondivision/motion (@motiondivision)
-· Tilt card y Shader Lens reconstruidos desde el concepto de los ejemplos de motion.dev (sin código copiado).
 
 ──── React Bits ────
 MIT + Commons Clause License Condition v1.0
@@ -65,16 +64,16 @@ SOFTWARE.
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>apolo_theme · Demo</title>
-<meta name="description" content="apolo: tema griego enmarcado por columnas jónicas dibujadas en SVG (éntasis, estrías, volutas) y rosetas, con pétalos derivando sobre un cielo Egeo de día o un atardecer púrpura y naranja de noche.">
+<meta name="description" content="apolo: tema de documentación para artes y humanidades. Un pórtico griego de mármol en relieve cuya luz sigue la hora del día con el scroll, una gliptoteca de esculturas en 3D, edición comentada con traducción en paralelo y bibliografía.">
 <link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css2?family=Cinzel:wght@400;700&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css2?family=Cinzel:wght@400;700&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400&family=GFS+Didot&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
 <link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="apolo.css">
-<link rel="stylesheet" href="../shared/components/apolo/sky.css">
-<link rel="stylesheet" href="../shared/components/apolo/single-canvas.css">
-<link rel="stylesheet" href="../shared/components/apolo/strip-layer.css">
-<link rel="stylesheet" href="../shared/components/apolo/tilt-card.css">
+<link rel="stylesheet" href="../shared/components/doc-edition/doc-edition.css">
+<link rel="stylesheet" href="../shared/components/doc-biblio/doc-biblio.css">
+<link rel="stylesheet" href="../shared/components/apolo/portico.css">
+<link rel="stylesheet" href="../shared/components/apolo/sculpture-gallery.css">
 <link rel="stylesheet" href="../shared/components/apolo/light-rays.css">
 <link rel="stylesheet" href="../shared/components/apolo/petals.css">
 <link rel="stylesheet" href="../shared/components/apolo/circular-gallery-tabs.css">
@@ -82,18 +81,15 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/apolo/ripple-distortion.css">
 <link rel="stylesheet" href="../shared/components/apolo/statues.css">
 <link rel="stylesheet" href="../shared/components/statue-3d/statue-3d.css">
-<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/" } }</script>
+<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/", "animejs": "../shared/vendor/anime/anime.esm.min.js" } }</script>
 </head>
 <body>
 
-<!-- Capas de escena -->
-<canvas id="ap-sky"></canvas>
-<div id="ap-texture"></div>
-<div id="ap-back-stripes"></div>
-<div id="ap-tilt-layer"></div>
+<!-- Capas de escena: el pórtico (portico-3d.js) se agrega al inicio del body -->
 <canvas id="ap-rays"></canvas>
 <canvas id="ap-petals"></canvas>
 
+<div class="ap-sundial" id="ap-sundial" aria-hidden="true"></div>
 <div id="ap-toggle-wrap">
   <button class="theme-btn" id="toggle-btn" aria-label="Cambiar a atardecer"><span id="toggle-icon" style="display:inline-block">☽</span> <span id="toggle-label">Atardecer</span></button>
 </div>
@@ -132,8 +128,8 @@ SOFTWARE.
   <div class="wrap ap-presentacion-grid">
     <div>
       <h1>Un tema de documentación hecho de componentes</h1>
-      <p>La página solo compone piezas compartidas de iroFactory, sin dependencias externas más allá de las fuentes. El fondo combina columnas generadas en SVG, dos shaders en WebGL crudo (sin Three.js) y una fotografía que se reordena en tiras para formar cada columna.</p>
-      <p>El tema alterna entre paleta clara y oscura. Ambas reconstruyen el fondo completo · degradado, columnas y tipografía · a partir de los mismos tokens de color que se listan más abajo.</p>
+      <p>La página solo compone piezas compartidas de iroFactory. El fondo es un pórtico de mármol en relieve dibujado por código: cornisa, friso con metopas pintadas, columnas jónicas y gradas. Entre las columnas se ve el cielo, y la hora avanza con el scroll: el sol entra rasante al amanecer, cae desde arriba a mediodía y al final salen las estrellas.</p>
+      <p>El tema alterna entre una paleta de día y una de atardecer. Con la de día la página va de las seis de la mañana a la noche; con la de atardecer, del ocaso al amanecer siguiente. El reloj de abajo a la izquierda marca la hora.</p>
     </div>
     <div class="ap-presentacion-aside">
       <blockquote class="ap-quote">
@@ -194,13 +190,42 @@ SOFTWARE.
     <div>
       <h2>Sobre este tema</h2>
       <p>La paleta parte de dos referencias concretas: mármol claro y un azul profundo de mar. De ahí salen los nombres de los tokens, no al revés · la idea vino primero de qué colores se veían bien juntos, la referencia clásica se sumó después.</p>
-      <p>La portada usa fragmentos de una sola fotografía reordenados en tiras, en vez de una imagen o un degradado continuo, para que el fondo tenga textura sin depender de una imagen externa pesada.</p>
+      <p>El fondo es una placa en relieve: el mismo trazo dibuja el pórtico en color y, a la vez, un mapa de alturas, y de ese mapa salen las normales con las que la luz marca cada moldura. Es la técnica del tapiz de tarot, compartida como componente.</p>
     </div>
     <div>
       <h2>Cómo funciona</h2>
-      <p>WebGL crudo para Light Rays y Ripple Distortion, Three.js solo para la estatua 3D, SVG procedural para columnas y estrías. El toggle de tema no cambia una imagen por otra al azar: reconstruye el fondo entero, gradiente incluido, desde los mismos tokens que colorean cada swatch de abajo.</p>
-      <p>Una serif de lectura larga para el cuerpo, una serif más geométrica y en mayúsculas para títulos. Ningún color puro #000 o #fff en ningún token.</p>
+      <p>Three.js para el pórtico, las estatuas y la gliptoteca; WebGL crudo para Light Rays y Ripple Distortion. El dibujo del pórtico y su relieve se calculan en un Worker para no congelar la página, y la luz se recalcula con cada paso del scroll.</p>
+      <p>Una serif de lectura larga para el cuerpo, una serif más geométrica y en mayúsculas para títulos, y GFS Didot para el griego. Ningún color puro #000 o #fff en ningún token.</p>
     </div>
+  </div>
+</section>
+
+<!-- ── Gliptoteca: esculturas en vitrina, sobre una línea de tiempo ── -->
+<section class="ap-section" id="gliptoteca" aria-labelledby="ap-glypt-title">
+  <div class="ap-sheet">
+    <header class="ap-section-head">
+      <p class="ap-kicker">Galería</p>
+      <h2 id="ap-glypt-title">Gliptoteca</h2>
+      <p class="muted">Escaneos de vaciados en yeso y de mármoles, en orden cronológico. Arrastra la pieza para girarla.</p>
+    </header>
+    <div class="ap-glypt" id="ap-glypt"></div>
+  </div>
+</section>
+
+<!-- ── Plantillas de humanidades: edición comentada y bibliografía ── -->
+<section class="ap-section" id="plantillas" aria-labelledby="ap-tpl-title">
+  <div class="ap-sheet">
+    <header class="ap-section-head">
+      <p class="ap-kicker">Plantillas</p>
+      <h2 id="ap-tpl-title">Edición comentada</h2>
+      <p class="muted">Himno homérico a Apolo, versos 1 a 13. Texto griego según la edición de Allen (Oxford, 1912), en dominio público; traducción de esta página. Toca un número de verso para copiar la cita.</p>
+    </header>
+    <div class="doc"><div id="ap-edition"></div></div>
+    <header class="ap-section-head">
+      <h2>Bibliografía</h2>
+      <p class="muted">La misma lista en APA, MLA o Chicago, filtrada por tipo.</p>
+    </header>
+    <div class="doc"><div id="ap-biblio"></div></div>
   </div>
 </section>
 
@@ -395,7 +420,7 @@ config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
       <h3>Ode Log</h3>
       <div class="ode-log">
         <div class="ode-entry"><div class="ode-dot gold">I</div><div><h4>Primer trazo</h4><p class="muted">La paleta nace de dos referencias: mármol claro, mar profundo.</p></div></div>
-        <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>El fondo se mueve</h4><p class="muted">Cada columna muestra una tira distinta de la misma fotografía.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>La hora avanza</h4><p class="muted">El sol cruza el pórtico conforme baja la página.</p></div></div>
         <div class="ode-entry"><div class="ode-dot rose">III</div><div><h4>Dos luces</h4><p class="muted">El tema completo se reconstruye al alternar claro y oscuro.</p></div></div>
         <div class="ode-entry"><div class="ode-dot olive">IV</div><div><h4>Sin contorno</h4><p class="muted">El contraste del texto viene del fondo, no de un borde alrededor.</p></div></div>
         <div class="ode-entry"><div class="ode-dot gold">V</div><div><h4>Ningún blanco puro</h4><p class="muted">Hasta el negro y el blanco de esta paleta son un matiz.</p></div></div>
@@ -464,7 +489,7 @@ config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
 </section>
 
 <footer class="ap-footer">
-  <div class="ap-footer-row">apolo_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Animación con <a href="https://motion.dev">Motion</a> (<a href="https://github.com/motiondivision">@motiondivision</a>) · Títulos en Dolphian y vasijas de GreeKish de Manfred Klein · Estatua 3D <a href="https://sketchfab.com/3d-models/apollo-statue-a01dbaf0b7db4c308c9fcecade6d4283">«Apollo Statue»</a> de <a href="https://sketchfab.com/artfletch">artfletch</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), con <a href="https://threejs.org">Three.js</a></div>
+  <div class="ap-footer-row">apolo_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT · Componentes de <a href="https://github.com/DavidHDev/react-bits">React Bits</a> por David Haz (<a href="https://github.com/DavidHDev">@DavidHDev</a>) · Animación con <a href="https://motion.dev">Motion</a> (<a href="https://github.com/motiondivision">@motiondivision</a>) · Títulos en Dolphian y vasijas de GreeKish de Manfred Klein · Estatua 3D <a href="https://sketchfab.com/3d-models/apollo-statue-a01dbaf0b7db4c308c9fcecade6d4283">«Apollo Statue»</a> de <a href="https://sketchfab.com/artfletch">artfletch</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), con <a href="https://threejs.org">Three.js</a> · Gliptoteca: vaciados de la Real Colección de Vaciados del <a href="https://www.smk.dk/">SMK</a> y mármoles del <a href="https://www.clevelandart.org/">Museo de Arte de Cleveland</a> (CC0), Laocoonte del <a href="https://sketchfab.com/bcdh">Bonn Center for Digital Humanities</a> (CC BY 4.0) · Griego en GFS Didot (Greek Font Society)</div>
 </footer>
 
 </div>
@@ -477,6 +502,10 @@ import { toggleTheme } from '../shared/components/apolo/kit.js';
 Object.assign(window, { toggleTheme });
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
+import { mount as edition } from '../shared/components/doc-edition/doc-edition.js';
+import { mount as biblio } from '../shared/components/doc-biblio/doc-biblio.js';
+import { mount as sundial } from '../shared/components/apolo/sundial.js';
+import { mount as glypt } from '../shared/components/apolo/sculpture-gallery.js';
 m0(); m1();
 docProse();
 docSpecimen({
@@ -487,6 +516,41 @@ docSpecimen({
     { name: 'Fira Code', family: 'var(--mono)', size: 20, use: 'Código y tokens' }] },
   contrast: { el: '#ap-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--gold-ink', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
 });
+import('../shared/components/apolo/portico-3d.js').then(m => m.mount().set());
+sundial(); glypt();
+edition({ el: '#ap-edition', cite: 'h. Hom. 3', src: { lang: 'grc', label: 'Griego' }, tr: { lang: 'es', label: 'Español' }, lines: [
+  ['μνήσομαι οὐδὲ λάθωμαι Ἀπόλλωνος ἑκάτοιο,', 'Recordaré, y no he de olvidar, a Apolo, el que hiere de lejos,'],
+  ['ὅν τε θεοὶ κατὰ δῶμα Διὸς τρομέουσιν ἰόντα·', 'ante quien tiemblan los dioses cuando avanza por la casa de Zeus;'],
+  ['καί ῥά τ᾽ ἀναΐσσουσιν ἐπὶ σχεδὸν ἐρχομένοιο', 'y todos se levantan de sus asientos cuando se acerca,'],
+  ['πάντες ἀφ᾽ ἑδράων, ὅτε φαίδιμα τόξα τιταίνει.', 'cuando tensa su arco reluciente.'],
+  ['Λητὼ δ᾽ οἴη μίμνε παραὶ Διὶ τερπικεραύνῳ,', 'Solo Leto se queda junto a Zeus, que goza del rayo;'],
+  ['ἥ ῥα βιόν τ᾽ ἐχάλασσε καὶ ἐκλήισε φαρέτρην,', 'ella afloja la cuerda y cierra la aljaba,'],
+  ['καί οἱ ἀπ᾽ ἰφθίμων ὤμων χείρεσσιν ἑλοῦσα', 'y tomando con sus manos el arco de los hombros robustos'],
+  ['τόξον ἀνεκρέμασε πρὸς κίονα πατρὸς ἑοῖο', 'lo cuelga de la columna de su padre'],
+  ['πασσάλου ἐκ χρυσέου· τὸν δ᾽ εἰς θρόνον εἷσεν ἄγουσα.', 'en un clavo de oro, y lo lleva a sentarse en un trono.'],
+  ['τῷ δ᾽ ἄρα νέκταρ ἔδωκε πατὴρ δέπαϊ χρυσείῳ', 'Entonces el padre le da néctar en copa de oro,'],
+  ['δεικνύμενος φίλον υἱόν, ἔπειτα δὲ δαίμονες ἄλλοι', 'brindando por su hijo querido, y luego los demás dioses'],
+  ['ἔνθα καθίζουσιν· χαίρει δέ τε πότνια Λητώ,', 'se sientan allí; y se alegra la venerable Leto'],
+  ['οὕνεκα τοξοφόρον καὶ καρτερὸν υἱὸν ἔτικτεν.', 'porque dio a luz a un hijo arquero y poderoso.']
+], notes: [
+  { n: 1, lemma: 'ἑκάτοιο', gloss: 'el que hiere de lejos', text: 'Epíteto de Apolo arquero: el que alcanza desde lejos. El himno abre con su arma.' },
+  { n: 2, lemma: 'Διὸς', gloss: 'casa de Zeus', text: 'La morada de Zeus en el Olimpo: la escena es una asamblea de dioses.' },
+  { n: 4, lemma: 'τόξα', gloss: 'arco', text: 'Apolo entra en escena con el arco, no con la lira.' },
+  { n: 5, lemma: 'τερπικεραύνῳ', gloss: 'que goza del rayo', text: 'Epíteto formular de Zeus en la épica.' },
+  { n: 8, lemma: 'κίονα', gloss: 'columna', text: 'Colgado de la columna, el arco deja de ser amenaza y se vuelve trofeo.' },
+  { n: 10, lemma: 'νέκταρ', gloss: 'néctar', text: 'La bebida de los dioses; con la copa, Zeus reconoce al hijo ante todos.' },
+  { n: 13, lemma: 'τοξοφόρον', gloss: 'arquero', text: 'El pasaje cierra con el mismo atributo con que empezó.' }
+] });
+biblio({ el: '#ap-biblio', items: [
+  { type: 'edicion', authors: [['Allen', 'Thomas W.'], ['Halliday', 'William R.'], ['Sikes', 'Edward E.']], role: 'ed', year: 1936, title: 'The Homeric Hymns', edition: '2.ª ed.', place: 'Oxford', publisher: 'Clarendon Press' },
+  { type: 'edicion', authors: [['West', 'Martin L.']], role: 'ed', year: 2003, title: 'Homeric Hymns. Homeric Apocrypha. Lives of Homer', series: 'Loeb Classical Library 496', place: 'Cambridge, MA', publisher: 'Harvard University Press' },
+  { type: 'traduccion', authors: [['Bernabé Pajares', 'Alberto']], role: 'trad', year: 1978, title: 'Himnos homéricos. La «Batracomiomaquia»', series: 'Biblioteca Clásica Gredos 8', place: 'Madrid', publisher: 'Gredos' },
+  { type: 'estudio', authors: [['Clay', 'Jenny Strauss']], year: 1989, title: 'The Politics of Olympus: Form and Meaning in the Major Homeric Hymns', place: 'Princeton', publisher: 'Princeton University Press' },
+  { type: 'estudio', authors: [['Richardson', 'Nicholas']], year: 2010, title: 'Three Homeric Hymns: To Apollo, Hermes, and Aphrodite', series: 'Cambridge Greek and Latin Classics', place: 'Cambridge', publisher: 'Cambridge University Press' },
+  { type: 'estudio', authors: [['Burkert', 'Walter']], year: 1985, title: 'Greek Religion', translator: 'John Raffan', place: 'Cambridge, MA', publisher: 'Harvard University Press' },
+  { type: 'fuente', authors: [['Winckelmann', 'Johann Joachim']], year: 1764, title: 'Geschichte der Kunst des Alterthums', place: 'Dresde', publisher: 'Walther' },
+  { type: 'estudio', authors: [['Haskell', 'Francis'], ['Penny', 'Nicholas']], year: 1981, title: 'Taste and the Antique: The Lure of Classical Sculpture 1500-1900', place: 'New Haven', publisher: 'Yale University Press' }
+] });
 import('../shared/components/statue-3d/statue-3d.js').then(m => m.mount({ el: '.ap-statue-apollo .ap-statue-media', src: '../assets/models/apolo/apollo-statue.glb', tint: '--sky' }));
 </script>
 </body>

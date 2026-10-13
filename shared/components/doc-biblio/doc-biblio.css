@@ -1,0 +1,32 @@
+/* ══════════════════════════════════════════════════════
+   Doc Biblio · bibliografía con estilo de cita elegible.
+   Mismas variables que doc-prose.
+   ══════════════════════════════════════════════════════ */
+.doc-bib { font-size: 16px; }
+.doc-bib-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 16px; }
+.doc-bib-styles { display: inline-flex; border: 1px solid var(--_line); border-radius: var(--_r); overflow: hidden; }
+.doc-bib-styles button { font: inherit; font-size: 14px; padding: 6px 14px; min-height: 32px; background: transparent; color: var(--_muted); border: 0; cursor: pointer; }
+.doc-bib-styles button + button { border-left: 1px solid var(--_line); }
+.doc-bib-styles button[aria-checked="true"] { background: var(--_surface); color: var(--_ink); box-shadow: inset 0 -2px 0 var(--_accent); }
+.doc-bib-types { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.doc-bib-chip { font: inherit; font-size: 13px; padding: 4px 10px; min-height: 28px; border: 1px solid var(--_line); border-radius: 99px; background: transparent; color: var(--_muted); cursor: pointer; }
+.doc-bib-chip[aria-pressed="true"] { border-color: var(--_accent); color: var(--_ink); background: color-mix(in srgb, var(--_accent) 10%, transparent); }
+.doc-bib-sort { font-size: 14px; color: var(--_muted); display: inline-flex; align-items: center; gap: 6px; }
+.doc-bib-sort select { font: inherit; font-size: 14px; color: var(--_ink); background: var(--_surface); border: 1px solid var(--_line); border-radius: var(--_r); padding: 4px 6px; min-height: 30px; }
+.doc-bib-all, .doc-bib-copy { font: inherit; font-size: 13px; color: var(--_accent); background: none; border: 1px solid var(--_line); border-radius: var(--_r); padding: 4px 10px; min-height: 28px; cursor: pointer; }
+.doc-bib-all:hover, .doc-bib-copy:hover { border-color: var(--_accent); }
+.doc-bib-status { font-size: 13px; color: var(--_accent); }
+.doc-bib-list { list-style: none; margin: 0; padding: 0; }
+/* sangría francesa, como en cualquier lista de referencias */
+.doc .doc-bib-item { max-width: none; } /* doc-prose limita los li a 72ch */
+.doc-bib-item { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) auto; gap: 4px 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--_line); }
+.doc-bib-ref { padding-left: 2em; text-indent: -2em; line-height: 1.6; }
+.doc-bib-tag { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--_muted); font-family: var(--_head); }
+.doc-bib-copy { opacity: .7; }
+.doc-bib-item:hover .doc-bib-copy, .doc-bib-copy:focus-visible { opacity: 1; }
+.doc-bib-empty { color: var(--_muted); padding: 10px 0; }
+@media (max-width: 760px) {
+  .doc-bib-item { grid-template-columns: minmax(0, 1fr) auto; }
+  .doc-bib-tag { grid-column: 1 / -1; }
+  .doc-bib-copy { opacity: 1; }
+}

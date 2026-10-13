@@ -1,0 +1,41 @@
+/* apolo · gliptoteca: vitrina con ficha y línea de tiempo (sculpture-gallery.js). */
+.ap-glypt-case{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:36px;align-items:center}
+.ap-glypt-stage{position:relative;aspect-ratio:4/5;max-height:620px;width:100%;border-radius:var(--radius);background:radial-gradient(ellipse at 50% 30%,color-mix(in srgb,var(--marble) 40%,transparent),transparent 70%),linear-gradient(180deg,color-mix(in srgb,var(--black) 6%,transparent),color-mix(in srgb,var(--black) 22%,transparent))}
+.ap-glypt-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ap-glypt-stage.is-loading::after{content:'';position:absolute;left:50%;top:46%;width:28px;height:28px;margin:-14px;border:2px solid var(--border);border-top-color:var(--gold-ink);border-radius:50%;animation:ap-spin 1s linear infinite}
+@keyframes ap-spin{to{transform:rotate(1turn)}}
+@media(prefers-reduced-motion:reduce){.ap-glypt-stage.is-loading::after{animation:none}}
+.ap-glypt-nav{position:absolute;top:50%;z-index:2;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:color-mix(in srgb,var(--bg2) 90%,transparent);color:var(--text);font-size:22px;line-height:1;cursor:pointer}
+.ap-glypt-nav:hover{border-color:var(--gold-ink);color:var(--gold-ink)}
+.ap-glypt-nav.prev{left:10px}
+.ap-glypt-nav.next{right:10px}
+.ap-glypt-kicker{font-family:var(--mono);font-size:12px;color:var(--text2);margin:0 0 6px}
+.ap-glypt-name{font-family:var(--title);font-weight:400;font-synthesis:none;font-size:clamp(26px,3vw,36px);line-height:1.15;color:var(--text);margin:0;letter-spacing:.02em;text-transform:none}
+.ap-glypt-date{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--text2);margin:4px 0 16px}
+.ap-glypt-facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:15px;line-height:1.5;margin:0 0 16px}
+.ap-glypt-facts dt{font-family:var(--display);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);padding-top:2px}
+.ap-glypt-facts dd{margin:0}
+.ap-glypt-look{font-size:16px;line-height:1.6;border-left:2px solid var(--gold);padding-left:14px;margin:0}
+
+/* ── línea de tiempo: eje con periodos y puntos a escala, piezas debajo ── */
+.ap-glypt-time{margin-top:32px}
+.ap-glypt-axis{position:relative;height:44px;margin:0 6px}
+.ap-glypt-eras,.ap-glypt-dots{list-style:none;margin:0;padding:0;position:absolute;inset:0}
+.ap-glypt-eras li{position:absolute;top:0;height:22px;border-left:1px solid var(--border);font-family:var(--display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);padding-left:6px;white-space:nowrap;overflow:hidden}
+.ap-glypt-eras li.later{border-left:1px dashed var(--border)}
+.ap-glypt-axis::after{content:'';position:absolute;left:0;right:0;top:32px;height:1px;background:var(--border)}
+.ap-glypt-dots li{position:absolute;top:27px;width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--text2);z-index:1;transition:transform .2s,background .2s}
+.ap-glypt-dots li.hot{transform:scale(1.3);border-color:var(--gold-ink)}
+.ap-glypt-dots li.on{background:var(--gold);border-color:var(--gold-ink);transform:scale(1.3)}
+.ap-glypt-pieces{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+.ap-glypt-pin{width:100%;min-height:56px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px;text-align:left;font:inherit;background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--text);cursor:pointer;transition:border-color .2s,background .2s}
+.ap-glypt-pin:hover{border-color:var(--gold-ink)}
+.ap-glypt-pin[aria-pressed="true"]{background:color-mix(in srgb,var(--gold) 14%,transparent);border-color:var(--gold-ink)}
+.ap-glypt-pname{font-family:var(--serif);font-size:14px;line-height:1.25}
+.ap-glypt-pyear{font-family:var(--mono);font-size:12px;color:var(--text2)}
+@media(max-width:860px){
+.ap-glypt-case{grid-template-columns:1fr;gap:20px}
+.ap-glypt-stage{aspect-ratio:1/1;max-height:440px}
+.ap-glypt-eras li{font-size:0}
+.ap-glypt-pieces{grid-template-columns:repeat(2,minmax(0,1fr))}
+}

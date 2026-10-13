@@ -1,10 +1,6 @@
 // apolo · base del tema sobre el núcleo: amanecer (claro) y atardecer
 // (oscuro), Motion mini y la imagen del hero. Lo genérico vive en shared/core/core.js.
 import { $, cssVar, reduceMotion, updateHexes, inkSwatchLabels, initTheme, onTheme, theme } from '../../core/core.js';
-import { buildSky } from './sky.js';
-import { buildTexture } from './single-canvas.js';
-import { buildBackStripes } from './strip-layer.js';
-import { buildTiltColumns } from './tilt-card.js';
 import { statueFx } from './statues.js';
 
 export { cssVar, reduceMotion, updateHexes, inkSwatchLabels };
@@ -36,10 +32,6 @@ export function updateHeroImage() {
 onTheme(() => {
   isDark = theme.alt;
   updateHeroImage();
-  buildSky();
-  buildTexture();
-  buildBackStripes();
-  buildTiltColumns(); // las tiras de imagen viven acá ahora, no en buildTexture()
   sunArc();
   statueFx.forEach(s => s.refresh());
 });

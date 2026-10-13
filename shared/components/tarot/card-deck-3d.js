@@ -1,6 +1,6 @@
 // ══════════════════════════════════════════════════════
 // El mazo de la portada · Three.js r186 + el adaptador de anime.js.
-// Cartas con el arte de card-art.js y el oro en relieve (relief.js): el
+// Cartas con el arte de card-art.js y el oro en relieve (relief-plate/relief.js): el
 // dorado es metal de verdad y atrapa la luz que sigue al cursor.
 //  1. Barajada en riffle: el mazo se parte en dos, las mitades se abren,
 //     se intercalan cayendo una y una, y el puente (las cartas se arquean)
@@ -17,7 +17,7 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { animate, createTimeline, stagger } from 'animejs';
 import { card } from './card-art.js';
-import { relief } from './relief.js';
+import { relief } from '../relief-plate/relief.js';
 import { BIOMES, ARCANA, biome } from './biomes.js';
 import { makeLoop, night, onTheme, reduceMotion } from './kit.js';
 

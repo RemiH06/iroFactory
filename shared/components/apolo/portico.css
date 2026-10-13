@@ -1,0 +1,37 @@
+/* apolo · el pórtico de fondo, el reloj de sol y las hojas de las secciones nuevas. */
+/* El pórtico (portico-3d.js) cubre la vista detrás de todo. */
+.ap-portico{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
+
+/* ── Reloj de sol: pastilla fija abajo a la izquierda ── */
+.ap-sundial{position:fixed;left:18px;bottom:18px;z-index:30;display:flex;align-items:center;gap:10px;padding:6px 14px 6px 10px;background:color-mix(in srgb,var(--bg2) 88%,transparent);border:1px solid var(--border);border-radius:99px;font-family:var(--serif);font-size:14px;color:var(--text);pointer-events:none;box-shadow:0 4px 16px color-mix(in srgb,var(--black) 14%,transparent)}
+.ap-sundial svg{display:block;overflow:visible}
+.ap-sundial line{stroke:var(--text2);stroke-width:1;stroke-linecap:round}
+.ap-dial-face{fill:color-mix(in srgb,var(--gold) 16%,transparent);stroke:var(--gold-ink);stroke-width:1}
+.ap-sundial .ap-dial-shadow{stroke:var(--text);stroke-width:2.2;transition:opacity .4s}
+.ap-dial-moon{fill:var(--marble);stroke:var(--text2);stroke-width:.6;opacity:0;transition:opacity .4s}
+.ap-sundial.is-night .ap-dial-shadow{opacity:0}
+.ap-sundial.is-night .ap-dial-moon{opacity:1}
+.ap-dial-greek{font-family:'GFS Didot',var(--serif);font-weight:400;color:var(--gold-ink);font-size:16px}
+.ap-dial-time{font-family:var(--mono);font-size:12px;color:var(--text2)}
+@media(max-width:760px){
+.ap-sundial{left:12px;bottom:12px;font-size:12px;padding:4px 10px 4px 8px}
+.ap-dial-name{display:none}
+}
+
+/* ── Secciones nuevas: una hoja de mármol pulido sobre el pórtico, con
+   margen a los lados para que se vean las columnas y la luz ── */
+.ap-section{position:relative;padding:72px 0}
+.ap-sheet{max-width:1180px;margin:0 auto;padding:36px 44px 44px;background:color-mix(in srgb,var(--bg2) 92%,transparent);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 10px 40px color-mix(in srgb,var(--black) 18%,transparent)}
+.ap-section-head{margin:0 0 22px;max-width:760px}
+.ap-section-head + .doc + .ap-section-head{margin-top:56px}
+.ap-section-head h2{margin-top:4px}
+.ap-kicker{font-family:var(--display);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--aegean-lt-ink);margin:0}
+.ap-section-head p.muted{font-size:15px}
+.ap-sheet .doc{--doc-src-font:'GFS Didot',var(--serif)}
+@media(max-width:1260px){
+.ap-sheet{margin:0 24px}
+}
+@media(max-width:760px){
+.ap-section{padding:40px 0}
+.ap-sheet{margin:0 12px;padding:24px 18px 28px}
+}

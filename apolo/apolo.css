@@ -52,11 +52,6 @@ body {
   --serif:    'Newsreader', serif;
   --mono:     'Fira Code', monospace;
   --radius:   3px;
-  /* Tiras de las columnas (foto real) más claras en modo día · el
-     mármol pide un fondo pálido. body.dark las invierte a más
-     oscuras, ver ahí el porqué. */
-  --strip-filter: blur(6px) brightness(1.25);
-  --tilt-filter:  blur(3px) brightness(1.32);
   /* Título: oro sólido en modo día (como estaba antes de probar
      mármol ahí) · el mármol como base del título es solo para modo
      noche, ver body.dark. */
@@ -105,11 +100,6 @@ body.dark {
   --black:    #060408;
   --white:    #F8F0E0;
   --gray:     #806040;
-  /* Atardecer griego ya es una imagen cálida/saturada de por sí ·
-     aclararla con el mismo filtro del modo día la lava; se oscurece
-     en su lugar para que lea como fondo de noche, no como flash. */
-  --strip-filter: blur(6px) brightness(.72);
-  --tilt-filter:  blur(3px) brightness(.6);
   --title-base: var(--marble);
   /* Tintas de texto (skill colorimetría): mismo matiz, solo luminosidad,
      para pasar WCAG AA (4.5:1) sobre --bg/--bg2/--bg3 de este modo. El
@@ -138,15 +128,6 @@ html,body{height:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:21px;line-height:1.75;transition:background .5s,color .5s}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:0}
-/* mármol + estrías · lienzo disperso */
-/* Segunda capa de tiras, DETRÁS de las tilt-card, con su propio
-   barajado (independiente del de enfrente) y sin tilt · estática. En
-   reposo las tilt-card de enfrente son opacas y la tapan del todo;
-   al tiltear, el escorzo 3D descubre franjas en el borde rotado y
-   esta capa asoma detrás · la revelación es el efecto, no una
-   transparencia fija. Más blur que la de enfrente (6px vs 3px) para
-   que se lea como "más al fondo". */
-#ap-back-stripes{position:fixed;inset:0;z-index:2;pointer-events:none;filter:var(--strip-filter)}
 /* pétalos · pasan por delante de todo */
 /* .page ya no es una columna angosta de 28% · cada nivel (Presentación,
    Ejemplos, Motivo, Pestañas) maneja su propio ancho vía .wrap. Solo
@@ -334,7 +315,7 @@ body.dark .ap-hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var
 }
 .ap-presentacion-aside{display:flex;flex-direction:column;gap:28px}
 .ap-ejemplos{padding:56px 0 80px}
-.ap-ejemplos-heading{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);margin:0 0 32px;padding:0 40px}
+.ap-ejemplos-heading{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);display:table;margin:0 0 32px 40px;padding:5px 12px;background:color-mix(in srgb,var(--bg2) 92%,transparent);border:1px solid var(--border);border-radius:var(--radius)}
 .ap-gallery{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:0;padding:20px 40px 40px}
 .ap-gallery-card{margin:0;position:relative;background:color-mix(in srgb,var(--bg2) 90%,transparent);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 6px 20px color-mix(in srgb,var(--black) 10%,transparent)}
 .ap-gallery-caption{font-family:var(--display);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-top:12px}
