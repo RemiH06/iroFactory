@@ -1,0 +1,33 @@
+/* tarot · tiradas: tres cartas, la cruz y el solitario, como plantillas de documentación. */
+.tr-spread { padding: 28px 0 36px; border-top: 1px solid color-mix(in srgb, var(--gold) 30%, transparent); }
+.tr-spread:first-child { border-top: 0; padding-top: 0; }
+.tr-spread > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+.tr-spread h3 { font-family: var(--sub); font-weight: 400; font-size: clamp(26px, 3vw, 36px); color: var(--text); }
+.tr-spread h3 small { font-family: var(--deco); font-size: 13px; letter-spacing: .2em; color: var(--gold); margin-left: 10px; text-transform: uppercase; }
+.tr-slot { --cw: clamp(96px, 11vw, 136px); display: grid; justify-items: center; gap: 10px; text-align: center; }
+.tr-flip { position: relative; width: var(--cw); aspect-ratio: 256 / 448; transform-style: preserve-3d; transform: rotateY(180deg); }
+.tr-flip canvas { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 6px; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 8px 20px color-mix(in srgb, var(--black) 50%, transparent); }
+.tr-flip .back { transform: rotateY(180deg); }
+.tr-slot figcaption { display: grid; gap: 4px; max-width: 26ch; font-size: 14px; color: var(--text2); }
+.tr-slot figcaption .tr-label { font-weight: 400; font-size: 12px; }
+.tr-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 3vw, 36px); justify-items: center; perspective: 1200px; }
+/* la cruz: meta arriba, raíz abajo, descartada y elegida a los lados, el obstáculo cruzado sobre la situación */
+.tr-cross { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: ". meta ." "descartada situacion elegida" ". raiz ."; gap: 24px clamp(10px, 3vw, 32px); justify-items: center; perspective: 1200px; }
+.tr-slot.at-meta { grid-area: meta; } .tr-slot.at-descartada { grid-area: descartada; } .tr-slot.at-elegida { grid-area: elegida; } .tr-slot.at-raiz { grid-area: raiz; }
+.tr-slot.at-situacion, .tr-slot.at-obstaculo { grid-area: situacion; }
+.tr-slot.at-obstaculo { z-index: 2; align-self: start; }
+.tr-slot.at-obstaculo .tr-flip { rotate: 90deg; translate: 0 calc(var(--cw) * .38); }
+/* el obstáculo cruza la situación; sus dos textos van juntos debajo */
+.tr-slot.at-obstaculo figcaption { display: none; }
+/* el solitario: columnas por estado, cartas en cascada */
+.tr-log { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(10px, 2vw, 24px); perspective: 1200px; }
+.tr-pile { display: grid; justify-items: center; align-content: start; }
+.tr-pile h4 { font-weight: 400; margin-bottom: 12px; }
+.tr-pile .tr-slot { --cw: clamp(84px, 9vw, 116px); position: relative; margin-top: calc(var(--cw) * -1.42); }
+.tr-pile .tr-slot:first-of-type { margin-top: 0; }
+/* en cascada se ve la esquina de cada carta; el título sale al pasar el cursor o con el foco */
+.tr-pile .tr-slot figcaption { position: absolute; z-index: 4; top: calc(var(--cw) * 1.75 + 6px); left: 50%; translate: -50% 0; width: max-content; max-width: 22ch; padding: 6px 10px; background: var(--bg2); border: 1px solid var(--gold); opacity: 0; pointer-events: none; transition: opacity .2s; }
+.tr-pile .tr-slot { outline: none; }
+.tr-pile .tr-slot:hover, .tr-pile .tr-slot:focus-within { z-index: 3; }
+.tr-pile .tr-slot:hover figcaption, .tr-pile .tr-slot:focus-visible figcaption { opacity: 1; }
+@media (max-width: 700px) { .tr-row { grid-template-columns: 1fr; } .tr-log { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; } .tr-cross { gap: 18px 8px; } .tr-slot { --cw: 88px; } }

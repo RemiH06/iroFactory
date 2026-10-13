@@ -2,263 +2,248 @@
 <!--
 tarot_theme · iroFactory · https://github.com/RemiH06/iroFactory
 Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+Este tema solo compone: los componentes viven en shared/ y conservan su
+propia licencia (ver THIRD_PARTY_NOTICES.md). Cráneos: Museo de Historia
+Natural de la Universitat de València (MUVHN), CC BY 4.0.
 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>tarot_theme — Demo</title>
+<title>tarot_theme · Demo</title>
+<meta name="description" content="tarot: tema de documentación para cartas, decisiones y retrospectivas. Un gabinete de historia natural art deco con nueve biomas, tapices de oro en relieve, cráneos de ave en 3D y una mano de cartas como navegación.">
 <link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=josefin-sans:300,400,600,700&family=cinzel:400,700&family=fira-code:400&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css?family=josefin-sans:300,400,600|fira-code:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/core/core.css">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="tarot.css">
-<link rel="stylesheet" href="../shared/components/tarot/art-deco-canvas.css">
-<link rel="stylesheet" href="../shared/components/tarot/floating-cards.css">
+<link rel="stylesheet" href="../shared/components/tarot/card-hand.css">
+<link rel="stylesheet" href="../shared/components/tarot/catalog.css">
+<link rel="stylesheet" href="../shared/components/tarot/card-spreads.css">
 </head>
 <body>
 
-<canvas id="tarot-deco"></canvas>
-<div id="tarot-cards"></div>
+<header class="tr-top">
+  <a class="tr-brand" href="#portada" aria-label="tarot · portada">TAROT</a>
+  <div class="tr-tools">
+    <a class="tr-pill" href="#catalogo" id="tr-biome-pill"><span class="dot" aria-hidden="true"></span><span id="tr-biome-name">Selva tropical</span></a>
+    <button class="tr-pill" type="button" data-theme-toggle aria-label="Cambiar al gabinete de día">☀ d<span class="acc">i</span>a</button>
+  </div>
+</header>
 
-<div class="page">
+<main>
 
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
-  <div>
-    <div style="font-family:var(--serif);font-size:36px;font-weight:400;letter-spacing:.12em;color:var(--gold)">
-      TAROT
+<!-- I · Portada -->
+<section class="tr-section tr-hero" id="portada" aria-labelledby="tr-h-portada">
+  <div class="vitrina">
+    <div class="tr-hero-text">
+      <p class="tr-kicker">_THEME · IROFACTORY</p>
+      <h1 class="tr-title" id="tr-h-portada">TAROT</h1>
+      <p class="tr-subtitle">Gabinete de historia natural</p>
+      <p class="tr-lede">Documentación para cartas, decisiones y retrospectivas. Nueve vitrinas, una por bioma, cada una con su tapiz de oro y mosaico y sus cráneos de ave. La tirada de tres cartas es la forma de documentar una retrospectiva: pasado, presente y futuro.</p>
+      <div class="tr-actions"><button class="tr-btn" type="button" id="tr-redeal">Barajar otra vez</button><a class="tr-btn ghost" href="#catalogo">Ver las vitrinas</a></div>
     </div>
-    <div style="font-family:var(--display);font-size:11px;font-weight:300;letter-spacing:.3em;color:var(--text2);text-transform:uppercase;margin-top:-4px">
-      _theme · iroFactory
+    <div class="tr-deck" aria-label="Tirada de tres cartas"><p class="tr-deck-note" id="tr-deck-note" aria-live="polite"></p></div>
+  </div>
+</section>
+
+<!-- II · Catálogo -->
+<section class="tr-section" id="catalogo" aria-labelledby="tr-h-catalogo">
+  <div class="vitrina">
+    <header class="tr-head"><span class="tr-num">II</span><h2 id="tr-h-catalogo" data-compose>Catálogo</h2><p>Nueve biomas, trece cráneos. Elige una vitrina: el tapiz, los colores, las cartas y la mano cambian con ella.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
+    <div class="tr-catalog" id="tr-catalog"></div>
+  </div>
+</section>
+
+<!-- III · Tiradas -->
+<section class="tr-section" id="tiradas" aria-labelledby="tr-h-tiradas">
+  <div class="vitrina">
+    <header class="tr-head"><span class="tr-num">III</span><h2 id="tr-h-tiradas">Tiradas</h2><p>Cada reparto es una plantilla para documentar.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
+    <div id="tr-spreads"></div>
+  </div>
+</section>
+
+<!-- IV · Paleta -->
+<section class="tr-section" id="paleta" aria-labelledby="tr-h-paleta">
+  <div class="vitrina">
+    <header class="tr-head"><span class="tr-num">IV</span><h2 id="tr-h-paleta">Paleta</h2><p>Tinta de noche o mármol de día, oro siempre, y los tres colores del bioma.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
+    <div class="tr-grid">
+      <div class="tr-panel tr-span2"><h3 class="tr-label">Base</h3><div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--bg)"><span class="swatch-hex" id="hex-bg"></span></div>--bg · tinta</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--bg2)"><span class="swatch-hex" id="hex-bg2"></span></div>--bg2</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--bg3)"><span class="swatch-hex" id="hex-bg3"></span></div>--bg3</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--text)"><span class="swatch-hex" id="hex-text"></span></div>--text · marfil</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--text2)"><span class="swatch-hex" id="hex-text2"></span></div>--text2</div>
+      </div></div>
+      <div class="tr-panel"><h3 class="tr-label">Oro</h3><div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--gold-hi)"><span class="swatch-hex" id="hex-gold-hi"></span></div>--gold-hi</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--gold-lo)"><span class="swatch-hex" id="hex-gold-lo"></span></div>--gold-lo</div>
+      </div></div>
+      <div class="tr-panel"><h3 class="tr-label">Estados</h3><div class="swatch-row">
+        <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok · aceptada</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn · propuesta</div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger · rechazada</div>
+      </div></div>
+      <div class="tr-panel tr-span2"><h3 class="tr-label">Los nueve biomas</h3><p class="tr-note">Tres colores por bioma, como las franjas del proun: de día, tonos de lámina; de noche, saturados. Tocar uno cambia la vitrina.</p><ul class="tr-triads" id="tr-triads"></ul></div>
+      <div class="tr-panel"><h3 class="tr-label">Tipografía</h3><div id="tr-type"></div></div>
+      <div class="tr-panel"><h3 class="tr-label">Contraste</h3><ul class="spec-contrast" id="tr-contrast"></ul></div>
     </div>
   </div>
-  <button class="theme-btn" id="toggle-btn" aria-label="Cambiar a modo oscuro">✦ oscuro</button>
-</div>
+</section>
 
-<div class="ornament">✦ ◆ ✦ ◆ ✦</div>
-
-<!-- ── Paleta ── -->
-<h2>Paleta de colores</h2>
-<p class="muted">Oro, plata y carmesí · Cuatro palos · Arcanos mayores.</p>
-
-<h3>Metales</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--gold)"><span class="swatch-hex" id="hex-gold"></span></div>--gold</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--gold-lt)"><span class="swatch-hex" id="hex-gold-lt"></span></div>--gold-lt</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--gold-dk)"><span class="swatch-hex" id="hex-gold-dk"></span></div>--gold-dk</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--silver)"><span class="swatch-hex" id="hex-silver"></span></div>--silver</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--silver-lt)"><span class="swatch-hex" id="hex-silver-lt"></span></div>--silver-lt</div>
-</div>
-
-<h3>Rojos</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--crimson)"><span class="swatch-hex" id="hex-crimson"></span></div>--crimson</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--scarlet)"><span class="swatch-hex" id="hex-scarlet"></span></div>--scarlet</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--wine)"><span class="swatch-hex" id="hex-wine"></span></div>--wine</div>
-</div>
-
-<h3>Palos de cartas</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--hearts)"><span class="swatch-hex" id="hex-hearts"></span></div>♥ hearts</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--diamonds)"><span class="swatch-hex" id="hex-diamonds"></span></div>♦ diamonds</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--spades)"><span class="swatch-hex" id="hex-spades"></span></div>♠ spades</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--clubs)"><span class="swatch-hex" id="hex-clubs"></span></div>♣ clubs</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--arcana)"><span class="swatch-hex" id="hex-arcana"></span></div>★ arcana</div>
-</div>
-
-<h3>Neutros y semánticos</h3>
-<div class="swatch-row">
-  <div class="swatch"><div class="swatch-box" style="background:var(--ebony)"><span class="swatch-hex" id="hex-ebony"></span></div>--ebony</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--gray)"><span class="swatch-hex" id="hex-gray"></span></div>--gray</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--ivory)"><span class="swatch-hex" id="hex-ivory"></span></div>--ivory</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--ok)"><span class="swatch-hex" id="hex-ok"></span></div>--ok</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
-  <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
-</div>
-
-<div class="ornament">◆ ✦ ◆</div>
-<hr class="divider">
-
-<!-- ── Callouts ── -->
-<h2>Callouts</h2>
-<div class="callout"><div class="callout-title">Acento · Dorado</div><p>Notas generales, observaciones de la partida y referencias de juego.</p></div>
-<div class="callout ok"><div class="callout-title">OK · Verde</div><p>Mano ganadora. El jugador captura el bote.</p></div>
-<div class="callout warn"><div class="callout-title">Warn · Dorado</div><p>Bluff en riesgo. La apuesta supera el valor de la mano.</p></div>
-<div class="callout danger"><div class="callout-title">Danger · Carmesí</div><p>Mano perdedora. Retirarse antes del showdown.</p></div>
-<div class="callout hearts"><div class="callout-title">♥ Corazones</div><p>Palo de corazones. Asociado a emociones y relaciones.</p></div>
-<div class="callout diamonds"><div class="callout-title">♦ Diamantes</div><p>Palo de oros. Prosperidad, riqueza, recursos materiales.</p></div>
-<div class="callout spades"><div class="callout-title">♠ Espadas</div><p>Palo de espadas. Conflicto, decisión, pensamiento crítico.</p></div>
-<div class="callout clubs"><div class="callout-title">♣ Tréboles</div><p>Palo de bastos. Trabajo, esfuerzo, crecimiento.</p></div>
-<div class="callout arcana"><div class="callout-title">★ Arcanos Mayores</div><p>Cartas de destino. El Loco, La Torre, La Rueda de la Fortuna.</p></div>
-<div class="callout silver"><div class="callout-title">◈ Plateado</div><p>Intuición, misterio, la cara oculta de la carta.</p></div>
-<div class="callout wine"><div class="callout-title">✦ Vino</div><p>Pasión, riesgo, la apuesta más alta de la noche.</p></div>
-
-<hr class="divider">
-
-<!-- ── Badges ── -->
-<h2>Badges</h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
-  <span class="badge gold">dorado</span>
-  <span class="badge silver">plateado</span>
-  <span class="badge crimson">carmesí</span>
-  <span class="badge hearts">♥ hearts</span>
-  <span class="badge diamonds">♦ diamonds</span>
-  <span class="badge spades">♠ spades</span>
-  <span class="badge clubs">♣ clubs</span>
-  <span class="badge arcana">★ arcana</span>
-  <span class="badge ok">ok</span>
-  <span class="badge warn">warn</span>
-  <span class="badge danger">danger</span>
-  <span class="badge">default</span>
-</div>
-
-<hr class="divider">
-
-<!-- ── Botones ── -->
-<h2>Botones</h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0">
-  <button class="btn primary">primary</button>
-  <button class="btn">default</button>
-  <button class="btn hearts">♥ hearts</button>
-  <button class="btn diamonds">♦ diamonds</button>
-  <button class="btn spades">♠ spades</button>
-  <button class="btn clubs">♣ clubs</button>
-  <button class="btn arcana">★ arcana</button>
-  <button class="btn silver">silver</button>
-  <button class="btn ok">ok</button>
-  <button class="btn warn">warn</button>
-  <button class="btn danger">danger</button>
-</div>
-
-<hr class="divider">
-
-<!-- ── Métricas ── -->
-<h2>Métricas</h2>
-<div class="metrics-row">
-  <div class="metric"><div class="metric-val">A♠</div><div class="metric-lbl">mano (gold)</div></div>
-  <div class="metric"><div class="metric-val hearts">♥ K</div><div class="metric-lbl">corazones</div></div>
-  <div class="metric"><div class="metric-val diamonds">♦ Q</div><div class="metric-lbl">diamantes</div></div>
-  <div class="metric"><div class="metric-val spades">♠ J</div><div class="metric-lbl">espadas</div></div>
-  <div class="metric"><div class="metric-val arcana">★ XV</div><div class="metric-lbl">arcano</div></div>
-  <div class="metric"><div class="metric-val silver">$4,200</div><div class="metric-lbl">bote</div></div>
-</div>
-
-<hr class="divider">
-
-<!-- ── Código ── -->
-<h2>Código</h2>
-<p class="muted">Inline: <code>toggleTheme()</code> alterna entre claro y oscuro.</p>
-<pre data-lang="python"><span class="cm"># Evaluación de mano de póker</span>
-<span class="kw">from</span> enum <span class="kw">import</span> IntEnum
-
-<span class="kw">class</span> <span class="fn">Mano</span>(IntEnum):
-    HIGH_CARD      = <span class="num">1</span>
-    ONE_PAIR       = <span class="num">2</span>
-    TWO_PAIR       = <span class="num">3</span>
-    THREE_OF_A_KIND= <span class="num">4</span>
-    STRAIGHT       = <span class="num">5</span>
-    FLUSH          = <span class="num">6</span>
-    FULL_HOUSE     = <span class="num">7</span>
-    FOUR_OF_A_KIND = <span class="num">8</span>
-    STRAIGHT_FLUSH = <span class="num">9</span>
-    ROYAL_FLUSH    = <span class="num">10</span>  <span class="cm"># ♠ A K Q J T</span>
-
-<span class="fn">def</span> es_flush(cartas):
-    <span class="kw">return</span> len({c.palo <span class="kw">for</span> c <span class="kw">in</span> cartas}) == <span class="num">1</span></pre>
-
-<hr class="divider">
-
-<!-- ── Tabla ── -->
-<h2>Tabla</h2>
-<table>
-  <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Significado</th></tr>
-  <tr><td><code>--gold</code></td><td>#C8921A</td><td>#E8A820</td><td>Dorado principal · riqueza · triunfo</td></tr>
-  <tr><td><code>--crimson</code></td><td>#A81820</td><td>#D02030</td><td>Carmesí · pasión · riesgo</td></tr>
-  <tr><td><code>--silver</code></td><td>#8090A8</td><td>#9090C0</td><td>Plateado · intuición · misterio</td></tr>
-  <tr><td><code>--hearts</code></td><td>#A81820</td><td>#D02030</td><td>♥ Corazones · emociones</td></tr>
-  <tr><td><code>--diamonds</code></td><td>#C8921A</td><td>#E8A820</td><td>♦ Diamantes · prosperidad</td></tr>
-  <tr><td><code>--spades</code></td><td>#5060A0</td><td>#7080C0</td><td>♠ Espadas · conflicto</td></tr>
-  <tr><td><code>--clubs</code></td><td>#385840</td><td>#50805A</td><td>♣ Tréboles · crecimiento</td></tr>
-  <tr><td><code>--arcana</code></td><td>#7030A0</td><td>#9040C0</td><td>★ Arcanos · destino</td></tr>
-</table>
-
-<hr class="divider">
-
-<!-- ── Reading Log (timeline) ── -->
-<h2>Reading Log</h2>
-<div class="reading-log">
-  <div class="reading-entry">
-    <div class="reading-card arcana">★</div>
-    <div><h4>El Loco · Arcano 0</h4><p class="muted">Inicio de un nuevo viaje. Energía sin filtrar. Potencial puro.</p></div>
+<!-- V · Componentes -->
+<section class="tr-section" id="componentes" aria-labelledby="tr-h-componentes">
+  <div class="vitrina">
+    <header class="tr-head"><span class="tr-num">V</span><h2 id="tr-h-componentes">Componentes</h2><p>Avisos, insignias, botones, tablas y código con marco de oro.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
+    <div class="tr-grid">
+      <div class="tr-panel tr-span2"><h3 class="tr-label">Avisos</h3>
+        <div class="tr-callout"><p class="tr-callout-t">Nota del curador</p><p>Las cartas no predicen nada: ordenan la conversación. La tirada se hace después de la entrega, no antes.</p></div>
+        <div class="tr-callout ok"><p class="tr-callout-t">Decisión aceptada</p><p>ADR 011: el tapiz se dibuja en un Worker. La página ya no se congela al cambiar de vitrina.</p></div>
+        <div class="tr-callout warn"><p class="tr-callout-t">Propuesta</p><p>ADR 012: mover los modelos a un CDN. Falta medir cuánto cuesta.</p></div>
+        <div class="tr-callout danger"><p class="tr-callout-t">Rechazada</p><p>ADR 006: Gaussian splatting para el fondo. No hay nada real que capturar; los tapices son procedurales.</p></div>
+      </div>
+      <div class="tr-panel"><h3 class="tr-label">Insignias</h3><p class="tr-chips"><span class="tr-badge ok">aceptada</span><span class="tr-badge warn">propuesta</span><span class="tr-badge danger">rechazada</span><span class="tr-badge">reemplazada</span><span class="tr-badge biome">bioma</span><span class="tr-badge">XIII · La Muerte</span></p>
+        <h3 class="tr-label" style="margin-top:22px">Botones</h3><p class="tr-chips"><button class="tr-btn" type="button">Repartir</button><button class="tr-btn ghost" type="button">Barajar</button></p></div>
+      <div class="tr-panel"><h3 class="tr-label">Código</h3>
+<pre data-lang="js"><code><span class="cm">// una tirada de tres, del bioma vigente</span>
+<span class="kw">const</span> b = <span class="fn">biome</span>();
+<span class="kw">const</span> mano = [...b.arcana, ...<span class="fn">resto</span>()]
+  .<span class="fn">slice</span>(<span class="num">0</span>, <span class="num">3</span>);
+<span class="fn">repartir</span>(mano, [<span class="str">'pasado'</span>, <span class="str">'presente'</span>, <span class="str">'futuro'</span>]);</code></pre></div>
+      <div class="tr-panel tr-span2"><h3 class="tr-label">Tabla</h3><div class="table-wrap"><table>
+        <thead><tr><th>Carta</th><th>Bioma</th><th>En una retrospectiva</th></tr></thead>
+        <tbody>
+          <tr><td>XIII · La Muerte</td><td>Roquedo y montaña</td><td>Algo terminó y conviene decirlo en voz alta.</td></tr>
+          <tr><td>XIV · La Templanza</td><td>Humedal y marisma</td><td>El ritmo fue sostenible; repetirlo.</td></tr>
+          <tr><td>XVI · La Torre</td><td>Costa y acantilado</td><td>Un incidente cambió el plan.</td></tr>
+          <tr><td>XIX · El Sol</td><td>Dehesa y estepa</td><td>Una entrega salió mejor de lo esperado.</td></tr>
+        </tbody></table></div></div>
+    </div>
   </div>
-  <div class="reading-entry">
-    <div class="reading-card hearts">♥</div>
-    <div><h4>As de Corazones</h4><p class="muted">Nuevo comienzo emocional. La carta de amor más poderosa del mazo.</p></div>
+</section>
+
+<!-- VI · Manual -->
+<section class="tr-section" id="manual" aria-labelledby="tr-h-manual">
+  <div class="vitrina">
+    <header class="tr-head"><span class="tr-num">VI</span><h2 id="tr-h-manual">Manual</h2><p>Así se ve una página de documentación con este tema.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
+    <div class="doc-layout">
+      <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#portada">Tarot</a></li><li><a href="#tiradas">Tiradas</a></li><li aria-current="page">Retrospectiva</li></ol></nav>
+        <h1>Una retrospectiva con tres cartas</h1>
+        <p class="doc-lede">Cómo usar la tirada de pasado, presente y futuro para cerrar una iteración sin que la reunión se vuelva lista de quejas.</p>
+        <h2 id="tr-m-antes">Antes de repartir</h2>
+        <p>Junta lo que se entregó, lo que se cayó y las decisiones que se tomaron en el camino. La tirada ordena la conversación; no la sustituye. Si hay un incidente abierto, ciérralo primero.</p>
+        <dl>
+          <dt>Pasado</dt><dd>Lo que pasó, con fechas.</dd>
+          <dt>Presente</dt><dd>El estado real, con lo que duele.</dd>
+          <dt>Futuro</dt><dd>Dos acciones como máximo, con responsable.</dd>
+        </dl>
+        <blockquote><p>Recuerda que vas a morir.</p><footer>Memento mori, inscripción de vanitas</footer></blockquote>
+        <h2 id="tr-m-reparto">El reparto</h2>
+        <ol>
+          <li>Baraja con el mazo del bioma del proyecto: sus arcanos salen primero.</li>
+          <li>Reparte tres cartas boca abajo y voltéalas de una en una<sup><a href="#tr-n1" id="tr-r1">1</a></sup>.</li>
+          <li>Escribe un párrafo por carta. Si una carta no encaja, dilo: también es información.</li>
+        </ol>
+        <h3 id="tr-m-plantilla">Plantilla</h3>
+<pre data-lang="markdown"><code>## Pasado · La Torre
+Qué se planeó, qué se entregó, qué se cayó.
+
+## Presente · La Templanza
+El estado hoy, sin adornos.
+
+## Futuro · El Sol
+1. Acción, responsable, fecha.</code></pre>
+        <figure>
+<pre aria-label="La tirada de tres cartas, vista desde arriba">  ┌─────┐  ┌─────┐  ┌─────┐
+  │ XVI │  │ XIV │  │ XIX │
+  │     │  │     │  │     │
+  └─────┘  └─────┘  └─────┘
+  pasado   presente  futuro</pre>
+          <figcaption><b>Figura 1.</b> La tirada se lee de izquierda a derecha, como el tiempo.</figcaption>
+        </figure>
+        <h2 id="tr-m-faq">Preguntas</h2>
+        <details><summary>¿Y si sale la misma carta dos veces?</summary><p>No puede: se reparte de un solo mazo. Si dos iteraciones seguidas sacan La Torre, eso sí merece una conversación.</p></details>
+        <details><summary>¿Por qué cráneos?</summary><p>Porque una retrospectiva es un memento mori pequeño: la iteración ya terminó y no vuelve. Los cráneos son escaneos reales del museo de la Universitat de València.</p></details>
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="tr-n1">Voltearlas de una en una evita que la tercera carta condicione la lectura de la primera. <a href="#tr-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#componentes"><small>Anterior</small>Componentes</a><a class="next" href="#fin"><small>Siguiente</small>Fin</a></nav>
+      </article>
+      <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
   </div>
-  <div class="reading-entry">
-    <div class="reading-card diamonds">♦</div>
-    <div><h4>Rey de Diamantes</h4><p class="muted">Dominio sobre los recursos materiales. Liderazgo financiero.</p></div>
+</section>
+
+<!-- VII · Fin -->
+<section class="tr-section" id="fin" aria-labelledby="tr-h-fin">
+  <div class="vitrina">
+    <header class="tr-head"><span class="tr-num">VII</span><h2 id="tr-h-fin">Fin</h2><p>El proun del gabinete y los créditos.</p><div class="tr-rule" aria-hidden="true">◆</div></header>
+    <figure class="tr-proun">
+      <img src="../assets/img/tarot/proun_dark.webp" data-light="../assets/img/tarot/proun_light.webp" data-dark="../assets/img/tarot/proun_dark.webp" alt="Proun de tarot: un cráneo de ave repetido en tres franjas de color sobre texturas de hueso y liquen." loading="lazy">
+      <figcaption class="tr-label">Proun · tarot</figcaption>
+    </figure>
+    <div class="tr-plaque">
+      <p class="tr-label">Créditos del gabinete</p>
+      <dl>
+        <dt>Tema</dt><dd>tarot_theme · by RemiH06 · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT</dd>
+        <dt>Cráneos</dt><dd>Escaneos del <a href="https://sketchfab.com/MUVHN">Museo de Historia Natural de la Universitat de València</a> (MUVHN), CC BY 4.0, reducidos para la web.</dd>
+        <dt>Fuentes</dt><dd>CassandraTwo (Manfred Klein), Grenadier NF (Nick Curtis), Busorama (A. Carr) y Josefin Sans.</dd>
+        <dt>Código</dt><dd><a href="https://threejs.org">Three.js</a> y <a href="https://animejs.com">anime.js</a> con su adaptador para Three (MIT). Tapices, cartas y vitrinas: diseño propio.</dd>
+      </dl>
+    </div>
   </div>
-  <div class="reading-entry">
-    <div class="reading-card warn">!</div>
-    <div><h4>La Torre · Arcano XVI</h4><p class="muted">Ruptura repentina. Estructuras que se derrumban para dar paso a lo nuevo.</p></div>
-  </div>
-  <div class="reading-entry">
-    <div class="reading-card spades">♠</div>
-    <div><h4>Sota de Espadas</h4><p class="muted">Pensamiento vigilante. Un mensajero con noticias importantes.</p></div>
-  </div>
-</div>
+</section>
 
-<hr class="divider">
+</main>
 
-<!-- ── Deal steps (pipeline) ── -->
-<h2>La Mano</h2>
-<div class="deal-row">
-  <div class="deal-num">I</div>
-  <div><h4>Blind y ante</h4><p class="muted">Los jugadores colocan sus apuestas ciegas antes de ver las cartas.</p></div>
-</div>
-<div class="deal-row" style="border-left-color:var(--hearts)">
-  <div class="deal-num" style="color:var(--hearts)">II</div>
-  <div><h4>Reparto inicial</h4><p class="muted">Cada jugador recibe dos cartas boca abajo. El dealer distribuye en sentido horario.</p></div>
-</div>
-<div class="deal-row" style="border-left-color:var(--diamonds)">
-  <div class="deal-num" style="color:var(--diamonds)">III</div>
-  <div><h4>El Flop</h4><p class="muted">Tres cartas comunitarias reveladas. Primera ronda de apuestas post-flop.</p></div>
-</div>
-<div class="deal-row" style="border-left-color:var(--arcana)">
-  <div class="deal-num" style="color:var(--arcana)">IV</div>
-  <div><h4>Showdown</h4><p class="muted">Los jugadores activos revelan sus manos. La mejor combinación gana el bote.</p></div>
-</div>
+<nav class="tr-hand" id="tr-hand" aria-label="Secciones"></nav>
 
-<hr class="divider">
-
-<!-- ── Cards UI ── -->
-<h2>Cards</h2>
-<div class="grid-2">
-  <div class="card">
-    <strong style="font-family:var(--serif);letter-spacing:.08em">Royal Flush</strong>
-    <span class="badge hearts" style="margin-left:8px">♥ mejor mano</span>
-    <p class="muted" style="margin-top:8px">A♠ K♠ Q♠ J♠ 10♠ — la mano perfecta. Probabilidad: 1 en 649,740.</p>
-  </div>
-  <div class="card">
-    <strong style="font-family:var(--serif);letter-spacing:.08em">El Ermitaño · IX</strong>
-    <span class="badge arcana" style="margin-left:8px">★ arcano mayor</span>
-    <p class="muted" style="margin-top:8px">Introspección y búsqueda interior. El conocimiento viene del silencio.</p>
-  </div>
-</div>
-
-<div class="ornament" style="margin-top:32px">✦ ◆ ✦ ◆ ✦</div>
-<p class="muted" style="text-align:center;margin-top:12px;font-family:var(--display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:300">
-  tarot_theme · by RemiH06 · iroFactory · MIT
-</p>
-
-</div><!-- .page -->
-
+<script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/", "animejs": "../shared/vendor/anime/anime-three.esm.min.js" } }</script>
 <script type="module">
-import { mount as m0 } from '../shared/components/tarot/art-deco-canvas.js';
-import { mount as m1 } from '../shared/components/tarot/floating-cards.js';
-import { toggleTheme } from '../shared/components/tarot/kit.js';
-// El marcado llama estas funciones con on…="": van en window.
-Object.assign(window, { toggleTheme });
-m0(); m1();
+import { mount as kit, night, onTheme } from '../shared/components/tarot/kit.js';
+import { mount as hand } from '../shared/components/tarot/card-hand.js';
+import { mount as catalog } from '../shared/components/tarot/catalog.js';
+import { mount as spreads } from '../shared/components/tarot/card-spreads.js';
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
+import { BIOMES, setBiome } from '../shared/components/tarot/biomes.js';
+import { biome } from '../shared/components/tarot/biomes.js';
+
+kit();
+const SECTIONS = [['portada', 'Portada'], ['catalogo', 'Catálogo'], ['tiradas', 'Tiradas'], ['paleta', 'Paleta'], ['componentes', 'Componentes'], ['manual', 'Manual'], ['fin', 'Fin']].map(([id, title]) => ({ id, title }));
+hand({ sections: SECTIONS }); catalog(); spreads(); docProse();
+docSpecimen({
+  type: { el: '#tr-type', fonts: [
+    { name: 'TAROT', family: 'var(--title)', size: 44, use: 'CassandraTwo · el título y los encabezados' },
+    { name: 'Gabinete de historia natural', family: 'var(--sub)', size: 24, use: 'Grenadier NF · subtítulos, nombres y cartas' },
+    { name: 'XIII · LA MUERTE', family: 'var(--deco)', size: 18, use: 'Busorama · etiquetas, números y botones' },
+    { name: 'Lo que se lee va en Josefin Sans.', family: 'var(--read)', size: 18, use: 'Josefin Sans · texto' }] },
+  contrast: { el: '#tr-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--gold', '--bg', 'Oro'], ['--gold-hi', '--bg', 'Oro claro'], ['--ok', '--bg', 'Aceptada'], ['--danger', '--bg', 'Rechazada'], ['--text', '--bg2', 'Texto en tarjeta']] }
+});
+// las tríadas de los biomas
+const triads = document.getElementById('tr-triads');
+const paintTriads = () => { const n = night(); triads.innerHTML = BIOMES.map(b => `<li><button type="button" class="tr-triad" data-id="${b.id}" aria-pressed="${b.id === biome().id}"><span class="tr-triad-name">${b.name}</span>${b[n ? 'night' : 'day'].map(c => `<span class="tr-triad-chip" style="background:${c}" title="${c}"></span>`).join('')}<code>${b[n ? 'night' : 'day'].join(' ')}</code></button></li>`).join(''); triads.querySelectorAll('button').forEach(x => x.addEventListener('click', () => setBiome(x.dataset.id))); };
+paintTriads(); onTheme(paintTriads); document.addEventListener('tarot:biome', paintTriads);
+// el proun cambia con el modo
+const proun = document.querySelector('.tr-proun img');
+onTheme(() => { proun.src = night() ? proun.dataset.dark : proun.dataset.light; });
+const showBiome = () => { document.getElementById('tr-biome-name').textContent = biome().name; document.getElementById('tr-biome-pill').setAttribute('aria-label', `Vitrina: ${biome().name}. Ver el catálogo`); };
+showBiome(); document.addEventListener('tarot:biome', showBiome);
+
+// el tapiz y el mazo: Three.js después de la primera pintura
+const palette = () => { const b = biome(), n = night(); return { colors: b[n ? 'night' : 'day'], base: n ? '#0E1016' : '#EFE8DA', gold: n ? ['#B8913E', '#F2D894'] : ['#8C6A22', '#C9A04A'], motif: b.motif, memento: b.memento }; };
+import('../shared/components/tarot/tapestry-3d.js').then(m => {
+  const tp = m.mount({ palette }); tp.set();
+  onTheme(() => tp.set()); document.addEventListener('tarot:biome', () => tp.set());
+});
+import('../shared/components/tarot/card-deck-3d.js').then(m => {
+  const note = document.getElementById('tr-deck-note');
+  const deck = m.mount({ onDeal: names => { note.textContent = `Pasado: ${names[0]} · Presente: ${names[1]} · Futuro: ${names[2]}`; } });
+  if (!deck) return;
+  deck.deal();
+  document.getElementById('tr-redeal').addEventListener('click', () => deck.deal());
+});
 </script>
 </body>
 </html>

@@ -6,7 +6,7 @@ Reglas duras y referencia por tema: ver `CLAUDE.md`. Las secciones de abajo son 
 
 Orden sugerido (2026-10-13). Cada punto es un tema distinto: sesión nueva al pasar de uno a otro.
 
-1. **tarot: rework.** Es el único tema sin rehacer. Hay que definir su propósito (la tabla de `CLAUDE.md` dice «se define en su rework»), recibir la base común (`doc-prose` y `doc-specimen`) y resolver la fuente compartida con apolo (Cinzel). Candidato a Three.js. Mismo flujo que los otros: concepto, paleta con `colorimetria`, componentes en `shared/components/tarot/`, verificar en Chrome real.
+1. **tarot: segunda vuelta** (primera hecha el 2026-10-13, ver abajo): revisar con el usuario, que pidió ser perfeccionista en este tema.
 2. **Logo definitivo.** Mazo de favicon y Sensu para lo demás (ver «Logo» más abajo); arregla el 404 del favicon. En cuanto exista el SVG, sustituir el abanico provisional que dibuja `shared/components/ludus/crop-filter.js` (funciones `sensu` y `seal`).
 3. **ludus, cabos sueltos:** el manual sigue siendo del cubo de Rubik (el usuario lo dejó pasar a propósito; revisar con el propósito de juegos de video y de mesa); fuentes por definir (el usuario las busca; Baudot Murray probable, Boogie Nights Shadow descartada, Major Mono Display queda para mirai).
 4. **Galería y raíz:** `index.html` (sandbox del iframe, `aria-expanded` del botón de la barra, meta description, `<h1>`), `robots.txt` y `sitemap.xml`, y decidir si se borra `CONTEXT.md` (es de agosto y ya no describe la estructura).
@@ -1030,3 +1030,19 @@ Propósito: juegos y proyectos interactivos. Inspiración: Signa_Lab (ITESO) y l
 - **Marcador** pasa de Juguetes a Paleta. En Juguetes, los controles del motor (speed y precision) tienen su propia tarjeta, Motor, junto al circuito.
 - **Créditos como marca:** en Fin, sobre la trama y sobre el duotono, parpadea una marca de iroFactory en un recuadro con marcas de corte y los créditos alrededor como parámetros del recuadro (marca, autor y licencia, componentes, riff, 3D, animación), con placa oscura para leerse sobre la trama. El pie de créditos queda solo para lectores de pantalla (con sus enlaces). El logo es provisional (abanico de doce varillas con el sello 色 dibujado en canvas) hasta tener el SVG definitivo.
 - Marca de créditos monocromática (varillas en un solo color, alternando opacidad); en la imagen chica, solo el sello. El rótulo PAUSA ya no parpadea.
+
+# tarot · rework (2026-10-13)
+
+Propósito: cartas, decisiones y retrospectivas. Concepto: gabinete de historia natural art deco (homenaje al museo de la Universitat de València). Indispensable art deco; memento mori como detalle.
+- **Biomas** (`biomes.js`): selva (tucán), humedal (garza; de noche martinete), laguna salina (flamenco), costa (cormorán), ríos (ánade), dehesa (abubilla), bosque mediterráneo (curruca y verdecillo), campiña (faisán), montaña (milano y cuervo; de noche búho). Cada uno: tres colores de día y de noche, motivo, memento mori, palo y arcanos. El bioma es piel de toda la página (`--b1 --b2 --b3`, tapiz, cartas, mano) y se recuerda.
+- **Cráneos:** los 13 de la colección Bird Skulls del MUVHN en Sketchfab (CC BY 4.0), de 21 a 118 MB cada uno; reducidos con gltf-transform (`optimize`, ~60k triángulos, WebP 1024, meshopt) a 0.4 a 1 MB en `assets/models/tarot/`. Siglas de inventario sacadas de la API de Sketchfab.
+- **Tapiz** (`deco-pattern.js`, `relief.js`, `tapestry-worker.js`, `tapestry-3d.js`): generador propio a partir de las láminas que guardó el usuario en KitKatKut (arcos en escama, paneles simétricos con soles, abanicos, rayados y punteados). El pincel (`pen`) dibuja a la vez en color y en una máscara del oro; de la máscara salen normales (Sobel) y metal y rugosidad. Three.js: placa con oro metálico, mosaicos con clearcoat, luz que sigue al cursor, otra que barre y el entorno girando. Dibujo y relieve en un Worker con OffscreenCanvas (~250 ms) y caché por bioma y modo. Gaussian splatting descartado: no hay nada real que capturar.
+- **Cartas** (`card-art.js`): mismo pincel; 22 arcanos con símbolo propio, pips con el motivo del bioma, figuras J Q K en espejo con corona y cráneo, dorso con el cráneo como sello, cartas de sección.
+- **Portada:** mazo 3D (`card-deck-3d.js`) con oro en relieve: riffle (partir, abrir, intercalar, puente) y tirada de pasado, presente y futuro que se voltea; «Barajar otra vez».
+- **Navegación:** la mano (`card-hand.js`), siete cartas en abanico al pie; se levantan al pasar el cursor, se voltean al tocarlas.
+- **Catálogo** (`catalog.js`, `skull-vitrine.js`): vitrina 3D con pedestal escalonado, soporte de oro, caja de vidrio con aristas doradas, luz de museo y contraluz del bioma; ficha con especie, sigla y enlace; láminas de los nueve biomas con miniatura del tapiz.
+- **Tiradas** (`card-spreads.js`): tres cartas (retrospectiva), la cruz (decisión) y solitario (registro de decisiones con el palo del bioma).
+- **Fuentes:** CassandraTwo, Grenadier NF, Busorama (ffonts, sin modificar) y Josefin Sans para leer. CassandraTwo y Busorama no traen vocales acentuadas: `composeAccents` (`data-compose`) compone la tilde como en shui.
+- **Fuera:** el lienzo art deco y las cartas flotantes de antes.
+- Verificado con la GPU real: noche y día, nueve biomas, vitrinas centradas, tiradas, móvil sin scroll horizontal, reduced motion. Sin errores.
+

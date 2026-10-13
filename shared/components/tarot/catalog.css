@@ -1,0 +1,23 @@
+/* tarot · catálogo: la vitrina abierta (cráneo en 3D y su ficha) y las láminas de los biomas. */
+.tr-case { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(18px, 3vw, 40px); align-items: center; margin-bottom: 40px; }
+.tr-case-stage { position: relative; aspect-ratio: 4 / 3.4; background: radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--b1) 22%, transparent), transparent 65%), radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 55%); border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); }
+.tr-case-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tr-case-stage.is-loading::after { content: 'Abriendo la vitrina'; position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font-family: var(--deco); font-size: 12px; letter-spacing: .2em; color: var(--text2); }
+.tr-case-nav { position: absolute; top: 50%; z-index: 2; translate: 0 -50%; width: 44px; height: 64px; font-size: 24px; color: var(--gold); background: var(--glass); border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent); cursor: pointer; }
+.tr-case-nav.prev { left: 10px; } .tr-case-nav.next { right: 10px; }
+.tr-case-nav:hover { color: var(--gold-hi); border-color: var(--gold-hi); }
+.tr-label { font-family: var(--deco); font-size: 13px; letter-spacing: .22em; color: var(--gold); text-transform: uppercase; }
+.tr-case-name { font-family: var(--sub); font-weight: 400; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.1; margin: 6px 0 2px; color: var(--text); }
+.tr-case-sci { font-style: italic; color: var(--text2); margin-bottom: 18px; }
+.tr-facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 14px; border-top: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); padding-top: 14px; }
+.tr-facts dt { font-family: var(--deco); font-size: 12px; letter-spacing: .14em; color: var(--gold); padding-top: 3px; }
+.tr-facts dd { color: var(--text2); }
+.tr-case-count { margin-top: 14px; font-family: var(--sub); color: var(--text2); min-height: 1.7em; }
+.tr-biomes { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.tr-biome { display: grid; width: 100%; text-align: left; gap: 4px; padding: 8px 8px 12px; color: var(--text); background: color-mix(in srgb, var(--bg2) 70%, transparent); border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent); cursor: pointer; transition: border-color .2s, transform .2s, box-shadow .2s; font: inherit; }
+.tr-biome canvas { width: 100%; height: auto; aspect-ratio: 16 / 9; display: block; background: var(--bg3); }
+.tr-biome-name { font-family: var(--sub); font-size: 19px; line-height: 1.2; margin-top: 6px; }
+.tr-biome-meta { font-size: 13px; color: var(--text2); }
+.tr-biome:hover { border-color: var(--gold); transform: translateY(-3px); }
+.tr-biome[aria-pressed="true"] { border-color: var(--gold-hi); box-shadow: 0 0 0 1px var(--gold-hi), 0 10px 26px color-mix(in srgb, var(--black) 45%, transparent); }
+@media (max-width: 820px) { .tr-case { grid-template-columns: 1fr; } }
