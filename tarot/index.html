@@ -195,6 +195,14 @@ El estado hoy, sin adornos.
   </div>
 </section>
 
+<!-- Coda · una vitrina más, entre los créditos y la mano: una pieza invitada de otro bioma -->
+<section class="tr-coda" aria-labelledby="tr-coda-name">
+  <div class="tr-case-stage" id="tr-coda-stage"></div>
+  <p class="tr-label">Pieza invitada</p>
+  <p class="tr-coda-name" id="tr-coda-name"></p>
+  <button class="tr-btn ghost" type="button" id="tr-coda-next">Otra pieza</button>
+</section>
+
 </main>
 
 <nav class="tr-hand" id="tr-hand" aria-label="Secciones"></nav>
@@ -225,6 +233,15 @@ docSpecimen({
 const triads = document.getElementById('tr-triads');
 const paintTriads = () => { const n = night(); triads.innerHTML = BIOMES.map(b => `<li><button type="button" class="tr-triad" data-id="${b.id}" aria-pressed="${b.id === biome().id}"><span class="tr-triad-name">${b.name}</span>${b[n ? 'night' : 'day'].map(c => `<span class="tr-triad-chip" style="background:${c}" title="${c}"></span>`).join('')}<code>${b[n ? 'night' : 'day'].join(' ')}</code></button></li>`).join(''); triads.querySelectorAll('button').forEach(x => x.addEventListener('click', () => setBiome(x.dataset.id))); };
 paintTriads(); onTheme(paintTriads); document.addEventListener('tarot:biome', paintTriads);
+// la pieza invitada: un cráneo de cualquier bioma, distinto del de la vitrina abierta
+import('../shared/components/tarot/skull-vitrine.js').then(m => {
+  const v = m.mount({ host: document.getElementById('tr-coda-stage') }); if (!v) return;
+  const all = BIOMES.flatMap(b => b.skulls.map(sk => ({ ...sk, biome: b.name })));
+  let i = Math.floor(Math.random() * all.length);
+  const show = () => { if (all[i].biome === biome().name) i = (i + 1) % all.length; const sk = all[i]; document.getElementById('tr-coda-name').innerHTML = `${sk.name} <i>${sk.sci}</i> <small>${sk.biome} · ${sk.id}</small>`; v.show(sk); };
+  document.getElementById('tr-coda-next').addEventListener('click', () => { i = (i + 1) % all.length; show(); });
+  show();
+});
 // el proun cambia con el modo
 const proun = document.querySelector('.tr-proun img');
 onTheme(() => { proun.src = night() ? proun.dataset.dark : proun.dataset.light; });
