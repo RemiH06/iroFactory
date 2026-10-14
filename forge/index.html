@@ -56,6 +56,7 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/forge/ascii-wave.css">
 <link rel="stylesheet" href="../shared/components/forge/crucible.css">
 <link rel="stylesheet" href="../shared/components/forge/target-cursor.css">
+<link rel="stylesheet" href="../shared/components/forge/datasheet.css">
 <link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
 <link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 </head>
@@ -75,8 +76,9 @@ SOFTWARE.
   <a class="breaker" href="#senales" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§2</b> <span>Señales</span></span></a>
   <a class="breaker" href="#instrumentos" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§3</b> <span>Instrumentos</span></span></a>
   <a class="breaker" href="#firmware" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§4</b> <span>Firmware</span></span></a>
-  <a class="breaker" href="#manual" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§5</b> <span>Manual</span></span></a>
-  <a class="breaker" href="#crisol" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§6</b> <span>Crisol</span></span></a>
+  <a class="breaker" href="#hoja" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§5</b> <span>Hoja de datos</span></span></a>
+  <a class="breaker" href="#manual" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§6</b> <span>Manual</span></span></a>
+  <a class="breaker" href="#crisol" aria-current="false"><span class="breaker-body" aria-hidden="true"><span class="breaker-led"></span><span class="breaker-lever"></span></span><span class="breaker-lbl"><b>§7</b> <span>Crisol</span></span></a>
 </nav>
 
 <main>
@@ -212,10 +214,33 @@ SOFTWARE.
   </div>
 </section>
 
-<!-- ── §5 MANUAL · base común de documentación ── -->
+<!-- ── §5 HOJA DE DATOS ── -->
+<section class="fg-sec" id="hoja" aria-labelledby="h-hoja">
+  <div class="fg-wrap">
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-hoja"><small>§5</small>Hoja de datos</h2></div>
+    <p class="fg-intro"><span>La hoja de datos de un chip real, el ATmega328P del Arduino Uno: sus pines, sus registros y cómo se ven sus señales. Las tres piezas están conectadas: los bits que enciendas en la tabla cambian el diagrama de tiempos y las patas del puerto B.</span></p>
+    <div class="hot ds-block">
+      <h3>Diagrama de pines</h3>
+      <p class="muted">DIP-28 visto desde arriba, con la muesca hacia arriba. Filtra por función o toca un pin; con el teclado, las flechas recorren el chip.</p>
+      <div id="fg-pinout"><p class="muted">El diagrama necesita JavaScript. Pines del SPI: 16 SS, 17 MOSI, 18 MISO, 19 SCK; UART: 2 RXD, 3 TXD.</p></div>
+    </div>
+    <div class="hot ds-block">
+      <h3>Registros</h3>
+      <p class="muted">Cada bit es un interruptor (los punteados son de solo lectura). Abajo de cada registro, qué significa su valor y la línea de C para escribirlo.</p>
+      <div id="fg-regs"><p class="muted">La tabla de registros necesita JavaScript.</p></div>
+    </div>
+    <div class="hot ds-block">
+      <h3>Diagrama de tiempos</h3>
+      <p class="muted">Dibujado desde los registros: cambia CPOL o CPHA en SPCR, o la paridad y los bits de paro en UCSR0C, y mira la señal.</p>
+      <div id="fg-timing"><p class="muted">El diagrama de tiempos necesita JavaScript.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── §6 MANUAL · base común de documentación ── -->
 <section class="fg-sec" id="manual" aria-labelledby="h-man">
   <div class="fg-wrap">
-    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-man"><small>§5</small>Manual</h2></div>
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-man"><small>§6</small>Manual</h2></div>
     <p class="fg-intro"><span>Así se ve una página de documentación con este tema: prosa, listas, teclas, notas, preguntas y figuras.</span></p>
     <div class="doc-layout">
       <article class="doc">
@@ -275,12 +300,12 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg \
   </div>
 </section>
 
-<!-- ── §6 CRISOL ── -->
+<!-- ── §7 CRISOL ── -->
 <section class="fg-sec fg-crisol" id="crisol" aria-labelledby="h-cri">
   <canvas id="fg-molten" aria-hidden="true"></canvas>
   <canvas id="fg-storm" aria-hidden="true"></canvas>
   <div class="fg-wrap">
-    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-cri"><small>§6</small>Crisol</h2></div>
+    <div class="fg-head"><svg class="fg-cables" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 H340 C430 18 420 60 500 60"/><path d="M0 102 H340 C430 102 420 60 500 60"/><path d="M1000 18 H660 C570 18 580 60 500 60"/><path d="M1000 102 H660 C570 102 580 60 500 60"/><path class="charge" pathLength="1000" d="M0 18 H340 C430 18 420 60 500 60"/><path class="charge" pathLength="1000" d="M0 102 H340 C430 102 420 60 500 60"/><path class="charge" pathLength="1000" d="M1000 18 H660 C570 18 580 60 500 60"/><path class="charge" pathLength="1000" d="M1000 102 H660 C570 102 580 60 500 60"/></svg><h2 class="fg-pill" id="h-cri"><small>§7</small>Crisol</h2></div>
     <div class="fg-table-wrap">
       <table>
         <tr><th>Token</th><th>Forja</th><th>Taller</th><th>Semántica</th></tr>
@@ -323,9 +348,13 @@ import { mount as m9 } from '../shared/components/forge/oscilloscope.js';
 import { mount as m10 } from '../shared/components/forge/ascii-wave.js';
 import { mount as m11 } from '../shared/components/forge/crucible.js';
 import { mount as m12 } from '../shared/components/forge/target-cursor.js';
+import { mount as pinout } from '../shared/components/forge/pinout.js';
+import { mount as regMap } from '../shared/components/forge/register-map.js';
+import { mount as timing } from '../shared/components/forge/timing.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7(); m8(); m9(); m10(); m11(); m12();
+pinout(); regMap(); timing();
 docProse();
 docSpecimen({
   type: { el: '#fg-type', fonts: [
