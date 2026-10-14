@@ -24,7 +24,7 @@ React Bits components ported per theme:
 - **metro** · Border Glow, Cursor Grid, Dock, Dome Gallery, Lattice Loader, Warp Text
 - **odysseus** · Galaxy, Gradient Text, Tear Ticket, Topography
 - **sherry** · ASCII Text, Dither, Dither Veil, Pixel Card
-- **shui** · Blur Text, Ferrofluid, Morph Slider, Splash Cursor, Swarm Cursor
+- **shui** · Blur Text, Ferrofluid, Morph Slider, Splash Cursor
 
 The React Bits license allows using the components as part of an application, website or product, but not selling, sublicensing or redistributing the components themselves, alone, in a bundle or as a ported version. The ports here are part of the iroFactory documentation sites and are not offered as a standalone component library.
 

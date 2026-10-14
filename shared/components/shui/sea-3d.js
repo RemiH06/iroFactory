@@ -4,7 +4,7 @@
 //  · Animales en rayos X: modelos 3D animados (Animated Fish Pack de
 //    Quaternius, CC0) con un material que solo deja ver el cuerpo en sus
 //    bordes, como tejido en una placa. Tres cardúmenes de peces chicos con
-//    reglas de cardumen (separación, alineación, cohesión, huir del puntero)
+//    reglas de cardumen (separación, alineación, cohesión, huir del puntero de día)
 //    y cuatro animales grandes que cruzan cada uno a su profundidad: el
 //    delfín cerca de la superficie, el tiburón a media agua, la mantarraya y
 //    la ballena en lo profundo. De día, hueso claro; de noche, brillo cian.
@@ -213,7 +213,7 @@ export function mount() {
         if (n) { acc.add(ali.divideScalar(n).sub(f.vel).multiplyScalar(0.07)); acc.add(coh.divideScalar(n).sub(f.pos).multiplyScalar(0.0012)); }
         acc.add(sep.multiplyScalar(60));
         acc.add(tmp.copy(goals[f.school]).sub(f.pos).multiplyScalar(0.00035));
-        const dm = tmp.copy(f.pos).setZ(0).distanceTo(mouse); if (dm < 220) acc.add(tmp.copy(f.pos).setZ(0).sub(mouse).normalize().multiplyScalar((220 - dm) * 0.012));
+        const dm = night ? 1e9 : tmp.copy(f.pos).setZ(0).distanceTo(mouse); if (dm < 220) acc.add(tmp.copy(f.pos).setZ(0).sub(mouse).normalize().multiplyScalar((220 - dm) * 0.012));
         f.vel.add(acc); const sp = f.vel.length(), max = 2.6, min = 0.9; if (sp > max) f.vel.multiplyScalar(max / sp); else if (sp < min) f.vel.multiplyScalar(min / sp);
         f.vel.z *= 0.96; f.vel.y *= 0.97; f.pos.addScaledVector(f.vel, dt * 60);
       }

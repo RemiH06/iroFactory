@@ -3,8 +3,9 @@
 // envolvía). La simulación de fluidos va literal; cambios: tintes de la
 // paleta en vez de arcoíris, tinte de 720 px, DPR topado, y el bucle se
 // duerme 3.5 s después del último movimiento (el tinte ya se disipó).
+// De noche se apaga: ningún efecto sigue al cursor.
 // ══════════════════════════════════════════════════════
-import { $, coarsePointer, reduceMotion, rgb01, rgba } from './kit.js';
+import { $, coarsePointer, isDark, onTheme, reduceMotion, rgb01, rgba } from './kit.js';
 
 export const splash = (() => {
   if (reduceMotion.matches) return null;
@@ -970,3 +971,9 @@ export const splash = (() => {
     };
   } catch (err) { console.warn('splash', err); canvas.style.display = 'none'; return null; }
 })();
+// Solo de día: de noche nada sigue al cursor (distraía).
+export function mount() {
+  if (!splash) return;
+  const sync = () => splash.setEnabled(!isDark);
+  onTheme(sync); sync();
+}

@@ -1,7 +1,7 @@
 // ══════════════════════════════════════════════════════
 // Agua de fondo · Ferrofluid (React Bits, OGL → WebGL1). Bandas de luz que
 // fluyen como cáusticas: espuma y rayo de luz de día, bioluminiscencia de
-// noche. El cursor aparta la luz. 50% de resolución y 30 fps.
+// noche. De día el cursor aparta la luz. 50% de resolución y 30 fps.
 // ══════════════════════════════════════════════════════
 import { $, coarsePointer, glProgram, isDark, makeLoop, onTheme, rgb01 } from './kit.js';
 
@@ -51,7 +51,7 @@ void main() {
   window.addEventListener('pointermove', e => { target = [e.clientX * RES, (innerHeight - e.clientY) * RES]; on = 1; }, { passive: true });
   const draw = t => {
     mouse = [mouse[0] + (target[0] - mouse[0]) * 0.15, mouse[1] + (target[1] - mouse[1]) * 0.15];
-    gl.uniform2f(u('iMouse'), mouse[0], mouse[1]); gl.uniform1f(u('uMouseOn'), on);
+    gl.uniform2f(u('iMouse'), mouse[0], mouse[1]); gl.uniform1f(u('uMouseOn'), isDark ? 0 : on);
     gl.uniform1f(u('iTime'), t * 0.001);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
