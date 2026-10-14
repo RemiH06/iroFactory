@@ -213,6 +213,16 @@ export function mount({ canvas = '#tri-canvas', size = 48, watch = '.sherry-leve
     next++;
     start();
   });
+  // Clic en el fondo: donde se ven los triángulos (nivel transparente o
+  // margen de la página), no sobre controles, texto de lectura ni paneles.
+  // Arrastrar para seleccionar texto no cuenta.
+  const SOLID = 'a, button, input, textarea, select, label, summary, pre, code, p, li, dt, dd, h1, h2, h3, h4, table, kbd, .sh-tool, .sh-term, .swatch, .sherry-pixel-card, .doc, dialog, .sherry-controls, .sherry-hero-pin';
+  addEventListener('click', e => {
+    if (!on || e.button !== 0 || !getSelection().isCollapsed) return;
+    const t = e.target;
+    if (!(t instanceof Element) || t.closest(SOLID) || t.closest('.sherry-level.is-opaque')) return;
+    dispatchEvent(new CustomEvent('sh:pulse', { detail: { x: e.clientX, y: e.clientY } }));
+  });
 
   readTokens(); resize(); still(); start();
   const api = {
