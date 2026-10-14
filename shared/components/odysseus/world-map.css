@@ -19,7 +19,7 @@
 .od-map-hint.is-on { opacity: 1; transform: translate(-50%, 0); }
 .od-plan-chip { color: var(--wonder-ink); }
 /* Abierto: la mesa entera es el mapa. */
-.od-stage.is-expanded { position: fixed; inset: 0; z-index: 5000; height: auto; min-height: 0; background: var(--desk); }
+.od-stage.is-expanded { position: fixed; inset: 0; z-index: 5000; height: auto; min-height: 0; background: var(--table); }
 html.od-map-open { overflow: hidden; }
 @media (hover: hover) and (pointer: fine){
 .od-map-tools button:hover { border-color: var(--route-ink); }

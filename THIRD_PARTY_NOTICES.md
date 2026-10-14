@@ -22,7 +22,7 @@ React Bits components ported per theme:
 - **ludus** · Bubble Menu, Cubes, Shuffle
 - **lambda** · Fluid Glass, Logo Loop, Magnet Lines, Staggered Menu, Stroke Text, Waves
 - **metro** · Border Glow, Cursor Grid, Dock, Dome Gallery, Lattice Loader, Warp Text
-- **odysseus** · Galaxy, Gradient Text, Line Waves, Tear Ticket, Topography
+- **odysseus** · Galaxy, Gradient Text, Tear Ticket, Topography
 - **sherry** · ASCII Text, Dither, Dither Veil, Pixel Card
 - **shui** · Blur Text, Ferrofluid, Morph Slider, Splash Cursor, Swarm Cursor
 

@@ -8,9 +8,11 @@
 // inmediato. Al cambiar, la placa nueva entra con un fundido.
 // La luz es del tema: `setup` recibe la escena y devuelve qué hacer en
 // cada cuadro (tarot: luz que sigue al cursor; apolo: el sol del día).
-// Canvas fijo detrás de toda la página. Sin WebGL, la placa plana.
+// Canvas fijo detrás de toda la página o, con `fill: 'host'`, detrás de un
+// solo contenedor (la placa cubre ese contenedor y su bucle solo corre
+// mientras se ve). Sin WebGL, la placa plana.
 //   mount({ painter, palette: () => opts, setup, className, reliefOpts,
-//     material, fps }) → { set(), preload(opts), still() }
+//     material, fps, fill }) → { set(), preload(opts), still() }
 //   painter: URL absoluta del módulo pintor (new URL(…, import.meta.url)).
 // ══════════════════════════════════════════════════════
 import * as THREE from 'three';
@@ -37,7 +39,7 @@ function build(painter, opts, reliefOpts) {
   return job;
 }
 
-export function mount({ host = document.body, painter, palette, setup, className = 'relief-plate', reliefOpts, material = {}, fps = 60 }) {
+export function mount({ host = document.body, painter, palette, setup, className = 'relief-plate', reliefOpts, material = {}, fps = 60, fill = 'view' }) {
   const canvas = document.createElement('canvas'); canvas.className = className; canvas.setAttribute('aria-hidden', 'true');
   host.prepend(canvas);
   let renderer;
@@ -54,22 +56,24 @@ export function mount({ host = document.body, painter, palette, setup, className
   const texOf = (img, srgb) => { const t = img instanceof ImageBitmap ? new THREE.Texture(img) : new THREE.CanvasTexture(img); if (img instanceof ImageBitmap) t.flipY = false; t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace; t.anisotropy = 8; t.needsUpdate = true; return t; };
   const dispose = o => { const m = o.material; m.map.dispose(); m.normalMap.dispose(); m.roughnessMap.dispose(); m.dispose(); };
 
-  // ── tamaño: la placa cubre la vista (la cámara no se mueve)
+  // ── tamaño: la placa cubre la vista o el contenedor (la cámara no se mueve)
+  const box = () => { if (fill !== 'host') return [innerWidth, innerHeight]; const r = host.getBoundingClientRect(); return [Math.max(1, r.width), Math.max(1, r.height)]; };
   const fit = () => {
-    const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
+    const [w, h] = box(); renderer.setSize(w, h, false); camera.aspect = w / h;
     const dist = 9 / 2 / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 0.985;
     camera.position.z = dist / Math.max(1, camera.aspect / (16 / 9)); camera.updateProjectionMatrix();
   };
-  fit(); addEventListener('resize', () => { fit(); loop.still(); });
+  fit();
+  if (fill === 'host') new ResizeObserver(() => { fit(); loop.still(); }).observe(host); else addEventListener('resize', () => { fit(); loop.still(); });
 
-  const tick = setup({ THREE, scene, camera, renderer });
+  const tick = setup({ THREE, scene, camera, renderer, host });
   const t0 = performance.now(); let last = 0;
   const frame = now => {
     const t = (now - t0) / 1000, dt = last ? Math.min(0.05, Math.max(0, now - last) / 1000) : 0.016; last = Math.max(last, now);
     tick?.(t, dt);
     renderer.render(scene, camera);
   };
-  const loop = makeLoop(document.body, frame, fps);
+  const loop = makeLoop(fill === 'host' ? host : document.body, frame, fps);
 
   return {
     async set() {

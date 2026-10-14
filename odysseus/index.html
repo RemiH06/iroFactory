@@ -7,7 +7,7 @@ Partes de terceros en este archivo. Conservan su propia licencia; la MIT de
 iroFactory no las cubre (ver THIRD_PARTY_NOTICES.md).
 
 · React Bits · https://github.com/DavidHDev/react-bits · David Haz (@DavidHDev)
-  Componentes portados: Galaxy, Gradient Text, Line Waves, Tear Ticket, Topography.
+  Componentes portados: Galaxy, Gradient Text, Tear Ticket, Topography.
 · Datos de mapas · © OpenStreetMap contributors, ODbL 1.0 · https://www.openstreetmap.org/copyright · Natural Earth (dominio público) · https://www.naturalearthdata.com
 · Carrusel de puertos · riff "Iconic Cities" de Figma por @ariantaheri (inspiración, sin código copiado).
 
@@ -47,7 +47,6 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
 <link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="odysseus.css">
-<link rel="stylesheet" href="../shared/components/odysseus/desk.css">
 <link rel="stylesheet" href="../shared/components/odysseus/world-map.css">
 <link rel="stylesheet" href="../shared/components/odysseus/ports.css">
 <link rel="stylesheet" href="../shared/components/odysseus/voyage.css">
@@ -76,7 +75,6 @@ SOFTWARE.
 
 <!-- ── VIAJE ── -->
 <section class="od-voyage" id="viaje" aria-label="Mapa y puertos">
-  <canvas id="od-desk" aria-hidden="true"></canvas>
   <div class="od-stage">
     <canvas id="od-map" tabindex="0" role="img" aria-label="Mapamundi con siete puertos: Chichén Itzá, Machu Picchu, Río de Janeiro, Roma, Petra, Agra y Badaling. Elígelos en las tarjetas de abajo. Con el mapa enfocado, las flechas lo mueven, más y menos acercan y cero regresa al mapamundi; al alejarse se vuelve globo."></canvas>
     <div class="od-stage-bar">
@@ -375,12 +373,12 @@ ruta = [
 <script type="module">
 import { mount as m0 } from '../shared/components/odysseus/kit.js';
 import { mount as m1 } from '../shared/components/odysseus/geography.js';
-import { mount as m2 } from '../shared/components/odysseus/desk.js';
 import { mount as m3 } from '../shared/components/odysseus/voyage.js';
 import { mount as logbook } from '../shared/components/odysseus/logbook.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
-m0(); m1(); m2(); m3(); logbook();
+m0(); m1(); m3(); logbook();
+import('../shared/components/odysseus/chart-table-3d.js').then(m => m.mount()?.set());
 docProse();
 docSpecimen({
   type: { el: '#od-type', fonts: [

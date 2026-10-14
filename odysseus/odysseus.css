@@ -45,11 +45,15 @@ body {
   --black:     #100804;
   --white:     #FDF8F0;
   --gray:      #907858;
-  /* Mesa: los colores de la madera de siempre, ahora para Line Waves. */
-  --desk:      #B8864A;
-  --desk-dk:   #9A6E38;
-  --desk-lt:   #D09A5E;
-  --desk-glow: #F0DCB0;
+  /* Mesa de cartas (chart-table-3d.js): cuero verde inglés con el grabado
+     de la carta embutido en latón y cobre. */
+  --table:      #2E4A43;
+  --table-dk:   #1F332E;
+  --brass:      #8C6A22;
+  --brass-lt:   #E2C06A;
+  --copper:     #7A3A1C;
+  --copper-lt:  #D08A5A;
+  --chart-line: #E8DCC0;
 
   /* Título Gradient Text: tintas que pasan 3:1 sobre --bg de cada modo. */
   --gt1:       #A05828;
@@ -115,10 +119,14 @@ body.dark {
   --black:     #060408;
   --white:     #F0E8D0;
   --gray:      #706050;
-  --desk:      #1E150A;
-  --desk-dk:   #150E06;
-  --desk-lt:   #5A3A18;
-  --desk-glow: #E0A830;
+  /* Mesa de cartas de noche: laca azul noche bajo la lámpara. */
+  --table:      #161C2E;
+  --table-dk:   #0C101E;
+  --brass:      #8A6A2A;
+  --brass-lt:   #E8B850;
+  --copper:     #6A3018;
+  --copper-lt:  #C87A48;
+  --chart-line: #D8C898;
 
   --gt1:       #E0A830;
   --gt2:       #E05040;
@@ -207,13 +215,10 @@ a { color: var(--route-ink); text-underline-offset: 3px; }
   position: relative; isolation: isolate; height: 100vh; height: 100svh; min-height: 620px;
   display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(340px, 1fr); grid-template-rows: minmax(0, 1fr) auto;
 }
-/* Mesa: base y luz de sol (día) o de lámpara (noche) en CSS; encima, las
-   ondas de Line Waves con las vetas de la madera. */
-.od-voyage { background:
-  radial-gradient(70% 60% at 0% 0%, color-mix(in srgb, var(--desk-glow) 32%, transparent), transparent 70%),
-  radial-gradient(45% 45% at 82% 6%, color-mix(in srgb, var(--desk-glow) 18%, transparent), transparent 70%),
-  radial-gradient(60% 50% at 50% 100%, color-mix(in srgb, var(--desk-dk) 55%, transparent), transparent 75%),
-  var(--desk); }
+/* Mesa de cartas: el cuero en CSS mientras llega (o si no hay WebGL) la
+   placa en relieve de chart-table-3d.js. */
+.od-voyage { background: radial-gradient(70% 60% at 30% 40%, color-mix(in srgb, var(--table) 80%, var(--chart-line)), transparent 75%), var(--table); }
+.od-chart-table { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; display: block; pointer-events: none; }
 .od-stage-bar { position: absolute; top: 16px; left: 18px; z-index: 2; display: flex; gap: 8px; align-items: center; }
 .od-chip { font-family: var(--display); font-style: italic; font-size: 14px; color: var(--text); background: var(--glass); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 4px 14px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 button.od-chip { cursor: pointer; min-height: 34px; transition: border-color .2s ease-out, transform .16s ease-out; }
