@@ -1,0 +1,34 @@
+/* Sensu · abanico selector. Lee del tema anfitrión: --bg, --text, --accent,
+   --lacquer (varillas y remache), --paper (filo entre gajos) y --ink. */
+.sf { display: block; width: 100%; height: 100%; overflow: visible; -webkit-tap-highlight-color: transparent; }
+.sf-leaf { cursor: pointer; outline: none; }
+.sf-body { transition: transform .38s cubic-bezier(.34, 1.4, .64, 1), filter .3s; }
+.sf-leaf.is-peek .sf-body { transform: translateX(9px); }
+.sf-leaf.is-sel .sf-body { transform: translateX(13px); }
+.sf-paper { fill: var(--paper); }
+.sf-img { transition: opacity .4s; }
+.sf-stick { fill: var(--lacquer); }
+.sf-valley { stop-color: var(--ink); stop-opacity: .34; }
+.sf-flat { stop-color: var(--ink); stop-opacity: 0; }
+.sf-crest { stop-color: var(--paper); stop-opacity: .16; }
+.sf-shade { fill: var(--ink); opacity: .08; }
+.sf-band { fill: var(--c); }
+.sf-edge { fill: none; stroke: var(--paper); stroke-width: .7; stroke-linejoin: round; }
+.sf-slip { fill: var(--ink); opacity: .74; transition: opacity .3s; }
+.sf-label { fill: var(--paper); letter-spacing: .02em; pointer-events: none; }
+/* los demás gajos se apagan un poco mientras uno se asoma o está elegido */
+.sf-fan:has(.is-peek) .sf-leaf:not(.is-peek):not(.is-sel) .sf-img { opacity: .55; }
+.sf-leaf.is-sel .sf-edge { stroke: var(--c); stroke-width: 1.4; }
+.sf-leaf:focus-visible .sf-edge { stroke: var(--accent); stroke-width: 2.2; }
+/* plegado, las tiras sobrarían: se ven todas encimadas */
+.sf.is-folded .sf-tag { opacity: 0; }
+.sf-tag { transition: opacity .25s .2s; }
+.sf-rivet { cursor: pointer; outline: none; }
+.sf-rivet-disc { fill: var(--lacquer); }
+.sf-rivet-ring { fill: none; stroke: var(--paper); stroke-opacity: .35; stroke-width: .6; }
+.sf-seal { fill: var(--accent); }
+.sf-rivet:hover .sf-rivet-ring { stroke-opacity: .8; }
+.sf-rivet:focus-visible .sf-rivet-disc { stroke: var(--accent); stroke-width: 2; }
+@media (prefers-reduced-motion: reduce) {
+  .sf-body, .sf-img, .sf-tag, .sf-slip { transition: none; }
+}

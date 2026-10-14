@@ -1,0 +1,93 @@
+/* iroFactory · la travesía. Misma piel que la galería (gallery.css); aquí, la lectura larga. */
+.tv-doc { position: relative; z-index: 1; margin-left: var(--fan-side); padding: clamp(32px, 6vh, 72px) clamp(20px, 5vw, 80px) 24px; max-width: 1060px; }
+.tv-doc > * { max-width: 900px; }
+.tv-doc p, .tv-doc li { max-width: 68ch; }
+.tv-doc a:not(.st-btn) { color: var(--text); text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.tv-doc code { font: 400 .88em var(--mono); background: color-mix(in oklab, var(--bg2) 80%, transparent); padding: 1px 5px; border-radius: 4px; }
+.tv-nojs { color: var(--text2); }
+html.js .tv-nojs { display: none; }
+
+/* ── Portada ── */
+.tv-kicker { display: flex; align-items: center; gap: 10px; color: var(--text2); font-size: 15px; }
+.tv-kicker::before { content: ''; width: 26px; height: 6px; border-radius: 3px; background: var(--accent); }
+.tv-title { font: 700 clamp(40px, 6vw, 84px)/1.05 var(--serif); margin: 12px 0 18px; letter-spacing: -.01em; }
+.tv-lead { font: 500 clamp(18px, 1.7vw, 22px)/1.6 var(--serif); }
+.tv-stats { display: flex; flex-wrap: wrap; gap: 14px 36px; margin: 32px 0; padding: 20px 0; border-block: 1px solid var(--border); }
+.tv-stats div { display: flex; flex-direction: column-reverse; }
+.tv-stats dd { font: 700 clamp(30px, 3vw, 40px)/1.1 var(--serif); }
+.tv-stats dt { color: var(--text2); font-size: 14px; }
+.tv-toc ol { columns: 2; column-gap: 32px; padding-left: 1.6em; color: var(--text2); }
+.tv-toc li { padding: 3px 0; break-inside: avoid; }
+.tv-toc a { font-size: 16px; }
+
+/* ── Capítulos ── */
+.tv-ch { padding: clamp(48px, 9vh, 96px) 0 0; scroll-margin-top: calc(var(--top) + 8px); }
+.tv-ch > * + * { margin-top: 1.05em; }
+.tv-num { font: 400 14px var(--mono); color: var(--text2); }
+.tv-ch h2 { font: 700 clamp(28px, 3.2vw, 42px)/1.15 var(--serif); margin-top: 6px; }
+.tv-ch h3 { font: 700 19px/1.3 var(--serif); }
+.tv-ch p { font-size: 17px; line-height: 1.75; }
+.tv-fig { margin-top: 28px !important; }
+
+.tv-seeds { list-style: none; display: grid; gap: 2px; }
+.tv-seeds li { display: grid; grid-template-columns: 92px 104px 1fr; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px dashed var(--border); max-width: none; }
+.tv-seeds time { font: 400 14px var(--mono); color: var(--text2); }
+.tv-seed-name { font: 700 17px var(--serif); display: flex; align-items: center; gap: 8px; }
+.tv-seed-name::before { content: ''; width: 9px; height: 9px; border-radius: 2px; background: var(--c); transform: rotate(45deg); flex: none; }
+.tv-seeds q { font: 400 14px var(--mono); color: var(--text2); quotes: '«' '»'; }
+
+.tv-audit { list-style: none; display: grid; gap: 8px; }
+.tv-audit li { display: grid; grid-template-columns: 26px 1fr; gap: 14px; align-items: baseline; font-size: 16px; }
+.tv-audit .n { font: 700 26px/1 var(--serif); color: var(--accent); min-width: 22px; text-align: right; }
+
+.tv-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-top: 24px !important; }
+.tv-strip img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; }
+
+.tv-methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; }
+.tv-methods > div { padding-top: 14px; border-top: 2px solid var(--border); }
+.tv-methods p { font-size: 16px; margin-top: 6px; }
+
+.tv-insp { display: grid; gap: 16px; }
+.tv-insp div { display: grid; grid-template-columns: 180px 1fr; gap: 20px; padding-top: 14px; border-top: 1px solid var(--border); }
+.tv-insp dt { font: 700 16px var(--serif); }
+.tv-insp dd { color: var(--text2); font-size: 16px; line-height: 1.7; }
+
+/* ── Doce pieles ── */
+.tv-piece { padding-top: clamp(40px, 7vh, 72px); scroll-margin-top: calc(var(--top) + 8px); }
+.tv-piece-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; color: var(--text2); font-size: 14px; }
+.tv-piece-kicker::before { content: ''; width: 26px; height: 6px; border-radius: 3px; background: var(--t); }
+.tv-piece-kicker span { font-family: var(--mono); }
+.tv-piece-kicker q { font: 400 13px var(--mono); quotes: '«' '»'; }
+.tv-ch .tv-piece-name { font-size: clamp(44px, 5.4vw, 76px); line-height: 1.05; margin: 8px 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tv-piece-purpose { font: 500 19px var(--serif); }
+.tv-piece-fig { margin: 18px 0 0; }
+.tv-piece-then { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 28px; margin-top: 22px; }
+.tv-piece-then dt { font: 700 15px var(--serif); display: flex; align-items: center; gap: 8px; }
+.tv-piece-then dt::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--t); transform: rotate(45deg); }
+.tv-piece-then dd { color: var(--text2); font-size: 15px; line-height: 1.65; margin-top: 4px; }
+
+/* ── La marca ── */
+.tv-brand { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: center; }
+.tv-brand-art { display: grid; gap: 18px; justify-items: center; padding: 24px; border-radius: 14px; background: var(--paper); border: 1px solid var(--border); }
+.tv-brand-art svg { width: 100%; max-width: 200px; height: auto; }
+.tv-brand-art svg + svg { max-width: 110px; }
+.tv-next { display: grid; gap: 8px; padding-left: 1.2em; }
+.tv-next li { font-size: 17px; }
+
+.tv .gl-foot { margin-left: var(--fan-side); }
+
+@media (max-width: 1100px) {
+  .tv-methods, .tv-piece-then { grid-template-columns: minmax(0, 1fr); }
+  .tv-insp div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .tv-brand { grid-template-columns: minmax(0, 1fr); }
+  .tv-brand-art { max-width: 320px; }
+}
+@media (max-width: 760px) and (orientation: portrait) {
+  .tv-doc { margin-left: 0; padding: 28px 16px 8px; }
+  .tv .gl-foot { margin-left: 0; padding-bottom: 32px; }
+  .tv-toc ol { columns: 1; }
+  .tv-seeds li { grid-template-columns: 1fr; gap: 2px; }
+  .tv-strip { grid-template-columns: repeat(3, 1fr); }
+  /* el abanico entra en la lectura, sin quedarse fijo */
+  .tv-fan.gl-fan { position: relative; inset: auto; height: auto; width: 100%; aspect-ratio: 228 / 134; padding: 0; margin-top: 24px; background: none; }
+}

@@ -1,0 +1,81 @@
+/* iroFactory · galería. Concepto: el abanico de la marca. Cada gajo es un
+   tema; papel de día, tinta de noche, y el sello en bermellón (朱). */
+@property --t { syntax: '<color>'; inherits: true; initial-value: #C84028; }
+
+body.gl {
+  --bg: #F1EEE7; --bg2: #E7E2D7; --text: #1B1A24; --text2: #57525F; --border: #CEC6B6;
+  --accent: #B0361C; --lacquer: #2B1D1A; --paper: #F6F3EC; --ink: #1B1A24;
+  --top: 60px; --fan-side: min(calc((100dvh - var(--top)) * .579), 46vw); --fan-up: min(calc(100vw * .579), 44dvh);
+  --serif: 'Shippori Mincho', serif; --sans: 'Zen Kaku Gothic New', sans-serif; --mono: 'Fira Code', monospace;
+  --gx: 40px; --gy: calc(var(--top) + (100dvh - var(--top)) / 2);
+  min-height: 100dvh;
+  color: var(--text); font: 400 16px/1.65 var(--sans);
+  background:
+    radial-gradient(circle at var(--gx) var(--gy), color-mix(in oklab, var(--t) 26%, transparent), transparent calc(var(--fan-side) * 1.5)),
+    var(--bg);
+  background-attachment: fixed;
+  transition: --t .6s ease, color .4s;
+}
+body.gl.dark {
+  --bg: #14131A; --bg2: #1D1B25; --text: #ECE7DD; --text2: #A6A0AF; --border: #34303F;
+  --accent: #F2765A; --lacquer: #4A2620; --paper: #EFEBE2; --ink: #121118;
+}
+/* grano de papel */
+body.gl::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .5; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .09 0 0 0 0 .12 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body.gl.dark::before { mix-blend-mode: screen; opacity: .35; filter: invert(1); }
+
+/* ── Cabecera ── */
+.gl-top {
+  position: fixed; inset: 0 0 auto; z-index: 30; height: var(--top);
+  display: flex; align-items: center; gap: clamp(12px, 3vw, 32px); padding: 0 clamp(16px, 3vw, 32px);
+  background: color-mix(in oklab, var(--bg) 97%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+}
+.gl-brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
+.gl-brand-mark svg { display: block; width: 38px; height: auto; }
+.gl-word { font: 700 21px/1 var(--serif); letter-spacing: .01em; }
+.gl-nav { display: flex; gap: clamp(10px, 2.4vw, 26px); margin-left: auto; }
+.gl-nav a { color: var(--text2); text-decoration: none; font-size: 15px; padding: 6px 2px; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+.gl-nav a:hover { color: var(--text); }
+.gl-nav a[aria-current] { color: var(--text); border-color: var(--accent); }
+.gl-mode {
+  font: 500 14px/1 var(--sans); color: var(--text); background: transparent; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 999px; padding: 9px 16px; min-height: 36px; transition: border-color .2s, background .2s;
+}
+.gl-mode:hover { border-color: var(--text2); }
+.gl-mode:active { transform: translateY(1px); }
+
+/* ── Abanico ── */
+.gl-main { position: relative; z-index: 1; padding-top: var(--top); }
+.gl-fan { position: fixed; z-index: 10; left: 0; top: var(--top); bottom: 0; width: var(--fan-side); padding: 12px 0 12px 22px; }
+.gl-stage, .gl-foot { margin-left: var(--fan-side); }
+
+/* ── Sin JS ── */
+.gl-list { margin: 48px auto; max-width: 640px; padding: 0 24px; display: grid; gap: 10px; font-size: 18px; }
+.gl-list a { font: 700 22px var(--serif); color: var(--text); }
+html.js .gl-list, .gl-stage[hidden], html:not(.js) .gl-mode { display: none; }
+html:not(.js) .gl-foot { margin-left: 0; text-align: center; }
+
+.gl-foot { position: relative; z-index: 1; padding: 24px clamp(20px, 4vw, 64px) 32px; color: var(--text2); font-size: 14px; }
+.gl-foot a { color: inherit; }
+
+/* ── Teléfono en vertical: el abanico abre hacia arriba, abajo y fijo ── */
+@media (max-width: 760px) and (orientation: portrait) {
+  body.gl { --top: 56px; --gx: 50%; --gy: 100dvh; }
+  .gl-word { font-size: 18px; }
+  .gl-brand-mark svg { width: 32px; }
+  .gl-nav a[href^="https"] { display: none; }
+  .gl-fan {
+    top: auto; right: 0; width: auto; height: var(--fan-up); padding: 0 8px 6px;
+    background: linear-gradient(to top, var(--bg) 62%, color-mix(in oklab, var(--bg) 0%, transparent));
+  }
+  .gl-stage, .gl-foot { margin-left: 0; }
+  .gl-foot { padding-bottom: calc(var(--fan-up) + 20px); }
+}
+@media (max-width: 420px) {
+  .gl-nav { gap: 12px; }
+  .gl-mode { padding: 9px 12px; }
+}

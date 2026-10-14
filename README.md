@@ -44,7 +44,9 @@ A personal collection of 12 self-contained HTML design themes for project docume
 
 ```
 iroFactory/
-├── iroFactory_gallery.html
+├── index.html (galería)
+├── travesia/
+│   └── index.html (cómo se hizo)
 ├── apolo/
 │   └── index.html
 ├── bookworm/
@@ -73,7 +75,7 @@ iroFactory/
 
 ## Gallery
 
-Live preview at **[remih06.github.io/iroFactory](https://remih06.github.io/iroFactory/iroFactory_gallery.html)**
+Live preview at **[remih06.github.io/iroFactory](https://remih06.github.io/iroFactory/)**
 
 ## License
 

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<!--
+iroFactory · la travesía · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 Hex (@RemiH06) · MIT License (ver LICENSE en el repo).
+El relato vive aquí; los temas salen de assets/data/gallery/ y el abanico de
+shared/components/sensu-fan/. Fuente de los hechos: steps.md y el historial de git.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iroFactory · la travesía</title>
+<meta name="description" content="Cómo se hizo iroFactory: doce temas de documentación nacidos en cinco días de mayo y rehechos durante un otoño. Propósito, decisiones, métodos, inspiraciones y el antes y ahora de cada tema.">
+<link rel="icon" type="image/svg+xml" href="../assets/logo/favicon.svg">
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=shippori-mincho:500,700|zen-kaku-gothic-new:400,500,700|fira-code:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/core/core.css">
+<link rel="stylesheet" href="../gallery.css">
+<link rel="stylesheet" href="../shared/components/sensu-fan/sensu-fan.css">
+<link rel="stylesheet" href="../shared/components/gallery/stage.css">
+<link rel="stylesheet" href="../shared/components/gallery/then-now.css">
+<link rel="stylesheet" href="travesia.css">
+</head>
+<body class="gl tv">
+
+<header class="gl-top">
+  <a class="gl-brand" href="../" aria-label="iroFactory · galería">
+    <span class="gl-brand-mark" id="gl-mark" aria-hidden="true"></span>
+    <span class="gl-word">iroFactory</span>
+  </a>
+  <nav class="gl-nav" aria-label="Secciones">
+    <a href="../">Galería</a>
+    <a href="./" aria-current="page">Travesía</a>
+    <a href="https://github.com/RemiH06/iroFactory" rel="noopener">Repositorio <span aria-hidden="true">↗</span></a>
+  </nav>
+  <button class="gl-mode" type="button" data-theme-toggle aria-label="Cambiar a tinta">tinta</button>
+</header>
+
+<main class="gl-main tv-main">
+  <div class="gl-fan tv-fan" id="gl-fan"></div>
+
+  <article class="tv-doc">
+
+    <header class="tv-hero">
+      <p class="tv-kicker">La travesía</p>
+      <h1 class="tv-title">Cómo se hizo iroFactory</h1>
+      <p class="tv-lead">Doce pieles de documentación: nacieron en cinco días de mayo y se rehicieron durante un otoño entero. Aquí están el propósito, las decisiones que se tomaron y por qué, los métodos, lo que las inspiró y cómo se ve cada una antes y ahora.</p>
+      <dl class="tv-stats">
+        <div><dt>temas</dt><dd>12</dd></div>
+        <div><dt>commits</dt><dd>98</dd></div>
+        <div><dt>componentes compartidos</dt><dd>41</dd></div>
+        <div><dt>modelos 3D</dt><dd>33</dd></div>
+        <div><dt>días de trabajo</dt><dd>17</dd></div>
+      </dl>
+      <nav class="tv-toc" aria-label="Capítulos">
+        <ol>
+          <li><a href="#para-que">Para qué existe</a></li>
+          <li><a href="#mayo">Mayo · doce temas en cinco días</a></li>
+          <li><a href="#agosto">Agosto · la auditoría</a></li>
+          <li><a href="#septiembre">Septiembre · apolo abre la puerta</a></li>
+          <li><a href="#prouns">Los prouns</a></li>
+          <li><a href="#atomizar">Octubre · atomizar</a></li>
+          <li><a href="#vara">La vara · tarot</a></li>
+          <li><a href="#metodos">Métodos</a></li>
+          <li><a href="#inspiraciones">Inspiraciones</a></li>
+          <li><a href="#pieles">Doce pieles, antes y ahora</a></li>
+          <li><a href="#marca">La marca</a></li>
+          <li><a href="#sigue">Lo que sigue</a></li>
+        </ol>
+      </nav>
+    </header>
+
+    <section class="tv-ch" id="para-que" aria-labelledby="h-para-que">
+      <p class="tv-num">01</p>
+      <h2 id="h-para-que">Para qué existe</h2>
+      <p>Cada proyecto propio necesita documentación, y no todos piden lo mismo. Un juego no se explica como un modelo de datos, ni una herramienta de terminal como una edición comentada de un himno griego. En lugar de una piel genérica para todo, iroFactory tiene una por tipo de proyecto: <strong>doce temas</strong>, cada uno con su paleta, su tipografía, su fondo y, sobre todo, su idea.</p>
+      <p>La regla que gobierna la colección es la frase que justifica: cada tema parte de una línea ligada a su contenido (un gabinete de historia natural para cartas y decisiones, un libro de texto en el pizarrón para matemáticas, una terminal de neón para herramientas), y de esa frase salen el color, la letra y el movimiento. Sin ella, cualquier paleta sería intercambiable con cualquier otra.</p>
+      <p>Con el tiempo cada tema ganó tres cosas además de su fondo: una <strong>navegación</strong> que es un objeto del concepto, un <strong>juguete</strong> que se puede tocar y una <strong>plantilla</strong> de documentación que sirve de verdad para su tipo de proyecto. El abanico de la izquierda los reúne a los doce; cada gajo lleva a su historia.</p>
+    </section>
+
+    <section class="tv-ch" id="mayo" aria-labelledby="h-mayo">
+      <p class="tv-num">02</p>
+      <h2 id="h-mayo">Mayo · doce temas en cinco días</h2>
+      <p>Del 10 al 14 de mayo de 2026 salió un tema por commit, y cada mensaje guardó de dónde vino la idea. Algunos tienen una fuente clara; otros, la honestidad de no tenerla.</p>
+      <ol class="tv-seeds" id="tv-seeds"></ol>
+      <p>Cada tema era un solo archivo HTML con todo dentro: estilos, scripts y, más tarde, imágenes en base64. Eso los hacía portátiles. Los patrones difíciles se calibraron aparte, en sandboxes que nunca entraron al repositorio: la rejilla de triángulos de sherry (dos versiones y una orgánica), el asanoha de disco, la madera agujereada y el texto de bookworm, el art deco de tarot y las cortinas de ludus.</p>
+      <p>La galería de entonces era una barra de pastillas, cada una en el color de su tema; al pasar el cursor cambiaba todo el entorno y al hacer clic se fijaba, con el tema cargado en un marco y una ficha en inglés al lado.</p>
+      <figure class="tv-fig" id="tv-gallery-tn"></figure>
+    </section>
+
+    <section class="tv-ch" id="agosto" aria-labelledby="h-agosto">
+      <p class="tv-num">03</p>
+      <h2 id="h-agosto">Agosto · la auditoría</h2>
+      <p>Antes de tocar nada se contó lo que había, con búsquedas en los trece archivos y no de memoria. El resultado fue humilde:</p>
+      <ul class="tv-audit">
+        <li><span class="n">0</span><span>archivos con <code>meta description</code></span></li>
+        <li><span class="n">0</span><span>con un <code>&lt;h1&gt;</code> real (el título era un <code>div</code>)</span></li>
+        <li><span class="n">0</span><span>con atributos <code>aria-*</code> o estados <code>:focus-visible</code></span></li>
+        <li><span class="n">0</span><span>que respetaran <code>prefers-reduced-motion</code>: todos animaban sin parar</span></li>
+        <li><span class="n">1</span><span>marco con <code>sandbox</code> que no aislaba nada (<code>allow-scripts</code> y <code>allow-same-origin</code> juntos)</span></li>
+      </ul>
+      <p>El plan salió de ahí: primero accesibilidad y metadatos, después un piloto de shaders solo donde ganaban algo (el agua de shui, la lava de forge, el bloom de sherry) y, se dijo entonces, «no se va a rehacer el diseño visual». Se había pasado la lista de señales de diseño genérico por la regla de la frase justificable y los doce la aprobaban.</p>
+      <p>Esa frase no sobrevivió a septiembre.</p>
+    </section>
+
+    <section class="tv-ch" id="septiembre" aria-labelledby="h-septiembre">
+      <p class="tv-num">04</p>
+      <h2 id="h-septiembre">Septiembre · apolo abre la puerta</h2>
+      <p>El trabajo pasó a Claude Code con un documento de traspaso y empezó por apolo. Lo que iba a ser una capa de animación terminó en el primer rework completo: una portada con el proun del tema, columnas hechas con tiras de esa misma imagen, Light Rays desde arriba y Ripple Distortion sobre la foto.</p>
+      <p>Ahí se fijó la forma de trabajar. Los efectos de React Bits se portaron leyendo su código fuente real en GitHub (el sitio no deja leer nada sin JavaScript), y cuando el original dependía de algo que no cabía, se reconstruyó el mecanismo en WebGL crudo en vez de traer la librería. Cada cambio se midió antes de mostrarse: la tormenta de pétalos de la apertura llegó a pedirse de mil y se probó de tres mil (23 cuadros por segundo, con tirones), y quedó en trescientos por cinco a 61.</p>
+      <p>También se aprendió a perder. Dos efectos de pantalla completa se veían apagados porque mezclaban su color con un búfer vacío: el bug estaba en una línea copiada sin pensar, y corregirlo los hizo visibles. Uno de ellos, Beams, siguió sin convencer después del arreglo y de cambiar la paleta, así que se quitó. La lección quedó escrita: si tras corregir un bug real el efecto sigue sin verse, cortarlo es una respuesta válida.</p>
+      <p>Y los textos dejaron de ser temáticos. La mitología, los oráculos y las musas salieron de la copia de apolo, que pasó a describir decisiones reales de diseño sin perder el tono. Los temas visten el contenido; no lo inventan.</p>
+    </section>
+
+    <section class="tv-ch" id="prouns" aria-labelledby="h-prouns">
+      <p class="tv-num">05</p>
+      <h2 id="h-prouns">Los prouns</h2>
+      <p>Cada tema tiene una imagen de bienvenida hecha a mano por Hex: un collage en el espíritu de los <em>Proun</em> de El Lissitzky, con capas recortadas, fotos tratadas y geometría encimada, en una versión clara y otra oscura. Hay radiografías de peces para shui, una mariposa monarca en duotono para odysseus, apuntes de cálculo para lambda, una protoboard y agallas de hongo para sherry.</p>
+      <p>Los prouns son el papel del abanico: cada gajo lleva impreso el de su tema. forge es la excepción y usa en duotono la protoboard de sherry, la misma que su página dibuja en ASCII.</p>
+      <div class="tv-strip" id="tv-strip" aria-hidden="true"></div>
+    </section>
+
+    <section class="tv-ch" id="atomizar" aria-labelledby="h-atomizar">
+      <p class="tv-num">06</p>
+      <h2 id="h-atomizar">Octubre · atomizar</h2>
+      <p>Para principios de octubre los trece archivos pesaban 9.3 MB, y casi tres cuartas partes eran imágenes en base64. Las mismas utilidades (leer una variable CSS, cambiar de modo, compilar un shader, el bucle de animación) estaban copiadas en los doce temas, cada copia con su pequeña diferencia.</p>
+      <p>El 6 de octubre cayó la regla más vieja del proyecto, la de un solo archivo por tema. Cada tema quedó como <strong>contenido, piel y composición</strong>: un <code>index.html</code> con su marcado y un <code>.css</code> con sus tokens, más piezas compartidas en <code>shared/</code>, cada una con un <code>mount(opts)</code>. Las diferencias entre temas van en las opciones, nunca en copias. Las imágenes, fuentes, modelos y datos pasaron a <code>assets/</code> como archivos que el navegador guarda. Antes y después se compararon tramo por tramo de scroll, en los dos modos, y solo cambió lo que era aleatorio.</p>
+      <p>Con eso volvió lo que antes estaba descartado por peso. Three.js entró una sola vez, cargado tarde para no frenar la primera pintura, solo donde hay escena 3D de verdad: la estatua y la gliptoteca de apolo, el globo de odysseus, el mar de shui, Guadalajara de metro, el cubo de ludus, los cráneos de tarot. anime.js llegó como un único archivo, porque sus noventa módulos sueltos saturaban el servidor local. Y para probar en casa apareció <code>serve.py</code>, un servidor sin caché: con el de Python de siempre el navegador mezclaba módulos viejos y nuevos.</p>
+    </section>
+
+    <section class="tv-ch" id="vara" aria-labelledby="h-vara">
+      <p class="tv-num">07</p>
+      <h2 id="h-vara">La vara · tarot</h2>
+      <p>El 13 de octubre tarot se rehízo desde cero como un gabinete de historia natural art deco, en homenaje al museo de la Universitat de València. Diez biomas, cada uno con sus tres colores, su ave, su memento mori y sus arcanos; un tapiz de oro en relieve que se dibuja en un Worker y se guarda en caché; trece cráneos de ave escaneados por el museo en vitrinas 3D; un mazo que baraja en riffle y reparte pasado, presente y futuro; y una mano de cartas en abanico como navegación.</p>
+      <p>tarot se volvió la vara de medir. De él salió una ronda por los otros once con la misma pregunta para cada uno: qué juguete y qué plantilla le sirven a su tipo de proyecto, y qué objeto de su concepto puede ser su navegación. odysseus ganó una bitácora que calcula distancias por círculo máximo; forge, la hoja de datos de un chip real; elixir, una curva de pérdida y una tarjeta de modelo; metro, una página de estado; ludus, un documento de diseño con un simulador de dos mil partidas. La placa en relieve de tarot pasó a ser compartida: hoy es también el paño de mármol de apolo y la mesa de cartas de odysseus.</p>
+    </section>
+
+    <section class="tv-ch" id="metodos" aria-labelledby="h-metodos">
+      <p class="tv-num">08</p>
+      <h2 id="h-metodos">Métodos</h2>
+      <div class="tv-methods">
+        <div>
+          <h3>Concepto antes que color</h3>
+          <p>Primero la frase, después la paleta. Antes de quitar algo que parece decoración se pregunta si es la estética completa del concepto (el neón de sherry, el gis de lambda) o un adorno suelto.</p>
+        </div>
+        <div>
+          <h3>Leer la fuente, no el anuncio</h3>
+          <p>Cada efecto ajeno se estudió en su código real. Si la librería no cabía, se reconstruyó el mecanismo y se dijo así: reconstrucción, no traducción.</p>
+        </div>
+        <div>
+          <h3>Verificar con números</h3>
+          <p>Contraste WCAG medido en píxeles, cuadros por segundo, Chrome con la GPU real, teléfono a 390 y 360 px, horizontal a 844 × 390, movimiento reducido a cero cuadros y la página legible sin JavaScript.</p>
+        </div>
+        <div>
+          <h3>Licencias leídas una por una</h3>
+          <p>Cada fuente, modelo y foto entra solo con licencia abierta o explícita, y queda en los avisos de terceros. Se descartaron fuentes de uso personal, demos y archivos sin autor; un Apolo en 3D con licencia no comercial cedió su lugar a otro CC BY.</p>
+        </div>
+        <div>
+          <h3>Reglas pequeñas, sin excepción</h3>
+          <p>Fuentes desde Bunny Fonts, ningún color en negro o blanco puros, puntos medios en lugar de guiones largos, tokens en <code>body</code> y en su modo alterno.</p>
+        </div>
+        <div>
+          <h3>Todo queda escrito</h3>
+          <p>Una bitácora registra cada decisión con su porqué, y cada paso cerrado es un checkpoint de una línea. El código se escribió en conversación con Claude (en claude.ai hasta agosto y en Claude Code desde septiembre); los conceptos, los prouns y la última palabra sobre cada tema son de Hex.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tv-ch" id="inspiraciones" aria-labelledby="h-inspiraciones">
+      <p class="tv-num">09</p>
+      <h2 id="h-inspiraciones">Inspiraciones</h2>
+      <p>Nada de esto salió de la nada. Estas son las fuentes, con su crédito completo en el pie de cada tema y en los avisos de terceros.</p>
+      <dl class="tv-insp">
+        <div><dt>Efectos y movimiento</dt><dd>React Bits (fondos, texto y componentes portados a mano), los ejemplos de motion.dev, la simulación de fluidos de Pavel Dobryakov, los efectos de distorsión de Codrops, anime.js y Three.js.</dd></div>
+        <div><dt>Riffs de Figma</dt><dd>La hélice de vidrio de @brettmcm (lambda), las corcholatas de @singhshristi y los bentos de @dd_uiux (disco), los cubos de hielo de @helorebyron (shui), las ciudades de @ariantaheri (odysseus), el filtro con marcas de corte de @vdwjulien (ludus) y, para forge, la onda eléctrica de @hardikgondhiya, las cintas de tormenta de @nellucci y el ASCII de @quanhoangindex.</dd></div>
+        <div><dt>Museos y escaneos</dt><dd>Los cráneos de ave del MUVHN, las esculturas del SMK, el Cleveland Museum of Art y el BCDH, los peces animados de Quaternius, los objetos de Poly Pizza y las radiografías de peces de Sandra Raredon para el Smithsonian.</dd></div>
+        <div><dt>Mapas y datos</dt><dd>OpenStreetMap para las calles de los puertos y de Guadalajara, Natural Earth para el mapamundi, Simple Icons para las herramientas de lambda.</dd></div>
+        <div><dt>Letras</dt><dd>Bunny Fonts para casi todo, y archivos de ffonts.net con licencia revisada: Nick's Fonts, Ray Larabie, Manfred Klein, Cabaret Voltaire y otros.</dd></div>
+        <div><dt>Casa propia</dt><dd>La documentación de tanGo (de donde nació metro), la estructura de Proun, la especie de Tamauijetto que vive en sherry, la idea del Nixie hex del vault de forge y los apuntes del CETI y del ITESO que llenan el formulario de lambda.</dd></div>
+      </dl>
+    </section>
+
+    <section class="tv-ch tv-pieles" id="pieles" aria-labelledby="h-pieles">
+      <p class="tv-num">10</p>
+      <h2 id="h-pieles">Doce pieles, antes y ahora</h2>
+      <p>Cada tema con el commit con que nació, cómo era en mayo y cómo es hoy. Arrastra la cortina para comparar, o mira el tema en vivo. El abanico lleva directo a cada uno.</p>
+      <p class="tv-nojs">Sin JavaScript no se arman las comparaciones; los temas están en la <a href="../">galería</a>.</p>
+      <div id="tv-pieces"></div>
+    </section>
+
+    <section class="tv-ch" id="marca" aria-labelledby="h-marca">
+      <p class="tv-num">11</p>
+      <h2 id="h-marca">La marca</h2>
+      <div class="tv-brand">
+        <div class="tv-brand-art" id="tv-brand-art" aria-hidden="true"></div>
+        <div>
+          <p><strong>色</strong> se lee <em>iro</em>: color. La marca es un sello con ese kanji calado y dos objetos de doce piezas, una por tema. El <strong>Sensu</strong>, el abanico plegable, es el logo; el <strong>Mazo</strong>, doce cartas abiertas sobre una esquina, es el ícono de cada pestaña.</p>
+          <p>La marca está escrita como código: el kanji va en curvas (de Shippori Mincho, OFL) y el sello es una sola ruta, así que sirve en un solo color sobre cualquier fondo. La galería convirtió el Sensu en navegación, y cuenta los gajos de los datos: cuando lleguen temas nuevos, el abanico tendrá más.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tv-ch" id="sigue" aria-labelledby="h-sigue">
+      <p class="tv-num">12</p>
+      <h2 id="h-sigue">Lo que sigue</h2>
+      <ul class="tv-next">
+        <li><strong>rem</strong> · gótico, oscuro y vampírico, para creación artística.</li>
+        <li><strong>mirai</strong> · publicidad con temática japonesa: colores saturados, futurista, minimalista y geométrico.</li>
+        <li><strong>extract</strong> · fantasía, para un libro.</li>
+      </ul>
+      <p>Mientras tanto, los doce siguen en revisión: falta elegir cómo se gana en el tablero de ludus y sus fuentes definitivas, y tarot tiene una lista corta de detalles. La travesía sigue.</p>
+    </section>
+
+  </article>
+</main>
+
+<footer class="gl-foot">
+  <p>Hecho a mano por Hex (<a href="https://github.com/RemiH06" rel="noopener">@RemiH06</a>) · MIT · <a href="https://github.com/RemiH06/iroFactory/blob/main/THIRD_PARTY_NOTICES.md" rel="noopener">avisos de terceros</a> · <a href="../">volver a la galería</a></p>
+</footer>
+
+<script type="module">
+import { initTheme, reduceMotion } from '../shared/core/core.js';
+document.documentElement.classList.add('js');
+import { sensu, mazo } from '../shared/components/brand/brand.js';
+import { mount as fan } from '../shared/components/sensu-fan/sensu-fan.js';
+import { loadTitleFonts } from '../shared/components/gallery/stage.js';
+import { mount as thenNow } from '../shared/components/gallery/then-now.js';
+import { THEMES } from '../assets/data/gallery/themes.js';
+import { HISTORY } from '../assets/data/gallery/history.js';
+
+initTheme({ label: alt => (alt ? 'papel' : 'tinta'), aria: alt => `Cambiar a ${alt ? 'papel' : 'tinta'}` });
+document.getElementById('gl-mark').innerHTML = sensu({ mono: true, ink: 'currentColor', title: '' });
+document.getElementById('tv-brand-art').innerHTML = sensu() + mazo();
+const fonts = loadTitleFonts(THEMES, '../');
+const R = '../';
+const fecha = d => new Date(d + 'T12:00').toLocaleDateString('es-MX', { day: 'numeric', month: 'long' });
+
+// semillas de mayo, en orden de nacimiento
+const seeds = [...THEMES].sort((a, b) => a.born.localeCompare(b.born));
+document.getElementById('tv-seeds').innerHTML = seeds.map(t =>
+  `<li style="--c:${t.color}"><time datetime="${t.born}">${fecha(t.born)}</time><span class="tv-seed-name">${t.id}</span><q lang="en">${HISTORY[t.id].seed}</q></li>`).join('');
+
+// tira de prouns
+document.getElementById('tv-strip').innerHTML = THEMES.map(t =>
+  `<img src="${R}${t.proun.light}" alt="" loading="lazy" decoding="async"${t.proun.tint ? ` style="filter:url(#sf-tint-${t.id})"` : ''}>`).join('');
+
+// la galería, antes y ahora
+thenNow({ host: document.getElementById('tv-gallery-tn'), id: 'la galería', before: R + 'assets/img/travesia/galeria-antes.webp', after: R + 'assets/img/travesia/galeria-ahora.webp', beforeLabel: 'mayo', afterLabel: 'octubre', open: R });
+
+// doce pieles
+const pieces = document.getElementById('tv-pieces');
+THEMES.forEach((t, i) => {
+  const h = HISTORY[t.id];
+  const s = document.createElement('article');
+  s.className = 'tv-piece'; s.id = 'piel-' + t.id; s.style.setProperty('--t', t.color);
+  s.innerHTML = `
+    <header>
+      <p class="tv-piece-kicker"><span>${String(i + 1).padStart(2, '0')}</span> · nació el ${fecha(t.born)} · <q lang="en">${h.seed}</q></p>
+      <h3 class="tv-piece-name" style="font-family:'${t.title.family}', 'Shippori Mincho', serif;font-weight:${t.title.weight || 400}">${t.id}</h3>
+      <p class="tv-piece-purpose">Para documentar: ${t.purpose.toLowerCase()}</p>
+    </header>
+    <figure class="tv-piece-fig"></figure>
+    <dl class="tv-piece-then">
+      <div><dt>En mayo</dt><dd>${h.before}</dd></div>
+      <div><dt>Ahora</dt><dd>${t.pitch}</dd></div>
+      <div><dt>Juguete y plantilla</dt><dd>${t.toy} ${t.template}</dd></div>
+    </dl>`;
+  pieces.appendChild(s);
+  thenNow({ host: s.querySelector('figure'), id: t.id, before: `${R}assets/img/travesia/${t.id}-antes.webp`, after: `${R}assets/img/travesia/${t.id}-ahora.webp`, beforeLabel: 'mayo', afterLabel: 'octubre', live: `${R}${t.id}/index.html`, open: `${R}${t.id}/` });
+});
+
+// el abanico lleva a cada piel; al leer, el gajo sigue a la piel en pantalla
+// en un teléfono en vertical el abanico no se queda fijo: abre hacia arriba al inicio de «Doce pieles»
+const narrow = matchMedia('(max-width: 760px) and (orientation: portrait)');
+const fanHost = document.getElementById('gl-fan');
+const placeFan = () => {
+  if (narrow.matches) pieces.before(fanHost); else document.querySelector('.tv-main').prepend(fanHost);
+  sf?.setOrient(narrow.matches ? 'up' : 'side');
+};
+let sf = null;
+placeFan();
+narrow.addEventListener('change', placeFan);
+sf = fan({
+  host: fanHost, themes: THEMES, root: R,
+  orient: narrow.matches ? 'up' : 'side',
+  onPeek: t => document.body.style.setProperty('--t', (t || THEMES[0]).color),
+  onSelect: (t, user) => {
+    document.body.style.setProperty('--t', t.color);
+    if (user) document.getElementById('piel-' + t.id).scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
+  },
+});
+fonts.then(() => sf.refit());
+document.fonts.addEventListener('loadingdone', () => sf.refit());
+const spy = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) sf.select(e.target.id.slice(5)); }), { rootMargin: '-45% 0px -50% 0px' });
+pieces.querySelectorAll('.tv-piece').forEach(p => spy.observe(p));
+</script>
+</body>
+</html>

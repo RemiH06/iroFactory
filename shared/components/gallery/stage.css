@@ -1,0 +1,74 @@
+/* Galería · escenario del tema elegido. Lee --t (color del gajo) y los tokens de la galería. */
+.gl-stage {
+  position: relative; z-index: 1;
+  display: grid; gap: 22px 40px; align-content: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  grid-template-areas: "head view" "pitch view" "traits traits" "meta meta" "step step";
+  padding: clamp(28px, 5vh, 56px) clamp(20px, 4vw, 64px) 24px;
+  max-width: 1280px;
+}
+.st-head { grid-area: head; align-self: end; }
+.st-kicker { display: flex; align-items: center; gap: 10px; color: var(--text2); font-size: 14px; }
+.st-kicker::before { content: ''; width: 26px; height: 6px; border-radius: 3px; background: var(--t); flex: none; }
+.st-kicker span { font-family: var(--mono); font-size: 13px; }
+.st-name { font-size: clamp(54px, 7.4vw, 120px); line-height: 1; margin: 10px 0 12px; white-space: nowrap; font-weight: 400; }
+.st-purpose { font: 500 clamp(19px, 1.8vw, 24px)/1.35 var(--serif); }
+.st-pitch { grid-area: pitch; font-size: 17px; line-height: 1.7; max-width: 46ch; }
+
+.st-view { grid-area: view; margin: 0; align-self: center; }
+.st-frame {
+  position: relative; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden;
+  background: var(--bg2); border: 1px solid var(--border);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--paper) 50%, transparent) inset, 0 18px 40px -22px color-mix(in oklab, var(--ink) 55%, transparent);
+}
+.st-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .3s; }
+.st-live { position: absolute; inset: 0; }
+.st-live iframe { position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; background: var(--bg2); }
+.st-frame.is-live .st-poster { opacity: 0; }
+.st-frame.is-loading::after {
+  content: 'cargando…'; position: absolute; left: 14px; bottom: 12px; padding: 6px 12px; border-radius: 999px;
+  font: 400 13px var(--mono); color: var(--paper); background: color-mix(in oklab, var(--ink) 78%, transparent);
+}
+.st-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.st-btn {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 18px; border-radius: 999px;
+  font: 500 15px/1 var(--sans); color: var(--text); text-decoration: none; cursor: pointer;
+  background: transparent; border: 1px solid var(--border); transition: border-color .2s, background .2s, transform .1s;
+}
+.st-btn:hover { border-color: var(--text2); }
+.st-btn:active { transform: translateY(1px); }
+.st-btn-solid { background: var(--text); color: var(--bg); border-color: var(--text); }
+.st-btn-solid:hover { background: color-mix(in oklab, var(--text) 86%, var(--t)); }
+.st-btn[aria-pressed="true"] { border-color: var(--t); }
+
+.st-traits { grid-area: traits; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 28px; padding-top: 22px; border-top: 1px solid var(--border); }
+.st-traits dt { font: 700 16px var(--serif); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.st-traits dt::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--t); transform: rotate(45deg); }
+.st-traits dd { color: var(--text2); font-size: 15px; line-height: 1.6; }
+
+.st-meta { grid-area: meta; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 32px; }
+.st-palette { display: flex; gap: 10px; list-style: none; }
+.st-palette li { display: grid; justify-items: center; gap: 4px; }
+.st-palette .sw { width: 34px; height: 34px; border-radius: 8px; box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ink) 18%, transparent); }
+.st-palette code { font: 400 12px var(--mono); color: var(--text2); }
+.st-type { font-size: 15px; }
+.st-type span:first-child { color: var(--text2); margin-right: 6px; }
+
+.st-step { grid-area: step; display: flex; justify-content: space-between; gap: 12px; padding-top: 6px; }
+.st-link {
+  font: 500 16px var(--serif); color: var(--text); background: none; border: 0; cursor: pointer;
+  padding: 8px 2px; min-height: 40px; text-decoration: underline; text-decoration-color: var(--t); text-underline-offset: 5px; text-decoration-thickness: 2px;
+}
+.st-link:hover { text-decoration-color: var(--accent); }
+
+@media (max-width: 1100px) {
+  .gl-stage { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "view" "pitch" "traits" "meta" "step"; }
+  .st-traits { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) and (orientation: portrait) {
+  .gl-stage { padding: 24px 16px 8px; gap: 18px; }
+  .st-name { font-size: clamp(48px, 15vw, 72px); }
+  .st-frame { aspect-ratio: 1; }
+  .st-palette { gap: 6px; }
+  .st-palette .sw { width: 30px; height: 30px; }
+}

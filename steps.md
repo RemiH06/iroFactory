@@ -19,7 +19,7 @@ Ronda de mejoras a los primeros temas con lo aprendido en ludus y tarot (decidid
 6e. ✅ **shui** (hecho 2026-10-14, ver «shui · ronda de mejoras» al final; falta la revisión del usuario): linaje de datos y esquemas de tablas.
 6f. ✅ **disco** (hecho 2026-10-14, ver «disco · ronda de mejoras» al final; falta la revisión del usuario): exportar tokens y banco de pruebas.
 6g. ✅ **ludus** (hecho 2026-10-14, ver «ludus · ronda de mejoras» al final; falta la revisión del usuario): documento de diseño del tablero con simulador de balance. Las fuentes de ludus siguen pendientes: las está investigando el usuario.
-7. ✅ Logo definitivo (hecho 2026-10-14, ver «logo · Mazo y Sensu» al final; falta la revisión del usuario). Sigue: galería y raíz (`index.html`: sandbox del iframe, `aria-expanded`, meta description, `<h1>`; `robots.txt`, `sitemap.xml`; decidir si se borra `CONTEXT.md`) y al final los temas nuevos rem, mirai y extract.
+7. ✅ Logo definitivo (hecho 2026-10-14, ver «logo · Mazo y Sensu» al final; falta la revisión del usuario). 8. ✅ Galería con el Sensu como navegación y página de la travesía (hecho 2026-10-14, ver «galería · el abanico y la travesía» al final; falta la revisión del usuario). Sigue en raíz: `robots.txt` y `sitemap.xml`; al final los temas nuevos rem, mirai y extract (el abanico ya cuenta los gajos de los datos). `CONTEXT.md` se fundió aquí y en CLAUDE.md (2026-10-14) y se borró.
 
 Pendientes chicos de tarot (revisados con el usuario solo en parte): orientación a mano de cada cráneo (algunos quedan con el pico hacia arriba), pips con motivos finos, relieve también en las cartas de las tiradas, cartas flotando delante del tapiz.
 
@@ -48,15 +48,15 @@ Checklist aplicado por tema: `<meta name="description">` específica, título vi
 
 Galería (`index.html`):
 
-- [ ] Sandbox del iframe: `allow-scripts allow-same-origin` → `allow-scripts`
-- [ ] `aria-label`/`aria-expanded` en el botón de colapsar sidebar
-- [ ] Meta description + `<h1>` real
+- [x] Sandbox del iframe: se quitó (páginas propias del mismo origen; `allow-scripts` solo rompía módulos y `localStorage`)
+- [x] `aria-expanded` del botón de la barra: ya no hay barra (el abanico es un `radiogroup`)
+- [x] Meta description + `<h1>` real
 
 Raíz:
 
 - [ ] `robots.txt` + `sitemap.xml`
-- [ ] `README.md`/`CONTEXT.md`: corregir referencias a `iroFactory_gallery.html` (no existe, es `index.html`)
-- [x] `CLAUDE.md` creado — `CONTEXT.md` puede borrarse cuando el usuario confirme
+- [x] `README.md`: corregir referencias a `iroFactory_gallery.html` (no existe, es `index.html`)
+- [x] `CLAUDE.md` creado; `CONTEXT.md` fundido y borrado (2026-10-14)
 
 ## Fase 2 · Piloto de shaders WebGL crudo — pendiente
 
@@ -399,6 +399,35 @@ Implementación en `buildTexture()`:
 - Verificado con Playwright en claro y oscuro: `document.fonts` confirma las 3 familias realmente cargadas (no solo listadas), `computed font-family` del body es Newsreader, cursivas (`<cite>`) se ven itálicas de verdad. `node --check` limpio, cero errores de consola.
 
 **apolo se da por terminado.** El usuario confirmó explícitamente que el siguiente rework (empezando por `sherry`) sigue el mismo flujo de trabajo, con React Bits reutilizado "en ocasiones contadas", no por default.
+
+---
+
+# Origen (mayo a agosto 2026)
+
+De `CONTEXT.md`, el traspaso de la última sesión en claude.ai (agosto 2026); fundido aquí el 2026-10-14. Es materia prima para el relato de la travesía.
+
+- **Nacimiento:** los 12 temas salieron del 10 al 14 de mayo de 2026, uno por commit y cada uno con su inspiración en el mensaje (metro de tanGo, sherry de la estética CRT, elixir del laboratorio, disco del Pardo Club, lambda «idk», ludus de Tetris, tarot de las cartas y el art deco, bookworm de un invernadero futurista, apolo de lo griego, odysseus de la cartografía, shui del mar, forge de una forja y Frankenstein). Cada uno era un solo `<tema>/<tema>_theme_demo.html` con todo inline; la galería era `iroFactory_gallery.html` (hoy `index.html`). metro nació en tres archivos (CSS, JS, HTML) y se unificó.
+- **Reglas de entonces que ya no rigen:** todo autocontenido en un archivo salvo las fuentes, y «el modo claro de ludus no se toca» (las dos cayeron con la atomización, 2026-10-06). Three.js estaba descartado por peso (~600 KB inline doce veces o por CDN); volvió el 2026-10-06 en `shared/vendor/` para escenas 3D de verdad.
+- **Sandboxes de calibración**, nunca versionados: tri_sandbox, tri_sandbox_v2, asanoha_sandbox, organic_tri_bg_sandbox, tarot_deco_sandbox, bookworm_wood_sandbox, bookworm_text_sandbox, ludus_curtain_sandbox.
+- **Auditoría de agosto** (grep sobre los 13 archivos): ninguno con meta description, `<h1>` (el título era un `div`), `aria-*`, `:focus-visible` ni `prefers-reduced-motion` (todos con rAF en bucle continuo); sin `robots.txt` ni `sitemap.xml`; el iframe de la galería con `allow-scripts allow-same-origin`, que anula el sandbox en el mismo origen; `border-left` decorativo de 2 a 6 veces por archivo (funcional en callouts, decoración en `pre`). `lang` correcto (`es` en temas, `en` en la galería). De aquí salió la Fase 1.
+- **Plan de agosto:** Fase 1.1 (accesibilidad y metadata, mecánica) y Fase 1.2 (piloto de shader en shui con WebGL crudo; si convencía, forge y sherry). Se dijo «no se va a reworkear el diseño visual» tras pasar el checklist anti-vibecode por la regla de la frase justificable; en Claude Code el rework visual terminó siendo el grueso del proyecto.
+- **Galería original:** barra lateral colapsable con 12 pastillas en el color y la letra de su tema; el hover cambia todo el entorno y el clic lo fija; carga local con 1.5 s de espera y respaldo en Pages; abre en disco. Íconos: disco ♫, metro ◼, sherry ⬡, elixir ◈, lambda λ, ludus ▦, tarot ✦, bookworm ◫, apolo ☼, odysseus ➣, shui 〰, forge ⚙.
+- **Cómo eran los temas** (para el antes y después):
+
+| Tema | Fuente | Default | Fondo original |
+|---|---|---|---|
+| `apolo` | Cinzel + Fira Code | claro | Columnas jónicas SVG (4 por pared, éntasis, estrías, volutas), rosetas, pétalos de izquierda a derecha sobre degradado de cielo; padding lateral 34% |
+| `bookworm` | Libre Baskerville + Fira Code | claro | 4 capas: triángulos isométricos, komorebi estático, lienzo SVG de madera con 20 agujeros al azar, hojas de día y lluvia de noche |
+| `disco` | Plus Jakarta Sans | claro | Asanoha + luces disco en canvas con `mix-blend-mode` multiply/screen |
+| `elixir` | Iosevka | oscuro | Grafo neuronal; los nodos se quedan con el color del pulso |
+| `forge` | Azeret Mono | oscuro | Forja: lava por los costados, chispas sin gravedad, ceniza a la derecha. Taller: arcos eléctricos de 3 capas y 3 osciloscopios apilados |
+| `lambda` | Cormorant Garamond + Fira Code | claro, cambiaba solo a oscuro al cargar | Rejilla hexagonal CSS + objetos matemáticos en canvas con doble trazo de gis |
+| `ludus` | Righteous + Fira Code | oscuro | Carpa de circo con cortinas SVG, damero carmesí y dorado, polvo dorado, reflector al azar; de día, feria en pasteles |
+| `metro` | Space Mono + DM Sans | oscuro | Grafo de nodos con aristas dinámicas; cuadrados solo rojo, amarillo y verde |
+| `odysseus` | IM Fell English + Fira Code | claro | Mesa de madera con vetas bezier, mapa inclinado al azar (±7°), agua animada, tintero y pluma, brújula que titubea buscando el norte |
+| `sherry` | JetBrains Mono | oscuro | Triángulos orgánicos (de un intento fallido de rejilla perfecta) que destellan en 7 neones; CRT opcional |
+| `shui` | Recursive (`CASL 1`) | claro | Claro: turquesa Caribe con un haz de luz y burbujas. Oscuro: casi negro con partículas bioluminiscentes |
+| `tarot` | Cinzel + Josefin Sans | claro | Lienzo art deco con 7 tipos de módulo y cartas que suben girando |
 
 ---
 
@@ -1226,3 +1255,13 @@ El prisma tiene seis caras fijas, así que no se agregó una séptima: la cara 0
 - Verificado en Chrome sin interfaz: marca en claro y oscuro, favicon en los dos modos del sistema, ludus Fin en escritorio, galería con disco y elixir.
 - Pendiente de decidir: el Sensu en un color junto al crédito «iroFactory» del pie de cada tema; el README lo toma en la parte de raíz.
 
+
+## galería · el abanico y la travesía (2026-10-14)
+
+Decidido con el usuario: el relato va en página propia pero con los temas a la vista; navegación con el Sensu; todo en español. El número de gajos no es fijo: sale de los datos, porque vienen más temas.
+- **Datos** (`assets/data/gallery/themes.js`): un tema por entrada, en el orden y color de la marca; propósito, frase, navegación, juguete, plantilla, modo, letras, letra de títulos (archivo o Bunny), proun por modo (forge usa en duotono la protoboard de sherry: no tiene proun), paleta y fecha de nacimiento. `history.js`: el commit con que nació cada tema y cómo era en mayo.
+- **Abanico** (`shared/components/sensu-fan/`): SVG; cada gajo es papel con el proun impreso (derecho aunque el gajo gire), pliegue con sombra de valle y cresta, filo con el color de la marca, varilla de laca y una tira con el nombre en la letra del tema (se achica si no cabe). Todo en coordenadas locales: abrir y plegar es un solo número. Remache con el sello 色 en bermellón que pliega y abre; la primera vez abre desde plegado (directo con reduced motion). `radiogroup` con flechas, Inicio y Fin. Orientación `side` (remache a la izquierda) o `up` (abajo, como el logo) en teléfono vertical.
+- **Galería** (`index.html`, `gallery.css`, `shared/components/gallery/stage.*`): papel de día, tinta de noche (Shippori Mincho, Zen Kaku Gothic New, Fira Code); el gajo bajo el cursor tiñe el entorno (`@property --t`), elegir lo fija y lo deja en el hash. Escenario: nombre en la letra del tema en un renglón, propósito, frase, navegación, juguete, plantilla, paleta, letras, modo y una ventana con el proun que pasa al tema en vivo solo si se pide (escalado de 1280 o 390 px). El iframe va sin `sandbox`. Sin JS, la lista de enlaces.
+- **Travesía** (`travesia/`): doce capítulos (para qué, mayo, la auditoría, apolo, prouns, atomizar, tarot como vara, métodos, inspiraciones, doce pieles, la marca, lo que sigue). En «Doce pieles», cada tema con su commit de nacimiento, cómo era y cómo es, y una cortina de antes y ahora (`then-now.js`, un range de verdad) con vista en vivo; el abanico fijo lleva a cada uno y sigue la lectura. En teléfono el abanico entra en el texto, abriendo hacia arriba. Menciona que el código se escribió en conversación con Claude: el usuario decide si se queda.
+- **Capturas** (`assets/img/travesia/`, 1200 × 750 WebP, 1.4 MB): antes, los `*_theme_demo.html` del commit 2d1e64a (la galería vieja, armando el sitio de mayo en una carpeta temporal); ahora, Chrome con GPU a 1440 × 900.
+- Verificado en Chrome: 1440, 1280, 1024, 390 × 844 y 844 × 390 sin scroll horizontal, papel y tinta, teclado en el abanico, vista en vivo, plegado, reduced motion, sin JS. Contraste de los tokens: texto 14.9:1, secundario 6.5 y 7.3, acento 5.4 y 6.6. Sin errores de consola.

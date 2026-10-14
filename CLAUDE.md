@@ -2,6 +2,8 @@
 
 Colección personal de 12 temas de diseño en HTML. Sirven como skins de documentación para proyectos propios. Se hostean en GitHub Pages, galería en `index.html`.
 
+Repo `github.com/RemiH06/iroFactory`, sitio `remih06.github.io/iroFactory/`. Licencia MIT; lo de terceros conserva la suya (`THIRD_PARTY_NOTICES.md`). La historia del proyecto antes de Claude Code (mayo a agosto 2026) está en `steps.md`, sección «Origen».
+
 Roadmap activo y estado de fases: ver `steps.md`.
 
 ## Estructura (atomizada, 2026-10-06)
@@ -12,6 +14,7 @@ Cada tema no tiene código propio: solo su contenido, su piel (tokens y estilos 
 - `shared/components/<nombre>/`: un `.js` (exporta `mount(opts)`) y un `.css` por componente. Las diferencias entre temas van en `opts`, nunca en copias.
 - `assets/fonts/` y `assets/img/<tema>/`: archivos, no base64.
 - Marca (2026-10-14): `shared/components/brand/brand.js` (Sensu, Mazo y el sello con 色 en curvas) y sus SVG en `assets/logo/` (`node assets/logo/build.mjs`). Mazo es el favicon de todas las páginas; Sensu, el logo de lo demás.
+- Galería (2026-10-14): `index.html` + `gallery.css` en la raíz, con el Sensu como selector (`shared/components/sensu-fan/`, un gajo por entrada de `assets/data/gallery/themes.js`: un tema nuevo se agrega ahí) y el escenario en `shared/components/gallery/`. La historia del proyecto está en `travesia/` (capturas de antes y ahora en `assets/img/travesia/`, datos en `assets/data/gallery/history.js`).
 - `<tema>/index.html` (contenido, marcado, imports con su configuración y los CSS de sus componentes) y `<tema>/<tema>.css` (tokens y piel).
 - Para probar en local hace falta servidor (módulos ES e imágenes en WebGL no funcionan por `file://`): `python serve.py` en la raíz (como `http.server`, pero sin caché y con más cola de conexiones: con `http.server` el navegador guardaba módulos viejos y rechazaba peticiones en ráfaga) (puerto registrado en `48.SkillShot/PORTS.md`). En GitHub Pages no aplica.
 - Migrados los 12. disco usa componentes con nombre propio en `shared/components/<nombre>/`; los otros 11 tienen sus piezas en `shared/components/<tema>/`: un `kit.js` con la base del tema (modo, tokens, sus utilidades tal como estaban) y un módulo por sección (`laser-flow.js`, `curve-plotter.js`…), cada uno con `mount()`. Los datos grandes van en `assets/data/<tema>/`. Los kits ya no copian utilidades: reexportan las del núcleo y solo guardan lo propio del tema; el modo de todos pasa por `initTheme` (sin `onclick` en el marcado). El CSS también está repartido: `<tema>.css` es la piel y cada módulo con estilos propios tiene su `shared/components/<tema>/<módulo>.css`. Cuidado al mover reglas con `url()` relativa: se resuelve respecto a la hoja que la usa.
