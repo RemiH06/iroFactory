@@ -5,9 +5,9 @@
 // Laocoonte es el mismo vaciado texturizado por el BCDH de Bonn, y el
 // kuros y la Terpsícore son mármoles del Museo de Arte de Cleveland.
 // Cada GLB va en assets/models/apolo/<file>.glb, descargado de Sketchfab
-// y reducido con gltf-transform (como los cráneos de tarot). La galería
-// solo muestra las que tienen `ready` (las que ya están en el repo).
-//   { file, ready, name, year (para la línea de tiempo), date, author, original,
+// y reducido con gltf-transform (meshopt, ~50k a 100k triángulos, WebP
+// de 2048 en los tres que traen textura), como los cráneos de tarot.
+//   { file, name, year (para la línea de tiempo), date, author, original,
 //     cast, h (cm), look, scan, by, license, url, rot? [x, y, z] }
 // ══════════════════════════════════════════════════════
 const SMK = { by: 'SMK · National Gallery of Denmark', license: 'CC0' };
@@ -32,6 +32,6 @@ export const SCULPTURES = [
     look: 'La diagonal del cuerpo y el dolor en el rostro: lo contrario de la calma clásica.', by: 'Bonn Center for Digital Humanities', license: 'CC BY 4.0', url: 'https://sketchfab.com/3d-models/4e253a98bfc842cabfe7610c38daa7ab' },
   { file: 'terpsicore', name: 'Terpsícore lírica', year: 1816, date: '1816', author: 'Antonio Canova', original: 'Mármol · Museo de Arte de Cleveland (1968.212)', h: 177.5,
     look: 'Una musa de Apolo dos mil años después: la Antigüedad como la imaginó el Neoclasicismo.', ...CMA, url: 'https://sketchfab.com/3d-models/6827af1276ab407ebbfa1e7d0a4b9a19' },
-  { file: 'apollo-statue', ready: true, name: 'Apolo', year: null, date: 'Sin datar en la fuente', author: 'Escaneo de una estatua de Apolo', original: 'La fuente no indica la obra ni el museo', h: null,
+  { file: 'apollo-statue', name: 'Apolo', year: null, date: 'Sin datar en la fuente', author: 'Escaneo de una estatua de Apolo', original: 'La fuente no indica la obra ni el museo', h: null,
     look: 'El mismo Apolo que acompaña las pestañas, aquí bajo la luz de la sala.', by: 'artfletch', license: 'CC BY 4.0', url: 'https://sketchfab.com/3d-models/apollo-statue-a01dbaf0b7db4c308c9fcecade6d4283' }
 ];

@@ -5,8 +5,7 @@
 // a la siguiente. Abajo, la línea de tiempo: el eje con sus periodos
 // (arcaico, clásico, helenístico, Roma y después) y un punto por pieza a
 // su fecha real, y bajo el eje las piezas en orden; elegir una la pone en
-// la vitrina. Solo entran las piezas marcadas `ready` en sculptures.js
-// (las que ya tienen su GLB en el repo).
+// la vitrina.
 //   mount({ el, pieces, base })
 // ══════════════════════════════════════════════════════
 import { SCULPTURES } from './sculptures.js';
@@ -16,7 +15,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 
 export function mount({ el = document.getElementById('ap-glypt'), pieces = SCULPTURES, base = '../assets/models/apolo/' } = {}) {
   if (!el) return;
-  const list = pieces.filter(p => p.ready);
+  const list = pieces;
   if (!list.length) { el.hidden = true; return; }
   el.innerHTML = `<div class="ap-glypt-case">
       <div class="ap-glypt-stage"><button class="ap-glypt-nav prev" type="button" aria-label="Pieza anterior">‹</button><button class="ap-glypt-nav next" type="button" aria-label="Pieza siguiente">›</button></div>

@@ -1,0 +1,65 @@
+/* bookworm · lector con notas al margen. */
+.rd{position:relative;--rd-size:16px}
+/* Barra pegada arriba de la ventana (el contenido tiene 18px de relleno). */
+.rd-bar{position:sticky;top:-18px;z-index:3;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;margin:-18px -24px 0;padding:10px 24px 8px;background:var(--glass);border-bottom:1px solid var(--glass-edge);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.rd-nav{display:flex;align-items:center;gap:8px;min-width:0}
+.rd-where{font-family:var(--serif);font-style:italic;font-weight:700;font-size:14px;color:var(--moss-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-tools{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.rd-btn{font-family:var(--serif);font-style:italic;font-size:12px;line-height:1.4;padding:3px 10px;border:1px solid var(--border);border-radius:999px;background:color-mix(in srgb,var(--bg) 60%,transparent);color:var(--text);cursor:pointer;transition:border-color .2s ease-out,color .2s ease-out,transform .16s ease-out}
+.rd-btn:hover:not(:disabled){border-color:var(--moss-ink);color:var(--moss-ink)}
+.rd-btn:active:not(:disabled){transform:scale(.97)}
+.rd-btn:disabled{opacity:.45;cursor:default}
+.rd-btn[hidden]{display:none}
+.rd-mark[aria-pressed="true"]{border-color:var(--bookmark-ink);color:var(--bookmark-ink)}
+.rd-progress{grid-column:1/-1;display:flex;align-items:center;gap:12px}
+.rd-meter{position:relative;flex:1;height:6px;border-radius:999px;background:color-mix(in srgb,var(--border) 70%,transparent);overflow:hidden}
+.rd-meter i{position:absolute;top:0;bottom:0;left:0;border-radius:999px}
+.rd-meter-ch{background:color-mix(in srgb,var(--moss) 22%,transparent)}
+.rd-meter-book{background:var(--moss);z-index:1;transition:width .2s ease-out}
+.rd-left{font-family:var(--mono);font-size:11px;color:var(--text2);white-space:nowrap}
+@container win (max-width:560px){.rd-bar{grid-template-columns:1fr}.rd-tools{justify-content:flex-start}.rd-left{white-space:normal}}
+/* Página: texto a la izquierda, margen de notas a la derecha (abajo del párrafo si no cabe). */
+.rd-page{padding-top:18px}
+.rd-ch-head{margin:6px 0 18px}
+.rd-kicker{font-family:var(--mono);font-size:11px;color:var(--text2);margin:0}
+.rd-ch-title{font-family:var(--serif);font-style:italic;font-size:24px;line-height:1.2;color:var(--text);margin:4px 0 0;letter-spacing:0}
+.rd-ch-title span{color:var(--moss-ink);margin-right:6px}
+.rd-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:0 22px;align-items:start}
+@container win (max-width:640px){.rd-row{grid-template-columns:1fr}.rd-margin:not(:empty){margin:-6px 0 16px}}
+.rd-p{font-size:var(--rd-size);line-height:1.9;margin:0 0 16px;max-width:62ch;hyphens:auto}
+.rd-row:first-of-type .rd-p::first-letter{float:left;font-size:3.1em;line-height:.9;margin:.08em .08em 0 0;font-weight:700;color:var(--moss-ink)}
+/* Marcapáginas: una cinta de corteza que cuelga en el margen izquierdo. */
+.rd-row.is-marked::before{content:"";position:absolute;left:-17px;top:-4px;width:9px;height:44px;background:var(--bookmark);clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)}
+.rd-hl{background:color-mix(in srgb,var(--amber) 34%,transparent);color:inherit;border-bottom:2px solid var(--amber-ink);border-radius:2px;padding:0 1px;cursor:pointer;transition:background-color .2s ease-out}
+.rd-hl.is-hot,.rd-hl:focus-visible{background:color-mix(in srgb,var(--amber) 58%,transparent);outline:none}
+.rd-margin{display:flex;flex-direction:column;gap:8px}
+.rd-note{position:relative;padding:8px 10px 6px;border-left:2px solid var(--amber-ink);background:color-mix(in srgb,var(--bg2) 88%,transparent);border-radius:0 var(--radius) var(--radius) 0;box-shadow:0 2px 8px color-mix(in srgb,var(--black) 8%,transparent);transition:box-shadow .2s ease-out}
+.rd-note.is-hot{box-shadow:0 0 0 1px var(--amber-ink),0 4px 14px color-mix(in srgb,var(--black) 14%,transparent)}
+.rd-note q{display:block;font-size:11px;font-style:italic;color:var(--text2);line-height:1.4;padding-right:16px}
+.rd-note textarea{width:100%;margin-top:4px;border:none;border-bottom:1px dashed var(--border);background:transparent;color:var(--text);font:13px/1.5 var(--serif);resize:vertical;min-height:2.6em;padding:2px 0}
+.rd-note textarea:focus{outline:none;border-bottom-color:var(--amber-ink)}
+.rd-note-x{position:absolute;top:2px;right:4px;border:none;background:none;color:var(--text2);font-size:15px;line-height:1;cursor:pointer;padding:2px 4px;transition:color .2s ease-out}
+.rd-note-x:hover{color:var(--danger-ink)}
+.rd-annotate{position:absolute;z-index:4;width:88px;font-family:var(--serif);font-style:italic;font-size:13px;padding:5px 10px;border:1px solid var(--amber-ink);border-radius:999px;background:var(--bg);color:var(--amber-ink);cursor:pointer;box-shadow:0 6px 16px color-mix(in srgb,var(--black) 22%,transparent);transition:transform .16s ease-out}
+.rd-annotate:active{transform:scale(.97)}
+.rd-annotate[hidden]{display:none}
+.rd-end{display:flex;justify-content:flex-end;padding:8px 0 24px;border-top:1px solid var(--border);margin-top:8px}
+.rd-fin{font-family:var(--serif);font-style:italic;color:var(--text2);margin:0 auto}
+/* Panel de notas */
+.rd-notes{margin:14px 0 0;padding:12px 14px;background:color-mix(in srgb,var(--bg2) 92%,transparent);border:1px solid var(--border);border-radius:var(--radius)}
+.rd-notes[hidden]{display:none}
+.rd-notes-head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px}
+.rd-notes-head span{display:flex;gap:6px}
+.rd-notes-list{list-style:none;margin:0;padding:0;max-height:220px;overflow:auto}
+.rd-notes-list li{padding:8px 0;border-top:1px solid var(--border)}
+.rd-notes-list li:first-child{border-top:none}
+.rd-notes-list p{margin:4px 0 0;font-size:13px;line-height:1.6}
+.rd-jump{display:block;width:100%;text-align:left;border:none;background:none;padding:0;cursor:pointer;color:var(--text);font:inherit}
+.rd-jump span{display:block;font-family:var(--mono);font-size:11px;color:var(--moss-ink)}
+.rd-jump q{font-style:italic;font-size:13px}
+.rd-jump:hover q{text-decoration:underline;text-underline-offset:3px}
+.rd-empty{font-size:13px;color:var(--text2)}
+/* Sin JS: el libro completo, capítulo tras capítulo. */
+.rd-ch h3{font-style:italic;font-size:18px}
+.bw-read{cursor:pointer;margin-left:6px;vertical-align:2px;transition:transform .16s ease-out}
+.bw-read:active{transform:scale(.97)}

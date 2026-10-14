@@ -2,6 +2,9 @@
 // ESCRITORIO · ventanas: se mueven solo desde la barra superior, se
 // redimensionan desde las esquinas, varias abiertas a la vez, y se
 // descartan arrastrándolas a la papelera, con su botón × o con Escape.
+// Se abren desde cualquier elemento con `data-win` (íconos, lomos del
+// librero) o con Desktop.open(id); al abrir y cerrar, la sección recibe
+// `bw:open` y `bw:close`.
 // ══════════════════════════════════════════════════════
 import { $, clamp, mobileQ, reduceMotion, toRgba } from './kit.js';
 import { Greenhouse } from './greenhouse.js';
@@ -12,7 +15,7 @@ export const Desktop = (() => {
   const BAR = 38, MENU = 40;
   const open = new Map();
   let z = 10, cascade = 0, discarded = 0;
-  const icons = [...document.querySelectorAll('.bw-icons .gi')];
+  const triggers = id => document.querySelectorAll(`[data-win="${id}"]`);
   const front = () => [...open.values()].sort((a, b) => b.z - a.z)[0];
 
   function place(w) {
@@ -36,7 +39,7 @@ export const Desktop = (() => {
   function mobileFit(w) { const [W, H] = Greenhouse.size; w.x = 8; w.y = MENU + 8; w.w = W - 16; w.h = H - MENU - 140; }
 
   function openWin(id, iconEl) {
-    if (open.has(id)) { const w = open.get(id); raise(w); w.el.focus({ preventScroll: true }); return; }
+    if (open.has(id)) { const w = open.get(id); raise(w); w.el.focus({ preventScroll: true }); w.doc.dispatchEvent(new CustomEvent('bw:open')); return; }
     const doc = document.getElementById('doc-' + id); if (!doc) return;
     const [W, H] = Greenhouse.size;
     const el = document.createElement('section');
@@ -50,7 +53,8 @@ export const Desktop = (() => {
     if (mobileQ.matches) mobileFit(w); else bounds(w);
     layer.appendChild(el); open.set(id, w);
     place(w); raise(w); wire(w);
-    iconEl && iconEl.classList.add('is-open');
+    triggers(id).forEach(t => t.classList.add('is-open'));
+    doc.dispatchEvent(new CustomEvent('bw:open'));
     Paper.prewarm(w.h / w.w);
     ghKick();
     // Entrada desde el ícono (origen consciente del disparador).
@@ -152,10 +156,11 @@ export const Desktop = (() => {
 
   function finish(w) {
     w.el.remove(); library.appendChild(w.doc); open.delete(w.id);
-    w.icon && w.icon.classList.remove('is-open');
+    triggers(w.id).forEach(t => t.classList.remove('is-open'));
+    w.doc.dispatchEvent(new CustomEvent('bw:close'));
     discarded++; trashCount.textContent = discarded; trashCount.hidden = false;
     trash.classList.remove('is-bump'); void trash.offsetWidth; trash.classList.add('is-bump');
-    const f = front(); if (f) { raise(f); } else if (w.icon) w.icon.focus({ preventScroll: true });
+    const f = front(); if (f) { raise(f); } else if (w.icon && w.icon.offsetParent) w.icon.focus({ preventScroll: true });
     if (!open.size) ghKick();
   }
   function discard(w) {
@@ -178,7 +183,7 @@ export const Desktop = (() => {
     });
   }
 
-  icons.forEach(ic => ic.addEventListener('click', () => openWin(ic.dataset.win, ic)));
+  document.addEventListener('click', e => { const t = e.target.closest('#bw-desktop [data-win]'); if (t) openWin(t.dataset.win, t); });
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape' || !document.body.classList.contains('mode-desktop')) return;
     const winEl = document.activeElement && document.activeElement.closest('.bw-win');
@@ -186,7 +191,7 @@ export const Desktop = (() => {
     if (w) { e.preventDefault(); discard(w); }
   });
   window.addEventListener('resize', () => open.forEach(w => { if (mobileQ.matches) mobileFit(w); else bounds(w); place(w); }));
-  return { paintAll, get count() { return open.size; } };
+  return { paintAll, open: openWin, get count() { return open.size; } };
 })();
 // ── Un solo loop para invernadero + ventanas, vivo solo si algo lo muestra.
 export let ghRaf = 0;

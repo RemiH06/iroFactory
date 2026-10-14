@@ -1,0 +1,43 @@
+/* bookworm · librero: mueble de madera con un lomo por ventana. */
+.bw-seg{display:flex;border:1px solid var(--glass-edge);border-radius:999px;overflow:hidden;background:color-mix(in srgb,var(--bg) 40%,transparent)}
+.bw-segbtn{font-family:var(--serif);font-style:italic;font-size:13px;padding:3px 12px;border:none;background:transparent;color:var(--text2);cursor:pointer;transition:background-color .2s ease-out,color .2s ease-out,transform .16s ease-out}
+.bw-segbtn+.bw-segbtn{border-left:1px solid var(--glass-edge)}
+.bw-segbtn[aria-pressed="true"]{background:color-mix(in srgb,var(--moss) 26%,transparent);color:var(--text)}
+.bw-segbtn:hover{color:var(--text)}
+.bw-segbtn:active{transform:scale(.97)}
+.bw-shelf{position:absolute;top:100px;left:14px;z-index:2}
+.bw-icons[hidden]{display:none}
+.bw-shelf[hidden]{display:none}
+/* Madera: la corteza del tema en vetas; tablas con canto claro. */
+.bw-case{--wood:color-mix(in srgb,var(--bark) 78%,var(--black));position:relative;padding:0 10px 10px;border-radius:4px 4px 2px 2px;background:linear-gradient(90deg,color-mix(in srgb,var(--black) 22%,transparent),transparent 10%,transparent 90%,color-mix(in srgb,var(--black) 22%,transparent)),repeating-linear-gradient(90deg,var(--wood) 0 7px,color-mix(in srgb,var(--wood) 88%,var(--earth)) 7px 9px,var(--wood) 9px 19px),var(--wood);box-shadow:0 18px 36px color-mix(in srgb,var(--black) 32%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--black) 30%,transparent)}
+.bw-case-top{position:relative;height:12px;margin:0 -16px;border-radius:3px;background:linear-gradient(color-mix(in srgb,var(--earth) 80%,var(--white)) 0 2px,color-mix(in srgb,var(--earth) 70%,var(--black)) 2px);box-shadow:0 3px 6px color-mix(in srgb,var(--black) 30%,transparent)}
+.bw-plant{position:absolute;right:14px;bottom:10px;width:54px;height:50px;pointer-events:none}
+.bw-plant .leaf{fill:var(--fern)}
+.bw-plant .pot{fill:var(--earth)}
+.bw-plant .rim{fill:color-mix(in srgb,var(--earth) 80%,var(--black))}
+.bw-row{position:relative;display:flex;align-items:flex-end;gap:2px;min-height:154px;padding:12px 6px 0;background:linear-gradient(color-mix(in srgb,var(--black) 38%,transparent),color-mix(in srgb,var(--black) 18%,transparent));border-bottom:9px solid color-mix(in srgb,var(--earth) 72%,var(--black));box-shadow:inset 0 10px 14px color-mix(in srgb,var(--black) 30%,transparent)}
+.bw-row+.bw-row{margin-top:8px}
+/* Lomo: piel teñida con el color de su ícono, dos filetes de oro y el título a lo largo. */
+.bw-book{--sp:color-mix(in srgb,var(--bk) 64%,var(--black));position:relative;flex:none;width:var(--bw);height:var(--bh);padding:22px 0;border:none;border-radius:3px 3px 1px 1px;cursor:pointer;color:var(--white);background:linear-gradient(90deg,color-mix(in srgb,var(--black) 30%,transparent),transparent 18%,color-mix(in srgb,var(--white) 14%,transparent) 42%,transparent 62%,color-mix(in srgb,var(--black) 26%,transparent)),var(--sp);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--black) 25%,transparent);transform-origin:50% 100%;transition:transform .28s cubic-bezier(.23,1,.32,1),box-shadow .2s ease-out}
+.bw-book::before,.bw-book::after{content:"";position:absolute;left:4px;right:4px;height:3px;border-block:1px solid color-mix(in srgb,var(--amber) 85%,var(--white));opacity:.85}
+.bw-book::before{top:9px}
+.bw-book::after{bottom:9px}
+.bw-spine-t{display:block;height:100%;writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--serif);font-style:italic;font-weight:700;font-size:12px;line-height:1.1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 auto}
+.bw-book:nth-child(3n){border-radius:2px}
+.bw-book.is-open{transform:translateY(-16px);box-shadow:0 0 0 2px var(--amber),inset 0 0 0 1px color-mix(in srgb,var(--black) 25%,transparent)}
+@media (hover:hover) and (pointer:fine){.bw-book:hover{transform:translateY(-10px) rotate(-3deg)}.bw-book.is-open:hover{transform:translateY(-18px)}}
+.bw-book:focus-visible{outline:2px solid var(--accent);outline-offset:2px;transform:translateY(-10px)}
+.bw-book:active{transform:translateY(-6px) scale(.97)}
+.bw-bookend{flex:none;width:14px;height:64px;margin-left:4px;border-radius:2px 8px 0 0;background:linear-gradient(90deg,color-mix(in srgb,var(--stone) 70%,var(--black)),var(--stone))}
+@media (prefers-reduced-motion:reduce){.bw-book{transition:none}}
+@media (max-width:700px){.bw-shelf{left:6px}.bw-row{min-height:146px}.bw-brand span{display:none}}
+@media (max-width:420px){.bw-brand{display:none}}
+/* Teléfono acostado: un solo estante bajo. */
+@media (max-height:500px){
+.bw-shelf{top:46px}
+.bw-case{display:flex;align-items:flex-end;gap:0;padding-bottom:8px}
+.bw-case-top{display:none}
+.bw-row{min-height:116px}
+.bw-row+.bw-row{margin-top:0}
+.bw-book{height:calc(var(--bh) * .78)}
+}

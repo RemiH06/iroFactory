@@ -50,6 +50,9 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
 <link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="../shared/components/bookworm/paper-crumple.css">
+<link rel="stylesheet" href="../shared/components/bookworm/shelf.css">
+<link rel="stylesheet" href="../shared/components/bookworm/reader.css">
+<link rel="stylesheet" href="../shared/components/bookworm/reading-log.css">
 </head>
 <body>
 
@@ -87,11 +90,12 @@ SOFTWARE.
   </header>
   <nav class="bw-icons" aria-label="Ventanas del tema">
     <button class="gi" data-win="paleta" style="--gi-a:var(--moss);--gi-b:var(--canopy)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.6-.9 1.2-1.8-.5-1.1.2-2.2 1.4-2.2H17a4 4 0 0 0 4-4c0-5-4-10-9-10z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/></svg></span></span><span class="gi-label">Paleta</span></button>
-    <button class="gi" data-win="avisos" style="--gi-a:var(--ochre);--gi-b:var(--bark)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span></span><span class="gi-label">Callouts y badges</span></button>
-    <button class="gi" data-win="metricas" style="--gi-a:var(--fern);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-6M3 20h18"/></svg></span></span><span class="gi-label">Botones y métricas</span></button>
+    <button class="gi" data-win="avisos" data-spine="Avisos" style="--gi-a:var(--ochre);--gi-b:var(--bark)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span></span><span class="gi-label">Callouts y badges</span></button>
+    <button class="gi" data-win="metricas" data-spine="Métricas" style="--gi-a:var(--fern);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-6M3 20h18"/></svg></span></span><span class="gi-label">Botones y métricas</span></button>
     <button class="gi" data-win="codigo" style="--gi-a:var(--stone);--gi-b:var(--canopy)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14"/></svg></span></span><span class="gi-label">Código</span></button>
-    <button class="gi" data-win="lectura" style="--gi-a:var(--amber);--gi-b:var(--earth)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg></span></span><span class="gi-label">Tabla y reading log</span></button>
-    <button class="gi" data-win="capitulos" style="--gi-a:var(--dew);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v18l-5-4-5 4z"/></svg></span></span><span class="gi-label">Capítulos y cards</span></button>
+    <button class="gi" data-win="lector" style="--gi-a:var(--lichen);--gi-b:var(--canopy)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg></span></span><span class="gi-label">Lector</span></button>
+    <button class="gi" data-win="lectura" data-spine="Bitácora" style="--gi-a:var(--amber);--gi-b:var(--earth)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M8.5 15l2.2 2 4.8-4.5"/></svg></span></span><span class="gi-label">Bitácora de lectura</span></button>
+    <button class="gi" data-win="capitulos" data-spine="Capítulos" style="--gi-a:var(--dew);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v18l-5-4-5 4z"/></svg></span></span><span class="gi-label">Capítulos y cards</span></button>
     <button class="gi" data-win="manuscrito" style="--gi-a:var(--ochre);--gi-b:var(--moss)"><span class="gi-back"></span><span class="gi-front"><span class="gi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4c-6 1-11 6-13 13l-2 3"/><path d="M8 15c3-1 6-4 8-8"/><path d="M5 20h6"/></svg></span></span><span class="gi-label">Manuscrito</span></button>
   </nav>
   <div class="bw-windows" id="bw-windows"></div>
@@ -132,6 +136,17 @@ SOFTWARE.
       <div class="swatch"><div class="swatch-box" style="background:var(--warn)"><span class="swatch-hex" id="hex-warn"></span></div>--warn</div>
       <div class="swatch"><div class="swatch-box" style="background:var(--danger)"><span class="swatch-hex" id="hex-danger"></span></div>--danger</div>
     </div>
+    <h3>Tokens en los dos modos</h3>
+    <table>
+      <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Evocación</th></tr>
+      <tr><td><code>--moss</code></td><td>#4A6040</td><td>#5A7850</td><td>Musgo · verde profundo del suelo</td></tr>
+      <tr><td><code>--fern</code></td><td>#6A8050</td><td>#7A9060</td><td>Helecho · verde medio luminoso</td></tr>
+      <tr><td><code>--bark</code></td><td>#6A4828</td><td>#5A3818</td><td>Corteza · marrón cálido</td></tr>
+      <tr><td><code>--ochre</code></td><td>#B08030</td><td>#988040</td><td>Ocre · luz de tarde entre hojas</td></tr>
+      <tr><td><code>--amber</code></td><td>#C89040</td><td>#A87830</td><td>Ámbar · resina solidificada</td></tr>
+      <tr><td><code>--dew</code></td><td>#789878</td><td>#688868</td><td>Rocío · verde suave de amanecer</td></tr>
+      <tr><td><code>--lichen</code></td><td>#8A9870</td><td>#708060</td><td>Liquen · gris verdoso de roca</td></tr>
+    </table>
   </section>
 
   <section class="bw-doc" id="doc-avisos" data-title="Callouts y badges" data-w="680" data-h="580">
@@ -200,19 +215,10 @@ SOFTWARE.
         <span class="kw">return</span> <span class="str">f"'{self.titulo}' · terminado"</span></pre>
   </section>
 
-  <section class="bw-doc" id="doc-lectura" data-title="Tabla y reading log" data-w="740" data-h="580">
-    <h2>Tabla</h2>
-    <table>
-      <tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Evocación</th></tr>
-      <tr><td><code>--moss</code></td><td>#4A6040</td><td>#5A7850</td><td>Musgo · verde profundo del suelo</td></tr>
-      <tr><td><code>--fern</code></td><td>#6A8050</td><td>#7A9060</td><td>Helecho · verde medio luminoso</td></tr>
-      <tr><td><code>--bark</code></td><td>#6A4828</td><td>#5A3818</td><td>Corteza · marrón cálido</td></tr>
-      <tr><td><code>--ochre</code></td><td>#B08030</td><td>#988040</td><td>Ocre · luz de tarde entre hojas</td></tr>
-      <tr><td><code>--amber</code></td><td>#C89040</td><td>#A87830</td><td>Ámbar · resina solidificada</td></tr>
-      <tr><td><code>--dew</code></td><td>#789878</td><td>#688868</td><td>Rocío · verde suave de amanecer</td></tr>
-      <tr><td><code>--lichen</code></td><td>#8A9870</td><td>#708060</td><td>Liquen · gris verdoso de roca</td></tr>
-    </table>
-    <h2>Reading Log</h2>
+  <section class="bw-doc" id="doc-lectura" data-title="Bitácora de lectura" data-w="780" data-h="640">
+    <h2>Bitácora de lectura</h2>
+    <div id="bw-log">
+    <p class="muted">Racha, ritmo, avance por libro y registro de sesiones (necesita JavaScript). Así se ve la línea de lectura:</p>
     <div class="reading-log">
       <div class="reading-entry"><div class="reading-dot chapter">I</div><div><h4>El sendero que desaparece</h4><p class="muted">La protagonista entra al bosque por primera vez. La luz entre los árboles es casi sólida.</p></div></div>
       <div class="reading-entry"><div class="reading-dot note">✎</div><div><h4>Nota del autor</h4><p class="muted">El bosque de este libro está basado en el Bosque de Irati, en los Pirineos navarros.</p></div></div>
@@ -220,18 +226,53 @@ SOFTWARE.
       <div class="reading-entry"><div class="reading-dot bookmark">♦</div><div><h4>Página marcada · p. 187</h4><p class="muted">El momento en que el bosque habla. Volver aquí.</p></div></div>
       <div class="reading-entry"><div class="reading-dot ok">✓</div><div><h4>Terminado</h4><p class="muted">Tres horas y doce anotaciones después. El bosque sigue ahí.</p></div></div>
     </div>
+    </div>
   </section>
 
   <section class="bw-doc" id="doc-capitulos" data-title="Capítulos y cards" data-w="700" data-h="560">
     <h2>Capítulos</h2>
-    <div class="chapter-row"><div class="chapter-num">I</div><div><h4>El sendero</h4><p class="muted">Todo bosque tiene un camino que desaparece si lo miras fijamente.</p></div></div>
-    <div class="chapter-row" style="border-left-color:var(--ochre-ink)"><div class="chapter-num" style="color:var(--ochre-ink)">II</div><div><h4>La luz</h4><p class="muted">El komorebi · la luz que cae entre las hojas · no tiene traducción exacta al castellano.</p></div></div>
-    <div class="chapter-row" style="border-left-color:var(--bark-ink)"><div class="chapter-num" style="color:var(--bark-ink)">III</div><div><h4>La corteza</h4><p class="muted">Los anillos del árbol son su memoria. Cada uno, un año de vida.</p></div></div>
-    <div class="chapter-row" style="border-left-color:var(--fern-ink)"><div class="chapter-num" style="color:var(--fern-ink)">IV</div><div><h4>El regreso</h4><p class="muted">El que entra al bosque siempre regresa siendo otro.</p></div></div>
+    <p class="muted">Del <i>Cuaderno del invernadero</i>, el libro del lector.</p>
+    <div class="chapter-row"><div class="chapter-num">I</div><div><h4>El sendero <button type="button" class="badge chapter bw-read" data-win="lector" data-ch="1" aria-label="Leer el capítulo 1: El sendero">leer</button></h4><p class="muted">Todo bosque tiene un camino que desaparece si lo miras fijamente.</p></div></div>
+    <div class="chapter-row" style="border-left-color:var(--ochre-ink)"><div class="chapter-num" style="color:var(--ochre-ink)">II</div><div><h4>La luz <button type="button" class="badge chapter bw-read" data-win="lector" data-ch="2" aria-label="Leer el capítulo 2: La luz">leer</button></h4><p class="muted">El komorebi · la luz que cae entre las hojas · no tiene traducción exacta al castellano.</p></div></div>
+    <div class="chapter-row" style="border-left-color:var(--bark-ink)"><div class="chapter-num" style="color:var(--bark-ink)">III</div><div><h4>La corteza <button type="button" class="badge chapter bw-read" data-win="lector" data-ch="3" aria-label="Leer el capítulo 3: La corteza">leer</button></h4><p class="muted">Los anillos del árbol son su memoria. Cada uno, un año de vida.</p></div></div>
+    <div class="chapter-row" style="border-left-color:var(--fern-ink)"><div class="chapter-num" style="color:var(--fern-ink)">IV</div><div><h4>El regreso <button type="button" class="badge chapter bw-read" data-win="lector" data-ch="4" aria-label="Leer el capítulo 4: El regreso">leer</button></h4><p class="muted">El que entra al bosque siempre regresa siendo otro.</p></div></div>
     <h2>Cards</h2>
     <div class="grid-2">
       <div class="card"><strong>El nombre del viento</strong><span class="badge chapter" style="margin-left:8px">cap. 1</span><p class="muted" style="margin:8px 0 0">Patrick Rothfuss · 662 páginas · Un posadero que fue el mago más temido del mundo.</p></div>
       <div class="card"><strong>Cien años de soledad</strong><span class="badge ok" style="margin-left:8px">terminado</span><p class="muted" style="margin:8px 0 0">García Márquez · 432 páginas · El árbol genealógico más frondoso de la literatura.</p></div>
+    </div>
+  </section>
+  <section class="bw-doc" id="doc-lector" data-title="Lector · Cuaderno del invernadero" data-w="860" data-h="640">
+    <div class="rd" id="bw-reader">
+      <h2 class="rd-booktitle">Cuaderno del invernadero</h2>
+      <section class="rd-ch" data-title="El sendero"><h3>I · El sendero</h3>
+        <p>El invernadero quedaba al fondo del jardín, detrás de los manzanos que nadie podaba. Tenía la puerta hinchada por la humedad y había que empujarla con el hombro. Adentro olía a tierra mojada, a papel viejo y a algo dulce que tardé años en reconocer: el olor de las hojas cuando el sol las calienta.</p>
+        <p>Mi abuela guardaba ahí sus libros. No en estantes, como cualquier persona, sino entre las macetas, en cajas de madera y sobre los bancos de trabajo, con las páginas onduladas por el vapor. Decía que los libros, como los helechos, necesitan sombra y un poco de agua en el aire.</p>
+        <p>Entre las mesas había un sendero de ladrillo que se perdía detrás de una cortina de enredaderas. De niña creía que el sendero cambiaba de lugar. Lo seguía con la vista y, en cuanto parpadeaba, ya no estaba donde lo había dejado. Mi abuela se reía: «Todo bosque tiene un camino que desaparece si lo miras fijamente».</p>
+        <p>La tarde que volví, después del entierro, el sendero seguía ahí. Las enredaderas habían crecido tanto que el vidrio del techo ya no se veía. Me senté en el banco de siempre, abrí la primera caja que encontré y saqué un cuaderno de tapas verdes. En la primera página, con su letra inclinada, decía: «Para leer despacio».</p>
+        <p>Lo abrí sin pensar. No era un diario ni un herbario, aunque tenía algo de los dos. Eran notas de lectura: frases copiadas, flores prensadas junto a ellas, fechas, a veces una sola palabra subrayada dos veces. Al final de cada página había un número, como si llevara la cuenta de algo que yo todavía no entendía.</p>
+      </section>
+      <section class="rd-ch" data-title="La luz"><h3>II · La luz</h3>
+        <p>Volví al día siguiente, temprano. A esa hora la luz entra al invernadero de lado, por los vidrios que dan al oriente, y se parte en las hojas antes de llegar al piso. Las manchas de sol se mueven con el viento; si te quedas quieta, parece que el suelo respira.</p>
+        <p>En el cuaderno, mi abuela había escrito una palabra que yo no conocía: komorebi. Al lado, entre paréntesis, una explicación breve: «La luz que se cuela entre las hojas de los árboles. En castellano no tenemos una palabra para esto, así que habrá que mirarlo».</p>
+        <p>Me pasé la mañana mirándolo. Leía una página del cuaderno y levantaba la vista, y la luz ya estaba en otro lugar. Entendí por qué ella leía tan despacio. No era lentitud: era que cada frase necesitaba su pedazo de sol, y había que esperarlo.</p>
+        <p>Hacia el mediodía la luz se volvió blanca y dura, y las sombras se encogieron debajo de las macetas. Cerré el cuaderno y lo dejé abierto sobre el banco, boca abajo, como ella dejaba los libros cuando pensaba volver. Era una costumbre que mi madre odiaba porque, decía, les rompía el lomo.</p>
+        <p>«Un libro con el lomo roto es un libro leído», le contestaba mi abuela. «Los que están intactos son los que nadie quiso». Esa tarde busqué en las cajas los libros más maltratados. Todos tenían notas en los márgenes, y todas las notas tenían fecha.</p>
+      </section>
+      <section class="rd-ch" data-title="La corteza"><h3>III · La corteza</h3>
+        <p>En la parte más húmeda del invernadero había un tronco cortado que servía de mesa. Era de un fresno que cayó en una tormenta, mucho antes de que yo naciera. Mi abuela no quiso que se lo llevaran: lo lijó, lo barnizó y lo puso ahí, entre los helechos, con los anillos hacia arriba.</p>
+        <p>Conté los anillos con la punta de un lápiz. Ochenta y tres. En algunos había marcas de tinta diminutas, casi invisibles: una fecha, una inicial, el título de un libro. Tardé en darme cuenta de que eran lecturas. Mi abuela había usado el tronco como calendario.</p>
+        <p>Los anillos anchos eran años de lluvia; los delgados, años de sequía. Ella había escrito sus libros favoritos en los anillos anchos, como si el árbol y ella hubieran tenido buenas temporadas al mismo tiempo. En uno muy delgado, cerca del centro, solo decía: «Nada este año».</p>
+        <p>Busqué ese mismo año en el cuaderno. Había una página en blanco con una hoja de roble prensada. Debajo, una línea: «La corteza también protege lo que no crece». No supe si hablaba del árbol, de ella o de alguien más, y ya no había a quién preguntarle.</p>
+        <p>Esa noche me quedé leyendo hasta tarde con una lámpara de mano. Afuera llovía. El agua corría por el techo de vidrio y la luz de la lámpara hacía que las gotas parecieran subir. Por primera vez anoté algo en el margen del cuaderno: una fecha y mi nombre.</p>
+      </section>
+      <section class="rd-ch" data-title="El regreso"><h3>IV · El regreso</h3>
+        <p>Pasaron las semanas y el invernadero se volvió una costumbre. Llegaba por la mañana, regaba lo que podía, abría una caja y leía. A veces terminaba un libro en una tarde; otras, me quedaba una semana en el mismo capítulo, como ella, esperando a que la luz cambiara.</p>
+        <p>Empecé a llevar mi propia cuenta. Al final de cada día escribía en el cuaderno cuántas páginas había leído, igual que ella. Los números no eran una meta. Eran una forma de saber que el día había pasado por ahí, que algo se había quedado.</p>
+        <p>Una tarde, al mover una maceta, encontré un sobre. Adentro estaba la llave del invernadero y una nota corta: «El que entra al bosque siempre regresa siendo otro. No te preocupes si no reconoces el camino de vuelta; es que ya lo cambiaste tú».</p>
+        <p>Afuera, los manzanos estaban en flor. Por el vidrio sucio del techo la luz caía en manchas sobre las páginas abiertas, y el sendero de ladrillo, detrás de las enredaderas, parecía más corto que antes. O tal vez yo había crecido.</p>
+        <p>Guardé la llave en el cuaderno, en la página donde ella había escrito «Para leer despacio», y debajo agregué una línea con mi letra, menos inclinada que la suya: «Y para volver».</p>
+      </section>
     </div>
   </section>
   <section class="bw-doc" id="doc-manuscrito" data-title="Manuscrito" data-w="760" data-h="620">
@@ -265,7 +306,7 @@ SOFTWARE.
       <p><small>En el lector, <kbd>←</kbd> y <kbd>→</kbd> cambian de capítulo; <kbd>Ctrl</kbd> + <kbd>F</kbd> busca dentro del libro.</small></p>
 
       <aside class="doc-notes" aria-label="Notas"><ol><li id="mq-nota-1">Aldonza Lorenzo, «moza labradora de muy buen parecer». <a href="#mq-ref-1" aria-label="Volver al texto">↩</a></li></ol></aside>
-      <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#doc-capitulos"><small>Anterior</small>Capítulos</a><a class="next" href="#doc-lectura"><small>Siguiente</small>Reading log</a></nav>
+      <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#doc-capitulos"><small>Anterior</small>Capítulos</a><a class="next" href="#doc-lectura"><small>Siguiente</small>Bitácora</a></nav>
     </article>
     <h2>Tipografía</h2>
     <div id="bw-type"></div>
@@ -278,9 +319,12 @@ SOFTWARE.
 <script type="module">
 import { mount as m0 } from '../shared/components/bookworm/kit.js';
 import { mount as m1 } from '../shared/components/bookworm/hero-desktop.js';
+import { mount as shelf } from '../shared/components/bookworm/shelf.js';
+import { mount as reader } from '../shared/components/bookworm/reader.js';
+import { mount as readingLog } from '../shared/components/bookworm/reading-log.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
-m0(); m1();
+m0(); m1(); shelf(); reader(); readingLog();
 docProse();
 docSpecimen({
   type: { el: '#bw-type', fonts: [

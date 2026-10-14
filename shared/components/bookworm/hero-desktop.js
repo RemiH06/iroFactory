@@ -20,7 +20,7 @@ export function switchTo(desktop) {
     document.body.classList.toggle('mode-desktop', desktop);
     hero.inert = desktop; desk.inert = !desktop;
     desk.style.clipPath = '';
-    if (desktop) { Masked.stop(); const first = document.querySelector('.bw-icons .gi'); first && first.focus({ preventScroll: true }); }
+    if (desktop) { Masked.stop(); const first = document.querySelector(document.body.classList.contains('view-shelf') ? '.bw-book' : '.bw-icons .gi'); first && first.focus({ preventScroll: true }); }
     else { Masked.start(); goBtn.focus({ preventScroll: true }); }
     ghKick();
   };

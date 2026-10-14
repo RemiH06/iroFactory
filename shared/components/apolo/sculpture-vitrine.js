@@ -45,7 +45,8 @@ export function mount({ host, base = '../assets/models/apolo/' }) {
   const load = piece => {
     if (models.has(piece.file)) return models.get(piece.file);
     const p = loader.loadAsync(base + piece.file + '.glb').then(g => {
-      const obj = g.scene; obj.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; if (o.material) o.material.envMapIntensity = 0.5; } });
+      // Los vaciados del SMK llegan sin textura (blanco puro, plano): tono de yeso mate.
+      const obj = g.scene; obj.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; const m = o.material; if (m) { m.envMapIntensity = 0.5; if (!m.map) { m.color.setHex(0xe4dccd); m.roughness = 0.85; m.metalness = 0; } } } });
       const pivot = new THREE.Group(), wrap = new THREE.Group();
       if (piece.rot) obj.rotation.set(...piece.rot.map(THREE.MathUtils.degToRad));
       pivot.add(obj); obj.updateMatrixWorld(true);
