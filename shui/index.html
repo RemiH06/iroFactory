@@ -73,6 +73,7 @@ SOFTWARE.
 <link rel="stylesheet" href="shui.css">
 <link rel="stylesheet" href="../shared/components/shui/bio-particles.css">
 <link rel="stylesheet" href="../shared/components/shui/module-tabs.css">
+<link rel="stylesheet" href="../shared/components/shui/data-docs.css">
 <link rel="stylesheet" href="../shared/components/shui/current-graph.css">
 <link rel="stylesheet" href="../shared/components/shui/blur-text.css">
 <link rel="stylesheet" href="../shared/components/shui/morph-gallery.css">
@@ -119,7 +120,7 @@ SOFTWARE.
         </div>
         <div class="sh-graph" id="sh-graph"><canvas role="img" aria-label="Grafo de módulos: desde el manantial salen cuatro corrientes (superficie, corrientes, profundidad y desembocadura). Tocar un nodo abre su módulo; las pestañas hacen lo mismo."></canvas></div>
       </div>
-      <nav class="sh-tabs" role="tablist" aria-label="Módulos"><a class="sh-tab" role="tab" id="tab-paleta" href="#paleta" aria-controls="paleta" aria-selected="true">Paleta</a><a class="sh-tab" role="tab" id="tab-galeria" href="#galeria" aria-controls="galeria" aria-selected="false" tabindex="-1">Galería</a><a class="sh-tab" role="tab" id="tab-avisos" href="#avisos" aria-controls="avisos" aria-selected="false" tabindex="-1">Avisos</a><a class="sh-tab" role="tab" id="tab-badges" href="#badges" aria-controls="badges" aria-selected="false" tabindex="-1">Badges</a><a class="sh-tab" role="tab" id="tab-botones" href="#botones" aria-controls="botones" aria-selected="false" tabindex="-1">Botones</a><a class="sh-tab" role="tab" id="tab-metricas" href="#metricas" aria-controls="metricas" aria-selected="false" tabindex="-1">Métricas</a><a class="sh-tab" role="tab" id="tab-codigo" href="#codigo" aria-controls="codigo" aria-selected="false" tabindex="-1">Código</a><a class="sh-tab" role="tab" id="tab-tabla" href="#tabla" aria-controls="tabla" aria-selected="false" tabindex="-1">Tabla</a><a class="sh-tab" role="tab" id="tab-log" href="#log" aria-controls="log" aria-selected="false" tabindex="-1">Pipeline log</a><a class="sh-tab" role="tab" id="tab-pipeline" href="#pipeline" aria-controls="pipeline" aria-selected="false" tabindex="-1">Pipeline</a><a class="sh-tab" role="tab" id="tab-cards" href="#cards" aria-controls="cards" aria-selected="false" tabindex="-1">Cards</a><a class="sh-tab" role="tab" id="tab-manual" href="#manual" aria-controls="manual" aria-selected="false" tabindex="-1">Manual</a><a class="sh-tab" role="tab" id="tab-mapa" href="#mapa" aria-controls="mapa" aria-selected="false" tabindex="-1">Mapa del código</a></nav>
+      <nav class="sh-tabs" role="tablist" aria-label="Módulos"><a class="sh-tab" role="tab" id="tab-paleta" href="#paleta" aria-controls="paleta" aria-selected="true">Paleta</a><a class="sh-tab" role="tab" id="tab-galeria" href="#galeria" aria-controls="galeria" aria-selected="false" tabindex="-1">Galería</a><a class="sh-tab" role="tab" id="tab-avisos" href="#avisos" aria-controls="avisos" aria-selected="false" tabindex="-1">Avisos</a><a class="sh-tab" role="tab" id="tab-badges" href="#badges" aria-controls="badges" aria-selected="false" tabindex="-1">Badges</a><a class="sh-tab" role="tab" id="tab-botones" href="#botones" aria-controls="botones" aria-selected="false" tabindex="-1">Botones</a><a class="sh-tab" role="tab" id="tab-linaje" href="#linaje" aria-controls="linaje" aria-selected="false" tabindex="-1">Linaje</a><a class="sh-tab" role="tab" id="tab-metricas" href="#metricas" aria-controls="metricas" aria-selected="false" tabindex="-1">Métricas</a><a class="sh-tab" role="tab" id="tab-codigo" href="#codigo" aria-controls="codigo" aria-selected="false" tabindex="-1">Código</a><a class="sh-tab" role="tab" id="tab-tabla" href="#tabla" aria-controls="tabla" aria-selected="false" tabindex="-1">Tabla</a><a class="sh-tab" role="tab" id="tab-esquemas" href="#esquemas" aria-controls="esquemas" aria-selected="false" tabindex="-1">Esquemas</a><a class="sh-tab" role="tab" id="tab-log" href="#log" aria-controls="log" aria-selected="false" tabindex="-1">Pipeline log</a><a class="sh-tab" role="tab" id="tab-pipeline" href="#pipeline" aria-controls="pipeline" aria-selected="false" tabindex="-1">Pipeline</a><a class="sh-tab" role="tab" id="tab-cards" href="#cards" aria-controls="cards" aria-selected="false" tabindex="-1">Cards</a><a class="sh-tab" role="tab" id="tab-manual" href="#manual" aria-controls="manual" aria-selected="false" tabindex="-1">Manual</a><a class="sh-tab" role="tab" id="tab-mapa" href="#mapa" aria-controls="mapa" aria-selected="false" tabindex="-1">Mapa del código</a></nav>
     </div>
     <div class="sh-app-main" id="sh-main">
       <div class="sh-query ice" id="sh-query" aria-hidden="true"><pre></pre></div>
@@ -191,6 +192,11 @@ SOFTWARE.
   </section>
 
   <!-- Profundidad -->
+  <section class="sh-sec" id="linaje" data-group="corrientes">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--stream)"></i>Corrientes</span><h2 class="sh-h2 blur-text" data-blur="words">Linaje de datos</h2></header>
+    <div class="ice"><p class="muted">De dónde viene cada tabla y a quién afecta. El ejemplo es un sistema de datos costeros: boyas, avistamientos y mareas que bajan hasta un tablero, una alerta y un modelo.</p><div id="sh-lineage"><p class="muted">El linaje necesita JavaScript.</p></div></div>
+  </section>
+
   <section class="sh-sec" id="metricas" data-group="profundidad">
     <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--schema)"></i>Profundidad</span><h2 class="sh-h2 blur-text" data-blur="words">Métricas</h2></header>
     <div class="ice-grid">
@@ -235,6 +241,11 @@ SOFTWARE.
       <tr><td><code>--scrape</code></td><td>#F08050</td><td>#FF6040</td><td>Scraper · extracción web</td></tr>
       <tr><td><code>--store</code></td><td>#20A080</td><td>#00C8B0</td><td>Almacenamiento persistente</td></tr>
     </table></div></div>
+  </section>
+
+  <section class="sh-sec" id="esquemas" data-group="profundidad">
+    <header class="sh-head"><span class="sh-kicker"><i style="--c:var(--schema)"></i>Profundidad</span><h2 class="sh-h2 blur-text" data-blur="words">Esquemas</h2></header>
+    <div class="ice"><p class="muted">El diccionario de datos: cada tabla con sus llaves, tipos, ejemplos y el CQL para crearla, y la migración entre versiones.</p><div id="sh-schemas"><p class="muted">Los esquemas necesitan JavaScript.</p></div></div>
   </section>
 
   <!-- Desembocadura -->
@@ -315,8 +326,11 @@ import { mount as m4 } from '../shared/components/shui/current-graph.js';
 import { mount as m5 } from '../shared/components/shui/morph-gallery.js';
 import { mount as m6 } from '../shared/components/shui/bio-particles.js';
 import { mount as m7 } from '../shared/components/shui/module-tabs.js';
+import { mount as lineage } from '../shared/components/shui/lineage.js';
+import { mount as schemas } from '../shared/components/shui/schemas.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
+lineage(); schemas();
 m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7();
 docProse();
 docSpecimen({

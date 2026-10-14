@@ -11,8 +11,8 @@ export function mount() {
   const host = $('#sh-graph'), canvas = host.querySelector('canvas'), ctx = canvas.getContext('2d');
   const GROUPS = [
     { id: 'superficie', name: 'Superficie', color: '--query', kids: [['paleta', 'Paleta'], ['galeria', 'Galería']] },
-    { id: 'corrientes', name: 'Corrientes', color: '--stream', kids: [['avisos', 'Avisos'], ['badges', 'Badges'], ['botones', 'Botones']] },
-    { id: 'profundidad', name: 'Profundidad', color: '--schema', kids: [['metricas', 'Métricas'], ['codigo', 'Código'], ['tabla', 'Tabla']] },
+    { id: 'corrientes', name: 'Corrientes', color: '--stream', kids: [['avisos', 'Avisos'], ['badges', 'Badges'], ['botones', 'Botones'], ['linaje', 'Linaje']] },
+    { id: 'profundidad', name: 'Profundidad', color: '--schema', kids: [['metricas', 'Métricas'], ['codigo', 'Código'], ['tabla', 'Tabla'], ['esquemas', 'Esquemas']] },
     { id: 'desembocadura', name: 'Desembocadura', color: '--store', kids: [['log', 'Pipeline log'], ['pipeline', 'Pipeline'], ['cards', 'Cards'], ['manual', 'Manual'], ['mapa', 'Mapa del código']] },
   ];
   let W = 1, H = 1, dpr = 1, nodes = [], edges = [], hover = -1, pal = {}, active = 'paleta';
