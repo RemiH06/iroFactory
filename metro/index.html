@@ -53,6 +53,7 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/metro/departures.css">
 <link rel="stylesheet" href="../shared/components/metro/lattice-loader.css">
 <link rel="stylesheet" href="../shared/components/metro/dome-gallery.css">
+<link rel="stylesheet" href="../shared/components/metro/status-page.css">
 </head>
 <body class="metro">
 
@@ -92,6 +93,14 @@ SOFTWARE.
     <div>
       <div class="callout ok"><div class="callout-title">Semáforo</div><p>Rojo, amarillo y verde son la única semántica de color del tema. El resto de la paleta es de apoyo.</p></div>
     </div>
+  </div>
+</section>
+
+<section class="metro-status" id="estado" aria-labelledby="mt-status-title">
+  <div class="wrap">
+    <h2 id="mt-status-title">Página de estado</h2>
+    <p class="muted">La plantilla para documentar un sistema en operación: el aviso general, cada componente con su disponibilidad día por día, el mantenimiento programado y la cronología de incidentes con sus actualizaciones. El ejemplo es el Tren Ligero; los incidentes son inventados.</p>
+    <div class="mt-status" id="mt-status"><p class="muted">La página de estado necesita JavaScript.</p></div>
   </div>
 </section>
 
@@ -380,6 +389,7 @@ Object.assign(window, { metroToggle });
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1();
+import('../shared/components/metro/status-page.js').then(m => m.mount());
 docProse();
 docSpecimen({
   type: { el: '#mt-type', fonts: [

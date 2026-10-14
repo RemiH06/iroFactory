@@ -1,0 +1,70 @@
+/* metro · página de estado. El semáforo es la única semántica y siempre va con su palabra o ícono. */
+.metro-status{position:relative;z-index:1;padding:8px 0 56px}
+.metro-status > .wrap > h2{margin-top:0}
+.mt-status{position:relative;padding:20px 22px;background:color-mix(in srgb,var(--bg) 94%,transparent);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.mt-status h3{color:var(--text);margin:0}
+.st-banner{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--st,var(--ok));border-left-width:4px;border-radius:var(--radius);background:color-mix(in srgb,var(--st,var(--ok)) 9%,var(--bg2))}
+.st-banner.ok{--st:var(--ok)}.st-banner.warn{--st:var(--warn-ink)}.st-banner.danger{--st:var(--danger)}
+.st-ico{flex:none;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;font:700 14px var(--mono);color:var(--bg);background:var(--st)}
+.st-banner b{display:block;font-family:var(--mono);font-size:14px}
+.st-banner span:not(.st-ico){display:block;font-size:12px;color:var(--text2)}
+.st-head{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;margin:26px 0 12px}
+.st-range,.st-filters{display:flex;flex-wrap:wrap;gap:6px}
+.metro .btn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.st-comps{list-style:none;display:flex;flex-direction:column;gap:16px}
+.st-comp{padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2)}
+.st-comp.is-on{border-color:var(--accent)}
+.st-comp-head{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;justify-content:space-between;margin-bottom:8px}
+.st-name{display:inline-flex;align-items:center;gap:8px;font:600 13px var(--sans);color:var(--text);background:none;border:none;cursor:pointer;padding:2px 0;text-align:left}
+.st-name i{flex:none;width:10px;height:10px;border-radius:50%}
+.st-name:hover,.st-name[aria-pressed="true"]{color:var(--accent)}
+.st-state{font:700 11px var(--mono);white-space:nowrap}
+.st-state.ok{color:var(--ok)}.st-state.warn{color:var(--warn-ink)}.st-state.danger{color:var(--danger)}
+.st-bars{display:flex;gap:2px;height:34px}
+.st-day{flex:1;min-width:0;border:none;border-radius:2px;cursor:pointer;padding:0;transition:transform .12s ease-out,opacity .12s ease-out}
+.st-day.ok{background:var(--ok)}
+.st-day.warn{background:var(--warn)}
+.st-day.danger{background:var(--danger)}
+.st-day.none{background:var(--bg3);box-shadow:inset 0 0 0 1px var(--border);cursor:default}
+.st-day:hover,.st-day:focus-visible{transform:scaleY(1.18);outline:none;box-shadow:0 0 0 2px var(--text)}
+.st-foot{display:flex;justify-content:space-between;margin-top:6px;font:11px var(--mono);color:var(--text2)}
+.st-foot b{color:var(--text)}
+.st-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0 0;font:11px var(--mono);color:var(--text2)}
+.st-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.st-legend i.ok{background:var(--ok)}.st-legend i.warn{background:var(--warn)}.st-legend i.danger{background:var(--danger)}.st-legend i.none{background:var(--bg3);box-shadow:inset 0 0 0 1px var(--border)}
+.st-tip{position:absolute;z-index:5;pointer-events:none;display:flex;flex-direction:column;gap:2px;max-width:300px;padding:8px 10px;font-size:12px;line-height:1.45;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 20px color-mix(in srgb,var(--black) 22%,transparent)}
+.st-tip[hidden]{display:none}
+.st-tip b{font-family:var(--mono);font-size:11px}
+.st-tip .warn{color:var(--warn-ink)}.st-tip .danger{color:var(--danger)}
+.st-maint{display:grid;gap:10px;margin-top:12px}
+.st-mcard{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border:1px dashed var(--border);border-radius:var(--radius);background:var(--bg2);font-size:13px}
+.st-mcard .badge{align-self:flex-start}
+.st-mcard p{margin:0}
+.st-sim{margin-top:18px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius)}
+.st-sim summary{cursor:pointer;font:700 12px var(--mono);color:var(--accent)}
+.st-new{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 8px;align-items:end}
+.st-new .wide{grid-column:1 / -1}
+.st-new label{display:flex;flex-direction:column;gap:4px;font:10px var(--mono);color:var(--text2);letter-spacing:.06em;text-transform:uppercase}
+.st-new select,.st-new input,.st-step input{font:13px var(--sans);color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:7px 9px;min-height:38px;min-width:0}
+.st-new .btn{justify-self:start;min-height:36px}
+@media (max-width:600px){.st-new{grid-template-columns:1fr}}
+.st-sim p.muted{margin:0}
+.st-history{list-style:none;display:flex;flex-direction:column;gap:12px}
+.st-inc{padding:12px 14px;border:1px solid var(--border);border-left:3px solid var(--st);border-radius:var(--radius);background:var(--bg2)}
+.st-inc.warn{--st:var(--warn-ink)}.st-inc.danger{--st:var(--danger)}
+.st-inc.is-open{box-shadow:0 0 0 1px var(--st)}
+.st-inc.is-flash{animation:st-flash 1.2s ease-out}
+@keyframes st-flash{0%,30%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion:reduce){.st-inc.is-flash{animation:none}.st-day{transition:none}}
+.st-inc-head{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.st-inc-head h4{flex:1 1 260px;margin:0;font-size:14px}
+.st-sev{font:700 10px var(--mono);color:var(--st);text-transform:uppercase;letter-spacing:.06em}
+.st-when{font:11px var(--mono);color:var(--text2);flex-basis:100%}
+.st-affects{flex-basis:100%;display:flex;flex-wrap:wrap;gap:4px}
+.st-updates{list-style:none;margin:10px 0 0;padding-left:14px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+.st-updates li{font-size:13px}
+.st-updates b{font-family:var(--mono);font-size:11px}
+.st-updates time{font:11px var(--mono);color:var(--text2);margin-left:6px}
+.st-updates p{margin:2px 0 0;line-height:1.6}
+.st-step{display:flex;gap:8px;margin-top:10px}
+.st-step input{flex:1}
