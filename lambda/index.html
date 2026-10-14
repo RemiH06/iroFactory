@@ -56,6 +56,7 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/lambda/raimei-hakke.css">
 <link rel="stylesheet" href="../shared/components/lambda/formula-fullscreen.css">
 <link rel="stylesheet" href="../shared/components/lambda/logo-loop.css">
+<link rel="stylesheet" href="../shared/components/lambda/algorithms.css">
 </head>
 <body>
 
@@ -80,9 +81,10 @@ SOFTWARE.
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#definiciones"><span class="sm-panel-itemLabel"><span class="sm-sec">§1</span> Definiciones</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#teoremas"><span class="sm-panel-itemLabel"><span class="sm-sec">§2</span> Teoremas</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#demostraciones"><span class="sm-panel-itemLabel"><span class="sm-sec">§3</span> Demostraciones</span></a></li>
-      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#resultados"><span class="sm-panel-itemLabel"><span class="sm-sec">§4</span> Resultados</span></a></li>
-      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#formulario"><span class="sm-panel-itemLabel"><span class="sm-sec">§5</span> Formulario</span></a></li>
-      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#apuntes"><span class="sm-panel-itemLabel"><span class="sm-sec">§6</span> Apuntes</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#algoritmos"><span class="sm-panel-itemLabel"><span class="sm-sec">§4</span> Algoritmos</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#resultados"><span class="sm-panel-itemLabel"><span class="sm-sec">§5</span> Resultados</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#formulario"><span class="sm-panel-itemLabel"><span class="sm-sec">§6</span> Formulario</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#apuntes"><span class="sm-panel-itemLabel"><span class="sm-sec">§7</span> Apuntes</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#colofon"><span class="sm-panel-itemLabel"><span class="sm-sec">fin</span> Colofón</span></a></li>
     </ul>
     <div class="sm-extras">
@@ -221,6 +223,46 @@ SOFTWARE.
         </div>
       </div>
     </div>
+    <h3>Demostraciones en el pizarrón</h3>
+    <p class="muted">Tres pruebas, una por método. Avanzan paso a paso; cada paso dice de cuáles depende y, si lo pides, por qué vale.</p>
+    <div class="lm-proofs" id="lm-proofs">
+      <div class="lm-proof" data-method="contradicción" data-name="√2 es irracional">
+        <div class="theorem-box"><div class="theorem-label">Teorema</div><div class="theorem-body"><span class="math">√2</span> no es un número racional.</div></div>
+        <ol class="lm-proof-steps">
+          <li data-why="Es la hipótesis que se quiere llevar al absurdo. Toda fracción se puede simplificar, así que pedir que p y q no compartan factores no quita generalidad.">Supongamos que sí lo es: <span class="math">√2 = p/q</span>, con <span class="math">p</span> y <span class="math">q</span> enteros, <span class="math">q ≠ 0</span> y sin factores comunes.</li>
+          <li data-uses="1" data-why="Elevar al cuadrado y multiplicar ambos lados por q² conserva la igualdad.">Al elevar al cuadrado, <span class="math">2 = p²/q²</span>; es decir, <span class="math">p² = 2q²</span>.</li>
+          <li data-uses="2" data-why="Si p fuera impar, p = 2k + 1 y p² = 4k² + 4k + 1 también sería impar.">Entonces <span class="math">p²</span> es par, y por lo tanto <span class="math">p</span> es par.</li>
+          <li data-uses="2,3" data-why="Un número par es el doble de un entero. Después se divide entre 2 la igualdad.">Escribimos <span class="math">p = 2k</span>. Sustituyendo, <span class="math">4k² = 2q²</span>, o sea <span class="math">q² = 2k²</span>.</li>
+          <li data-uses="3,4" data-why="El mismo argumento del paso 3, ahora con q.">Así <span class="math">q²</span> es par, y <span class="math">q</span> también.</li>
+          <li data-uses="1,3,5" data-absurd data-why="El paso 1 pedía que p y q no tuvieran factores comunes.">Los dos son pares: comparten el factor 2. Contradice el paso 1.</li>
+          <li data-uses="1,6" data-why="Reducción al absurdo: si suponer algo lleva a una contradicción, lo verdadero es su negación.">La suposición es falsa: <span class="math">√2</span> no es racional.</li>
+        </ol>
+      </div>
+      <div class="lm-proof" data-method="construcción" data-name="Hay infinitos primos">
+        <div class="theorem-box"><div class="theorem-label">Teorema · Euclides, Elementos IX.20</div><div class="theorem-body">Hay una infinidad de números primos.</div></div>
+        <ol class="lm-proof-steps">
+          <li data-why="Basta mostrar que ninguna lista finita los contiene a todos.">Tomemos cualquier lista finita de primos <span class="math">p₁, p₂, …, pₙ</span>.</li>
+          <li data-uses="1" data-why="Un número hecho a propósito: el producto de todos los de la lista, más uno.">Construimos <span class="math">N = p₁ · p₂ · … · pₙ + 1</span>.</li>
+          <li data-uses="2" data-why="Todo entero mayor que 1 es primo o se descompone en primos: es el teorema fundamental de la aritmética.">Como <span class="math">N &gt; 1</span>, tiene al menos un divisor primo <span class="math">q</span>.</li>
+          <li data-uses="2,3" data-why="Si q divide a dos números, divide a su diferencia.">Si <span class="math">q</span> estuviera en la lista, dividiría al producto y también a <span class="math">N</span>; entonces dividiría a su diferencia, que es 1.</li>
+          <li data-uses="4" data-why="Los primos son mayores que 1, y ningún número mayor que 1 divide a 1.">Ningún primo divide a 1, así que <span class="math">q</span> no está en la lista.</li>
+          <li data-uses="1,5" data-why="La lista del paso 1 era cualquiera.">Toda lista finita de primos deja fuera a alguno: hay una infinidad.</li>
+        </ol>
+        <div class="callout chalk-cyan pr-after"><div class="callout-title">Ojo</div><p><span class="math">N</span> no tiene que ser primo: <span class="math">2 · 3 · 5 · 7 · 11 · 13 + 1 = 30031 = 59 · 509</span>. Basta con que sus factores primos no estén en la lista.</p></div>
+      </div>
+      <div class="lm-proof" data-method="inducción" data-name="La suma de 1 a n">
+        <div class="theorem-box"><div class="theorem-label">Teorema</div><div class="theorem-body">Para todo <span class="math">n ≥ 1</span>, <span class="math">1 + 2 + … + n = n(n + 1)/2</span>.</div></div>
+        <ol class="lm-proof-steps">
+          <li data-why="El primer valor se comprueba a mano.">Caso base: con <span class="math">n = 1</span>, el lado izquierdo es 1 y el derecho <span class="math">1 · 2 / 2 = 1</span>.</li>
+          <li data-why="No se supone lo que se quiere probar: solo que vale para un k fijo.">Hipótesis de inducción: para algún <span class="math">k ≥ 1</span>, <span class="math">1 + … + k = k(k + 1)/2</span>.</li>
+          <li data-uses="2" data-why="Se separa el último sumando y en los demás se usa la hipótesis.">Para <span class="math">k + 1</span>: <span class="math">1 + … + k + (k + 1) = k(k + 1)/2 + (k + 1)</span>.</li>
+          <li data-uses="3" data-why="Factor común k + 1.">Eso es <span class="math">(k + 1)(k/2 + 1) = (k + 1)(k + 2)/2</span>.</li>
+          <li data-uses="4" data-why="Es la misma fórmula con n = k + 1.">Si la fórmula vale para <span class="math">k</span>, vale para <span class="math">k + 1</span>.</li>
+          <li data-uses="1,5" data-why="Caso base y paso inductivo: como fichas de dominó, cae la primera y cada una tira a la siguiente.">Por el principio de inducción, vale para todo <span class="math">n ≥ 1</span>.</li>
+        </ol>
+        <div class="callout chalk-violet pr-after"><div class="callout-title">Otra manera</div><p>Se cuenta que Gauss, de niño, sumó de 1 a 100 emparejando los extremos: <span class="math">1 + 100</span>, <span class="math">2 + 99</span>, … son 50 parejas de 101, o sea 5050.</p></div>
+      </div>
+    </div>
     <h3>Código</h3>
 <pre data-lang="haskell"><span class="cm">-- Función de Ackermann</span>
 <span class="kw">ackermann</span> :: <span class="tp">Int</span> <span class="op">-></span> <span class="tp">Int</span> <span class="op">-></span> <span class="tp">Int</span>
@@ -230,13 +272,28 @@ SOFTWARE.
   </div>
 </section>
 
-<!-- ── §4 RESULTADOS ── -->
+<!-- ── §4 ALGORITMOS ── -->
+<section class="lm-chap" id="algoritmos" aria-labelledby="h-alg">
+  <div class="lm-wrap">
+    <canvas class="lm-curio" data-curve="helice" aria-hidden="true"></canvas>
+    <div class="lm-chap-head">
+      <span class="lm-chap-num">§4</span>
+      <h2 id="h-alg">Algoritmos</h2>
+      <p class="lm-chap-lede">Un algoritmo se entiende mirándolo trabajar: cada comparación, cada escritura y la línea que la manda.</p>
+    </div>
+    <div class="lm-algo" id="lm-algo" aria-label="Visualizador de algoritmos de ordenamiento"><p class="muted">El visualizador necesita JavaScript.</p></div>
+    <p class="av-legend" aria-hidden="true"><span><i style="background:var(--chalk-yellow)"></i>se comparan</span><span><i style="background:var(--chalk-pink)"></i>se escribe</span><span><i style="background:var(--chalk-violet)"></i>pivote</span><span><i style="background:var(--chalk-orange)"></i>se inserta</span><span><i style="background:var(--qed)"></i>en su lugar</span></p>
+    <div class="callout chalk-orange" style="margin-top:18px"><div class="callout-title">Para probar</div><p>El rápido con el pivote al final es <span class="math">O(n log n)</span> en promedio, pero con una lista casi ordenada cada partición deja un lado casi vacío y se vuelve <span class="math">O(n²)</span>. Elige «casi ordenada» y compáralo con la mezcla.</p></div>
+  </div>
+</section>
+
+<!-- ── §5 RESULTADOS ── -->
 <section class="lm-chap lm-chap--waves" id="resultados" aria-labelledby="h-res">
   <canvas class="lm-waves" aria-hidden="true"></canvas>
   <div class="lm-wrap">
     <canvas class="lm-curio" data-curve="toro" aria-hidden="true"></canvas>
     <div class="lm-chap-head">
-      <span class="lm-chap-num">§4</span>
+      <span class="lm-chap-num">§5</span>
       <h2 id="h-res">Resultados</h2>
       <p class="lm-chap-lede">Lo que queda al final: números, tablas y fichas.</p>
     </div>
@@ -271,12 +328,12 @@ SOFTWARE.
   </div>
 </section>
 
-<!-- ── §5 FORMULARIO ── -->
+<!-- ── §6 FORMULARIO ── -->
 <section class="lm-chap" id="formulario" aria-labelledby="h-for">
   <div class="lm-wrap">
     <canvas class="lm-curio" data-curve="cono" aria-hidden="true"></canvas>
     <div class="lm-chap-head">
-      <span class="lm-chap-num">§5</span>
+      <span class="lm-chap-num">§6</span>
       <h2 id="h-for">Formulario</h2>
       <p class="lm-chap-lede">Fórmulas de mis apuntes, más algo de lógica y lenguaje. El color es el área; el lente deja leer de qué materia salió cada una.</p>
     </div>
@@ -286,12 +343,12 @@ SOFTWARE.
   </div>
 </section>
 
-<!-- ── §6 APUNTES · base común de documentación ── -->
+<!-- ── §7 APUNTES · base común de documentación ── -->
 <section class="lm-chap" id="apuntes" aria-labelledby="h-apu">
   <div class="lm-wrap">
     <canvas class="lm-curio" data-curve="adn" aria-hidden="true"></canvas>
     <div class="lm-chap-head">
-      <span class="lm-chap-num">§6</span>
+      <span class="lm-chap-num">§7</span>
       <h2 id="h-apu">Apuntes</h2>
       <p class="lm-chap-lede">Así se ve una página de apuntes con este tema: idea, definición, propiedades, cálculo y ejercicios.</p>
     </div>
@@ -323,7 +380,7 @@ X = np.fft.rfft(x)            # picos en 50 y 120 Hz</code></pre>
         <details><summary>¿Por qué el muestreo debe ser al menos el doble de la frecuencia más alta?</summary><p>Teorema de Nyquist-Shannon: por debajo, frecuencias distintas se vuelven indistinguibles (aliasing).</p></details>
         <p><small>En el pizarrón, <kbd>Shift</kbd> + <kbd>Enter</kbd> evalúa la celda.</small></p>
         <aside class="doc-notes" aria-label="Notas"><ol><li id="lm-n1">Por eso los filtros se aplican multiplicando el espectro, y la FFT hace rápida cualquier convolución larga. <a href="#lm-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
-        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#formulario"><small>Anterior</small>§5 Formulario</a><a class="next" href="#colofon"><small>Siguiente</small>Colofón</a></nav>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#formulario"><small>Anterior</small>§6 Formulario</a><a class="next" href="#colofon"><small>Siguiente</small>Colofón</a></nav>
       </article>
       <aside class="doc-toc" aria-label="En esta página"></aside>
     </div>
@@ -420,9 +477,12 @@ import { mount as m7 } from '../shared/components/lambda/raimei-hakke.js';
 import { mount as m8 } from '../shared/components/lambda/fluid-glass-formulas.js';
 import { mount as m9 } from '../shared/components/lambda/formula-fullscreen.js';
 import { mount as m10 } from '../shared/components/lambda/logo-loop.js';
+import { mount as proofReveal } from '../shared/components/lambda/proof-reveal.js';
+import { mount as algoViz } from '../shared/components/lambda/algo-viz.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7(); m8(); m9(); m10();
+proofReveal(); algoViz();
 docProse();
 docSpecimen({
   type: { el: '#lm-type', fonts: [
