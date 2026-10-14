@@ -412,6 +412,12 @@ td code { white-space: nowrap; }
 .doc-man b { color: var(--accent); }
 /* El manual se lee sin brillo neón */
 #level-manual, #level-manual * { text-shadow: none !important; }
+/* Botón de sonido: altavoz con ondas (encendido) o tachado (apagado), según aria-pressed */
+.snd-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 10px; }
+.snd-ico { display: block; }
+.snd-btn[aria-pressed="true"] .snd-off, .snd-btn:not([aria-pressed="true"]) .snd-on { display: none; }
+.snd-btn[aria-pressed="true"] { border-color: var(--lime); color: var(--lime); text-shadow: none; filter: drop-shadow(0 0 3px color-mix(in srgb, var(--lime) 60%, transparent)); }
+body.light .snd-btn[aria-pressed="true"] { filter: none; }
 /* Métricas en vivo: la gráfica de cuadros por segundo, en bloques */
 .metric-spark { margin-top: 4px; font-size: 12px; line-height: 1; letter-spacing: -1px; color: var(--accent); text-shadow: var(--glow-accent); white-space: nowrap; overflow: hidden; }
 .metric-val[data-metric="pet"] { font-size: 16px; line-height: 1.4; }

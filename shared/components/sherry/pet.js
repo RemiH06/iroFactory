@@ -142,7 +142,7 @@ export async function mount({ dock = '#sh-term', species = new URL('../../../ass
   addEventListener('sh:feast', () => { wake(); lastMeal = performance.now(); eat(2, '¡banquete de chatarra!'); });
   addEventListener('sh:mood', e => { wake(); if (e.detail === 'scared') { shake = 1; talk('¡!¡!', 1600); } });
   onTheme(() => { wake(); talk(theme.alt ? '¡mis ojos!' : 'ahh, oscurito'); shake = theme.alt ? 0.6 : 0; });
-  btn.addEventListener('click', () => { wake(); hop = 1; talk(pet.diedAt ? 'descansa en paz…' : ['♥', '♥ ♥', '*ronronea*', '¡hola!'][Math.floor(Math.random() * 4)], 1600); });
+  btn.addEventListener('click', () => { wake(); hop = 1; talk(pet.diedAt ? 'descansa en paz…' : ['♥', '♥ ♥', 'croak', '¡hola!'][Math.floor(Math.random() * 4)], 1600); });
   ['pointerdown', 'keydown', 'scroll'].forEach(t => addEventListener(t, () => { if (sleeping) wake(); else lastInput = performance.now(); }, { passive: true }));
 
   // ── Comandos ──

@@ -18,7 +18,7 @@ function lines() {
     : pet.diedAt ? `Tamauijetto ........ <span class="bad">sin señal</span> (gen ${pet.generation})`
     : `Tamauijetto ........ ${NAMES[pet.stage] || pet.stage}, generación ${pet.generation}`;
   return [
-    '<b>SHERRY BIOS</b> v0.4.2 · construye desde basura',
+    '<b>SHERRY BIOS</b> v0.4.2 · build anything',
     '(c) 2026 RemiH06 · iroFactory',
     '',
     'CPU ................ ESP32 dual core @ 240 MHz',

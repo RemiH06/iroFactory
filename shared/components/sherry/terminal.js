@@ -116,10 +116,10 @@ export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, 
     clear: { help: 'limpia la pantalla', fn: () => { out.innerHTML = ''; return []; } },
     echo: { help: 'repite lo que escribas', fn: a => [esc(a.join(' '))] },
     date: { help: 'fecha y hora', fn: () => [new Date().toLocaleString('es-MX', { dateStyle: 'full', timeStyle: 'short' })] },
-    whoami: { help: 'quién eres aquí', fn: () => [`${esc(user)} · construye desde basura`] },
+    whoami: { help: 'quién eres aquí', fn: () => [`${esc(user)} · build anything`] },
     palette: { help: 'abre la paleta de comandos (Ctrl + K)', fn: () => { dispatchEvent(new CustomEvent('sh:palette')); return []; } },
     exit: { help: 'cierra la terminal', fn: () => { input.blur(); setOpen(false); return []; } },
-    sudo: { hidden: true, help: '', fn: () => ['<span class="sh-term-err">permiso denegado</span>: sherry construye desde basura, no desde root'] },
+    sudo: { hidden: true, help: '', fn: () => ['<span class="sh-term-err">permiso denegado</span>: build anything, pero no como root'] },
   };
 
   const all = () => ({ ...CMDS, ...EXTRA });

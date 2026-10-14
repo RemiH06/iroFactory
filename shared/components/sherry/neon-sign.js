@@ -6,7 +6,7 @@
 // con su chisporroteo; «Descargar» guarda el PNG. El letrero siempre es
 // de noche (un neón no se ve de día), así que usa los neones de modo
 // oscuro de sherry aunque la página esté en claro.
-//   mount({ el, text: 'sherry\nconstruye desde basura' })
+//   mount({ el, text: 'sherry\nbuild anything' })
 // ══════════════════════════════════════════════════════
 import { reduceMotion } from './kit.js';
 import { bump } from './stats.js';
@@ -21,7 +21,7 @@ const glass = hex => { const n = parseInt(hex.slice(1), 16); return `rgb(${[n >>
 const mix = (hex, t) => { const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255].map(v => Math.round(v + (250 - v) * t)); return `rgb(${c.join(',')})`; };
 const chips = (name, sel) => Object.entries(NEON).map(([k, v]) => `<button type="button" class="sh-ns-sw" data-${name}="${k}" aria-pressed="${k === sel}" aria-label="${k}" style="--sw:${v}"></button>`).join('');
 
-export function mount({ el, text = 'sherry\nconstruye desde basura' }) {
+export function mount({ el, text = 'sherry\nbuild anything' }) {
   const root = typeof el === 'string' ? document.querySelector(el) : el;
   if (!root) return;
   const st = { text, font: 'tilt', c1: 'magenta', c2: 'cyan', board: true, broken: true };

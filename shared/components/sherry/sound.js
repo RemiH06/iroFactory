@@ -3,7 +3,7 @@
 // defecto. Teclas de la terminal como teclado mecánico, un zap por cada
 // anillo de neón, chispa al soldar, dos notas cuando come la mascota y el
 // zumbido de un tubo de neón mientras está el protector de pantalla. Se
-// prende con el botón `snd` o con `sound on`; se recuerda.
+// prende con el botón del altavoz o con `sound on`; se recuerda.
 //   mount({ toggle: '#snd-btn' })
 // ══════════════════════════════════════════════════════
 import { addCommand } from './terminal.js';
@@ -45,7 +45,7 @@ export function mount({ toggle = '#snd-btn' } = {}) {
   };
   const humOff = () => { if (!hum) return; const { g, os } = hum; hum = null; g.gain.linearRampToValueAtTime(0, ac.currentTime + 0.3); os.forEach(o => o.stop(ac.currentTime + 0.35)); };
 
-  const paint = () => { if (!btn) return; btn.setAttribute('aria-pressed', String(on)); btn.setAttribute('aria-label', on ? 'Apagar el sonido' : 'Encender el sonido'); btn.textContent = on ? 'snd ●' : 'snd'; };
+  const paint = () => { if (!btn) return; btn.setAttribute('aria-pressed', String(on)); btn.setAttribute('aria-label', on ? 'Apagar el sonido' : 'Encender el sonido'); btn.title = on ? 'Sonido encendido' : 'Sonido apagado'; };
   const set = v => { on = v; try { localStorage.setItem(KEY, v ? '1' : '0'); } catch { /* sin almacenamiento */ } if (v) tone(880, 1320, 0.05, 0.08); else humOff(); paint(); };
   btn?.addEventListener('click', () => set(!on));
   paint();

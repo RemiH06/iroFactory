@@ -68,7 +68,7 @@ SOFTWARE.
 <div class="sherry-controls">
   <button class="btn" id="tri-btn" aria-label="Alternar fondo de triángulos">tri</button>
   <button class="btn" id="crt-btn" aria-label="Alternar líneas CRT">crt</button>
-  <button class="btn" id="snd-btn" aria-pressed="false" aria-label="Encender el sonido">snd</button>
+  <button class="btn snd-btn" id="snd-btn" aria-pressed="false" aria-label="Encender el sonido"><svg class="snd-ico" viewBox="0 0 18 16" width="16" height="14" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path class="snd-on" d="M11.5 5.2a3.6 3.6 0 0 1 0 5.6M13.6 3a6.6 6.6 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path class="snd-off" d="M12 5.5l4.5 5M16.5 5.5l-4.5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
   <button class="theme-btn" id="toggle-btn" aria-label="Cambiar a modo claro">⬜ light</button>
 </div>
 
@@ -254,7 +254,7 @@ SOFTWARE.
       <div class="sherry-aux-img" id="aux-codigo" data-crop="esp32"></div>
     </div>
     <p>Inline: <code>crt off</code> en la terminal apaga las scanlines.</p>
-    <pre data-lang="python"><span class="cm"># sherry construye desde basura</span>
+    <pre data-lang="python"><span class="cm"># sherry: build anything</span>
 <span class="kw">class</span> <span class="type">Artefacto</span>:
     <span class="fn">def</span> <span class="kw">__init__</span>(<span class="var">self</span>, materiales):
         <span class="var">self</span>.core   = materiales[<span class="num">0</span>]
@@ -298,7 +298,7 @@ SOFTWARE.
       <h2>Taller</h2>
       <div class="sherry-aux-img" id="aux-taller" data-crop="ind"></div>
     </div>
-    <p class="muted sh-ws-intro">sherry construye desde basura: arma el artefacto con lo que hay en la charola. Cada soldadura alimenta a tu Tamauijetto.</p>
+    <p class="muted sh-ws-intro">build anything: arma el artefacto con lo que hay en la charola. Cada soldadura alimenta a tu Tamauijetto.</p>
     <div id="workshop"></div>
   </div>
 </section>
