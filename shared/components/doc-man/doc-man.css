@@ -1,0 +1,46 @@
+/* ══════════════════════════════════════════════════════
+   Doc Man · página de manual con armador de comandos.
+   Mismas variables que doc-prose.
+   ══════════════════════════════════════════════════════ */
+.doc-man { font-family: var(--_mono); font-size: 14px; line-height: 1.65; margin: 1.6em 0; padding: 18px 20px; border: 1px solid var(--_line); border-radius: var(--_r); background: var(--_surface); }
+.doc-man-rule { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--_muted); }
+.doc-man-rule span:nth-child(2) { text-align: center; }
+.doc-man-rule span:last-child { text-align: right; }
+header.doc-man-rule { padding-bottom: 10px; border-bottom: 1px dashed var(--_line); }
+footer.doc-man-rule { padding-top: 10px; margin-top: 18px; border-top: 1px dashed var(--_line); }
+.doc .doc-man-h { font-family: var(--_mono); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin: 1.4em 0 .4em; color: var(--_ink); }
+.doc-man-p { margin: 0 0 .5em 2.2em; max-width: 72ch; }
+.doc-man-p p { margin: 0 0 .7em; }
+.doc-man-syn i, .doc-man-opt i { color: var(--_muted); }
+.doc-man-build { margin: 12px 0 0 2.2em; padding: 10px 12px; border: 1px solid var(--_line); border-left: 3px solid var(--_accent); border-radius: var(--_r); background: color-mix(in srgb, var(--_accent) 5%, transparent); }
+.doc-man-cap { margin: 0 0 6px; font-size: 13px; color: var(--_muted); }
+.doc-man-line { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.doc-man-line code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; font-size: 13px; padding: 4px 0; background: none; border: 0; }
+.doc-man-copy { font: inherit; font-size: 13px; color: var(--_accent); background: none; border: 1px solid var(--_line); border-radius: var(--_r); padding: 3px 10px; min-height: 28px; cursor: pointer; flex-shrink: 0; }
+.doc-man-copy:hover { border-color: var(--_accent); }
+.doc-man-op, .doc-man-filter { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: var(--_muted); }
+.doc-man-filter { margin: 0 0 8px 2.2em; }
+.doc-man input[type="text"], .doc-man input[type="search"] { font: inherit; font-size: 13px; color: var(--_ink); background: transparent; border: 1px solid var(--_line); border-radius: var(--_r); padding: 3px 8px; min-height: 28px; min-width: 0; }
+/* doc-prose pone los dl en rejilla de dos columnas; aquí cada opción es un bloque */
+.doc .doc-man-opts { display: block; margin: 0 0 0 2.2em; }
+.doc-man-opt { padding: 6px 8px; border-left: 2px solid transparent; border-radius: 0 var(--_r) var(--_r) 0; }
+.doc-man-opt.is-on { border-left-color: var(--_accent); background: color-mix(in srgb, var(--_accent) 7%, transparent); }
+.doc .doc-man-opt dt { color: var(--_ink); font-size: 1em; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-weight: 400; }
+.doc-man-opt dt label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.doc-man-opt dt input[type="checkbox"] { accent-color: var(--_accent); width: 16px; height: 16px; }
+.doc-man-val { width: 9em; }
+.doc-man-opt dd { margin: 2px 0 0 2.2em; color: var(--_ink); }
+.doc-man-def { color: var(--_muted); }
+.doc-man-none { margin-left: 2.2em; color: var(--_muted); }
+.doc-man-ex { margin-bottom: 10px; }
+.doc-man-ex .doc-man-line { margin-left: 2.2em; }
+.doc-man-exit { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; margin: 0 0 0 2.2em; }
+.doc-man-exit dt { font-weight: 700; }
+.doc-man-exit dd { margin: 0; }
+.doc-man-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+@media (max-width: 640px) {
+  .doc-man { padding: 14px 12px; }
+  .doc-man-rule span:nth-child(2) { display: none; }
+  .doc-man-p, .doc-man-build, .doc .doc-man-opts, .doc-man-filter, .doc-man-ex .doc-man-line, .doc-man-exit, .doc-man-none { margin-left: 0; }
+  .doc-man-opt dd { margin-left: 0; }
+}

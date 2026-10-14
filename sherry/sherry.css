@@ -408,6 +408,7 @@ table { display: block; overflow-x: auto; }
 td code { white-space: nowrap; }
 }
 /* Base común de documentación (doc-prose, doc-specimen) con la piel del tema */
-.doc{--doc-head:var(--mono);--doc-radius:var(--radius,4px)}
+.doc{--doc-head:var(--mono);--doc-radius:var(--radius,4px);--doc-added:var(--lime);--doc-fixed:var(--cyan);--doc-changed:var(--electric);--doc-removed:var(--magenta)}
+.doc-man b { color: var(--accent); }
 /* El manual se lee sin brillo neón */
 #level-manual, #level-manual * { text-shadow: none !important; }

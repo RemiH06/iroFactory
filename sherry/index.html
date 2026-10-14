@@ -39,23 +39,30 @@ SOFTWARE.
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="sherry · piel de documentación neon-punk para herramientas y juguetes personales: terminal y paleta de comandos para navegar, probador de regex, formateador de JSON, selector de neón y plantillas de manual, atajos y cambios.">
 <title>sherry_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700|doto:700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
 <link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
+<link rel="stylesheet" href="../shared/components/doc-man/doc-man.css">
+<link rel="stylesheet" href="../shared/components/doc-keys/doc-keys.css">
+<link rel="stylesheet" href="../shared/components/doc-changelog/doc-changelog.css">
 <link rel="stylesheet" href="sherry.css">
 <link rel="stylesheet" href="../shared/components/sherry/ascii-title.css">
-<link rel="stylesheet" href="../shared/components/sherry/dither.css">
+<link rel="stylesheet" href="../shared/components/sherry/neon-bloom.css">
 <link rel="stylesheet" href="../shared/components/sherry/hero.css">
 <link rel="stylesheet" href="../shared/components/sherry/dither-veil.css">
 <link rel="stylesheet" href="../shared/components/sherry/pixel-card.css">
+<link rel="stylesheet" href="../shared/components/sherry/tools.css">
+<link rel="stylesheet" href="../shared/components/sherry/terminal.css">
+<link rel="stylesheet" href="../shared/components/sherry/command-palette.css">
 </head>
 <body class="tri-on">
 
 <div class="sherry-controls">
-  <button class="btn" onclick="toggleTri()" aria-label="Alternar fondo de triángulos">tri</button>
-  <button class="btn" onclick="toggleCRT()" aria-label="Alternar líneas CRT">crt</button>
+  <button class="btn" id="tri-btn" aria-label="Alternar fondo de triángulos">tri</button>
+  <button class="btn" id="crt-btn" aria-label="Alternar líneas CRT">crt</button>
   <button class="theme-btn" id="toggle-btn" aria-label="Cambiar a modo claro">⬜ light</button>
 </div>
 
@@ -82,6 +89,28 @@ SOFTWARE.
 </div>
 
 <div class="page">
+
+<!-- ── Nivel: Herramientas (transparente: el bloom de los triángulos se ve entre los bancos) ── -->
+<section class="sherry-level" id="level-herramientas">
+  <div class="sherry-level-wrap">
+    <h2>Herramientas</h2>
+    <p class="muted">Tres utilidades que funcionan de verdad. También se abren desde la terminal de abajo: <code>open regex</code>, <code>open json</code>, <code>open neon</code>.</p>
+    <div class="sh-bench">
+      <section class="sh-tool" id="tool-regex" aria-labelledby="tool-regex-h">
+        <h3 id="tool-regex-h">regex <small>probador de expresiones regulares</small></h3>
+        <div class="sh-tool-body"></div>
+      </section>
+      <section class="sh-tool" id="tool-json" aria-labelledby="tool-json-h">
+        <h3 id="tool-json-h">json <small>formateador y validador</small></h3>
+        <div class="sh-tool-body"></div>
+      </section>
+      <section class="sh-tool" id="tool-neon" aria-labelledby="tool-neon-h">
+        <h3 id="tool-neon-h">neon <small>selector de color con tinta de día</small></h3>
+        <div class="sh-tool-body"></div>
+      </section>
+    </div>
+  </div>
+</section>
 
 <!-- ── Nivel: Paleta (fondo transparente, deja ver el lienzo de triángulos) ── -->
 <section class="sherry-level" id="level-paleta">
@@ -127,7 +156,7 @@ SOFTWARE.
 </section>
 
 <!-- ── Nivel: Componentes (Callouts + Badges + Botones), fondo Micro Slats ── -->
-<section class="sherry-level is-opaque" id="level-componentes">
+<section class="sherry-level is-opaque" id="level-componentes" data-name="Componentes">
   <div class="sherry-level-bg" id="sherry-dither-bg"></div>
   <div class="sherry-level-wrap">
     <div class="sherry-level-header">
@@ -213,7 +242,7 @@ SOFTWARE.
       <h2>Código</h2>
       <div class="sherry-aux-img" id="aux-codigo" data-crop="esp32"></div>
     </div>
-    <p>Inline: <code>toggleCRT()</code> activa el efecto de scanlines.</p>
+    <p>Inline: <code>crt off</code> en la terminal apaga las scanlines.</p>
     <pre data-lang="python"><span class="cm"># sherry construye desde basura</span>
 <span class="kw">class</span> <span class="type">Artefacto</span>:
     <span class="fn">def</span> <span class="kw">__init__</span>(<span class="var">self</span>, materiales):
@@ -337,28 +366,29 @@ SOFTWARE.
         <p class="doc-lede">Un juguete de línea de comandos: cualquier foto, convertida en triángulos que brillan.</p>
         <h2 id="sh-r-instalar">Instalar</h2>
 <pre data-lang="bash"><code>pipx install sherry-tri
-sherry --version</code></pre>
+sherry-tri --version</code></pre>
         <h2 id="sh-r-uso">Uso</h2>
-        <p><code>sherry</code> toma una imagen y la convierte en un mosaico de triángulos neón listo para fondo de pantalla.</p>
-<pre data-lang="bash"><code>sherry foto.jpg --tri 1800 --neon --out fondo.png</code></pre>
-        <h3 id="sh-r-opciones">Opciones</h3>
-        <dl><dt>--tri N</dt><dd>Número de triángulos. Más da detalle; menos, abstracción. 1200 por omisión.</dd><dt>--neon</dt><dd>Bordes brillantes con la paleta del tema.</dd><dt>--seed N</dt><dd>Repite exactamente el mismo mosaico.</dd><dt>--out RUTA</dt><dd>Archivo de salida; sin ella, se abre la vista previa.</dd></dl>
-        <h3 id="sh-r-atajos">Atajos de la vista previa</h3>
-        <ul><li><kbd>R</kbd> otro mosaico con semilla nueva</li><li><kbd>+</kbd> y <kbd>−</kbd> más o menos triángulos</li><li><kbd>Ctrl</kbd> + <kbd>S</kbd> guardar</li><li><kbd>Q</kbd> salir</li></ul>
+        <p><code>sherry-tri</code> toma una imagen y la convierte en un mosaico de triángulos neón listo para fondo de pantalla. Marca opciones en la referencia y el comando se arma solo.</p>
+        <h2 id="sh-r-ref">Referencia</h2>
+        <div id="man-sherry-tri"></div>
         <figure>
-<pre aria-label="Salida de la terminal">$ sherry gato.jpg --tri 900
+<pre aria-label="Salida de la terminal">$ sherry-tri gato.jpg --tri 900
   leyendo gato.jpg ........ 2048 × 1365
   triangulando ............ 900 triángulos
   pintando ................ 0.42 s
   ✓ vista previa abierta</pre>
           <figcaption><b>Figura 1.</b> Salida típica en la terminal.</figcaption>
         </figure>
+        <h2 id="sh-r-atajos">Atajos</h2>
+        <p>Los de la vista previa y los de esta página. Mientras la tabla está a la vista, presiona uno y se enciende su renglón.</p>
+        <div id="keys-sherry"></div>
         <blockquote><p>Haz una cosa y hazla bien.</p><footer>Filosofía de Unix, Doug McIlroy</footer></blockquote>
         <h2 id="sh-r-cambios">Cambios</h2>
-        <ol reversed><li><b>0.3</b>: opción <code>--seed</code><sup><a href="#sh-n1" id="sh-r1">1</a></sup>.</li><li><b>0.2</b>: bordes neón.</li><li><b>0.1</b>: primera versión, solo blanco y negro.</li></ol>
+        <p>La opción <code>--seed</code><sup><a href="#sh-n1" id="sh-r1">1</a></sup> llegó en la 0.3; la 0.4.1 se retiró por un error en las semillas.</p>
+        <div id="cl-sherry-tri"></div>
         <details><summary>¿Funciona con video?</summary><p>Todavía no. Por ahora, extrae cuadros con <code>ffmpeg</code> y procésalos uno por uno.</p></details>
         <aside class="doc-notes" aria-label="Notas"><ol><li id="sh-n1">Pedida para poder regenerar el mismo fondo en otra resolución. <a href="#sh-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
-        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#level-cards"><small>Anterior</small>Cards</a><a class="next" href="#"><small>Siguiente</small>Inicio</a></nav>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#level-cards"><small>Anterior</small>Cards</a><a class="next" href="#level-herramientas"><small>Siguiente</small>Herramientas</a></nav>
       </article>
     <div class="doc-spec">
       <div class="doc-spec-card"><h3>Tipografía</h3><div id="sy-type"></div></div>
@@ -377,16 +407,96 @@ sherry --version</code></pre>
 
 </div><!-- .page -->
 
+<!-- Terminal de navegación (terminal.js) · Ctrl + K abre la paleta de comandos -->
+<div id="sh-term"></div>
+
 <script type="module">
-import { mount as m0 } from '../shared/components/sherry/dither.js';
-import { mount as m1 } from '../shared/components/sherry/ascii-title.js';
-import { toggleTri, toggleCRT, toggleTheme } from '../shared/components/sherry/kit.js';
-// El marcado llama estas funciones con on…="": van en window.
-Object.assign(window, { toggleTri, toggleCRT, toggleTheme });
+import { mount as neonBloom } from '../shared/components/sherry/neon-bloom.js';
+import { mount as asciiTitle } from '../shared/components/sherry/ascii-title.js';
+import { toggleTri, toggleCRT } from '../shared/components/sherry/kit.js';
+import { mount as terminal } from '../shared/components/sherry/terminal.js';
+import { mount as palette } from '../shared/components/sherry/command-palette.js';
+import { mount as regexLab } from '../shared/components/sherry/regex-lab.js';
+import { mount as jsonLab } from '../shared/components/sherry/json-lab.js';
+import { mount as neonPicker } from '../shared/components/sherry/neon-picker.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
-m0(); m1();
+import { mount as docMan } from '../shared/components/doc-man/doc-man.js';
+import { mount as docKeys } from '../shared/components/doc-keys/doc-keys.js';
+import { mount as docChangelog } from '../shared/components/doc-changelog/doc-changelog.js';
+
+document.getElementById('tri-btn').addEventListener('click', toggleTri);
+document.getElementById('crt-btn').addEventListener('click', toggleCRT);
+neonBloom();
+asciiTitle();
+
+// ── Herramientas ──
+regexLab({ el: '#tool-regex .sh-tool-body', presets: [
+  { name: 'versiones semánticas', src: String.raw`v?(?<mayor>\d+)\.(?<menor>\d+)\.(?<parche>\d+)(?:-(?<pre>[\w.]+))?`, flags: 'g',
+    text: 'sherry-tri 0.4.2 ya salió.\nLa 0.4.1 se retiró; la beta era v0.5.0-beta.1.\nNo cuenta: 1.2 ni 3.\nnode v22.11.0, python 3.13.1', repl: '[$<mayor>.$<menor>]' },
+  { name: 'colores hex', src: String.raw`#(?:[0-9a-f]{3}){1,2}\b`, flags: 'gi', text: '--magenta: #FF1466;\n--cyan: #00F5FF;\n--bg: #080808; corto: #fa0\nno: #12345 ni #GGHHII' },
+  { name: 'fechas ISO', src: String.raw`(\d{4})-(\d{2})-(\d{2})`, flags: 'g', text: 'Primera versión 2026-09-29, rework 2026-10-13.\nMal: 2026/10/13', repl: '$3/$2/$1' },
+  { name: 'correos', src: String.raw`[\w.+-]+@([\w-]+\.)+[a-z]{2,}`, flags: 'gi', text: 'escribe a nadie@ejemplo.mx o a otra.persona+sherry@correo.example.com\nno vale: arroba@ ni @suelto' },
+  { name: 'retroceso catastrófico', src: '(a+)+$', flags: '', text: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab' },
+] });
+jsonLab({ el: '#tool-json .sh-tool-body', sample: JSON.stringify({ nombre: 'sherry-tri', version: '0.4.2', opciones: { tri: 1200, neon: true, seed: null, paleta: ['magenta', 'cyan', 'lime'] }, salida: { formato: 'png', ancho: 3840, alto: 2160 } }) });
+neonPicker({ el: '#tool-neon .sh-tool-body', darkBg: '#080808', lightBg: '#F5F2EC', tokens: ['--magenta', '--cyan', '--lime', '--violet', '--electric', '--rose', '--lavender', '--aqua', '--peach', '--mint'] });
+
+// ── Navegación: terminal y paleta de comandos ──
+terminal({ el: '#sh-term', user: 'remi',
+  tools: { regex: ['#tool-regex', 'Probador de regex'], json: ['#tool-json', 'Formateador de JSON'], neon: ['#tool-neon', 'Selector de color neón'] },
+  pages: { 'sherry-tri': ['#man-sherry-tri', 'Referencia de sherry-tri'] },
+  files: { 'README.md': ['#level-manual', 'Manual de sherry-tri'], 'ATAJOS.md': ['#keys-sherry', 'Atajos de teclado'], 'CHANGELOG.md': ['#cl-sherry-tri', 'Registro de cambios'] } });
+palette();
+
+// ── Manual: plantillas de herramienta ──
 docProse();
+docMan({ el: '#man-sherry-tri', name: 'sherry-tri', section: 1, manual: 'Herramientas de sherry', version: '0.4.2', date: '13 oct 2026',
+  summary: 'convierte una imagen en un mosaico de triángulos neón',
+  synopsis: ['sherry-tri [opciones] imagen', 'sherry-tri --version'],
+  operand: { name: 'imagen', value: 'foto.jpg' },
+  description: '<p>Lee <i>imagen</i>, la triangula con el número de triángulos pedido y pinta cada uno con el color promedio de lo que cubre. Con <b>--neon</b>, los bordes brillan con la paleta del tema.</p><p>Sin <b>--out</b> abre una vista previa; ahí funcionan los atajos de la sección Atajos.</p>',
+  options: [
+    { short: '-t', long: '--tri', arg: 'N', def: '1200', desc: 'Número de triángulos. Más da detalle; menos, abstracción.' },
+    { short: '-n', long: '--neon', desc: 'Bordes brillantes con la paleta del tema.' },
+    { long: '--palette', arg: 'COLORES', def: 'magenta,cyan,lime', desc: 'Neones de los bordes, separados por comas (nombres de la paleta o #hex).' },
+    { short: '-s', long: '--seed', arg: 'N', value: '42', desc: 'Repite exactamente el mismo mosaico.' },
+    { long: '--bloom', arg: 'FUERZA', def: '1.0', desc: 'Resplandor alrededor de los bordes; 0 lo apaga.' },
+    { short: '-o', long: '--out', arg: 'RUTA', value: 'fondo.png', desc: 'Archivo de salida; sin ella, se abre la vista previa.' },
+    { short: '-q', long: '--quiet', desc: 'No escribe el progreso en la terminal.' },
+  ],
+  examples: [
+    { desc: 'Un fondo de pantalla 4K con bordes neón.', cmd: 'sherry-tri foto.jpg --tri 1800 --neon --out fondo.png' },
+    { desc: 'El mismo mosaico otra vez, solo en cian y lima.', cmd: 'sherry-tri foto.jpg --seed 42 --neon --palette cyan,lime -o fondo.png' },
+    { desc: 'Todos los cuadros de un video (extraídos antes con ffmpeg).', cmd: 'for f in cuadros/*.png; do sherry-tri "$f" -q -o "out/${f##*/}"; done' },
+  ],
+  exit: [[0, 'Todo bien.'], [1, 'La imagen no se pudo leer.'], [2, 'Opciones inválidas.']],
+  seeAlso: ['ffmpeg(1)', 'convert(1)', 'sherry-neon(1)'] });
+docKeys({ el: '#keys-sherry', groups: [
+  { name: 'Vista previa de sherry-tri', keys: [
+    { k: ['R'], does: 'Otro mosaico con semilla nueva' },
+    { k: ['+'], does: 'Más triángulos' },
+    { k: ['-'], does: 'Menos triángulos' },
+    { k: ['N'], does: 'Bordes neón sí o no' },
+    { k: ['Ctrl', 'S'], does: 'Guardar' },
+    { k: ['Q'], does: 'Salir' } ] },
+  { name: 'Esta página', keys: [
+    { k: ['Ctrl', 'K'], does: 'Paleta de comandos' },
+    { k: ['/'], does: 'Escribir en la terminal' },
+    { k: ['Tab'], does: 'Completar en la terminal' },
+    { k: ['↑'], does: 'Comando anterior' },
+    { k: ['Ctrl', 'L'], does: 'Limpiar la terminal' },
+    { k: ['Esc'], does: 'Cerrar la terminal o la paleta' } ] },
+] });
+docChangelog({ el: '#cl-sherry-tri', releases: [
+  { v: '0.4.2', date: '2026-10-13', notes: [['fixed', 'La semilla vuelve a dar el mismo mosaico en cualquier resolución.'], ['changed', 'El bloom se calcula a 1/2, 1/4 y 1/8 del tamaño: tres veces más rápido.']] },
+  { v: '0.4.1', date: '2026-10-11', yanked: true, notes: [['fixed', 'Bordes cortados en imágenes verticales.']] },
+  { v: '0.4.0', date: '2026-10-08', notes: [['added', 'Opción --bloom con resplandor real alrededor de los bordes.'], ['added', 'Opción --palette para elegir los neones.'], ['deprecated', '--glow, que pasa a ser --bloom.']] },
+  { v: '0.3.0', date: '2026-09-29', notes: [['added', 'Opción --seed para repetir un mosaico.'], ['fixed', 'Fugas de memoria con imágenes de más de 8000 px.']] },
+  { v: '0.2.0', date: '2026-09-12', notes: [['added', 'Bordes neón (--neon).'], ['changed', 'La vista previa abre a pantalla completa.']] },
+  { v: '0.1.1', date: '2026-09-03', notes: [['fixed', 'Leía mal los PNG con transparencia.']] },
+  { v: '0.1.0', date: '2026-09-01', notes: [['added', 'Primera versión: solo blanco y negro.']] },
+] });
 docSpecimen({
   type: { el: '#sy-type', fonts: [
     { name: 'SHERRY', family: 'var(--display)', size: 34, weight: 700, use: 'Doto · títulos, en puntos como una matriz de LEDs' },

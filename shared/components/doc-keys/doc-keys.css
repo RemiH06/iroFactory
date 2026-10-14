@@ -1,0 +1,25 @@
+/* ══════════════════════════════════════════════════════
+   Doc Keys · atajos de teclado que se encienden al presionarlos.
+   Mismas variables que doc-prose.
+   ══════════════════════════════════════════════════════ */
+.doc-keys { margin: 1.4em 0; font-size: 15px; }
+.doc-keys-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 14px; }
+.doc-keys-os { display: inline-flex; border: 1px solid var(--_line); border-radius: var(--_r); overflow: hidden; }
+.doc-keys-os button { font: inherit; font-size: 13px; padding: 4px 14px; min-height: 30px; background: transparent; color: var(--_muted); border: 0; cursor: pointer; }
+.doc-keys-os button + button { border-left: 1px solid var(--_line); }
+.doc-keys-os button[aria-checked="true"] { background: var(--_surface); color: var(--_ink); box-shadow: inset 0 -2px 0 var(--_accent); }
+.doc-keys-find { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--_muted); }
+.doc-keys-find input { font: inherit; font-size: 13px; color: var(--_ink); background: transparent; border: 1px solid var(--_line); border-radius: var(--_r); padding: 3px 8px; min-height: 28px; width: 12em; }
+.doc-keys-live { margin: 0; font-size: 13px; color: var(--_muted); min-height: 1.6em; display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.doc-keys-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px 24px; }
+.doc .doc-keys-group h4 { margin: 0 0 6px; font-size: 14px; color: var(--_muted); }
+.doc .doc-keys-group dl { display: block; margin: 0; }
+.doc-keys-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 8px; border-bottom: 1px solid var(--_line); border-radius: var(--_r); }
+.doc .doc-keys-row dt { color: var(--_ink); font-size: 1em; display: inline-flex; align-items: center; gap: 3px; flex-shrink: 0; font-weight: 400; order: 2; }
+.doc-keys-row dt span, .doc-keys-live span { color: var(--_muted); font-size: 12px; }
+.doc-keys-row dd { margin: 0; }
+@keyframes doc-keys-hit { 0% { background: color-mix(in srgb, var(--_accent) 30%, transparent); } 100% { background: transparent; } }
+.doc-keys-row.is-hit { animation: doc-keys-hit 1.2s ease-out; }
+.doc-keys-row.is-hit kbd { border-color: var(--_accent); color: var(--_accent); }
+.doc-keys-none { color: var(--_muted); }
+@media (prefers-reduced-motion: reduce) { .doc-keys-row.is-hit { animation: none; background: color-mix(in srgb, var(--_accent) 18%, transparent); } }

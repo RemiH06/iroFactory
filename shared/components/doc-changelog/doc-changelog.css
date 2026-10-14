@@ -1,0 +1,40 @@
+/* ══════════════════════════════════════════════════════
+   Doc Changelog · versiones con tipo de salto, filtro y rango.
+   Mismas variables que doc-prose. Los tipos toman --doc-added,
+   --doc-fixed, etc. si el tema los define; si no, el acento.
+   ══════════════════════════════════════════════════════ */
+.doc-cl { margin: 1.4em 0; font-size: 15px; }
+.doc-cl-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 14px; font-size: 13px; color: var(--_muted); }
+.doc-cl-types { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.doc-cl-chip { font: inherit; font-size: 13px; padding: 3px 10px; min-height: 28px; border: 1px solid var(--_line); border-radius: 99px; background: transparent; color: var(--_muted); cursor: pointer; }
+.doc-cl-chip[aria-pressed="true"] { border-color: var(--_accent); color: var(--_ink); background: color-mix(in srgb, var(--_accent) 10%, transparent); }
+.doc-cl-bar label { display: inline-flex; align-items: center; gap: 6px; }
+.doc-cl-bar select { font: inherit; font-size: 13px; color: var(--_ink); background: var(--_surface); border: 1px solid var(--_line); border-radius: var(--_r); padding: 3px 6px; min-height: 28px; }
+.doc-cl-copy { font: inherit; font-size: 13px; color: var(--_accent); background: none; border: 1px solid var(--_line); border-radius: var(--_r); padding: 3px 10px; min-height: 28px; cursor: pointer; }
+.doc-cl-copy:hover { border-color: var(--_accent); }
+.doc-cl-status { color: var(--_accent); }
+.doc-cl-sum { margin: 0 0 18px; padding: 12px 16px; border: 1px solid var(--_line); border-left: 3px solid var(--_accent); border-radius: var(--_r); background: var(--_surface); }
+.doc-cl-sum p { margin: 0 0 6px; }
+.doc-cl-sum ul { margin: 0 0 10px; padding-left: 1.2em; }
+.doc-cl-sum small { color: var(--_muted); }
+.doc-cl-sumt { display: flex; align-items: center; gap: 8px; }
+.doc-cl-list { list-style: none; margin: 0; padding: 0 0 0 18px; border-left: 1px solid var(--_line); }
+.doc-cl-rel { position: relative; padding: 0 0 18px 4px; }
+.doc-cl-rel::before { content: ''; position: absolute; left: -23px; top: 8px; width: 9px; height: 9px; border-radius: 2px; background: var(--_surface); border: 2px solid var(--_accent); }
+.doc-cl-rel.is-yanked { opacity: .72; }
+.doc-cl-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin-bottom: 6px; }
+.doc-cl-v { font-family: var(--_mono); font-weight: 700; font-size: 17px; color: var(--_ink); }
+.doc-cl-head time { color: var(--_muted); font-size: 13px; }
+.doc-cl-bump { font-size: 12px; padding: 1px 8px; border: 1px solid var(--_line); border-radius: 99px; color: var(--_muted); }
+.doc-cl-bump.is-major { border-color: var(--doc-removed, var(--_accent)); color: var(--doc-removed, var(--_accent)); }
+.doc-cl-bump.is-minor { border-color: var(--doc-added, var(--_accent)); color: var(--doc-added, var(--_accent)); }
+.doc-cl-rel ul { list-style: none; margin: 0; padding: 0; }
+.doc-cl-rel li { display: flex; align-items: baseline; gap: 10px; padding: 2px 0; }
+.doc-cl-tag { flex-shrink: 0; min-width: 6.4em; font-size: 12px; font-family: var(--_mono); color: var(--_muted); }
+.doc-cl-tag::before { content: '■ '; }
+.doc-cl-tag.is-added { color: var(--doc-added, var(--_accent)); }
+.doc-cl-tag.is-changed { color: var(--doc-changed, var(--_muted)); }
+.doc-cl-tag.is-fixed { color: var(--doc-fixed, var(--_accent)); }
+.doc-cl-tag.is-removed, .doc-cl-tag.is-security { color: var(--doc-removed, var(--_accent)); }
+.doc-cl-empty { color: var(--_muted); font-size: 14px; margin: 0; }
+@media (max-width: 640px) { .doc-cl-rel li { flex-direction: column; gap: 0; } }
