@@ -24,6 +24,7 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
 <link rel="stylesheet" href="../shared/components/ludus/solid-toy.css">
 <link rel="stylesheet" href="../shared/components/ludus/race-track.css">
 <link rel="stylesheet" href="../shared/components/ludus/board-game.css">
+<link rel="stylesheet" href="../shared/components/ludus/gdd.css">
 <link rel="stylesheet" href="../shared/components/ludus/star-link.css">
 <link rel="stylesheet" href="../shared/components/ludus/texture-accordion.css">
 <link rel="stylesheet" href="../shared/components/ludus/rubik-dock.css">
@@ -211,8 +212,81 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
 <!-- 5 · Manual (base común de documentación) -->
 <section class="lx-face" id="manual" aria-labelledby="h-man" tabindex="-1">
   <div class="lx-face-inner lx-wrap">
-    <header class="lx-head"><span class="lx-num">05</span><h2 id="h-man">Manual</h2><p>Así se ve una página de documentación con este tema.</p></header>
-    <div class="doc-layout">
+    <header class="lx-head"><span class="lx-num">05</span><h2 id="h-man">Manual</h2><p>Documentos de juego con este tema: el diseño del tablero de Juguetes y la notación del cubo de la esquina.</p></header>
+    <div class="lx-docs" role="tablist" aria-label="Documento"><button type="button" role="tab" id="lx-tab-gdd" aria-controls="lx-doc-gdd" aria-selected="true">Tablero · documento de diseño</button><button type="button" role="tab" id="lx-tab-cubo" aria-controls="lx-doc-cubo" aria-selected="false" tabindex="-1">Cubo · notación</button></div>
+    <div class="doc-layout" id="lx-doc-gdd" role="tabpanel" aria-labelledby="lx-tab-gdd">
+      <article class="doc">
+        <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#inicio">Ludus</a></li><li><a href="#juguetes">Juguetes</a></li><li aria-current="page">Vuelta al tablero</li></ol></nav>
+        <h1>Vuelta al tablero: documento de diseño</h1>
+        <p class="doc-lede">El juego de mesa para dos de Juguetes: qué es, cómo se juega, de qué está hecho y la pregunta que sigue abierta (cómo se gana), con un simulador para decidirla.</p>
+        <div class="gdd-sheet">
+          <dl>
+            <dt>Género</dt><dd>Vuelta al tablero, de propiedades</dd>
+            <dt>Jugadores</dt><dd>2, en la misma pantalla</dd>
+            <dt>Partida</dt><dd>5 a 10 minutos</dd>
+            <dt>Dados</dt><dd>El sólido de la barra: 2d6 con el cubo; d4, d8, d12 o d20 con los demás</dd>
+            <dt>Estado</dt><dd><span class="gdd-chip">prototipo jugable</span> <span class="gdd-chip warn">sin condición de victoria</span></dd>
+          </dl>
+        </div>
+
+        <h2 id="gdd-pilares">Pilares</h2>
+        <ol class="gdd-pillars">
+          <li><b>Se toca.</b> El dado se lanza arrastrando el cubilete y las fichas se pueden mover a mano. Mover a mano cuenta como trampa, y se nota.</li>
+          <li><b>El sólido manda.</b> El dado es el mismo sólido que navega la página: cambiarlo en la barra cambia el ritmo del juego.</li>
+          <li><b>Corto y sin castigo.</b> Nadie queda fuera a media partida; la peor casilla cuesta un turno.</li>
+        </ol>
+
+        <h2 id="gdd-bucle">Bucle de juego</h2>
+        <figure class="gdd-loop">
+          <svg viewBox="0 0 520 170" role="img" aria-label="Bucle: tirar el dado, avanzar, caer en una casilla, resolver su efecto y pasar el turno, y de vuelta a tirar">
+            <defs><marker id="gdd-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="gdd-head"/></marker></defs>
+            <g class="gdd-steps">
+              <g style="--c:var(--f)"><rect x="8" y="24" width="88" height="44" rx="10"/><text x="52" y="51">Tirar</text></g>
+              <g style="--c:var(--r)"><rect x="136" y="24" width="96" height="44" rx="10"/><text x="184" y="51">Avanzar</text></g>
+              <g style="--c:var(--u)"><rect x="272" y="24" width="104" height="44" rx="10"/><text x="324" y="51">Caer</text></g>
+              <g style="--c:var(--l)"><rect x="416" y="24" width="96" height="44" rx="10"/><text x="464" y="51">Resolver</text></g>
+              <g style="--c:var(--d)"><rect x="200" y="112" width="120" height="44" rx="10"/><text x="260" y="139">Pasar turno</text></g>
+            </g>
+            <g class="gdd-arrows">
+              <path d="M96 46H134"/><path d="M232 46H270"/><path d="M376 46H414"/>
+              <path d="M464 68C464 120 380 134 322 134"/><path d="M200 134C110 134 52 116 52 70"/>
+            </g>
+          </svg>
+          <figcaption><b>Figura 1.</b> Un turno. «Resolver» puede encadenar: Suerte mueve otra vez y, si cae en Atajo, regresa a Salida.</figcaption>
+        </figure>
+
+        <h2 id="gdd-reglas">Reglas</h2>
+        <h3 id="gdd-preparar">Preparar</h3>
+        <ul><li>Tablero de 20 casillas: 14 juegos de mesa a la venta y 6 especiales.</li><li>Cada jugador empieza en Salida con 100 fichas.</li></ul>
+        <h3 id="gdd-casillas">Casillas</h3>
+        <dl>
+          <dt>Juego libre</dt><dd>Se compra por 20 si alcanza.</dd>
+          <dt>Juego ajeno</dt><dd>Se le pagan 10 a quien lo tiene.</dd>
+          <dt>Salida</dt><dd>+20 cada vez que se pasa por ella.</dd>
+          <dt>Bonus</dt><dd>+50.</dd>
+          <dt>Pausa</dt><dd>Se pierde el siguiente turno.</dd>
+          <dt>Suerte</dt><dd>Mueve de 3 atrás a 3 adelante, al azar, y se resuelve la casilla nueva.</dd>
+          <dt>Atajo</dt><dd>Regresa a Salida, y cobra.</dd>
+        </dl>
+        <h3 id="gdd-controles">Controles</h3>
+        <p>Arrastra el cubilete y suéltalo para tirar (más fuerte, más vueltas), o usa el botón Tirar. Con el foco en el cubilete, <kbd>Enter</kbd> o <kbd>Espacio</kbd> tiran. Las fichas se arrastran a cualquier casilla, pero la trampa queda anotada<sup><a href="#gdd-n1" id="gdd-r1">1</a></sup>.</p>
+
+        <h2 id="gdd-balance">Pregunta abierta: cómo se gana</h2>
+        <p>Hoy el juego no termina. Hay tres candidatas, y el simulador juega 2 000 partidas con las reglas exactas del tablero para cada una:</p>
+        <div class="gdd-sim" id="lx-balance"><p>El simulador necesita JavaScript. Resumen: «primero en tener 5 juegos» siempre termina pero favorece a quien tira primero (55 a 62 %); «más fichas tras 20 rondas» es casi pareja; la bancarrota casi nunca llega.</p></div>
+        <blockquote><p>Un juego es una serie de decisiones interesantes.</p><footer>Sid Meier</footer></blockquote>
+        <details><summary>¿Por qué la bancarrota casi nunca llega?</summary><p>Entra más de lo que sale: Salida da 20 por vuelta y Bonus 50, mientras la renta es de 10. Para que funcione, la renta tendría que subir o las entradas bajar.</p></details>
+        <details><summary>¿Cómo se compensa la ventaja de tirar primero?</summary><p>Lo usual es darle algo a quien tira segundo: fichas de más al empezar o un juego ya comprado. Es la siguiente prueba del simulador.</p></details>
+
+        <h2 id="gdd-arte">Arte y sonido</h2>
+        <ul><li>Las seis caras del proun pintan las casillas y las fichas (J1 frente, J2 izquierda).</li><li>Los dados se arman en Three.js con el sólido de la barra y los números en Silkscreen.</li><li>Sin sonido por ahora.</li></ul>
+
+        <aside class="doc-notes" aria-label="Notas"><ol><li id="gdd-n1">La casilla a la que se arrastra la ficha sí cuenta: se puede hacer trampa, pero todos la ven. <a href="#gdd-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#componentes"><small>Anterior</small>Componentes</a><a class="next" href="#fin"><small>Siguiente</small>Fin</a></nav>
+      </article>
+      <aside class="doc-toc" aria-label="En esta página"></aside>
+    </div>
+    <div class="doc-layout" id="lx-doc-cubo" role="tabpanel" aria-labelledby="lx-tab-cubo" hidden>
       <article class="doc">
         <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#inicio">Ludus</a></li><li><a href="#juguetes">Juguetes</a></li><li aria-current="page">Cubo de Rubik</li></ol></nav>
         <h1>Cubo de Rubik: notación y método</h1>
@@ -297,6 +371,8 @@ propia licencia (React Bits, ver THIRD_PARTY_NOTICES.md). Riff de Figma
 
 <script type="importmap">{ "imports": { "three": "../shared/vendor/three/three.module.min.js", "three/addons/": "../shared/vendor/three/addons/", "animejs": "../shared/vendor/anime/anime-three.esm.min.js" } }</script>
 <script type="module">
+import { mount as gddBalance } from '../shared/components/ludus/gdd-balance.js';
+import { mount as manualDocs } from '../shared/components/ludus/manual-docs.js';
 import { mount as kit, onTheme } from '../shared/components/ludus/kit.js';
 import { mount as prismNav } from '../shared/components/ludus/prism-nav.js';
 import { mount as starLink } from '../shared/components/ludus/star-link.js';
@@ -320,7 +396,7 @@ const VIEW_TOKENS = ['--f', '--r', '--b', '--l', '--u', '--d'];
 let cube = null, solidNav = null;
 const dots = [...document.querySelectorAll('.lx-dots button')];
 const nav = prismNav({ onChange: i => { dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i))); cube && cube.show(CUBE_OF[i]); solidNav && solidNav.show(i); } });
-mountToggle(); starLink(); labGraph(); solidToy(); raceTrack(); boardGame(); accordion(); docProse();
+mountToggle(); starLink(); labGraph(); solidToy(); raceTrack(); boardGame(); accordion(); docProse(); manualDocs(); gddBalance();
 const title = shuffleTitle();
 const curtain = curtainIntro({ onOpen: () => title && title.play() });
 pauseMenu({ onIntro: () => { nav.go(0); curtain.play(); } });

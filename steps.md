@@ -18,7 +18,7 @@ Ronda de mejoras a los primeros temas con lo aprendido en ludus y tarot (decidid
 6d. ✅ **metro** (hecho 2026-10-14, ver «metro · ronda de mejoras» al final; falta la revisión del usuario): página de estado.
 6e. ✅ **shui** (hecho 2026-10-14, ver «shui · ronda de mejoras» al final; falta la revisión del usuario): linaje de datos y esquemas de tablas.
 6f. ✅ **disco** (hecho 2026-10-14, ver «disco · ronda de mejoras» al final; falta la revisión del usuario): exportar tokens y banco de pruebas.
-6g. Ideas propuestas y no decididas todavía, una por tema: ludus (manual como documento de diseño de juego y sus fuentes).
+6g. ✅ **ludus** (hecho 2026-10-14, ver «ludus · ronda de mejoras» al final; falta la revisión del usuario): documento de diseño del tablero con simulador de balance. Las fuentes de ludus siguen pendientes: las está investigando el usuario.
 7. Después: logo definitivo (Mazo y Sensu; arregla el 404 del favicon y sustituye el abanico provisional de `shared/components/ludus/crop-filter.js`), galería y raíz (`index.html`: sandbox del iframe, `aria-expanded`, meta description, `<h1>`; `robots.txt`, `sitemap.xml`; decidir si se borra `CONTEXT.md`) y al final los temas nuevos rem, mirai y extract.
 
 Pendientes chicos de tarot (revisados con el usuario solo en parte): orientación a mano de cada cráneo (algunos quedan con el pico hacia arriba), pips con motivos finos, relieve también en las cartas de las tiradas, cartas flotando delante del tapiz.
@@ -1206,4 +1206,13 @@ Sección nueva **06 Taller** (menú y fallback del índice; las corcholatas no c
 - En disco.css: botón deshabilitado y cargando (`aria-busy`, giro que se detiene con reduced motion), íconos en botones, campo con error y texto de ayuda.
 - Bugs de la verificación: un comentario metido a media línea se comía el pintado del pixel y todos los colores salían transparentes; el banco detectó que la ayuda dentro de la etiqueta se sumaba al nombre accesible del campo (ahora la ayuda va fuera, con `aria-describedby`).
 - Verificado en Chromium sin GPU: seis formatos, los dos modos, los cinco componentes con sus estados, 390 px sin ensanchar el viewport. Sin errores de consola.
+
+## ludus · ronda de mejoras (2026-10-14)
+
+El prisma tiene seis caras fijas, así que no se agregó una séptima: la cara 05 Manual ahora trae **dos documentos con selector** (pestañas con flechas, Inicio y Fin; cada uno con su índice): el documento de diseño del tablero de Juguetes (primero) y la notación del cubo de la esquina (el de antes, intacto).
+- **Documento de diseño de «Vuelta al tablero»**: ficha (género, jugadores, duración, dados, estado), tres pilares, bucle de juego en SVG, reglas reales tomadas de `board-game.js` (20 casillas, 100 fichas, comprar 20, renta 10, Salida +20, Bonus +50, Pausa, Suerte ±3, Atajo), controles verificados en el código (Enter o Espacio con el foco en el cubilete), arte y sonido, preguntas y nota al pie.
+- **Pregunta abierta y simulador** (`gdd-balance.js`): el juego no tenía final. El simulador juega 2 000 partidas (semilla fija) con las reglas exactas por cada condición candidata (más fichas tras N rondas, primero en N juegos, bancarrota) y cada dado de la barra: turnos de media y mediana, ventaja de quien tira primero, partidas sin final a los 400 turnos, empates, histograma de duración y tabla de los cinco dados con la misma muestra. Resultado: «primero en 5 juegos» termina siempre pero favorece al primero (55 a 62 %); «más fichas tras 20 rondas» queda casi pareja (48 a 54 %, 5 % de empates); la bancarrota casi nunca llega (80 a 100 % sin final) porque entra más de lo que sale. Falta que el usuario decida la regla; después se implementa en el tablero.
+- Verificado en Chromium sin GPU: las tres reglas, los cinco dados, cambio de documento, 390 px sin ensanchar el viewport. Sin errores de consola. Ajuste: la tabla de los cinco dados usaba otra muestra y daba cifras distintas para el mismo dado.
+
+**Ronda de mejoras terminada** (odysseus, apolo, sherry, bookworm, elixir, forge, lambda, metro, shui, disco y ludus; tarot fue la vara). Sigue el punto 7: logo definitivo, galería y raíz, y los temas nuevos.
 
