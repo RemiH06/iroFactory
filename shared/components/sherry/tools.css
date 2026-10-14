@@ -108,3 +108,15 @@
   .sh-chip, .sh-seg button, .sh-rx-flag, .sh-tool-status, .sh-tool-field, .sh-tool-cap, .sh-rx-list, .sh-np-sliders label, .sh-np-tube small, .sh-tool > h3 small { font-size: 12px; }
   .sh-rx-flag { width: 34px; min-height: 30px; }
 }
+
+/* Letrero de neón */
+#tool-sign { --tool: var(--violet); }
+.sh-ns { display: grid; gap: 12px; }
+.sh-ns-cv { width: 100%; height: auto; display: block; border: 1px solid var(--border2); border-radius: var(--radius); background: #0B0B0E; }
+.sh-ns-ctl { display: grid; gap: 8px; }
+.sh-ns-txt { display: flex; align-items: flex-start; }
+.sh-ns-txt textarea { flex: 1; min-width: 0; resize: none; line-height: 1.5; }
+.sh-ns-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.sh-ns-row .sh-tool-cap { margin: 0 6px 0 0; min-width: 5.5em; }
+.sh-ns-sw { width: 26px; height: 26px; padding: 0; border-radius: 50%; background: var(--sw); border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--border2); cursor: pointer; }
+.sh-ns-sw[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--text), 0 0 10px var(--sw); }

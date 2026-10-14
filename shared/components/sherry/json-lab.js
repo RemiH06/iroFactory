@@ -6,6 +6,7 @@
 // Cuenta llaves, valores, profundidad y bytes antes y después.
 //   mount({ el, sample })
 // ══════════════════════════════════════════════════════
+import { bump } from './stats.js';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const bytes = s => new Blob([s]).size;
 const kb = n => (n < 1024 ? `${n} B` : `${(n / 1024).toFixed(1)} KB`);
@@ -82,7 +83,7 @@ export function mount({ el, sample = '' }) {
     </div>`;
   const $ = s => root.querySelector(s);
   const input = $('.sh-js-in'), out = $('.sh-js-out'), status = $('.sh-tool-status');
-  let mode = '2', sorted = false, last = '';
+  let mode = '2', sorted = false, last = '', shown = '';
   const say = (t, cls = '') => { status.innerHTML = t; status.className = 'sh-tool-status ' + cls; };
 
   const render = () => {
@@ -101,6 +102,8 @@ export function mount({ el, sample = '' }) {
     input.removeAttribute('aria-invalid');
     if (sorted) v = sortKeys(v);
     last = JSON.stringify(v, null, mode === 'min' ? undefined : mode === 'tab' ? '\t' : +mode);
+    if (shown && last !== shown) bump('json');
+    shown = last;
     out.innerHTML = paint(last);
     const s = stats(v), a = bytes(src), b = bytes(last);
     say(`válido · ${s.keys} llaves · ${s.values} valores · profundidad ${s.depth} · ${kb(a)} → ${kb(b)} <span class="sh-js-delta">(${b <= a ? '−' : '+'}${Math.abs(Math.round((b - a) / Math.max(a, 1) * 100))}%)</span>`, 'is-ok');

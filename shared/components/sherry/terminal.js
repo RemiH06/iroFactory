@@ -15,6 +15,7 @@
 import { reduceMotion, toggleTheme, toggleCRT, toggleTri, cssVar } from './kit.js';
 import { theme } from '../../core/core.js';
 import { pulse } from './neon-bloom.js';
+import { bump } from './stats.js';
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const fold = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -25,6 +26,13 @@ let api = null;
 export const run = (cmd, o) => api && api.run(cmd, o);
 export const entries = () => (api ? api.entries() : []);
 export const focus = () => api && api.focus();
+// Comandos de otros módulos (mascota, sonido, protector…). `def` es como los
+// de abajo: { help, args?, show?, hidden?, fn(args) → [renglones HTML] } y,
+// si debe salir en la paleta, `entry: { group, label, keys }` (o una función
+// que lo devuelva, para etiquetas que cambian).
+const EXTRA = {};
+export const addCommand = (name, def) => { EXTRA[name] = def; };
+export const say = (html, cls) => api && api.print(html, cls);
 
 export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, files = {} } = {}) {
   const root = typeof el === 'string' ? document.querySelector(el) : el;
@@ -65,9 +73,9 @@ export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, 
 
   // ── Comandos ──
   const CMDS = {
-    help: { args: () => Object.keys(CMDS), help: 'lista los comandos o explica uno', show: true, fn: ([c]) => {
-      if (c && CMDS[c]) return [`<b>${esc(c)}</b> · ${esc(CMDS[c].help)}`];
-      return ['Comandos (Tab completa, ↑ ↓ historial, Esc cierra):', ...Object.entries(CMDS).filter(([, d]) => !d.hidden).map(([k, d]) => `${link(k === 'help' ? 'help' : 'help ' + k, k.padEnd(9, ' '))} ${esc(d.help)}`)];
+    help: { args: () => Object.keys(all()), help: 'lista los comandos o explica uno', show: true, fn: ([c]) => {
+      if (c && all()[c]) return [`<b>${esc(c)}</b> · ${esc(all()[c].help)}`];
+      return ['Comandos (Tab completa, ↑ ↓ historial, Esc cierra):', ...Object.entries(all()).filter(([, d]) => !d.hidden).map(([k, d]) => `${link(k === 'help' ? 'help' : 'help ' + k, k.padEnd(9, ' '))} ${esc(d.help)}`)];
     } },
     ls: { help: 'lista los niveles de la página', show: true, fn: () => levels.map(l => `${l.dir === cwd ? '<span class="sh-term-here">▸</span>' : ' '} ${link('cd ' + l.dir, l.dir + '/')} <span class="sh-term-dim">${esc(l.name)}</span>`) },
     cd: { args: () => [...levels.map(l => l.dir), '..', '~', '-'], help: 'va a un nivel (cd .. o cd ~ sube a la portada; cd - regresa)', fn: ([a = '~']) => {
@@ -75,7 +83,7 @@ export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, 
       if (a === '-') return CMDS.cd.fn([prev]);
       const l = dirOf(a);
       if (!l) return [`<span class="sh-term-err">cd: no existe el nivel: ${esc(a)}</span> · prueba ${link('ls')}`];
-      prev = cwd; goTo(l.el); return [];
+      prev = cwd; goTo(l.el); dispatchEvent(new CustomEvent('sh:cd', { detail: { el: l.el } })); return [];
     } },
     pwd: { help: 'dice en qué nivel estás', fn: () => [`/home/${esc(user)}/sherry${cwd === '~' ? '' : '/' + cwd}`] },
     open: { args: () => Object.keys(tools), help: 'abre una herramienta: ' + Object.keys(tools).join(', '), fn: ([t]) => {
@@ -114,6 +122,8 @@ export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, 
     sudo: { hidden: true, help: '', fn: () => ['<span class="sh-term-err">permiso denegado</span>: sherry construye desde basura, no desde root'] },
   };
 
+  const all = () => ({ ...CMDS, ...EXTRA });
+
   const exec = (line, { echo = true } = {}) => {
     const src = line.trim();
     if (!src) return;
@@ -121,8 +131,9 @@ export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, 
     if (hist[hist.length - 1] !== src) { hist.push(src); hist = hist.slice(-50); try { localStorage.setItem(HIST_KEY, JSON.stringify(hist)); } catch { /* sin almacenamiento */ } }
     hi = hist.length;
     const [name, ...args] = src.split(/\s+/);
-    const c = CMDS[name.toLowerCase()];
+    const c = all()[name.toLowerCase()];
     if (!c) { print(`<span class="sh-term-err">${esc(name)}: no se encontró la orden</span> · ${link('help')}`); return; }
+    bump('cmd');
     if (name !== 'neon') spark(cssVar('--accent'));
     c.fn(args).forEach(r => print(r));
     if (c.show && root.dataset.open !== 'true') setOpen(true);
@@ -130,7 +141,7 @@ export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, 
 
   const complete = () => {
     const v = input.value, parts = v.split(/\s+/);
-    const opts = parts.length < 2 ? Object.keys(CMDS).filter(k => !CMDS[k].hidden) : (CMDS[parts[0]]?.args?.() || []);
+    const cmds = all(), opts = parts.length < 2 ? Object.keys(cmds).filter(k => !cmds[k].hidden) : (cmds[parts[0]]?.args?.() || []);
     const cur = parts[parts.length - 1], hits = opts.filter(o => o.startsWith(cur));
     if (hits.length === 1) { parts[parts.length - 1] = hits[0]; input.value = parts.join(' ') + ' '; }
     else if (hits.length > 1) {
@@ -171,6 +182,7 @@ export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, 
 
   api = {
     run: (cmd, o) => exec(cmd, o),
+    print,
     focus: () => input.focus({ preventScroll: true }),
     // catálogo para la paleta de comandos: [{ group, label, cmd, keys }]
     entries: () => [
@@ -185,6 +197,7 @@ export function mount({ el = '#sh-term', user = 'remi', tools = {}, pages = {}, 
       { group: 'Acciones', label: 'Encender un neón', cmd: 'neon', keys: 'pulso color triangulos' },
       { group: 'Terminal', label: 'Ver los comandos', cmd: 'help', keys: 'ayuda' },
       { group: 'Terminal', label: 'Historial', cmd: 'history', keys: 'comandos anteriores' },
+      ...Object.entries(EXTRA).map(([name, d]) => { const e = typeof d.entry === 'function' ? d.entry() : d.entry; return e && { cmd: name, ...e }; }).filter(Boolean),
     ],
   };
   return api;

@@ -194,10 +194,17 @@ export function mount({ canvas = '#tri-canvas', size = 48, watch = '.sherry-leve
   // Bucle: solo con algún nivel transparente a la vista, pestaña visible,
   // fondo encendido y sin reduced motion (entonces, un cuadro quieto).
   const seen = new Set();
-  let raf = 0, on = true;
-  const live = () => on && seen.size > 0 && !document.hidden && !reduceMotion.matches;
-  const frame = () => { raf = 0; draw(true); if (live()) raf = requestAnimationFrame(frame); };
+  let raf = 0, on = true, frames = 0, since = performance.now();
+  const live = () => on && (seen.size > 0 || forced) && !document.hidden && !reduceMotion.matches;
+  const frame = () => {
+    raf = 0; draw(true); frames++;
+    const t = performance.now();
+    if (t - since >= 1000) { bloomInfo.fps = Math.round(frames * 1000 / (t - since)); frames = 0; since = t; }
+    if (live()) raf = requestAnimationFrame(frame);
+    else bloomInfo.fps = 0;
+  };
   const start = () => { if (!raf && live()) raf = requestAnimationFrame(frame); };
+  kick = start;
   const still = () => { if (on) draw(false); };
   const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)); start(); });
   document.querySelectorAll(watch).forEach(el => io.observe(el));
@@ -234,4 +241,9 @@ export function mount({ canvas = '#tri-canvas', size = 48, watch = '.sherry-leve
 }
 
 // Para los demás componentes: enciende un anillo desde un punto de la pantalla.
+// Cuadros por segundo reales (las métricas los leen) y forzar el bucle aunque
+// ningún nivel transparente se vea (el protector de pantalla lo usa).
+export const bloomInfo = { fps: 0 };
+let forced = false, kick = null;
+export const forceBloom = v => { forced = v; if (v && kick) kick(); };
 export const pulse = (x, y, color) => dispatchEvent(new CustomEvent('sh:pulse', { detail: { x, y, color } }));

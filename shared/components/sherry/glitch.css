@@ -1,0 +1,16 @@
+/* sherry · glitch: barrido de CRT y temblor al llegar a un nivel con cd. */
+.sh-glitch::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 90px; z-index: 5; pointer-events: none;
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--cyan) 22%, transparent) 70%, color-mix(in srgb, var(--cyan) 55%, transparent) 96%, transparent);
+  animation: sh-glitch-sweep .65s cubic-bezier(.25, .46, .45, .94) forwards;
+}
+.sh-glitch > .sherry-level-wrap { animation: sh-glitch-jitter .36s steps(2) 1; }
+@keyframes sh-glitch-sweep { from { transform: translateY(-90px); } to { transform: translateY(100vh); opacity: .2; } }
+@keyframes sh-glitch-jitter {
+  0% { transform: translateX(-3px); filter: drop-shadow(3px 0 0 color-mix(in srgb, var(--magenta) 70%, transparent)) drop-shadow(-3px 0 0 color-mix(in srgb, var(--cyan) 70%, transparent)); clip-path: inset(10% 0 55% 0); }
+  35% { transform: translateX(4px); clip-path: inset(48% 0 12% 0); }
+  70% { transform: translateX(-1px); clip-path: inset(0 0 0 0); filter: none; }
+  100% { transform: none; }
+}
+body.light .sh-glitch::after { background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--cyan) 14%, transparent) 70%, color-mix(in srgb, var(--cyan) 35%, transparent) 96%, transparent); }
+@media (prefers-reduced-motion: reduce) { .sh-glitch::after { display: none; } .sh-glitch > .sherry-level-wrap { animation: none; } }

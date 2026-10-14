@@ -11,6 +11,7 @@
 // ══════════════════════════════════════════════════════
 import { contrast, hexRgb, cssVar, theme, onTheme } from '../../core/core.js';
 import { pulse } from './neon-bloom.js';
+import { bump } from './stats.js';
 
 const hex = rgb => '#' + rgb.map(v => Math.round(v).toString(16).padStart(2, '0')).join('').toUpperCase();
 function hslRgb(h, s, l) {
@@ -104,7 +105,7 @@ export function mount({ el, darkBg = '#080808', lightBg = '#F5F2EC', tokens = []
   pad.addEventListener('pointerdown', e => { pad.setPointerCapture(e.pointerId); fromPad(e); });
   pad.addEventListener('pointermove', e => { if (pad.hasPointerCapture(e.pointerId)) fromPad(e); });
   $('.sh-np-copy').addEventListener('click', async e => { try { await navigator.clipboard.writeText($('.sh-np-code').textContent); e.target.textContent = 'copiado'; } catch { e.target.textContent = 'no se pudo'; } setTimeout(() => { e.target.textContent = 'copiar'; }, 1600); });
-  $('.sh-np-fire').addEventListener('click', e => { const r = e.target.getBoundingClientRect(); pulse(r.left + r.width / 2, r.top + r.height / 2, theme.alt ? cur.light : cur.dark); });
+  $('.sh-np-fire').addEventListener('click', e => { const r = e.target.getBoundingClientRect(); pulse(r.left + r.width / 2, r.top + r.height / 2, theme.alt ? cur.light : cur.dark); bump('neon'); });
   new ResizeObserver(drawPad).observe(pad);
   onTheme(update);
   update();

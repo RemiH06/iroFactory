@@ -21,6 +21,10 @@ import { clamp, onTheme, reduceMotion, smooth, theme } from '../../core/core.js'
 // las dos piedras: verde antico (día) y pórfido (atardecer), con el oro y la piedra de los medallones
 const VERDE = { stone: '#1F3B33', deep: '#0F201B', vein: '#CFDCCB', inlay: '#6E2A24', gold: ['#8C6A22', '#EBCB74'] };
 const PORPHYRY = { stone: '#4A1E2C', deep: '#230C14', vein: '#E2C2B0', inlay: '#1F3B33', gold: ['#946A20', '#F0C860'] };
+// a prueba (2026-10-13): las dos en mármol claro · blanco de Carrara (día) y rosado (atardecer); vetas oscuras y oro más hondo para que se lea
+const CARRARA = { stone: '#ECE7DE', deep: '#CFC7B9', vein: '#6F6A62', inlay: '#8A3328', gold: ['#6E5014', '#D2A84C'] };
+const ROSA = { stone: '#EAD6C3', deep: '#C9AE98', vein: '#8A5C44', inlay: '#2A4A40', gold: ['#6E4E14', '#D6A646'] };
+const DAY = CARRARA, DUSK = ROSA; // volver a las oscuras: DAY = VERDE, DUSK = PORPHYRY
 
 const skyFs = `
 varying vec2 vUv;
@@ -85,7 +89,7 @@ export function mount({ host = document.body } = {}) {
   api = plate({
     host, className: 'ap-helios', fps: 30,
     painter: new URL('./helios-pattern.js', import.meta.url).href,
-    palette: () => (theme.alt ? PORPHYRY : VERDE),
+    palette: () => (theme.alt ? DUSK : DAY),
     reliefOpts: { strength: 3.2, blur: 1, rough: [0.2, 0.3, 0.14] },
     material: { clearcoat: 0.85, clearcoatRoughness: 0.12, alphaTest: 0.5 },
     setup: ({ THREE, scene, renderer }) => {
@@ -120,7 +124,7 @@ export function mount({ host = document.body } = {}) {
   });
   addEventListener('scroll', () => { if (reduceMotion.matches) api.still(); }, { passive: true });
   emit(); // el reloj tiene hora antes de que llegue el primer cuadro
-  onTheme(() => { api.set(); api.preload(theme.alt ? VERDE : PORPHYRY); });
-  api.preload(theme.alt ? VERDE : PORPHYRY); // el otro modo, a la caché
+  onTheme(() => { api.set(); api.preload(theme.alt ? DAY : DUSK); });
+  api.preload(theme.alt ? DAY : DUSK); // el otro modo, a la caché
   return { set: () => api.set(), hour: () => now };
 }

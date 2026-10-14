@@ -1,0 +1,13 @@
+/* sherry · boot: pantalla de arranque tipo BIOS (siempre oscura, es una pantalla encendida). */
+.sh-boot { position: fixed; inset: 0; z-index: 10000; background: #050505; color: #C8C8C8; padding: clamp(16px, 5vw, 48px); overflow: hidden; transition: opacity .3s ease-out; cursor: default; }
+.sh-boot.is-out { opacity: 0; pointer-events: none; }
+.sh-boot-pre { margin: 0; padding: 0; border: 0; background: none; font-family: var(--mono); font-size: clamp(12px, 1.6vw, 15px); line-height: 1.55; color: inherit; white-space: pre-wrap; text-shadow: 0 0 6px rgba(200, 200, 200, .25); }
+.sh-boot-pre::before { content: none; }
+.sh-boot-pre b { color: #FF1466; text-shadow: 0 0 8px rgba(255, 20, 102, .6); }
+.sh-boot-pre .ok { color: #39FF14; text-shadow: 0 0 6px rgba(57, 255, 20, .5); }
+.sh-boot-pre .bad { color: #FFE600; }
+.sh-boot-pre .dots::after { content: '…'; animation: sherry-blink 1s step-end infinite; }
+.sh-boot-skip { position: absolute; right: clamp(16px, 5vw, 48px); bottom: clamp(16px, 4vh, 40px); margin: 0; font-size: 12px; color: #7F7F7F; }
+/* scanlines propias, el CRT del tema va por debajo */
+.sh-boot::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(250, 250, 250, .035) 2px 4px); }
+@media (prefers-reduced-motion: reduce) { .sh-boot { transition: none; } .sh-boot-pre .dots::after { animation: none; } }

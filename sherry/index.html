@@ -42,7 +42,7 @@ SOFTWARE.
 <meta name="description" content="sherry · piel de documentación neon-punk para herramientas y juguetes personales: terminal y paleta de comandos para navegar, probador de regex, formateador de JSON, selector de neón y plantillas de manual, atajos y cambios.">
 <title>sherry_theme · Demo</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700|doto:700&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css?family=jetbrains-mono:400,700|doto:700|tilt-neon:400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
 <link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
 <link rel="stylesheet" href="../shared/components/doc-man/doc-man.css">
@@ -57,12 +57,18 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/sherry/tools.css">
 <link rel="stylesheet" href="../shared/components/sherry/terminal.css">
 <link rel="stylesheet" href="../shared/components/sherry/command-palette.css">
+<link rel="stylesheet" href="../shared/components/sherry/pet.css">
+<link rel="stylesheet" href="../shared/components/sherry/boot.css">
+<link rel="stylesheet" href="../shared/components/sherry/workshop.css">
+<link rel="stylesheet" href="../shared/components/sherry/glitch.css">
+<link rel="stylesheet" href="../shared/components/sherry/screensaver.css">
 </head>
 <body class="tri-on">
 
 <div class="sherry-controls">
   <button class="btn" id="tri-btn" aria-label="Alternar fondo de triángulos">tri</button>
   <button class="btn" id="crt-btn" aria-label="Alternar líneas CRT">crt</button>
+  <button class="btn" id="snd-btn" aria-pressed="false" aria-label="Encender el sonido">snd</button>
   <button class="theme-btn" id="toggle-btn" aria-label="Cambiar a modo claro">⬜ light</button>
 </div>
 
@@ -94,7 +100,7 @@ SOFTWARE.
 <section class="sherry-level" id="level-herramientas">
   <div class="sherry-level-wrap">
     <h2>Herramientas</h2>
-    <p class="muted">Tres utilidades que funcionan de verdad. También se abren desde la terminal de abajo: <code>open regex</code>, <code>open json</code>, <code>open neon</code>.</p>
+    <p class="muted">Cuatro utilidades que funcionan de verdad. También se abren desde la terminal de abajo: <code>open regex</code>, <code>open json</code>, <code>open neon</code>, <code>open letrero</code>.</p>
     <div class="sh-bench">
       <section class="sh-tool" id="tool-regex" aria-labelledby="tool-regex-h">
         <h3 id="tool-regex-h">regex <small>probador de expresiones regulares</small></h3>
@@ -106,6 +112,10 @@ SOFTWARE.
       </section>
       <section class="sh-tool" id="tool-neon" aria-labelledby="tool-neon-h">
         <h3 id="tool-neon-h">neon <small>selector de color con tinta de día</small></h3>
+        <div class="sh-tool-body"></div>
+      </section>
+      <section class="sh-tool" id="tool-sign" aria-labelledby="tool-sign-h">
+        <h3 id="tool-sign-h">letrero <small>fabricante de letreros de neón</small></h3>
         <div class="sh-tool-body"></div>
       </section>
     </div>
@@ -224,13 +234,14 @@ SOFTWARE.
       <h2>Métricas</h2>
       <div class="sherry-aux-img" id="aux-metricas" data-crop="ic"></div>
     </div>
-    <div class="metrics-row">
-      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val">7</div><div class="metric-lbl">artefactos (accent)</div></div></div>
-      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val electric">100%</div><div class="metric-lbl">uptime (electric)</div></div></div>
-      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val cyan">∞</div><div class="metric-lbl">recursión (cyan)</div></div></div>
-      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val violet">RL</div><div class="metric-lbl">modelo (violet)</div></div></div>
-      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lime">3ms</div><div class="metric-lbl">latencia (lime)</div></div></div>
-      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lavender">ML</div><div class="metric-lbl">módulo (lavender)</div></div></div>
+    <p class="muted">En vivo: lo que está pasando en esta página.</p>
+    <div class="metrics-row" id="live-metrics">
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val" data-metric="fps">·</div><div class="metric-lbl">cuadros/s del neón</div><div class="metric-spark" data-metric="spark" aria-hidden="true"></div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val cyan" data-metric="cmd">0</div><div class="metric-lbl">comandos tecleados</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val electric" data-metric="regex">0</div><div class="metric-lbl">regex probadas</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val violet" data-metric="session">0:00</div><div class="metric-lbl">en esta visita</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lime" data-metric="pet">·</div><div class="metric-lbl" data-metric="petlife">tu Tamauijetto</div></div></div>
+      <div class="sherry-pixel-card"><div class="metric"><div class="metric-val lavender" data-metric="solder">0</div><div class="metric-lbl">soldaduras en el taller</div></div></div>
     </div>
   </div>
 </section>
@@ -279,80 +290,16 @@ SOFTWARE.
   </div>
 </section>
 
-<!-- ── Nivel: Timeline ── -->
-<section class="sherry-level is-opaque" id="level-timeline">
+<!-- ── Nivel: Taller (protoboard con las piezas reales; sus pasos y su bitácora son el step-row y el timeline del tema) ── -->
+<section class="sherry-level is-opaque" id="level-taller">
   <div class="sherry-level-bg" id="sherry-dither-bg-timeline"></div>
   <div class="sherry-level-wrap">
     <div class="sherry-level-header">
-      <h2>Timeline</h2>
-      <div class="sherry-aux-img" id="aux-timeline" data-crop="ind"></div>
+      <h2>Taller</h2>
+      <div class="sherry-aux-img" id="aux-taller" data-crop="ind"></div>
     </div>
-    <div class="timeline">
-      <div class="sherry-pixel-card"><div class="timeline-item">
-        <div class="timeline-dot done">✓</div>
-        <div><h4>Artefacto ensamblado</h4><p class="muted">Núcleo operativo. Todos los módulos responden.</p></div>
-      </div></div>
-      <div class="sherry-pixel-card"><div class="timeline-item">
-        <div class="timeline-dot info">▶</div>
-        <div><h4>Cargando protocolo de red</h4><p class="muted">Estableciendo conexión. Último cable en su lugar.</p></div>
-      </div></div>
-      <div class="sherry-pixel-card"><div class="timeline-item">
-        <div class="timeline-dot warn">!</div>
-        <div><h4>Componente inestable</h4><p class="muted">Módulo de visión parpadea. Revisar soldadura.</p></div>
-      </div></div>
-      <div class="sherry-pixel-card"><div class="timeline-item">
-        <div class="timeline-dot pending">·</div>
-        <div><h4>Actualización pendiente</h4><p class="muted">Esperando materiales para el escudo secundario.</p></div>
-      </div></div>
-      <div class="sherry-pixel-card"><div class="timeline-item">
-        <div class="timeline-dot danger">✕</div>
-        <div><h4>Fallo crítico</h4><p class="muted">El núcleo no responde. Requiere reconstrucción.</p></div>
-      </div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ── Nivel: Pasos de ensamblaje ── -->
-<section class="sherry-level is-opaque" id="level-pasos">
-  <div class="sherry-level-wrap">
-    <div class="sherry-level-header">
-      <h2>Pasos de ensamblaje</h2>
-      <div class="sherry-aux-img" id="aux-pasos" data-crop="rel"></div>
-    </div>
-    <div class="sherry-pixel-card"><div class="step-row">
-      <div class="step-num">01</div>
-      <div><h4>Recolectar materiales</h4><p class="muted">Buscando componentes útiles en el perímetro.</p></div>
-    </div></div>
-    <div class="sherry-pixel-card"><div class="step-row" style="border-left-color:var(--cyan)">
-      <div class="step-num" style="color:var(--cyan);text-shadow:var(--glow-cyan)">02</div>
-      <div><h4>Desensamblar y clasificar</h4><p class="muted">Probar y categorizar cada pieza antes de integrarla.</p></div>
-    </div></div>
-    <div class="sherry-pixel-card"><div class="step-row" style="border-left-color:var(--electric)">
-      <div class="step-num" style="color:var(--electric);text-shadow:var(--glow-electric)">03</div>
-      <div><h4>Ensamblar el artefacto</h4><p class="muted">Integrar los módulos verificados en el núcleo.</p></div>
-    </div></div>
-  </div>
-</section>
-
-<!-- ── Nivel: Cards ── -->
-<section class="sherry-level is-opaque" id="level-cards">
-  <div class="sherry-level-wrap">
-    <div class="sherry-level-header">
-      <h2>Cards</h2>
-      <div class="sherry-aux-img" id="aux-cards" data-crop="lil"></div>
-    </div>
-    <div class="grid-2">
-      <div class="sherry-pixel-card"><div class="card">
-        <span class="badge cyan" style="margin-bottom:10px;display:inline-block">módulo</span>
-        <h4>Núcleo de procesamiento</h4>
-        <p class="muted" style="margin-top:6px">Componentes reciclados integrados en un sistema funcional.</p>
-      </div></div>
-      <div class="sherry-pixel-card"><div class="card" style="border-color:var(--violet)">
-        <span class="badge violet" style="margin-bottom:10px;display:inline-block">experimental</span>
-        <h4>Protocolo fantasma</h4>
-        <p class="muted" style="margin-top:6px">Comportamiento no documentado. Resultados consistentes.</p>
-      </div></div>
-    </div>
+    <p class="muted sh-ws-intro">sherry construye desde basura: arma el artefacto con lo que hay en la charola. Cada soldadura alimenta a tu Tamauijetto.</p>
+    <div id="workshop"></div>
   </div>
 </section>
 
@@ -388,7 +335,7 @@ sherry-tri --version</code></pre>
         <div id="cl-sherry-tri"></div>
         <details><summary>¿Funciona con video?</summary><p>Todavía no. Por ahora, extrae cuadros con <code>ffmpeg</code> y procésalos uno por uno.</p></details>
         <aside class="doc-notes" aria-label="Notas"><ol><li id="sh-n1">Pedida para poder regenerar el mismo fondo en otra resolución. <a href="#sh-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
-        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#level-cards"><small>Anterior</small>Cards</a><a class="next" href="#level-herramientas"><small>Siguiente</small>Herramientas</a></nav>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#level-taller"><small>Anterior</small>Taller</a><a class="next" href="#level-herramientas"><small>Siguiente</small>Herramientas</a></nav>
       </article>
     <div class="doc-spec">
       <div class="doc-spec-card"><h3>Tipografía</h3><div id="sy-type"></div></div>
@@ -424,9 +371,19 @@ import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-spec
 import { mount as docMan } from '../shared/components/doc-man/doc-man.js';
 import { mount as docKeys } from '../shared/components/doc-keys/doc-keys.js';
 import { mount as docChangelog } from '../shared/components/doc-changelog/doc-changelog.js';
+import { mount as pet } from '../shared/components/sherry/pet.js';
+import { mount as boot } from '../shared/components/sherry/boot.js';
+import { mount as workshop } from '../shared/components/sherry/workshop.js';
+import { mount as liveMetrics } from '../shared/components/sherry/live-metrics.js';
+import { mount as glitch } from '../shared/components/sherry/glitch.js';
+import { mount as screensaver } from '../shared/components/sherry/screensaver.js';
+import { mount as neonSign } from '../shared/components/sherry/neon-sign.js';
+import { mount as sound } from '../shared/components/sherry/sound.js';
+import { COMPONENT_IMAGES as IMG } from '../shared/components/sherry/kit.js';
 
 document.getElementById('tri-btn').addEventListener('click', toggleTri);
 document.getElementById('crt-btn').addEventListener('click', toggleCRT);
+boot();
 neonBloom();
 asciiTitle();
 
@@ -440,14 +397,31 @@ regexLab({ el: '#tool-regex .sh-tool-body', presets: [
   { name: 'retroceso catastrófico', src: '(a+)+$', flags: '', text: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab' },
 ] });
 jsonLab({ el: '#tool-json .sh-tool-body', sample: JSON.stringify({ nombre: 'sherry-tri', version: '0.4.2', opciones: { tri: 1200, neon: true, seed: null, paleta: ['magenta', 'cyan', 'lime'] }, salida: { formato: 'png', ancho: 3840, alto: 2160 } }) });
+neonSign({ el: '#tool-sign .sh-tool-body' });
 neonPicker({ el: '#tool-neon .sh-tool-body', darkBg: '#080808', lightBg: '#F5F2EC', tokens: ['--magenta', '--cyan', '--lime', '--violet', '--electric', '--rose', '--lavender', '--aqua', '--peach', '--mint'] });
 
 // ── Navegación: terminal y paleta de comandos ──
 terminal({ el: '#sh-term', user: 'remi',
-  tools: { regex: ['#tool-regex', 'Probador de regex'], json: ['#tool-json', 'Formateador de JSON'], neon: ['#tool-neon', 'Selector de color neón'] },
+  tools: { regex: ['#tool-regex', 'Probador de regex'], json: ['#tool-json', 'Formateador de JSON'], neon: ['#tool-neon', 'Selector de color neón'], letrero: ['#tool-sign', 'Letrero de neón'] },
   pages: { 'sherry-tri': ['#man-sherry-tri', 'Referencia de sherry-tri'] },
   files: { 'README.md': ['#level-manual', 'Manual de sherry-tri'], 'ATAJOS.md': ['#keys-sherry', 'Atajos de teclado'], 'CHANGELOG.md': ['#cl-sherry-tri', 'Registro de cambios'] } });
 palette();
+
+// ── Vida: mascota, taller, métricas, glitch, protector y sonido ──
+pet({ dock: '#sh-term' });
+workshop({ el: '#workshop', parts: [
+  { id: 'esp32', name: 'ESP32', img: IMG.esp32, color: '--cyan', slot: [37, 30, 26, 40], step: 'El cerebro: va al centro y todo se conecta a él.' },
+  { id: 'res', name: 'Resistencias', img: IMG.res, color: '--magenta', slot: [38, 4, 24, 18], step: 'Limitan la corriente de los LEDs.' },
+  { id: 'ic', name: 'IC 74HC08', img: IMG.ic, color: '--violet', slot: [5, 8, 24, 30], step: 'Compuertas AND: lógica de chatarra.' },
+  { id: 'rel', name: 'Relé', img: IMG.rel, color: '--electric', slot: [71, 8, 24, 30], step: 'El músculo: conmuta lo que el ESP32 no aguanta.' },
+  { id: 'cap', name: 'Capacitor', img: IMG.cap, color: '--lime', slot: [5, 58, 22, 32], step: 'Filtra el ruido de la fuente.' },
+  { id: 'ind', name: 'Inductor', img: IMG.ind, color: '--peach', slot: [73, 58, 22, 32], step: 'Suaviza la corriente.' },
+  { id: 'lil', name: 'LilyPad', img: IMG.lil, color: '--lavender', slot: [39, 76, 22, 21], step: 'El satélite que se cose a la ropa.' },
+] });
+liveMetrics({ el: '#live-metrics' });
+glitch();
+screensaver({ idle: 60000 });
+sound({ toggle: '#snd-btn' });
 
 // ── Manual: plantillas de herramienta ──
 docProse();
@@ -487,6 +461,9 @@ docKeys({ el: '#keys-sherry', groups: [
     { k: ['↑'], does: 'Comando anterior' },
     { k: ['Ctrl', 'L'], does: 'Limpiar la terminal' },
     { k: ['Esc'], does: 'Cerrar la terminal o la paleta' } ] },
+  { name: 'Tu Tamauijetto', keys: [
+    { k: ['/'], does: 'Abrir la terminal para escribir pet, feed o play' },
+    { k: ['Enter'], does: 'Acariciarlo (con el foco en él)' } ] },
 ] });
 docChangelog({ el: '#cl-sherry-tri', releases: [
   { v: '0.4.2', date: '2026-10-13', notes: [['fixed', 'La semilla vuelve a dar el mismo mosaico en cualquier resolución.'], ['changed', 'El bloom se calcula a 1/2, 1/4 y 1/8 del tamaño: tres veces más rápido.']] },

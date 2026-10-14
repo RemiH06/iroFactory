@@ -412,3 +412,6 @@ td code { white-space: nowrap; }
 .doc-man b { color: var(--accent); }
 /* El manual se lee sin brillo neón */
 #level-manual, #level-manual * { text-shadow: none !important; }
+/* Métricas en vivo: la gráfica de cuadros por segundo, en bloques */
+.metric-spark { margin-top: 4px; font-size: 12px; line-height: 1; letter-spacing: -1px; color: var(--accent); text-shadow: var(--glow-accent); white-space: nowrap; overflow: hidden; }
+.metric-val[data-metric="pet"] { font-size: 16px; line-height: 1.4; }

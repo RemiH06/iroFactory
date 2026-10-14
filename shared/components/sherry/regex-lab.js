@@ -11,6 +11,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const show = s => esc(s).replace(/\n/g, '<span class="sh-rx-nl">↵</span>') || '<span class="sh-rx-empty">vacía</span>';
 const FLAGS = { g: 'todas las coincidencias', i: 'sin distinguir mayúsculas', m: '^ y $ por renglón', s: 'el punto también toma saltos', u: 'Unicode', y: 'pegada a lastIndex' };
 const LIMIT = 300;
+import { bump } from './stats.js';
 
 export function mount({ el, presets = [] }) {
   const root = typeof el === 'string' ? document.querySelector(el) : el;
@@ -31,7 +32,7 @@ export function mount({ el, presets = [] }) {
     <ol class="sh-rx-list" aria-label="Coincidencias"></ol>`;
   const $ = s => root.querySelector(s);
   const src = $('.sh-rx-src'), text = $('.sh-rx-text'), back = $('.sh-rx-back'), repl = $('.sh-rx-repl'), outPre = $('.sh-rx-out'), list = $('.sh-rx-list'), status = $('.sh-tool-status');
-  let flags = new Set(first.flags), worker = null, job = 0, timer = 0, debounce = 0;
+  let flags = new Set(first.flags), worker = null, job = 0, timer = 0, debounce = 0, counted = '', loaded = false;
 
   const newWorker = () => { worker?.terminate(); worker = new Worker(new URL('./regex-worker.js', import.meta.url)); worker.onmessage = onResult; };
   const say = (t, cls = '') => { status.textContent = t; status.className = 'sh-tool-status ' + cls; };
@@ -49,6 +50,10 @@ export function mount({ el, presets = [] }) {
     src.setAttribute('aria-invalid', String(!!data.error));
     if (data.error) { say(data.error.replace(/^Invalid regular expression: /, 'Expresión inválida: '), 'is-err'); paintBack(); list.innerHTML = ''; outPre.hidden = true; return; }
     const n = data.matches.length;
+    // cuenta como regex probada cada patrón nuevo que corre bien (no cada tecla ni el ejemplo inicial)
+    const sig = src.value + '/' + [...flags].join('');
+    if (loaded && sig !== counted) { counted = sig; bump('regex'); }
+    loaded = true;
     say(`${n === 0 ? 'Sin coincidencias' : n === 1 ? '1 coincidencia' : n + ' coincidencias'} · ${(performance.now() - t0).toFixed(1)} ms`, n ? 'is-ok' : '');
     paintBack(data.matches);
     list.innerHTML = data.matches.slice(0, 200).map((m, k) => {
@@ -64,7 +69,7 @@ export function mount({ el, presets = [] }) {
     if (!worker) newWorker();
     worker.postMessage({ id: job, src: src.value, flags: [...flags].join(''), text: text.value, repl: repl.value ? repl.value : null });
     clearTimeout(timer);
-    timer = setTimeout(() => { newWorker(); say(`Se tardó más de ${LIMIT} ms: posible retroceso catastrófico (prueba con grupos sin anidar o cuantificadores perezosos).`, 'is-err'); paintBack(); list.innerHTML = ''; }, LIMIT);
+    timer = setTimeout(() => { newWorker(); dispatchEvent(new CustomEvent('sh:mood', { detail: 'scared' })); say(`Se tardó más de ${LIMIT} ms: posible retroceso catastrófico (prueba con grupos sin anidar o cuantificadores perezosos).`, 'is-err'); paintBack(); list.innerHTML = ''; }, LIMIT);
   };
   const later = () => { clearTimeout(debounce); debounce = setTimeout(test, 90); };
   const load = p => { src.value = p.src; text.value = p.text; repl.value = p.repl || ''; flags = new Set(p.flags); paintFlags(); test(); };
