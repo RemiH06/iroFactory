@@ -13,3 +13,8 @@
   }
 .line-sidebar__list { flex-direction: row; width: 100%; padding: 0; gap: 0; }
 }
+/* Teléfono: seis nombres no caben junto al toggle; quedan los índices (los mismos que encabezan cada segmento) y el nombre para lectores de pantalla. */
+@media (max-width: 560px){
+.line-sidebar__index { display: inline; margin: 0; font-size: 14px; font-weight: 700; opacity: calc(.6 + var(--effect, 0) * .4); }
+.line-sidebar__label > span:last-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}

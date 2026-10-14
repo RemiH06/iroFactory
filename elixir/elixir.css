@@ -35,6 +35,9 @@ body {
      token original se queda para rellenos y muestras de la paleta. */
   --text2-ink: var(--text2);
   --gray-ink: #595E7C;
+  /* Series de gráficas (skill dataviz, validadas contra --bg): entrenamiento y validación. */
+  --cv-train: #00907F;
+  --cv-valid: #6A62D8;
 }
 /* ── TOKENS OSCURO ── */
 body.dark {
@@ -71,6 +74,8 @@ body.dark {
      token original se queda para rellenos y muestras de la paleta. */
   --text2-ink: #787FA0;
   --gray-ink: #717FAA;
+  --cv-train: #00A89C;
+  --cv-valid: #7A72F0;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }

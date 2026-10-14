@@ -1,0 +1,93 @@
+/* elixir · evaluación: curva de pérdida, matriz de confusión y tarjeta de modelo. */
+.ev-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+.ev-panel { min-width: 0; }
+.ev-panel h3:first-child { margin-top: 0; }
+.ev-panel > .muted { max-width: 72ch; }
+.btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg2)); }
+.lc-tip, .cm-tip { position: absolute; z-index: 3; pointer-events: none; display: flex; flex-direction: column; gap: 2px; padding: 7px 10px; font-size: 12px; line-height: 1.45; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 20px color-mix(in srgb, var(--black) 22%, transparent); white-space: nowrap; }
+.lc-tip[hidden], .cm-tip[hidden] { display: none; }
+details > summary { cursor: pointer; font-size: 12px; color: var(--accent); margin-top: 8px; }
+/* ── Curva de pérdida ── */
+.lc-top { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.lc-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--text2-ink); }
+.lc-key { display: inline-flex; align-items: center; gap: 6px; }
+.lc-key i { width: 18px; height: 0; border-top: 2px solid var(--cv-train); }
+.lc-key.valid i { border-top: 2px dashed var(--cv-valid); }
+.lc-key.ckpt i { width: 10px; height: 10px; border: 2px solid var(--text); border-radius: 50%; }
+.lc-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.lc-presets .btn { min-height: 28px; padding: 3px 10px; font-size: 12px; }
+.lc-body { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 22px; align-items: start; }
+@media (max-width: 760px) { .lc-body { grid-template-columns: 1fr; } }
+.lc-chart { position: relative; margin: 0; min-width: 0; }
+.lc-plot svg { display: block; overflow: visible; }
+.lc-grid { stroke: color-mix(in srgb, var(--border) 80%, transparent); stroke-width: 1; }
+.lc-grid.base { stroke: var(--text2-ink); }
+.lc-ax { font: 10px var(--mono); fill: var(--text2-ink); }
+.lc-warn { fill: var(--warn); }
+.lc-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.lc-raw { fill: none; stroke-width: 1; opacity: .28; }
+.lc-line.train, .lc-raw.train { stroke: var(--cv-train); }
+.lc-line.valid, .lc-raw.valid { stroke: var(--cv-valid); }
+.lc-line.valid { stroke-dasharray: 6 4; }
+.lc-lab { font: 700 11px var(--mono); fill: var(--text); }
+.lc-ckpt { stroke: var(--text); stroke-width: 1; stroke-dasharray: 2 3; opacity: .7; }
+.lc-ckpt-dot { fill: var(--bg); stroke: var(--text); stroke-width: 2; }
+.lc-after { fill: color-mix(in srgb, var(--text) 6%, transparent); }
+.lc-after-t { font-style: italic; }
+.lc-cross { stroke: var(--text2-ink); stroke-width: 1; pointer-events: none; }
+.lc-tip .sw { display: inline-block; width: 12px; height: 0; margin-right: 6px; vertical-align: middle; border-top: 2px solid var(--cv-train); }
+.lc-tip .sw.valid { border-top: 2px dashed var(--cv-valid); }
+.lc-diag { margin-top: 8px; padding: 8px 12px; font-size: 13px; border-left: 2px solid var(--accent); background: var(--bg2); border-radius: 0 var(--radius) var(--radius) 0; }
+.lc-diag.warn { border-color: var(--warn); }
+.lc-diag.danger { border-color: var(--danger); }
+.lc-diag.ok { border-color: var(--ok); }
+.lc-knobs { display: flex; flex-direction: column; gap: 14px; }
+.lc-knobs label, .cm-thr { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; font-size: 12px; color: var(--text2-ink); }
+.lc-knobs output, .cm-thr output { color: var(--text); font-weight: 700; }
+.lc-knobs input, .cm-thr input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
+.lc-table-wrap { max-height: 260px; overflow: auto; }
+.cm-metrics-wrap { overflow-x: auto; }
+.lc-table-wrap tr.is-best td { color: var(--accent); font-weight: 700; }
+/* ── Matriz de confusión ── */
+.cm-controls { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; margin-bottom: 12px; }
+.cm-seg { display: flex; gap: 6px; }
+.cm-seg .btn { min-height: 28px; padding: 3px 10px; font-size: 12px; }
+.cm-thr { min-width: 220px; flex: 1; max-width: 340px; }
+.cm-wrap { position: relative; overflow-x: auto; }
+.cm-table { border-collapse: separate; border-spacing: 2px; font-size: 12px; width: auto; }
+.cm-table th { background: none; border: none; padding: 4px 6px; font-weight: 400; color: var(--text2-ink); white-space: normal; }
+.cm-corner span { font-size: 10px; }
+.cm-colh { vertical-align: bottom; text-align: center; width: 76px; line-height: 1.25; }
+.cm-rowh { text-align: right !important; line-height: 1.25; min-width: 104px; }
+.cm-abst span { font-style: italic; }
+.cm-cell { text-align: center; padding: 10px 4px; border: none; border-radius: 4px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--black); background: color-mix(in oklab, var(--cv-train) var(--f), var(--bg2)); transition: background-color .2s ease-out; cursor: default; }
+.cm-cell.on-dark { color: var(--white); }
+.cm-cell.diag { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 30%, transparent); }
+.cm-cell.abst { background: color-mix(in oklab, var(--gray) var(--f), var(--bg2)); }
+.cm-cell:hover { outline: 2px solid var(--text); outline-offset: -1px; }
+.cm-totals { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 14px 0 10px; font-size: 13px; color: var(--text2-ink); }
+.cm-totals b { color: var(--text); font-size: 18px; margin-right: 4px; }
+.cm-metrics { margin-top: 4px; }
+.cm-metrics td { font-variant-numeric: tabular-nums; }
+.cm-f1 { display: inline-flex; align-items: center; gap: 8px; }
+.cm-f1 i { display: block; height: 6px; border-radius: 0 3px 3px 0; background: var(--cv-train); }
+/* ── Tarjeta de modelo ── */
+.mc-head { display: grid; grid-template-columns: 1fr auto; gap: 10px 18px; align-items: start; padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.mc-kicker { font-size: 11px; color: var(--text2-ink); margin: 0; }
+.mc-name { margin: 2px 0 4px !important; font-size: 22px; color: var(--text) !important; }
+.mc-name .badge { font-size: 11px; vertical-align: 4px; }
+.mc-head .muted { margin: 0; font-size: 12px; }
+.mc-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.mc-done { grid-column: 1 / -1; position: relative; height: 18px; border-radius: 999px; background: var(--bg3); overflow: hidden; }
+.mc-done i { position: absolute; inset: 0 auto 0 0; background: color-mix(in srgb, var(--ok) 40%, transparent); }
+.mc-done span { position: relative; display: block; padding-left: 10px; font-size: 11px; line-height: 18px; color: var(--text); }
+.mc-grid { columns: 2 300px; column-gap: 22px; }
+.mc-sec { break-inside: avoid; margin-bottom: 18px; }
+.mc-sec h4 { display: flex; gap: 8px; align-items: baseline; font-size: 13px; color: var(--accent); margin-bottom: 6px; }
+.mc-sec h4 span { color: var(--text2-ink); font-size: 11px; }
+.mc-sec dl { display: grid; grid-template-columns: minmax(90px, auto) 1fr; gap: 4px 12px; font-size: 13px; }
+.mc-sec dt { color: var(--text2-ink); }
+.mc-sec dd { margin: 0; }
+.mc-sec dd.live { color: var(--text); border-left: 2px solid var(--cv-train); padding-left: 8px; }
+.mc-sec dd.todo { color: var(--warn); font-style: italic; }
+@media (max-width: 600px) { .mc-head { grid-template-columns: 1fr; } .mc-actions { justify-content: flex-start; } }

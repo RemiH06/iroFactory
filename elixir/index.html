@@ -52,6 +52,7 @@ SOFTWARE.
 <link rel="stylesheet" href="../shared/components/elixir/pipeline-graph.css">
 <link rel="stylesheet" href="../shared/components/elixir/infinite-spiral.css">
 <link rel="stylesheet" href="../shared/components/elixir/gooey-nav-tabs.css">
+<link rel="stylesheet" href="../shared/components/elixir/evaluation.css">
 </head>
 <body class="dark">
 
@@ -79,7 +80,8 @@ SOFTWARE.
     <li class="line-sidebar__item"><a href="#paleta"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">02</span><span>Paleta</span></span></a></li>
     <li class="line-sidebar__item"><a href="#pipeline"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">03</span><span>Pipeline</span></span></a></li>
     <li class="line-sidebar__item"><a href="#manual"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">04</span><span>Manual</span></span></a></li>
-    <li class="line-sidebar__item"><a href="#componentes"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">05</span><span>Componentes</span></span></a></li>
+    <li class="line-sidebar__item"><a href="#evaluacion"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">05</span><span>Evaluación</span></span></a></li>
+    <li class="line-sidebar__item"><a href="#componentes"><span class="line-sidebar__marker" aria-hidden="true"></span><span class="line-sidebar__label"><span class="line-sidebar__index">06</span><span>Componentes</span></span></a></li>
   </ul>
 </nav>
 <button class="ex-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo claro">◑ claro</button>
@@ -243,7 +245,7 @@ tensorboard --logdir runs/</code></pre>
         <details><summary>La validación mejora y luego empeora</summary><p>Sobreajuste: sube el abandono (dropout) o los aumentos, o detente antes.</p></details>
         <details><summary>Los resultados cambian entre corridas</summary><p>Fija la semilla en PyTorch, NumPy y el cargador de datos; aun así la GPU deja ruido pequeño.</p></details>
         <aside class="doc-notes" aria-label="Notas"><ol><li id="ex-n1">Si el mismo pez cae en entrenamiento y prueba, el modelo memoriza individuos y la exactitud se infla. <a href="#ex-r1" aria-label="Volver al texto">↩</a></li></ol></aside>
-        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#pipeline"><small>Anterior</small>03 Pipeline</a><a class="next" href="#componentes"><small>Siguiente</small>05 Componentes</a></nav>
+        <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#pipeline"><small>Anterior</small>03 Pipeline</a><a class="next" href="#evaluacion"><small>Siguiente</small>05 Evaluación</a></nav>
       </article>
       <aside class="doc-toc" aria-label="En esta página"></aside>
     </div>
@@ -251,12 +253,32 @@ tensorboard --logdir runs/</code></pre>
   </div>
 </section>
 
-<!-- ── 05 · COMPONENTES ── -->
-<section class="ex-seg ex-seg--pillar" id="componentes" data-seg="4">
+<!-- ── 05 · EVALUACIÓN ── -->
+<section class="ex-seg" id="evaluacion" data-seg="4">
+  <div class="ex-wrap">
+    <div class="ex-seg-head"><span class="ex-seg-index">05</span><h2 class="ex-seg-title">Evaluación</h2></div>
+    <p class="ex-seg-lede">Cómo se entrena, dónde se equivoca y qué se le promete a quien lo use: la curva de pérdida, la matriz de confusión y la tarjeta de modelo, conectadas entre sí.</p>
+    <div class="ev-grid">
+      <div class="ex-panel ev-panel">
+        <h3>Curva de pérdida</h3>
+        <p class="muted">Un modelo de juguete con las formas de siempre. Mueve la tasa de aprendizaje y el abandono, o elige un escenario; la parada temprana (paciencia 4) guarda el mejor punto de control.</p>
+        <div id="ex-loss"><p class="muted">La curva necesita JavaScript; el Manual trae una versión en texto.</p></div>
+      </div>
+      <div class="ex-panel ev-panel">
+        <h3>Matriz de confusión</h3>
+        <p class="muted">Seis especies del conjunto de prueba. Sube el umbral de confianza: lo dudoso pasa a «sin decidir», la exactitud sube y la cobertura baja.</p>
+        <div id="ex-confusion"><p class="muted">La matriz necesita JavaScript.</p></div>
+      </div>
+      <div class="ex-panel ev-panel" id="ex-card"><h3>Tarjeta de modelo</h3><p class="muted">La tarjeta necesita JavaScript; la ficha del Manual cuenta lo mismo en prosa.</p></div>
+    </div>
+  </div>
+</section>
+<!-- ── 06 · COMPONENTES ── -->
+<section class="ex-seg ex-seg--pillar" id="componentes" data-seg="5">
   <div class="ex-seg-bg"><canvas id="ex-pillar" aria-hidden="true"></canvas><canvas id="ex-anti" aria-hidden="true"></canvas></div>
   <div class="ex-wrap">
     <div class="ex-panel">
-      <div class="ex-seg-head"><span class="ex-seg-index">05</span><h2 class="ex-seg-title">Componentes</h2></div>
+      <div class="ex-seg-head"><span class="ex-seg-index">06</span><h2 class="ex-seg-title">Componentes</h2></div>
       <div class="gooey-nav" id="ex-gooey">
         <nav aria-label="Componentes">
           <ul role="tablist">
@@ -386,9 +408,13 @@ import { mount as m7 } from '../shared/components/elixir/infinite-spiral.js';
 import { mount as m8 } from '../shared/components/elixir/light-pillar-meta-balls.js';
 import { mount as m9 } from '../shared/components/elixir/antigravity.js';
 import { mount as m10 } from '../shared/components/elixir/gooey-nav-tabs.js';
+import { mount as lossCurve } from '../shared/components/elixir/loss-curve.js';
+import { mount as modelCard } from '../shared/components/elixir/model-card.js';
+import { mount as confusion } from '../shared/components/elixir/confusion-matrix.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 m0(); m1(); m2(); m3(); m4(); m5(); m6(); m7(); m8(); m9(); m10();
+lossCurve(); modelCard(); confusion(); // la tarjeta antes que la matriz: escucha sus métricas
 docProse();
 docSpecimen({
   type: { el: '#ex-type', fonts: [
