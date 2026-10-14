@@ -358,3 +358,14 @@ html:not(.js) nav.caps-fallback { display: flex; flex-wrap: wrap; gap: 10px; }
   .ds-pill { padding: 0 14px; }
   .card-b { padding: 18px 16px 20px; }
 }
+/* Estados que pide el banco de pruebas: deshabilitado, cargando, campo con error y ayuda. */
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; transform: none; }
+.btn[aria-busy="true"] { cursor: progress; }
+.btn[aria-busy="true"]::before { content: ''; width: 14px; height: 14px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: ds-spin .8s linear infinite; }
+@keyframes ds-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .btn[aria-busy="true"]::before { animation: none; border-right-color: currentColor; opacity: .6; } }
+.btn svg { width: 16px; height: 16px; flex: none; }
+.field-help { font-size: 12px; color: var(--text2); }
+.field.is-error input { border-color: var(--danger-ink); }
+.field.is-error .field-help { color: var(--danger-ink); font-weight: 600; }
+.field input:disabled { opacity: .55; cursor: not-allowed; }

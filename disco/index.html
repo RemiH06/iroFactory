@@ -22,6 +22,8 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
 <link rel="stylesheet" href="../shared/components/halftone-reveal/halftone-reveal.css">
 <link rel="stylesheet" href="../shared/components/spotlight-card/spotlight-card.css">
 <link rel="stylesheet" href="../shared/components/bento-traces/bento-traces.css">
+<link rel="stylesheet" href="../shared/components/token-export/token-export.css">
+<link rel="stylesheet" href="../shared/components/component-lab/component-lab.css">
 <link rel="stylesheet" href="../shared/components/card-reveal/card-reveal.css">
 <link rel="stylesheet" href="../shared/components/aurora-thread/aurora-thread.css">
 <link rel="stylesheet" href="../shared/components/bottlecap-gallery/bottlecap-gallery.css">
@@ -54,6 +56,7 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#componentes"><span class="sm-panel-itemLabel">Componentes</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#codigo"><span class="sm-panel-itemLabel">Código</span></a></li>
       <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#flujos"><span class="sm-panel-itemLabel">Flujos</span></a></li>
+      <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#taller"><span class="sm-panel-itemLabel">Taller</span></a></li>
     </ul>
     <div class="sm-extras">
       <p class="sm-extras-title">iroFactory</p>
@@ -93,7 +96,7 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
       </div>
       <p class="caps-go-row"><a class="ds-go" id="caps-go" href="#paleta">Ir a Paleta →</a></p>
     </div>
-    <nav class="caps-fallback" aria-label="Índice"><a href="#paleta">Paleta</a><a href="#componentes">Componentes</a><a href="#codigo">Código</a><a href="#flujos">Flujos</a><a href="#inicio">Inicio</a><a href="https://github.com/RemiH06/iroFactory">Repositorio</a></nav>
+    <nav class="caps-fallback" aria-label="Índice"><a href="#paleta">Paleta</a><a href="#componentes">Componentes</a><a href="#codigo">Código</a><a href="#flujos">Flujos</a><a href="#taller">Taller</a><a href="#inicio">Inicio</a><a href="https://github.com/RemiH06/iroFactory">Repositorio</a></nav>
   </div>
 </section>
 <div class="aurora-thread" data-thread="4" data-rev aria-hidden="true"><canvas></canvas></div>
@@ -280,6 +283,26 @@ NF de Nick Curtis (Nick's Fonts). Riffs de Figma de @singhshristi y @dd_uiux.
     </div>
   </div>
 </section>
+<div class="aurora-thread" data-thread="5" aria-hidden="true"><canvas></canvas></div>
+
+<!-- ── Taller: exportar tokens y banco de pruebas ── -->
+<section class="ds-sec" id="taller">
+  <div class="ds-wrap">
+    <div class="ds-head"><span class="ds-num">06</span><h2 class="ds-h2">Taller</h2><p class="ds-sub">Lo que se lleva el equipo: los tokens en el formato de su plataforma y cada componente probado antes de usarlo.</p></div>
+    <div class="bento" data-traces>
+      <article class="card-b s6" style="--spot:var(--sky)">
+        <div class="b-head"><h3 class="b-title"><i></i>Exportar tokens</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: exportar tokens">+</button></div>
+        <div id="token-export"><p class="muted">El exportador necesita JavaScript; la tabla de Código trae los valores.</p></div>
+        <div class="b-more" hidden><p>Los valores se leen de la página en los dos modos, así que siempre coinciden con lo que se ve. Con «los dos», CSS usa <code>[data-theme="dark"]</code>, Tailwind apunta a las variables y SwiftUI arma colores dinámicos.</p></div>
+      </article>
+      <article class="card-b s6" style="--spot:var(--lila)">
+        <div class="b-head"><h3 class="b-title"><i></i>Banco de pruebas</h3><button class="b-plus" type="button" aria-expanded="false" aria-label="Cómo se usa: banco de pruebas">+</button></div>
+        <div id="component-lab"><p class="muted">El banco de pruebas necesita JavaScript.</p></div>
+        <div class="b-more" hidden><p>El contraste se mide contra el fondo que el componente tiene detrás de verdad, mezclando las capas semitransparentes del vidrio. La columna «ahora» es el modo en pantalla; la otra se mide sin pintarla.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer class="ds-footer">
@@ -302,6 +325,8 @@ import { mount as fluidSim } from '../shared/components/fluid-sim/fluid-sim.js';
 import { mount as auroraThread } from '../shared/components/aurora-thread/aurora-thread.js';
 import { mount as prism } from '../shared/components/prism/prism.js';
 import { mount as bottlecapGallery } from '../shared/components/bottlecap-gallery/bottlecap-gallery.js';
+import { mount as tokenExport } from '../shared/components/token-export/token-export.js';
+import { mount as componentLab } from '../shared/components/component-lab/component-lab.js';
 
 const PALETTE = ['--tomato', '--mustard', '--mint', '--sky', '--indigo', '--lila', '--rose', '--peach'];
 const IMG = '../assets/img/disco/';
@@ -327,6 +352,33 @@ bottlecapGallery({ items: [
     { name: 'Inicio', note: 'Portada', href: '#inicio', light: `${IMG}cap3_light.webp`, dark: `${IMG}cap3_dark.webp` },
     { name: 'Repositorio', note: 'iroFactory en GitHub', href: 'https://github.com/RemiH06/iroFactory', light: `${IMG}cap5_light.webp`, dark: `${IMG}cap5_dark.webp` }
   ] });
+// Taller: los tokens del tema en otros formatos y el banco de pruebas de componentes
+tokenExport({ name: 'disco', altClass: 'dark', groups: [
+  ['Estados', 'color', ['--new', '--active', '--done']],
+  ['Paleta app', 'color', PALETTE],
+  ['Neutros', 'color', ['--bg', '--bg2', '--bg3', '--text', '--text2', '--border', '--black', '--white', '--gray']],
+  ['Sistema', 'color', ['--accent', '--accent2', '--ok', '--warn', '--danger']],
+  ['Tintas de texto', 'color', ['--accent-ink', '--ok-ink', '--warn-ink', '--danger-ink', '--sky-ink']],
+  ['Radios', 'dimension', ['--radius-sm', '--radius', '--radius-lg']],
+  ['Tipografía', 'font', ['--sans', '--mono', '--display']]] });
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const ICONS = { none: '', star: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6-4.5-4.2 6.1-.7z"/></svg>', plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>' };
+const V = list => list.map(v => [v, v || 'default']);
+componentLab({ altClass: 'dark', components: {
+  boton: { name: 'Botón', props: [['variant', 'Variante', 'select', V(['primary', '', 'ok', 'warn', 'danger', 'active', 'lila', 'sky', 'rose', 'mint'])], ['text', 'Texto', 'text', 'Guardar lugar'], ['icon', 'Ícono', 'select', [['none', 'sin ícono'], ['star', 'estrella'], ['plus', 'más']]], ['iconOnly', 'Solo ícono', 'bool', false], ['state', 'Estado', 'select', [['normal', 'normal'], ['disabled', 'deshabilitado'], ['busy', 'cargando']]]],
+    render: p => `<button type="button" class="btn${p.variant ? ' ' + p.variant : ''}"${p.state === 'disabled' ? ' disabled' : ''}${p.state === 'busy' ? ' aria-busy="true"' : ''}${p.iconOnly ? ` aria-label="${esc(p.text)}"` : ''}>${ICONS[p.icon]}${p.iconOnly && p.icon !== 'none' ? '' : esc(p.text)}</button>`,
+    checks: [['button', 'texto', { text: true, target: true, name: true }]] },
+  badge: { name: 'Badge', props: [['variant', 'Variante', 'select', V(['new', 'active', 'done', 'accent', 'ok', 'warn', 'danger', 'mustard', 'lila', 'sky', 'rose', 'peach', ''])], ['text', 'Texto', 'text', 'nuevo']],
+    render: p => `<span class="badge${p.variant ? ' ' + p.variant : ''}">${esc(p.text)}</span>`, checks: [['.badge', 'texto', { text: true }]] },
+  aviso: { name: 'Aviso', props: [['variant', 'Variante', 'select', V(['', 'ok', 'warn', 'danger', 'active', 'lila', 'sky'])], ['title', 'Título', 'text', 'Revisa el horario'], ['text', 'Texto', 'text', 'El lugar cierra los lunes.']],
+    render: p => `<div class="callout${p.variant ? ' ' + p.variant : ''}">\n  <div class="callout-title">${esc(p.title)}</div>\n  <p>${esc(p.text)}</p>\n</div>`, checks: [['.callout-title', 'título', { text: true }], ['.callout p', 'texto', { text: true }]] },
+  toast: { name: 'Notificación', props: [['variant', 'Variante', 'select', V(['ok', 'warn', 'danger'])], ['title', 'Título', 'text', 'Reseña publicada'], ['text', 'Detalle', 'text', 'Ya aparece en el lugar.']],
+    render: p => `<div class="toast ${p.variant}" role="status">\n  <b>${esc(p.title)}</b>\n  <span>${esc(p.text)}</span>\n</div>`, checks: [['.toast b', 'título', { text: true }], ['.toast span', 'detalle', { text: true }]] },
+  campo: { name: 'Campo', props: [['label', 'Etiqueta', 'text', 'Nombre del lugar'], ['value', 'Valor', 'text', 'Taquería El Padrino'], ['help', 'Ayuda', 'text', 'Como aparece en el letrero.'], ['state', 'Estado', 'select', [['normal', 'normal'], ['error', 'con error'], ['disabled', 'deshabilitado']]]],
+    // La ayuda va fuera de la etiqueta: dentro, el lector de pantalla la leería como parte del nombre.
+    render: p => `<div class="field${p.state === 'error' ? ' is-error' : ''}">\n  <label for="lab-in">${esc(p.label)}</label>\n  <input id="lab-in" type="text" value="${esc(p.value)}"${p.state === 'disabled' ? ' disabled' : ''}${p.state === 'error' ? ' aria-invalid="true"' : ''} aria-describedby="lab-help">\n  <span class="field-help" id="lab-help">${esc(p.state === 'error' ? 'Escribe el nombre completo.' : p.help)}</span>\n</div>`,
+    checks: [['.field > label', 'etiqueta', { text: true }], ['.field input', 'campo', { text: true, target: true, name: true }], ['.field-help', 'ayuda', { text: true }]] }
+} });
 // Tipografía y contraste (componente compartido de la base de documentación)
 docSpecimen({
   type: { el: '#disco-type', fonts: [

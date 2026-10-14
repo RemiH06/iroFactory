@@ -1,0 +1,30 @@
+/* component-lab: estilos base con los tokens genéricos; cada tema lo viste. */
+.cl-pick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.cl-tab{font:600 13px var(--sans,inherit);min-height:36px;padding:0 14px;border:1.5px solid var(--border);border-radius:999px;background:var(--bg);color:var(--text2);cursor:pointer;transition:border-color .2s ease-out,color .2s ease-out,transform .16s ease-out}
+.cl-tab[aria-selected="true"]{border-color:var(--accent-ink,var(--accent));color:var(--text);background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
+.cl-tab:active{transform:scale(.97)}
+.cl-main{display:grid;grid-template-columns:220px minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:760px){.cl-main{grid-template-columns:minmax(0,1fr)}}
+.cl-knobs{display:flex;flex-direction:column;gap:10px}
+.cl-knobs label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--text2)}
+.cl-knobs select,.cl-knobs input:not([type=checkbox]){font:14px var(--sans,inherit);color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm,8px);padding:8px 10px;min-height:40px;min-width:0}
+.cl-knobs .cl-bool{flex-direction:row;align-items:center;gap:8px;font-size:14px;color:var(--text)}
+.cl-knobs input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent-ink,var(--accent))}
+.cl-view{min-width:0}
+.cl-stage{display:flex;align-items:center;justify-content:center;min-height:150px;padding:24px;border:1.5px dashed var(--border);border-radius:var(--radius-sm,8px);background-color:var(--bg);background-image:radial-gradient(color-mix(in srgb,var(--text) 10%,transparent) 1px,transparent 1px);background-size:14px 14px}
+.cl-stage > *{max-width:100%}
+.cl-checks{width:100%;margin-top:12px;border-collapse:collapse;font-size:13px}
+.cl-checks th,.cl-checks td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.cl-checks tr:first-child th{font-size:11px;color:var(--text2);font-weight:600}
+.cl-checks th.is-now{color:var(--text)}
+.cl-checks th.is-now::after{content:' · ahora'}
+.cl-checks th[scope=row]{font-weight:600}
+.cl-checks th small{display:block;font-weight:400;font-size:11px;color:var(--text2)}
+.cl-checks td.ok span[aria-hidden]{color:var(--ok-ink,var(--ok))}
+.cl-checks td.bad span[aria-hidden]{color:var(--danger-ink,var(--danger))}
+.cl-checks td.bad{font-weight:600}
+.cl-out{margin-top:14px;border:1px solid var(--border);border-radius:var(--radius-sm,8px);overflow:hidden;background:var(--bg2)}
+.cl-head{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font:12px var(--mono);color:var(--text2)}
+.cl-out pre{margin:0;max-height:220px;overflow:auto;padding:12px 14px;font:12.5px/1.6 var(--mono);color:var(--text);background:none;border:none;white-space:pre-wrap;word-break:break-word}
+.cl-out code{background:none;border:none;padding:0;color:inherit;font:inherit}
+.cl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

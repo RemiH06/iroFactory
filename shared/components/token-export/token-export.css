@@ -1,0 +1,21 @@
+/* token-export: estilos base con los tokens genéricos; cada tema lo viste. */
+.tx-bar{display:flex;flex-wrap:wrap;gap:10px 16px;justify-content:space-between;align-items:center}
+.tx-fmts,.tx-modes{display:flex;flex-wrap:wrap;gap:6px}
+.tx-fmt,.tx-modes button{font:600 13px var(--sans,inherit);min-height:36px;padding:0 14px;border:1.5px solid var(--border);border-radius:999px;background:var(--bg);color:var(--text2);cursor:pointer;transition:border-color .2s ease-out,color .2s ease-out,transform .16s ease-out}
+.tx-fmt[aria-selected="true"],.tx-modes [aria-pressed="true"]{border-color:var(--accent-ink,var(--accent));color:var(--text);background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
+.tx-fmt:active,.tx-modes button:active{transform:scale(.97)}
+.tx-groups{display:flex;flex-wrap:wrap;gap:6px 14px;margin:14px 0 4px;font-size:14px}
+.tx-g{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.tx-g input{accent-color:var(--accent-ink,var(--accent));width:16px;height:16px}
+.tx-g small{font:12px var(--mono);color:var(--text2)}
+.tx-sum{margin:8px 0 10px;font:12px var(--mono);color:var(--text2)}
+.tx-out{border:1px solid var(--border);border-radius:var(--radius-sm,8px);overflow:hidden;background:var(--bg2)}
+.tx-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tx-head span{display:flex;gap:6px}
+.tx-file{font-size:12px}
+.tx-copy,.tx-dl,.cl-copy{font:600 12px var(--sans,inherit);min-height:32px;padding:0 12px;border:1.5px solid var(--border);border-radius:999px;background:var(--bg);color:var(--text);cursor:pointer;transition:border-color .2s ease-out,transform .16s ease-out}
+.tx-copy:hover,.tx-dl:hover,.cl-copy:hover{border-color:var(--accent-ink,var(--accent))}
+.tx-copy:active,.tx-dl:active,.cl-copy:active{transform:scale(.97)}
+.tx-copy:disabled,.tx-dl:disabled{opacity:.5;cursor:not-allowed}
+.tx-code{margin:0;max-height:360px;overflow:auto;padding:12px 14px;font:12.5px/1.6 var(--mono);color:var(--text);background:none;border:none;white-space:pre}
+.tx-code code{background:none;border:none;padding:0;color:inherit;font:inherit}
