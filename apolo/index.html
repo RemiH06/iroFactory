@@ -64,7 +64,7 @@ SOFTWARE.
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>apolo_theme · Demo</title>
-<meta name="description" content="apolo: tema de documentación para artes y humanidades. Un pórtico griego de mármol en relieve cuya luz sigue la hora del día con el scroll, una gliptoteca de esculturas en 3D, edición comentada con traducción en paralelo y bibliografía.">
+<meta name="description" content="apolo: tema de documentación para artes y humanidades. Un paño de mármol oscuro con ornamento griego en oro y un óculo de Helios por el que pasa el día con el scroll, una gliptoteca de esculturas en 3D, edición comentada con traducción en paralelo y bibliografía.">
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css2?family=Cinzel:wght@400;700&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400&family=GFS+Didot&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
@@ -72,7 +72,7 @@ SOFTWARE.
 <link rel="stylesheet" href="apolo.css">
 <link rel="stylesheet" href="../shared/components/doc-edition/doc-edition.css">
 <link rel="stylesheet" href="../shared/components/doc-biblio/doc-biblio.css">
-<link rel="stylesheet" href="../shared/components/apolo/portico.css">
+<link rel="stylesheet" href="../shared/components/apolo/helios.css">
 <link rel="stylesheet" href="../shared/components/apolo/sculpture-gallery.css">
 <link rel="stylesheet" href="../shared/components/apolo/light-rays.css">
 <link rel="stylesheet" href="../shared/components/apolo/petals.css">
@@ -85,7 +85,7 @@ SOFTWARE.
 </head>
 <body>
 
-<!-- Capas de escena: el pórtico (portico-3d.js) se agrega al inicio del body -->
+<!-- Capas de escena: el paño de Helios (helios-3d.js) se agrega al inicio del body -->
 <canvas id="ap-rays"></canvas>
 <canvas id="ap-petals"></canvas>
 
@@ -128,8 +128,8 @@ SOFTWARE.
   <div class="wrap ap-presentacion-grid">
     <div>
       <h1>Un tema de documentación hecho de componentes</h1>
-      <p>La página solo compone piezas compartidas de iroFactory. El fondo es un pórtico de mármol en relieve dibujado por código: cornisa, friso con metopas pintadas, columnas jónicas y gradas. Entre las columnas se ve el cielo, y la hora avanza con el scroll: el sol entra rasante al amanecer, cae desde arriba a mediodía y al final salen las estrellas.</p>
-      <p>El tema alterna entre una paleta de día y una de atardecer. Con la de día la página va de las seis de la mañana a la noche; con la de atardecer, del ocaso al amanecer siguiente. El reloj de abajo a la izquierda marca la hora.</p>
+      <p>La página solo compone piezas compartidas de iroFactory. El fondo es un paño de mármol pulido dibujado por código, con el ornamento griego embutido en oro: meandros, antemios, rosetas, una lira y un trípode. Al centro, el óculo de Helios deja ver el cielo, y la hora avanza con el scroll: el sol entra rasante al amanecer, cae desde arriba a mediodía y al final salen las estrellas.</p>
+      <p>El tema alterna entre una paleta de día y una de atardecer. Con la de día la piedra es verde antico y la página va de las seis de la mañana a la noche; con la de atardecer es pórfido y va del ocaso al amanecer siguiente. El reloj de abajo a la izquierda marca la hora.</p>
     </div>
     <div class="ap-presentacion-aside">
       <blockquote class="ap-quote">
@@ -190,11 +190,11 @@ SOFTWARE.
     <div>
       <h2>Sobre este tema</h2>
       <p>La paleta parte de dos referencias concretas: mármol claro y un azul profundo de mar. De ahí salen los nombres de los tokens, no al revés · la idea vino primero de qué colores se veían bien juntos, la referencia clásica se sumó después.</p>
-      <p>El fondo es una placa en relieve: el mismo trazo dibuja el pórtico en color y, a la vez, un mapa de alturas, y de ese mapa salen las normales con las que la luz marca cada moldura. Es la técnica del tapiz de tarot, compartida como componente.</p>
+      <p>El fondo es una placa en relieve: el mismo trazo dibuja el ornamento en color y, a la vez, un mapa de alturas y de metal, y de ese mapa salen las normales con las que la luz levanta el oro sobre la piedra. Es la técnica del tapiz de tarot, compartida como componente.</p>
     </div>
     <div>
       <h2>Cómo funciona</h2>
-      <p>Three.js para el pórtico, las estatuas y la gliptoteca; WebGL crudo para Light Rays y Ripple Distortion. El dibujo del pórtico y su relieve se calculan en un Worker para no congelar la página, y la luz se recalcula con cada paso del scroll.</p>
+      <p>Three.js para el paño, las estatuas y la gliptoteca; WebGL crudo para Light Rays y Ripple Distortion. El dibujo del paño y su relieve se calculan en un Worker para no congelar la página, y la luz se recalcula con cada paso del scroll.</p>
       <p>Una serif de lectura larga para el cuerpo, una serif más geométrica y en mayúsculas para títulos, y GFS Didot para el griego. Ningún color puro #000 o #fff en ningún token.</p>
     </div>
   </div>
@@ -420,7 +420,7 @@ config = <span class="fn">Config</span>(<span class="str">"apolo"</span>)
       <h3>Ode Log</h3>
       <div class="ode-log">
         <div class="ode-entry"><div class="ode-dot gold">I</div><div><h4>Primer trazo</h4><p class="muted">La paleta nace de dos referencias: mármol claro, mar profundo.</p></div></div>
-        <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>La hora avanza</h4><p class="muted">El sol cruza el pórtico conforme baja la página.</p></div></div>
+        <div class="ode-entry"><div class="ode-dot aegean">II</div><div><h4>La hora avanza</h4><p class="muted">El sol cruza el óculo conforme baja la página.</p></div></div>
         <div class="ode-entry"><div class="ode-dot rose">III</div><div><h4>Dos luces</h4><p class="muted">El tema completo se reconstruye al alternar claro y oscuro.</p></div></div>
         <div class="ode-entry"><div class="ode-dot olive">IV</div><div><h4>Sin contorno</h4><p class="muted">El contraste del texto viene del fondo, no de un borde alrededor.</p></div></div>
         <div class="ode-entry"><div class="ode-dot gold">V</div><div><h4>Ningún blanco puro</h4><p class="muted">Hasta el negro y el blanco de esta paleta son un matiz.</p></div></div>
@@ -516,7 +516,7 @@ docSpecimen({
     { name: 'Fira Code', family: 'var(--mono)', size: 20, use: 'Código y tokens' }] },
   contrast: { el: '#ap-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--gold-ink', '--bg', 'Acento'], ['--ok', '--bg', 'OK'], ['--danger', '--bg', 'Danger'], ['--text', '--bg2', 'Texto en tarjeta']] }
 });
-import('../shared/components/apolo/portico-3d.js').then(m => m.mount().set());
+import('../shared/components/apolo/helios-3d.js').then(m => m.mount().set());
 sundial(); glypt();
 edition({ el: '#ap-edition', cite: 'h. Hom. 3', src: { lang: 'grc', label: 'Griego' }, tr: { lang: 'es', label: 'Español' }, lines: [
   ['μνήσομαι οὐδὲ λάθωμαι Ἀπόλλωνος ἑκάτοιο,', 'Recordaré, y no he de olvidar, a Apolo, el que hiere de lejos,'],

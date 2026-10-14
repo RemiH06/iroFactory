@@ -1,6 +1,6 @@
 // ══════════════════════════════════════════════════════
 // El reloj de sol · una pastilla fija abajo a la izquierda con la hora del
-// pórtico (portico-3d.js avisa con `ap:hour`): un cuadrante con la sombra
+// paño (helios-3d.js avisa con `ap:hour`): un cuadrante con la sombra
 // del gnomon, la hora y el momento del día con su nombre griego (Ἠώς la
 // aurora, Ἡμέρα el día, Ἑσπέρα el ocaso, Νύξ la noche). De noche el
 // cuadrante no da sombra: marca la luna.

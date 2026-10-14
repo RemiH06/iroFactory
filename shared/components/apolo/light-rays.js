@@ -2,8 +2,8 @@
 // CAPA 2 · Light Rays: rayos de sol desde arriba
 // (React Bits "LightRays" · es OGL, no Three.js: su shader ya
 // es GLSL plano, así que el fragment shader es un puerto casi
-// literal). El origen sigue al sol del pórtico (portico-3d.js):
-// los rayos caen desde donde va el sol y se apagan de noche. Se
+// literal). El origen sigue al sol del óculo (helios-3d.js): los
+// rayos caen desde donde va el sol y se apagan de noche. Se
 // quita la rama "lightMode" del original (tonemap a tinta sobre
 // blanco: no aplica, apolo ya tiene su propio claro/oscuro).
 // ══════════════════════════════════════════════════════
@@ -110,12 +110,11 @@ export function initRays() {
   };
 
   let mx = 0.5, my = 0.2;
-  // los rayos bajan desde el sol del pórtico (portico-3d.js): siguen su
+  // los rayos bajan desde el sol del óculo (helios-3d.js): siguen su
   // posición en la vista y se apagan cuando se pone
   let sunX = 0.5, light = 1;
   document.addEventListener('ap:hour', ({ detail }) => {
-    const a = (detail.hour - 6) / 12 * Math.PI, px = 0.5 - 0.41 * Math.cos(a), k = (16 / 9) / Math.max(innerWidth / innerHeight, 1e-3);
-    sunX = (px - 0.5) * Math.max(1, k) + 0.5; light = smooth(-0.02, 0.3, detail.sun);
+    sunX = detail.x; light = smooth(-0.02, 0.3, detail.sun);
   });
   function resize() {
     canvas.width = window.innerWidth;

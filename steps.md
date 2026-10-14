@@ -1100,3 +1100,12 @@ Propósito: cartas, decisiones y retrospectivas. Concepto: gabinete de historia 
 - Controles `tri` y `crt` sin `onclick`. Meta description nueva.
 - Verificado en Chrome con la GPU real (ANGLE D3D11): noche y día, terminal (ls, cd con Tab, neon), paleta, regex (y su corte por tiempo), JSON inválido, man con armador, atajos encendidos, rango del changelog, móvil 390 px sin scroll horizontal, 12 contextos WebGL, reduced motion a 0 rAF/s. Sin errores (el 404 es el favicon pendiente).
 
+## apolo · el paño de Helios (2026-10-13, misma sesión)
+
+- Al usuario no le terminó de gustar el pórtico. Diagnóstico: mármol crema detrás de paneles crema (se lavaba), arquitectura literal y repetitiva, metopas en pastel planas y casi nada de metal para que la luz del día se notara. Lo que funcionó en odysseus y tarot: base oscura y rica con metal grabado y un ornamento propio del concepto. Eligió «mármol oscuro con oro» y conservar el día con el scroll.
+- `helios-pattern.js` (sustituye a `portico-pattern.js`; `portico-3d.js` y `portico.css` pasan a `helios-3d.js` y `helios.css`): paño de mármol pulido y veteado (verde antico de día, pórfido de atardecer; vetas que se ramifican y nubes de color) con ornamento embutido en oro: meandro arriba y abajo, ovas y dardos, la ola que se enrosca, meandro vertical en los costados, dos cadenas de antemio (palmetas y lotos con volutas), rosetas en retícula y dos estelas con medallón de otra piedra (rojo antiguo o verde) con lira y trípode, laurel y palmetas.
+- Al centro, el **óculo de Helios**: corona de 24 rayos (rectos y ondulados como llamas) y 72 finos, laurel y anillos de oro; dentro el lienzo es transparente y se ve el cielo de la hora, ahora a escala del óculo (horizonte a 0.58, arco del sol dentro de la ventana, estrellas más finas y densas, luna e islas más chicas). Material de piedra pulida (clearcoat 0.85) para que la luz rasante corra por la piedra y el oro.
+- La paleta sigue al modo (se redibuja con fundido y el otro modo se precarga). `ap:hour` ahora trae `x` (el sol en la vista) y Light Rays lo usa en vez de recalcular la geometría.
+- Reloj de sol en angosto: solo el cuadrante (tapaba renglones).
+- Verificado en Chrome con la GPU real: día y atardecer de punta a punta, móvil 390 px (el óculo queda al centro con el sol o la luna), sin errores nuevos.
+
