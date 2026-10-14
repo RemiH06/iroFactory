@@ -43,6 +43,7 @@ The React Bits license allows using the components as part of an application, we
 | Torso of a Kouros (1953.125) and Antonio Canova's Terpsichore Lyran (1968.212) · 3D scans by [The Cleveland Museum of Art](https://sketchfab.com/clevelandart), Open Access · `assets/models/apolo/kuros.glb`, `terpsicore.glb` | CC0 | apolo (the glyptotheque) |
 | Bird skulls · 13 3D scans by the [Museu d'Història Natural de la Universitat de València](https://sketchfab.com/MUVHN) (MUVHN), Bird Skulls collection on Sketchfab (Dept. of Zoology, Faculty of Biological Sciences) · `assets/models/tarot/*.glb` (reduced to ~60k triangles, 1024 px WebP texture, meshopt) | CC BY 4.0 | tarot (the vitrines) |
 | Fish radiographs · photos by Sandra Raredon, from the Smithsonian exhibition «X-Ray Vision: Fish Inside Out» | Credited to the photographer and the exhibition | elixir, shui |
+| The 色 glyph of [Shippori Mincho](https://github.com/fontdasu/ShipporiMincho) ExtraBold by FONTDASU, converted to outlines (no font is shipped) | SIL OFL 1.1 | the iroFactory logo (`shared/components/brand/brand.js`, `assets/logo/`) |
 
 ## Fonts from ffonts.net (unmodified; embedded in the older single-file themes, as files in `assets/fonts/` in the migrated ones)
 

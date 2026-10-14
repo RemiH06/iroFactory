@@ -9,28 +9,23 @@
 //  · y en las dos imágenes, una marca que parpadea: el logo de iroFactory
 //    en un recuadro con marcas de corte y los créditos alrededor, como si
 //    fueran los parámetros del recuadro (autor, licencia, componentes…).
-//    La marca es monocromática (el color del texto de la imagen) y, en la
-//    imagen chica, es solo el sello. El logo es provisional (el abanico de
-//    doce varillas con el sello 色) hasta que exista el SVG definitivo.
+//    La marca es el Sensu en un color (el del texto de la imagen; geometría
+//    de shared/components/brand) y, en la imagen chica, es solo el sello.
 // La trama y el duotono se hornean una vez por modo (canvas 2D).
 // ══════════════════════════════════════════════════════
 import { faceColors, hexRgb, isLight, makeLoop, onTheme, reduceMotion } from './kit.js';
+import { SEAL_PATH, sealTransform, sensuGeometry } from '../brand/brand.js';
 
-// ── La marca, en un solo color: abanico (Sensu) de doce varillas y el sello 色
-const seal = (x, cx, cy, s, ink, paper) => {
-  x.fillStyle = ink; x.fillRect(cx - s / 2, cy - s / 2, s, s);
-  x.fillStyle = paper; x.font = `${s * 0.78}px "Shippori Mincho", "Yu Mincho", "MS Mincho", serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('色', cx, cy + s * 0.04);
-};
-function sensu(x, cx, cy, R, ink, paper) {
-  const a0 = Math.PI * 1.08, a1 = Math.PI * 1.92, step = (a1 - a0) / 12;
-  x.fillStyle = ink;
-  for (let i = 0; i < 12; i++) {
-    x.globalAlpha = i % 2 ? 0.62 : 1; // varillas alternas, para leer el pliegue sin otro color
-    x.beginPath(); x.moveTo(cx, cy); x.arc(cx, cy, R, a0 + i * step, a0 + (i + 1) * step - step * 0.08); x.closePath(); x.fill();
-  }
-  x.globalAlpha = 1;
-  x.beginPath(); x.arc(cx, cy, R * 0.34, a0, a1); x.lineTo(cx, cy); x.closePath(); x.fillStyle = paper; x.fill();
-  const s = R * 0.42; seal(x, cx, cy - s * 0.12, s, ink, paper);
+// ── La marca, en un solo color: el Sensu y su sello con 色 calado (deja ver la placa de abajo)
+const FAN = sensuGeometry({ mono: true }), FANS = FAN.fans.map(f => new Path2D(f.d)), SEAL = new Path2D(SEAL_PATH);
+const seal = (x, cx, cy, s, ink) => { x.save(); x.transform(...sealTransform(cx, cy, s)); x.fillStyle = ink; x.fill(SEAL); x.restore(); };
+// (cx, cy) es el remache y R el radio de los gajos
+function sensu(x, cx, cy, R, ink) {
+  const k = R / 46, [sx, sy, ss] = FAN.seal;
+  x.save(); x.translate(cx - 50 * k, cy - 72 * k); x.scale(k, k); x.fillStyle = ink;
+  FANS.forEach((p, i) => { x.globalAlpha = i % 2 ? 0.62 : 1; x.fill(p); }); // gajos alternos, para leer el pliegue sin otro color
+  x.restore();
+  seal(x, cx + (sx - 50) * k, cy + (sy - 72) * k, ss * k, ink);
 }
 // recuadro con marcas de corte; los créditos van alrededor como parámetros
 const CREDITS = [['MARCA', 'IROFACTORY · LUDUS_THEME'], ['AUTOR', 'REMIH06 · MIT'], ['COMPONENTES', 'REACT BITS (DAVID HAZ): SHUFFLE, BUBBLE MENU, CUBES'], ['RIFF', '@VDWJULIEN · RECORTE Y DUOTONO'], ['3D', 'THREE.JS'], ['ANIMACIÓN', 'ANIME.JS']];
@@ -38,9 +33,9 @@ function mark(x, X, Y, w, dpr, { ink, paper, line, compact = false, t = 0 }) {
   const h = w * 0.78, m = 9 * dpr, g = 4 * dpr;
   x.save();
   x.fillStyle = paper; x.globalAlpha = 0.86; x.fillRect(X, Y, w, h); x.globalAlpha = 1;
-  if (compact) seal(x, X + w / 2, Y + h / 2, h * 0.62, ink, paper); // en chico, solo el sello
+  if (compact) seal(x, X + w / 2, Y + h / 2, h * 0.62, ink); // en chico, solo el sello
   else {
-    sensu(x, X + w / 2, Y + h * 0.78, w * 0.4, ink, paper);
+    sensu(x, X + w / 2, Y + h * 0.62, w * 0.34, ink);
     x.fillStyle = ink; x.font = `${10 * dpr}px "Silkscreen", monospace`; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
     x.fillText('iroFactory', X + w / 2, Y + h - 6 * dpr);
   }

@@ -19,7 +19,7 @@ Ronda de mejoras a los primeros temas con lo aprendido en ludus y tarot (decidid
 6e. ✅ **shui** (hecho 2026-10-14, ver «shui · ronda de mejoras» al final; falta la revisión del usuario): linaje de datos y esquemas de tablas.
 6f. ✅ **disco** (hecho 2026-10-14, ver «disco · ronda de mejoras» al final; falta la revisión del usuario): exportar tokens y banco de pruebas.
 6g. ✅ **ludus** (hecho 2026-10-14, ver «ludus · ronda de mejoras» al final; falta la revisión del usuario): documento de diseño del tablero con simulador de balance. Las fuentes de ludus siguen pendientes: las está investigando el usuario.
-7. Después: logo definitivo (Mazo y Sensu; arregla el 404 del favicon y sustituye el abanico provisional de `shared/components/ludus/crop-filter.js`), galería y raíz (`index.html`: sandbox del iframe, `aria-expanded`, meta description, `<h1>`; `robots.txt`, `sitemap.xml`; decidir si se borra `CONTEXT.md`) y al final los temas nuevos rem, mirai y extract.
+7. ✅ Logo definitivo (hecho 2026-10-14, ver «logo · Mazo y Sensu» al final; falta la revisión del usuario). Sigue: galería y raíz (`index.html`: sandbox del iframe, `aria-expanded`, meta description, `<h1>`; `robots.txt`, `sitemap.xml`; decidir si se borra `CONTEXT.md`) y al final los temas nuevos rem, mirai y extract.
 
 Pendientes chicos de tarot (revisados con el usuario solo en parte): orientación a mano de cada cráneo (algunos quedan con el pico hacia arriba), pips con motivos finos, relieve también en las cartas de las tiradas, cartas flotando delante del tapiz.
 
@@ -1215,4 +1215,14 @@ El prisma tiene seis caras fijas, así que no se agregó una séptima: la cara 0
 - Verificado en Chromium sin GPU: las tres reglas, los cinco dados, cambio de documento, 390 px sin ensanchar el viewport. Sin errores de consola. Ajuste: la tabla de los cinco dados usaba otra muestra y daba cifras distintas para el mismo dado.
 
 **Ronda de mejoras terminada** (odysseus, apolo, sherry, bookworm, elixir, forge, lambda, metro, shui, disco y ludus; tarot fue la vara). Sigue el punto 7: logo definitivo, galería y raíz, y los temas nuevos.
+
+## logo · Mazo y Sensu (2026-10-14)
+
+- `shared/components/brand/brand.js`: la marca como código (geometría del artifact de propuestas). 色 en curvas (Shippori Mincho ExtraBold, OFL, crédito en `THIRD_PARTY_NOTICES.md`); el sello es una sola ruta, el cuadro gira al revés que el glifo y con nonzero 色 queda hueco de verdad, así que la marca sirve en un color (`currentColor`) sobre cualquier fondo. Exporta `sensu()`, `mazo()`, `sensuGeometry()` (para Path2D), `SEAL_PATH` y `sealTransform()`.
+- `assets/logo/` (se regeneran con `node assets/logo/build.mjs`): `favicon.svg` (Mazo de cuatro cartas, se invierte con el modo del sistema), `mazo.svg`, `sensu.svg`, `sensu-dark.svg`, `sensu-small.svg` (seis gajos, para 32 px o menos) y `sensu-mono.svg` (`<symbol id="sensu">` en un color: `<svg viewBox="0 0 96 68"><use href="…#sensu"/></svg>`).
+- Favicon en los 12 temas y la galería: se acabó el 404.
+- ludus: la marca de Fin dibuja el Sensu y el sello con `Path2D` desde `brand.js` (ya no depende de que haya Shippori Mincho).
+- Galería: Sensu chico en la cabecera de la barra lateral, sello en el color del texto y separaciones en el del fondo (sirve con los temas claros y oscuros).
+- Verificado en Chrome sin interfaz: marca en claro y oscuro, favicon en los dos modos del sistema, ludus Fin en escritorio, galería con disco y elixir.
+- Pendiente de decidir: el Sensu en un color junto al crédito «iroFactory» del pie de cada tema; el README lo toma en la parte de raíz.
 
