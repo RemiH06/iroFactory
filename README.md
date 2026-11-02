@@ -7,7 +7,7 @@
 ██║██╔══██╗██║   ██║██╔══╝  ██╔══██║██║        ██║   ██║   ██║██╔══██╗  ╚██╔╝  
 ██║██║  ██║╚██████╔╝██║     ██║  ██║╚██████╗   ██║   ╚██████╔╝██║  ██║   ██║   
 ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝  
-       by Hex (@RemiH06)          version 1.0
+       by RemLam (@RemiH06)          version 1.0
 ```
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
