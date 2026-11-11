@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<!--
+mirai_theme · iroFactory · https://github.com/RemiH06/iroFactory
+Copyright (c) 2026 RemLam (@RemiH06) · MIT License (ver LICENSE en el repo).
+Este tema solo compone: los componentes viven en shared/ y conservan su
+propia licencia (ver THIRD_PARTY_NOTICES.md). Mado, la marca de la campaña
+de ejemplo, es inventada.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mirai_theme · Demo</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo/favicon.svg">
+<meta name="description" content="mirai: tema de documentación para campañas y marca. El futuro como lo dibujó Japón en 1970, impreso en un pliego: brief que se exporta, una pieza en cuatro formatos y guía de marca, con una hoja de imposición como navegación.">
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=michroma:400|major-mono-display:400|zen-kaku-gothic-new:400,700|dotgothic16:400|fira-code:400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/core/core.css">
+<link rel="stylesheet" href="../shared/components/doc-prose/doc-prose.css">
+<link rel="stylesheet" href="../shared/components/doc-specimen/doc-specimen.css">
+<link rel="stylesheet" href="../shared/components/token-export/token-export.css">
+<link rel="stylesheet" href="../shared/components/doc-brief/doc-brief.css">
+<link rel="stylesheet" href="../shared/components/format-board/format-board.css">
+<link rel="stylesheet" href="../shared/components/doc-brand/doc-brand.css">
+<link rel="stylesheet" href="mirai.css">
+<link rel="stylesheet" href="../shared/components/mirai/plate.css">
+<link rel="stylesheet" href="../shared/components/mirai/imposition.css">
+</head>
+<body>
+
+<header class="mi-top">
+  <a class="mi-brand" href="#portada" aria-label="mirai · portada">mirai <span lang="ja" aria-hidden="true">未来</span></a>
+  <button class="mi-btn ghost small" type="button" data-theme-toggle aria-label="Cambiar a urushi, el modo oscuro"><span lang="ja">漆</span> apagar la luz</button>
+</header>
+
+<main>
+
+<!-- 00 · Portada -->
+<section class="mi-sec mi-hero" id="portada" data-ink="shu" aria-labelledby="mi-h-portada">
+  <span class="mi-tate" lang="ja" aria-hidden="true"><b>表紙</b> ひょうし</span>
+  <header class="mi-head">
+    <p class="mi-count"><span lang="ja">指示</span> 00/06 <span class="mi-ticks" style="--n:0" aria-hidden="true"></span></p>
+    <p class="mi-instr">Imagina el año 2070. Dibújalo con un círculo.</p>
+  </header>
+  <div class="mi-hero-grid">
+    <div>
+      <p class="mi-kicker">_theme · irofactory</p>
+      <h1 class="mi-title" id="mi-h-portada" data-cells>mirai <span lang="ja">未来</span></h1>
+      <p class="mi-sub">campañas y marca</p>
+      <p class="mi-lede">El futuro como lo dibujó Japón en 1970, impreso en un pliego. Cada recuadro es una sección y cada sección abre con una instrucción, porque un brief también lo es.</p>
+      <div class="mi-actions"><a class="mi-btn" href="#brief">Escribir el brief</a><button class="mi-btn ghost" type="button" id="mi-recompose" hidden>Recomponer el cartel</button></div>
+    </div>
+    <figure class="mi-poster">
+      <div class="mi-frame" id="mi-poster" role="img" aria-label="Cartel de Mado: un círculo bermellón y cápsulas negras sobre papel, con el titular «Enciende una ventana.»">
+        <div class="pc" data-ink="shu"><div class="pc-art" style="--c:5;--r:4"><i class="pl pl-circle ink" style="grid-area:1/1/span 3/span 3;--i:0;--dx:-1;--dy:0"></i><i class="pl pl-cap v" style="grid-area:1/5/span 3/span 1;--w:1;--i:1;--dx:1;--dy:0"></i><i class="pl pl-circle void" style="grid-area:2/4/span 1/span 1;--i:2;--dx:0;--dy:-1"></i><i class="pl pl-circle" style="grid-area:4/1/span 1/span 1;--i:3;--dx:0;--dy:1"></i><i class="pl pl-cap h end" style="grid-area:4/3/span 1/span 3;--w:3;--i:4;--dx:0;--dy:1"></i></div>
+        <div class="pc-text"><p class="pc-title">Enciende una ventana.</p><span class="pc-logo"><svg class="mado" viewBox="0 0 8 8" aria-hidden="true" focusable="false"><rect width="8" height="8" rx="2" fill="var(--logo-mass, currentColor)"/><circle cx="4" cy="4" r="2.25" fill="var(--logo-light, var(--shu))"/></svg></span><p class="pc-ja" lang="ja">窓に、灯りをひとつ。</p></div></div>
+      </div>
+      <figcaption class="mi-ficha"><span>cartel · b2 jis · 515 × 728 mm</span><span id="mi-poster-inks">2 tintas: <span lang="ja">墨 + 朱</span></span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 01 · Brief -->
+<section class="mi-sec" id="brief" data-ink="gunjo" aria-labelledby="mi-h-brief">
+  <span class="mi-tate" lang="ja" aria-hidden="true"><b>指示書</b> しじしょ</span>
+  <header class="mi-head">
+    <p class="mi-count"><span lang="ja">指示</span> 01/06 <span class="mi-ticks" style="--n:1" aria-hidden="true"></span></p>
+    <h2 id="mi-h-brief">Brief <span lang="ja">指示書</span></h2>
+    <p class="mi-instr">Escribe lo que quieres decir en una línea. Tacha la mitad.</p>
+  </header>
+  <p class="mi-note">La campaña de ejemplo es de Mado, una marca inventada de lámparas de cápsula. Lo que escribas aquí cambia el cartel de la portada y las piezas de la siguiente sección. El borrador se guarda en este navegador.</p>
+  <div class="bf" id="mi-brief">
+    <dl class="mi-credits">
+      <dt>Marca</dt><dd>Mado · lámparas de cápsula</dd>
+      <dt>Objetivo</dt><dd>Que quien pase de noche por la calle quiera una ventana encendida.</dd>
+      <dt>Audiencia</dt><dd>Personas que viven en departamentos chicos y trabajan de noche.</dd>
+      <dt>Mensaje</dt><dd>Enciende una ventana.</dd>
+      <dt>Tono</dt><dd>Sí: instrucciones breves, en imperativo, una idea por pieza. No: superlativos, signos de admiración, promesas.</dd>
+      <dt>Formatos</dt><dd>Cartel, post, historia y banner, en tinta shu.</dd>
+      <dt>Éxito</dt><dd>300 visitas al taller en la semana de salida.</dd>
+    </dl>
+    <p class="mi-note">Para llenar el brief, revisarlo y exportarlo hace falta JavaScript.</p>
+  </div>
+</section>
+
+<!-- 02 · Piezas -->
+<section class="mi-sec" id="piezas" data-ink="tsutsuji" aria-labelledby="mi-h-piezas">
+  <span class="mi-tate" lang="ja" aria-hidden="true"><b>制作物</b> せいさくぶつ</span>
+  <header class="mi-head">
+    <p class="mi-count"><span lang="ja">指示</span> 02/06 <span class="mi-ticks" style="--n:2" aria-hidden="true"></span></p>
+    <h2 id="mi-h-piezas">Piezas <span lang="ja">制作物</span></h2>
+    <p class="mi-instr">Di lo mismo en cuatro tamaños. Que no cambie lo que dices.</p>
+  </header>
+  <p class="mi-note">Una sola pieza, recompuesta a la vez en los cuatro formatos de la campaña. Cada uno tiene sus reglas: el cartel apila, el banner va en horizontal y la historia deja libres las franjas de la interfaz. Una pieza lleva sumi y una tinta más, nunca dos.</p>
+  <div id="mi-board">
+    <div class="fb-frames">
+      <figure class="fb-fig" style="--ar:.7074"><div class="fb-frame" style="aspect-ratio:515/728"><div class="pc" data-ink="shu"><div class="pc-art" style="--c:5;--r:4"><i class="pl pl-circle ink" style="grid-area:1/2/span 3/span 3;--i:0;--dx:0;--dy:-1"></i></div><div class="pc-text"><p class="pc-title">Enciende una ventana.</p></div></div></div><figcaption class="fb-spec"><b>Cartel</b><span>515 × 728 mm</span><span>B2 JIS</span></figcaption></figure>
+      <figure class="fb-fig" style="--ar:1"><div class="fb-frame" style="aspect-ratio:1"><div class="pc" data-ink="shu"><div class="pc-art" style="--c:6;--r:4"><i class="pl pl-circle ink" style="grid-area:1/2/span 4/span 4;--i:0;--dx:0;--dy:-1"></i></div><div class="pc-text"><p class="pc-title">Enciende una ventana.</p></div></div></div><figcaption class="fb-spec"><b>Post</b><span>1080 × 1080 px</span><span>1:1</span></figcaption></figure>
+      <figure class="fb-fig" style="--ar:.5625"><div class="fb-frame" style="aspect-ratio:9/16"><div class="pc" data-ink="shu"><div class="pc-art" style="--c:5;--r:4"><i class="pl pl-circle ink" style="grid-area:1/2/span 3/span 3;--i:0;--dx:0;--dy:-1"></i></div><div class="pc-text"><p class="pc-title">Enciende una ventana.</p></div></div></div><figcaption class="fb-spec"><b>Historia</b><span>1080 × 1920 px</span><span>9:16</span></figcaption></figure>
+      <figure class="fb-fig" style="--ar:3.88"><div class="fb-frame" style="aspect-ratio:970/250"><div class="pc" data-ink="shu"><div class="pc-art" style="--c:4;--r:3"><i class="pl pl-circle ink" style="grid-area:1/1/span 3/span 3;--i:0;--dx:1;--dy:0"></i></div><div class="pc-text"><p class="pc-title">Enciende una ventana.</p></div></div></div><figcaption class="fb-spec"><b>Banner</b><span>970 × 250 px</span><span>billboard</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · Marca -->
+<section class="mi-sec" id="marca" data-ink="ukon" aria-labelledby="mi-h-marca">
+  <span class="mi-tate" lang="ja" aria-hidden="true"><b>規定</b> きてい</span>
+  <header class="mi-head">
+    <p class="mi-count"><span lang="ja">指示</span> 03/06 <span class="mi-ticks" style="--n:3" aria-hidden="true"></span></p>
+    <h2 id="mi-h-marca">Marca <span lang="ja">規定</span></h2>
+    <p class="mi-instr">Dibuja una ventana. No la muevas.</p>
+  </header>
+  <div class="mi-grid">
+    <div class="mi-panel wide">
+      <h3 class="mi-label">Logo <span lang="ja">窓</span></h3>
+      <p class="mi-note">Mado quiere decir ventana. El logo es la ventana redonda de una cápsula: un módulo redondeado y un círculo, sobre una retícula de ocho. De día es tinta plana; de noche, la ventana se enciende.</p>
+      <div id="mi-brand"><p class="mi-note">Las láminas de construcción, área de respeto y tamaño mínimo necesitan JavaScript.</p></div>
+    </div>
+    <div class="mi-panel wide">
+      <h3 class="mi-label">Tintas <span lang="ja">色</span></h3>
+      <p class="mi-note">Colores tradicionales con nombre. Los valores son propios, dentro de su matiz: no existe un hexadecimal oficial. Una tinta por pieza o por sección; ukon siempre lleva contorno o masa de sumi, porque sola no se distingue del papel.</p>
+      <div class="mi-inks">
+        <div class="mi-ink" style="--c:var(--shu);--c-on:var(--on-shu)"><ruby lang="ja">朱<rt>しゅ</rt></ruby><p><b>shu</b>bermellón de sello<br><span class="swatch-hex" id="hex-shu"></span></p></div>
+        <div class="mi-ink" style="--c:var(--gunjo);--c-on:var(--on-gunjo)"><ruby lang="ja">群青<rt>ぐんじょう</rt></ruby><p><b>gunjō</b>azul ultramar<br><span class="swatch-hex" id="hex-gunjo"></span></p></div>
+        <div class="mi-ink" style="--c:var(--ukon);--c-on:var(--on-ukon)"><ruby lang="ja">鬱金<rt>うこん</rt></ruby><p><b>ukon</b>amarillo cúrcuma<br><span class="swatch-hex" id="hex-ukon"></span></p></div>
+        <div class="mi-ink" style="--c:var(--tsutsuji);--c-on:var(--on-tsutsuji)"><ruby lang="ja">躑躅<rt>つつじ</rt></ruby><p><b>tsutsuji</b>rosa azalea<br><span class="swatch-hex" id="hex-tsutsuji"></span></p></div>
+      </div>
+      <div class="mi-base" style="margin-top:28px">
+        <div style="--c:var(--bg);--c-on:var(--text)"><ruby lang="ja" class="on-light">胡粉<rt>ごふん</rt></ruby><ruby lang="ja" class="on-dark">漆<rt>うるし</rt></ruby><span>--bg · <span class="on-light">papel</span><span class="on-dark">laca</span><br><span class="swatch-hex" id="hex-bg"></span></span></div>
+        <div style="--c:var(--bg2);--c-on:var(--text)"><span>--bg2</span><span class="swatch-hex" id="hex-bg2"></span></div>
+        <div style="--c:var(--bg3);--c-on:var(--text)"><span>--bg3</span><span class="swatch-hex" id="hex-bg3"></span></div>
+        <div style="--c:var(--text2);--c-on:var(--bg)"><span>--text2</span><span class="swatch-hex" id="hex-text2"></span></div>
+        <div style="--c:var(--text);--c-on:var(--bg)"><ruby lang="ja" class="on-light">墨<rt>すみ</rt></ruby><ruby lang="ja" class="on-dark">胡粉<rt>ごふん</rt></ruby><span>--text · <span class="on-light">tinta</span><span class="on-dark">luz</span><br><span class="swatch-hex" id="hex-text"></span></span></div>
+      </div>
+    </div>
+    <div class="mi-panel">
+      <h3 class="mi-label">Letras</h3>
+      <div id="mi-type"></div>
+    </div>
+    <div class="mi-panel">
+      <h3 class="mi-label">Contraste</h3>
+      <ul class="spec-contrast" id="mi-contrast"></ul>
+    </div>
+    <div class="mi-panel">
+      <h3 class="mi-label">Versión de pantalla</h3>
+      <p class="mi-note">En una matriz de puntos el logo se dibuja con ceros y la ventana con puntos encendidos.</p>
+      <pre class="mi-dots" id="mi-dots" role="img" aria-label="El logo de Mado dibujado con ceros y puntos"></pre>
+    </div>
+    <div class="mi-panel">
+      <h3 class="mi-label">Voz</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Así sí</th><th>Así no</th></tr></thead>
+        <tbody>
+          <tr><td>Enciende una ventana.</td><td>La mejor lámpara del mercado.</td></tr>
+          <tr><td>Apaga todo. Deja una.</td><td>Ilumina tu vida como nunca.</td></tr>
+          <tr><td>Mírala desde la calle.</td><td>Compra ya, últimas piezas.</td></tr>
+        </tbody></table></div>
+    </div>
+    <div class="mi-panel wide">
+      <h3 class="mi-label">Tokens</h3>
+      <div id="mi-tokens"><p class="mi-note">El exportador necesita JavaScript; los valores están en las muestras de arriba.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · Componentes -->
+<section class="mi-sec" id="componentes" data-ink="gunjo" aria-labelledby="mi-h-componentes">
+  <span class="mi-tate" lang="ja" aria-hidden="true"><b>部品</b> ぶひん</span>
+  <header class="mi-head">
+    <p class="mi-count"><span lang="ja">指示</span> 04/06 <span class="mi-ticks" style="--n:4" aria-hidden="true"></span></p>
+    <h2 id="mi-h-componentes">Componentes <span lang="ja">部品</span></h2>
+    <p class="mi-instr">Cuenta las piezas. Quita una.</p>
+  </header>
+  <div class="mi-grid">
+    <div class="mi-panel">
+      <h3 class="mi-label">Avisos</h3>
+      <div class="mi-callout"><p class="mi-callout-t">Nota de imprenta</p><p>Las tintas planas no se mezclan. Si una pieza pide tres colores, son tres piezas.</p></div>
+      <div class="mi-callout ok"><p class="mi-callout-t">Aprobado</p><p>El cartel pasó la prueba de color con shu sobre gofun.</p></div>
+      <div class="mi-callout warn"><p class="mi-callout-t">Pendiente</p><p>Falta la versión del banner para pantalla oscura.</p></div>
+      <div class="mi-callout danger"><p class="mi-callout-t">Rechazado</p><p>El titular traía dos ideas. Se tachó una.</p></div>
+    </div>
+    <div class="mi-panel">
+      <h3 class="mi-label">Insignias</h3>
+      <p class="mi-chips"><span class="mi-badge">borrador</span><span class="mi-badge warn">en revisión</span><span class="mi-badge ok">aprobado</span><span class="mi-badge danger">rechazado</span><span class="mi-badge mass">b2 jis</span><span class="mi-badge" lang="ja">校了</span></p>
+      <h3 class="mi-label" style="margin-top:34px">Botones</h3>
+      <p class="mi-chips"><button class="mi-btn" type="button">Aprobar</button><button class="mi-btn ghost" type="button">Pedir cambios</button><button class="mi-btn ink" type="button">Mandar a imprenta</button></p>
+      <h3 class="mi-label" style="margin-top:34px">Código</h3>
+<pre data-lang="css"><code><span class="cm">/* una pieza: sumi y una tinta */</span>
+<span class="fn">.pieza</span> {
+  <span class="kw">background</span>: <span class="fn">var</span>(<span class="str">--bg</span>);
+  <span class="kw">color</span>: <span class="fn">var</span>(<span class="str">--text</span>);
+  <span class="kw">--ink</span>: <span class="fn">var</span>(<span class="str">--shu</span>);
+}</code></pre>
+    </div>
+    <div class="mi-panel wide">
+      <h3 class="mi-label">Tabla</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Pieza</th><th>Formato</th><th>Medidas</th><th>Dónde</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>Anticipo</td><td>Historia</td><td>1080 × 1920 px</td><td>Red social</td><td><span class="mi-badge ok">aprobado</span></td></tr>
+          <tr><td>Cartel de calle</td><td>Cartel</td><td>515 × 728 mm</td><td>Parabuses del centro</td><td><span class="mi-badge ok">aprobado</span></td></tr>
+          <tr><td>Salida</td><td>Post</td><td>1080 × 1080 px</td><td>Red social</td><td><span class="mi-badge warn">en revisión</span></td></tr>
+          <tr><td>Cabecera del sitio</td><td>Banner</td><td>970 × 250 px</td><td>Sitio</td><td><span class="mi-badge">borrador</span></td></tr>
+        </tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · Manual -->
+<section class="mi-sec" id="manual" data-ink="shu" aria-labelledby="mi-h-manual">
+  <span class="mi-tate" lang="ja" aria-hidden="true"><b>手引き</b> てびき</span>
+  <header class="mi-head">
+    <p class="mi-count"><span lang="ja">指示</span> 05/06 <span class="mi-ticks" style="--n:5" aria-hidden="true"></span></p>
+    <h2 id="mi-h-manual">Manual <span lang="ja">手引き</span></h2>
+    <p class="mi-instr">Lee esta hoja. Dóblala.</p>
+  </header>
+  <div class="doc-layout">
+    <article class="doc">
+      <nav class="doc-crumbs" aria-label="Migas"><ol><li><a href="#portada">mirai</a></li><li><a href="#brief">Brief</a></li><li aria-current="page">Cómo se escribe</li></ol></nav>
+      <h1>Cómo se escribe un brief de una página</h1>
+      <p class="doc-lede">Un brief es una instrucción para alguien que no estuvo en la junta. Si cabe en una hoja, se lee; si no cabe, se interpreta.</p>
+      <h2 id="mi-m-antes">Antes de escribir</h2>
+      <p>Junta tres cosas: qué se ofrece, a quién y qué tiene que pasar después de que alguien vea la pieza. Lo demás (formatos, tinta, fechas) sale de ahí. Si no puedes decir las tres en voz alta, todavía no hay brief: hay una <mark>junta pendiente</mark>.</p>
+      <dl>
+        <dt>Objetivo</dt><dd>Lo que tiene que pasar, en una línea de doce palabras o menos.</dd>
+        <dt>Mensaje</dt><dd>Una sola idea. Si hay dos, son dos campañas.</dd>
+        <dt>Tono</dt><dd>Lo que sí y lo que no, con ejemplos.</dd>
+      </dl>
+      <blockquote><p>Escucha el sonido de la tierra al girar.</p><footer>Yoko Ono, <cite>Earth Piece</cite> (1963), en <cite>Grapefruit</cite></footer></blockquote>
+      <p>Una instrucción así no explica nada y aun así se entiende qué hacer. Ese es el tono de las piezas de Mado.</p>
+      <h2 id="mi-m-hoja">La hoja</h2>
+      <ol>
+        <li>Escribe el objetivo en una línea.</li>
+        <li>Tacha la mitad<sup><a href="#mi-n1" id="mi-r1">1</a></sup>.</li>
+        <li>Elige una tinta. Una.</li>
+        <li>Marca los formatos y la fecha de salida: el calendario se arma solo.</li>
+      </ol>
+      <h3 id="mi-m-plantilla">Plantilla</h3>
+<pre data-lang="markdown"><code># Brief · Marca
+
+## Objetivo
+Una línea, doce palabras o menos.
+
+## Mensaje
+Una sola idea.
+
+## Tono
+Sí: … No: …
+
+## Formatos y salida
+- Cartel · 515 × 728 mm
+- Historia · 1080 × 1920 px</code></pre>
+      <figure>
+<pre aria-label="El pliego con los recuadros de la campaña">┌──────────────────────────────────┐
+│ ┌────┐ ┌────┐ ┌──────┐   ┌───┐   │
+│ │ 00 │ │ 01 │ │  02  │   │05 │   │
+│ └────┘ └────┘ └──────┘   └───┘   │
+│ ┌──────┐ ┌──────────────────┐    │
+│ │  03  │ │        04        │    │
+│ └──────┘ └──────────────────┘    │
+│ ▇▇▇▇▇▇▇▇▇▇▇▇▇ 06 ▇▇▇▇▇▇▇▇▇▇▇▇▇▇  │
+└──────────────────────────────────┘</pre>
+        <figcaption><b>Figura 1.</b> La hoja de imposición: un recuadro por sección, cada uno con la proporción de un formato. La tira de abajo es la de control de color.</figcaption>
+      </figure>
+      <h2 id="mi-m-teclado">Con el teclado</h2>
+      <p>En el pliego, <kbd>←</kbd> y <kbd>→</kbd> pasan de un recuadro a otro, <kbd>Inicio</kbd> y <kbd>Fin</kbd> van a los extremos y <kbd>Esc</kbd> lo cierra cuando está abierto.</p>
+      <h2 id="mi-m-faq">Preguntas</h2>
+      <details><summary>¿Por qué una sola tinta por pieza?</summary><p>Porque la tinta es la que dice de qué pieza se trata. Con dos, ninguna manda. El sumi no cuenta: es la tinta de siempre.</p></details>
+      <details><summary>¿Y si el objetivo no cabe en doce palabras?</summary><p>Entonces son dos objetivos, o uno que todavía no se entiende. El formulario tacha lo que sobra para que se vea qué quedaría.</p></details>
+      <aside class="doc-notes" aria-label="Notas"><ol><li id="mi-n1">La primera versión de un objetivo casi siempre trae el porqué y el cómo pegados. Lo que queda después de tachar es el qué. <a href="#mi-r1" aria-label="Volver al texto">↑</a></li></ol></aside>
+      <nav class="doc-pager" aria-label="Anterior y siguiente"><a class="prev" href="#componentes"><small>Anterior</small>Componentes</a><a class="next" href="#colofon"><small>Siguiente</small>Colofón</a></nav>
+    </article>
+    <aside class="doc-toc" aria-label="En esta página"></aside>
+  </div>
+</section>
+
+<!-- 06 · Colofón -->
+<section class="mi-sec" id="colofon" data-ink="sumi" aria-labelledby="mi-h-colofon">
+  <span class="mi-tate" lang="ja" aria-hidden="true"><b>奥付</b> おくづけ</span>
+  <header class="mi-head">
+    <p class="mi-count"><span lang="ja">指示</span> 06/06 <span class="mi-ticks" style="--n:6" aria-hidden="true"></span></p>
+    <h2 id="mi-h-colofon">Colofón <span lang="ja">奥付</span></h2>
+    <p class="mi-instr">Apaga la luz. Mira qué queda encendido.</p>
+  </header>
+  <div class="mi-bar" role="img" aria-label="Tira de control: gofun, las cuatro tintas y sumi"><i style="--c:var(--bg)"></i><i style="--c:var(--bg3)"></i><i style="--c:var(--shu)"></i><i style="--c:var(--gunjo)"></i><i style="--c:var(--ukon)"></i><i style="--c:var(--tsutsuji)"></i><i style="--c:var(--text2)"></i><i style="--c:var(--text)"></i></div>
+  <dl class="mi-credits">
+    <dt>Tema</dt><dd>mirai_theme · by RemLam · <a href="https://github.com/RemiH06/iroFactory">iroFactory</a> · MIT</dd>
+    <dt>Marca</dt><dd>Mado es una marca inventada para esta página. La campaña, el logo y los textos son de ejemplo.</dd>
+    <dt>Letras</dt><dd>Michroma (Vernon Adams), Major Mono Display (Emre Parlak), Zen Kaku Gothic New (Yoshimichi Ohira), DotGothic16 (Fontworks) y Fira Code, todas con licencia SIL OFL, servidas desde Bunny Fonts.</dd>
+    <dt>Colores</dt><dd>Nombres de los colores tradicionales de Japón (<span lang="ja">日本の伝統色</span>); los valores son propios.</dd>
+    <dt>Código</dt><dd><a href="https://animejs.com">anime.js</a> (MIT) en los usos incorrectos del logo. El hilo, el pliego y las piezas son diseño propio, en canvas 2D y CSS.</dd>
+  </dl>
+  <div class="mi-lights"><button class="mi-btn" type="button" data-theme-toggle aria-label="Cambiar a urushi, el modo oscuro"><span lang="ja">漆</span> apagar la luz</button></div>
+</section>
+
+</main>
+<footer class="mi-footer">mirai_theme · iroFactory · 2026</footer>
+
+<nav class="mi-sheet" id="mi-sheet" aria-label="Secciones">
+  <p class="mi-sheet-title"><span lang="ja">面付け</span> · pliego</p>
+  <ol class="mi-sheet-list">
+    <li class="up" data-ink="shu" style="--x:7;--y:7;--w:15;--ar:515/728;--i:0"><a href="#portada"><span class="fr circle" aria-hidden="true"></span><span class="n">00</span><span class="t">Portada</span><span class="f">cartel · b2</span></a></li>
+    <li class="up" data-ink="gunjo" style="--x:29;--y:7;--w:15;--ar:210/297;--i:1"><a href="#brief"><span class="fr half" aria-hidden="true"></span><span class="n">01</span><span class="t">Brief</span><span class="f">hoja · a4</span></a></li>
+    <li class="up" data-ink="tsutsuji" style="--x:51;--y:7;--w:21;--ar:1;--i:2"><a href="#piezas"><span class="fr quarter" aria-hidden="true"></span><span class="n">02</span><span class="t">Piezas</span><span class="f">post · 1:1</span></a></li>
+    <li data-ink="ukon" style="--x:7;--y:38;--w:22;--ar:91/55;--i:4"><a href="#marca"><span class="fr dot" aria-hidden="true"></span><span class="n">03</span><span class="t">Marca</span><span class="f">tarjeta · 91 × 55</span></a></li>
+    <li data-ink="gunjo" style="--x:36;--y:38;--w:57;--ar:970/250;--i:5"><a href="#componentes"><span class="fr pill" aria-hidden="true"></span><span class="n">04</span><span class="t">Componentes</span><span class="f">banner · 970 × 250</span></a></li>
+    <li class="up" data-ink="shu" style="--x:79;--y:7;--w:14;--ar:9/16;--i:3"><a href="#manual"><span class="fr cap" aria-hidden="true"></span><span class="n">05</span><span class="t">Manual</span><span class="f">historia · 9:16</span></a></li>
+    <li class="bar" data-ink="sumi" style="--x:7;--y:60;--w:86;--ar:86/6;--i:6"><a href="#colofon"><span class="n">06</span><span class="t">Colofón</span><span class="f">tira de control</span></a></li>
+  </ol>
+  <p class="mi-sheet-slug" aria-hidden="true"></p>
+  <button type="button" class="mi-sheet-open" aria-expanded="false" hidden>Pliego</button>
+</nav>
+
+<script type="importmap">{ "imports": { "animejs": "../shared/vendor/anime/anime.esm.min.js" } }</script>
+<script type="module">
+import { mount as kit, campaign, setCampaign, onCampaign, dotLogo } from '../shared/components/mirai/kit.js';
+import { mount as imposition } from '../shared/components/mirai/imposition.js';
+import { mount as redThread } from '../shared/components/mirai/red-thread.js';
+import { pieceHTML } from '../shared/components/mirai/plate.js';
+import { mount as docBrief, words } from '../shared/components/doc-brief/doc-brief.js';
+import { mount as formatBoard } from '../shared/components/format-board/format-board.js';
+import { mount as docBrand } from '../shared/components/doc-brand/doc-brand.js';
+import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
+import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
+import { mount as tokenExport } from '../shared/components/token-export/token-export.js';
+import { BRAND, BRIEF, FORMATS, FORMS, INKS, logo } from '../assets/data/mirai/campaign.js';
+
+kit(); imposition(); docProse();
+redThread();
+
+const inkOf = id => INKS.find(i => i.id === id) || INKS[0];
+const inkOptions = INKS.map(i => [i.id, `${i.kanji} ${i.id}`, { style: `--c:var(--${i.id});--c-on:var(--on-${i.id})` }]);
+
+// ── portada: el cartel es la pieza de la campaña ──
+const poster = document.getElementById('mi-poster'), posterInks = document.getElementById('mi-poster-inks'), recompose = document.getElementById('mi-recompose');
+const paintPoster = () => {
+  poster.innerHTML = pieceHTML(FORMATS[0], campaign);
+  poster.setAttribute('aria-label', `Cartel de ${BRAND.name}: formas en sumi y ${campaign.tinta} sobre papel, con el titular «${campaign.titular}»`);
+  posterInks.innerHTML = `2 tintas: <span lang="ja">墨 + ${inkOf(campaign.tinta).kanji}</span>`;
+};
+recompose.hidden = false;
+recompose.addEventListener('click', () => setCampaign({ seed: campaign.seed + 1 }));
+
+// ── brief ──
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const day = s => { const d = new Date(s + 'T12:00'); return Number.isNaN(d.getTime()) ? null : d; };
+const brief = docBrief({
+  el: '#mi-brief', name: `Brief · ${BRAND.name}`, storage: 'mirai-brief',
+  value: { ...BRIEF, salida: iso(new Date(Date.now() + 21 * 864e5)) },
+  fields: [
+    { id: 'marca', label: 'Marca', type: 'text', max: 60 },
+    { id: 'salida', label: 'Fecha de salida', type: 'date' },
+    { id: 'objetivo', label: 'Objetivo', type: 'area', wide: true, words: 12, hint: 'Lo que tiene que pasar, en una línea.' },
+    { id: 'audiencia', label: 'Audiencia', type: 'area', wide: true },
+    { id: 'mensaje', label: 'Mensaje único', type: 'text', wide: true, max: 60, hint: 'Es el titular de todas las piezas.' },
+    { id: 'si', label: 'Tono · sí', type: 'area' },
+    { id: 'no', label: 'Tono · no', type: 'area' },
+    { id: 'entregables', label: 'Formatos', type: 'multi', options: FORMATS.map(f => [f.id, f.name]) },
+    { id: 'tinta', label: 'Tinta de la campaña', type: 'choice', options: inkOptions },
+    { id: 'exito', label: 'Criterio de éxito', type: 'text', wide: true, max: 90 },
+  ],
+  checks: [
+    v => ({ ok: words(v.objetivo).length > 0 && words(v.objetivo).length <= 12, text: 'El objetivo cabe en una línea de 12 palabras.' }),
+    v => ({ ok: v.mensaje.trim().length > 0 && v.mensaje.trim().length <= 40, text: 'El mensaje cabe en un titular de 40 caracteres.' }),
+    v => ({ ok: !!(v.si.trim() && v.no.trim()), text: 'El tono dice lo que sí y lo que no.' }),
+    v => ({ ok: v.entregables.length > 0, text: 'Hay al menos un formato.' }),
+    v => ({ ok: !!day(v.salida) && v.salida >= iso(new Date()), text: 'La fecha de salida no ha pasado.' }),
+    v => ({ ok: /\d/.test(v.exito), text: 'El criterio de éxito trae un número.' }),
+  ],
+  tables: v => {
+    const d0 = day(v.salida);
+    const rows = !d0 ? [] : FORMATS.filter(f => v.entregables.includes(f.id)).map(f => ({ f, d: new Date(d0.getTime() + f.day * 864e5) })).sort((a, b) => a.d - b.d)
+      .map(({ f, d }) => [d.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' }), f.name, f.where, f.size]);
+    return [{ title: 'Calendario de salida', head: ['Fecha', 'Pieza', 'Dónde', 'Medidas'], rows }];
+  },
+  onChange: v => setCampaign({ titular: v.mensaje, tinta: v.tinta, formatos: v.entregables }, 'brief'),
+});
+
+// ── piezas: la misma en cuatro formatos ──
+const board = formatBoard({
+  el: '#mi-board', name: `Piezas · ${BRAND.name}`, formats: FORMATS,
+  controls: [
+    { id: 'titular', label: 'Titular', type: 'text', max: 60 },
+    { id: 'forma', label: 'Forma', type: 'choice', options: FORMS },
+    { id: 'tinta', label: 'Tinta', type: 'choice', options: inkOptions },
+    { id: 'seed', label: 'Recomponer', type: 'button' },
+  ],
+  value: () => campaign,
+  onChange: (id, val) => {
+    if (id === 'seed') return setCampaign({ seed: campaign.seed + 1 });
+    setCampaign({ [id]: val }, 'board');
+    if (id === 'titular') brief.set({ mensaje: val }); if (id === 'tinta') brief.set({ tinta: val });
+  },
+  render: pieceHTML,
+  describe: (f, s) => `${f.name} de ${BRAND.name}: «${s.titular}» en sumi y ${s.tinta}`,
+  spec: (f, s) => [`2 tintas: sumi + ${s.tinta}`, f.safe[0] ? `libres ${f.safe[0]} % arriba y abajo` : 'margen 7 %'],
+  specHead: ['Tintas', 'Zona segura'],
+  active: s => s.formatos,
+});
+onCampaign(() => { paintPoster(); board.update(); });
+paintPoster();
+
+// ── marca ──
+document.getElementById('mi-dots').innerHTML = dotLogo(15);
+const brandOpts = {
+  el: '#mi-brand', logo, modules: 8, clear: 2, min: 16,
+  construction: [['circle', 4, 4, 2.25], ['circle', 2, 2, 2], ['line', 4, -.9, 4, 8.9], ['line', -.9, 4, 8.9, 4]],
+  dims: [[0, 9.1, 8, 9.1, '8x'], [9.1, 0, 9.1, 8, '8x'], [4, 4, 6.25, 4, '2.25x']],
+  wrong: [
+    { label: 'Estirado', fix: 'Proporción 1:1', style: 'transform:scaleX(1.5)' },
+    { label: 'Girado', fix: 'Siempre derecho', style: 'transform:rotate(18deg)' },
+    { label: 'Ventana movida', fix: 'La ventana va al centro', svg: logo({ dx: 1.1, dy: -.9 }) },
+    { label: 'Otra tinta', fix: 'Solo las cuatro tintas', style: 'filter:hue-rotate(115deg)' },
+    { label: 'Con sombra', fix: 'Tinta plana, sin efectos', style: 'filter:drop-shadow(5px 7px 4px var(--text2))' },
+    { label: 'Recortado', fix: 'Entero, con su área de respeto', style: 'transform:scale(2.3) translate(18%,14%)' },
+  ],
+};
+// los usos incorrectos tiemblan y se rompen con anime.js; si no carga, se corrigen con un clic
+import('../shared/components/mirai/shatter.js').then(m => { const sh = m.shatter({ hits: 4 }); docBrand({ ...brandOpts, enhance: sh.arm, onWrong: sh.hit }); }, () => docBrand(brandOpts));
+
+docSpecimen({
+  type: { el: '#mi-type', fonts: [
+    { name: 'mirai 2070', family: 'var(--title)', size: 38, use: 'Michroma · títulos' },
+    { name: 'pieza 02/04 · 515 × 728', family: 'var(--label)', size: 18, use: 'Major Mono Display · etiquetas y cifras' },
+    { name: 'Enciende una ventana. 窓に、灯りをひとつ。', family: 'var(--read)', size: 18, use: 'Zen Kaku Gothic New · texto, latín y japonés' },
+    { name: '未来 · 面付け · 指示書', family: "'DotGothic16', sans-serif", size: 22, use: 'DotGothic16 · japonés de pantalla, en urushi' }] },
+  contrast: { el: '#mi-contrast', pairs: [['--text', '--bg', 'Texto'], ['--text2', '--bg', 'Texto secundario'], ['--shu-ink', '--bg', 'Shu como texto'], ['--gunjo-ink', '--bg', 'Gunjo como texto'], ['--ukon-ink', '--bg', 'Ukon como texto'], ['--tsutsuji-ink', '--bg', 'Tsutsuji como texto'], ['--on-shu', '--shu', 'Sobre shu'], ['--on-gunjo', '--gunjo', 'Sobre gunjo'], ['--on-ukon', '--ukon', 'Sobre ukon'], ['--on-tsutsuji', '--tsutsuji', 'Sobre tsutsuji']] },
+});
+tokenExport({ el: document.getElementById('mi-tokens'), name: 'mirai', altClass: 'dark', groups: [
+  ['Papel y tinta', 'color', ['--bg', '--bg2', '--bg3', '--text', '--text2', '--border']],
+  ['Tintas planas', 'color', ['--shu', '--gunjo', '--ukon', '--tsutsuji']],
+  ['Tintas de texto', 'color', ['--shu-ink', '--gunjo-ink', '--ukon-ink', '--tsutsuji-ink']],
+  ['Sobre tinta', 'color', ['--on-shu', '--on-gunjo', '--on-ukon', '--on-tsutsuji']],
+  ['Tipografía', 'font', ['--title', '--label', '--read', '--mono']]] });
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+/* doc-brief: estilos base con los tokens comunes; cada tema lo viste.
+   El host (`el`) reparte el formulario y la revisión en dos columnas. */
+.bf { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 40px 48px; align-items: start; }
+.bf-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 24px; }
+.bf-field { border: 0; min-width: 0; display: grid; gap: 6px; align-content: start; }
+.bf-field.wide { grid-column: 1 / -1; }
+.bf-field > label, .bf-field > legend { font: 14px var(--label, var(--mono)); color: var(--text); padding: 0; }
+.bf-field > legend { margin-bottom: 6px; }
+.bf-field small { font-size: 13px; color: var(--text2); line-height: 1.4; }
+.bf-field :is(input[type="text"], input[type="date"], textarea) { width: 100%; min-height: 44px; padding: 9px 12px; font: inherit; font-size: 16px; line-height: 1.5; color: var(--text); background: var(--bg); border: 1.5px solid var(--text); border-radius: var(--radius-sm, 6px); resize: vertical; color-scheme: light dark; }
+.bf-opts { display: flex; flex-wrap: wrap; }
+.bf-opts label { position: relative; display: inline-flex; margin: 0 -1.5px -1.5px 0; }
+.bf-opts input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.bf-opts span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; font-size: 14px; color: var(--text); background: var(--bg); border: 1.5px solid var(--text); }
+.bf-opts input:checked + span { background: var(--c, var(--text)); color: var(--c-on, var(--bg)); }
+.bf-opts input:focus-visible + span { outline: 2px solid var(--ink-text, var(--accent)); outline-offset: 3px; position: relative; z-index: 1; }
+.bf-count { font: 12px/1.6 var(--mono, monospace); color: var(--text2); }
+.bf-over { color: var(--danger); }
+.bf-cut { display: block; font: inherit; font-size: 14px; color: var(--text); margin: 4px 0 8px; }
+.bf-cut s { color: var(--text2); text-decoration-color: var(--danger); text-decoration-thickness: 2px; }
+
+.bf-side { min-width: 0; }
+.bf-h { display: flex; justify-content: space-between; gap: 12px; font: 400 14px var(--label, var(--mono)); padding-bottom: 8px; border-bottom: 1.5px solid var(--text); margin: 0 0 4px; }
+.bf-tables .bf-h { margin-top: 28px; }
+.bf-score { color: var(--text2); }
+.bf-checks { list-style: none; margin: 0; padding: 0; }
+.bf-checks li { display: grid; grid-template-columns: 5.5ch minmax(0, 1fr); gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.45; }
+.bf-checks b { font: 400 13px var(--label, var(--mono)); }
+.bf-checks .ok b { color: var(--ok); } .bf-checks .miss b { color: var(--danger); }
+.bf-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.bf-btn { min-height: 44px; padding: 0 16px; font: 13px var(--label, inherit); color: var(--bg); background: var(--text); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; }
+.bf-btn.quiet, .bf-btn.small { background: var(--bg); color: var(--text); }
+.bf-btn.small { min-height: 32px; padding: 0 12px; font-size: 12px; }
+.bf-status { min-height: 1.6em; margin-top: 10px; font: 12px var(--mono, monospace); color: var(--text2); }
+@media (max-width: 900px) { .bf { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .bf-form { grid-template-columns: minmax(0, 1fr); } }
+@media print { .bf-actions, .bf-status, .bf-count button { display: none; } }

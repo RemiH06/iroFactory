@@ -16,7 +16,7 @@
 
 ### General Description
 
-A personal collection of 12 self-contained HTML design themes for project documentation. Each theme ships as a single file with its own animated background, color system, typography, and semantic tokens. Intended as documentation skins for personal projects spanning algorithms, data science, creative writing, travel, music, embedded systems, and more.
+A personal collection of 13 self-contained HTML design themes for project documentation. Each theme ships as a single file with its own animated background, color system, typography, and semantic tokens. Intended as documentation skins for personal projects spanning algorithms, data science, creative writing, travel, music, embedded systems, and more.
 
 ```diff
 - These themes are for personal documentation use, not installable UI libraries.
@@ -39,6 +39,7 @@ A personal collection of 12 self-contained HTML design themes for project docume
 | ➣ | **odysseus** | IM Fell English + Fira Code | A physical map on a wooden desk, tilted at a random angle each load. Compass with trembling needle, inkwell, and quill placed at random positions. Semantic tokens (route, must, wonder, fey, visited, unvisited) map journey annotations. For travel logs and geographic documentation. |
 | 〰 | **shui** | Recursive (CASL 1) | Water in two zones. Pelagic mode shows Caribbean turquoise with a single wide sunbeam and rising bubbles. Abyssal mode is nearly black with bioluminescent particles rising in violet, rose, cyan, and green. For database schemas and data pipeline documentation. |
 | ⚙ | **forge** | Azeret Mono | Industrial theme in two states: active foundry with lava descending from both sides and sparks rising from the floor; or cold workshop with electric arc flashes and three oscilloscope traces in green, crimson, and red. For firmware documentation and robotics project logs. |
+| ◐ | **mirai** | Michroma + Zen Kaku Gothic New | The future as Japan drew it in 1970, printed on a press sheet: paper, ink and four named flat inks (shu, gunjō, ukon, tsutsuji) that light up as a dot matrix in the dark mode. An imposition sheet is the navigation and a red thread unravels each section's instruction. Ships a campaign brief that exports to Markdown, one piece recomposed live in four formats and a brand guide. For campaigns and brand work. |
 
 ## Repository Structure
 

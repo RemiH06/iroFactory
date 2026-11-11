@@ -1,0 +1,81 @@
+/* mirai · la hoja de imposición. Tres vistas del mismo <nav>:
+   · teléfono: una tira de recuadros abajo;
+   · escritorio: un pliego chico en el riel derecho;
+   · abierta (.is-open): el pliego completo, con la forma de cada sección.
+   Cada recuadro se coloca en unidades del ancho del pliego (cqw). */
+.mi-sheet { position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--bg); border-top: 1.5px solid var(--text); }
+.mi-sheet-title, .mi-sheet-slug { display: none; font: 12px var(--mono); color: var(--text2); }
+.mi-sheet-title [lang="ja"] { font-weight: 700; color: var(--text); }
+.mi-sheet-list { list-style: none; flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; }
+.mi-sheet-list li { height: 36px; aspect-ratio: var(--ar); min-width: 26px; max-width: 46px; }
+.mi-sheet-list a { position: relative; display: grid; place-items: center; width: 100%; height: 100%; font: 400 12px var(--label); color: var(--text); text-decoration: none; background: var(--bg); border: 1.5px solid var(--text); }
+.mi-sheet-list .is-current a { background: var(--ink); color: var(--on-ink); }
+.mi-sheet-list .t, .mi-sheet-list .f { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mi-sheet-list .fr { display: none; }
+/* la tira de control lleva las cuatro tintas */
+.mi-sheet-list .bar a { background: linear-gradient(90deg, var(--shu) 0 25%, var(--gunjo) 0 50%, var(--ukon) 0 75%, var(--tsutsuji) 0); color: transparent; }
+.mi-sheet-list .bar.is-current a { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--text); }
+.mi-sheet-open { flex: none; min-height: 40px; padding: 0 14px; font: 400 13px var(--label); color: var(--bg); background: var(--text); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; }
+
+/* ── escritorio: el pliego en el riel ── */
+@media (min-width: 1040px) {
+  .mi-sheet { left: auto; right: 20px; bottom: 20px; width: 196px; display: grid; gap: 8px; padding: 0; background: none; border: 0; }
+  .mi-sheet-title, .mi-sheet-slug { display: block; }
+  .mi-sheet-slug { min-height: 2.9em; line-height: 1.45; }
+  .mi-sheet-list { position: relative; display: block; aspect-ratio: 4 / 3; container-type: inline-size; background: var(--bg); border: 1.5px solid var(--text); }
+  .mi-sheet-list li { position: absolute; left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); width: calc(var(--w) * 1cqw); height: auto; min-width: 0; max-width: none; }
+  .mi-sheet-list a { border-width: 1px; font-size: 12px; }
+  .mi-sheet-list a::after { content: ''; position: absolute; inset: -5px; } /* más zona para el clic */
+  .mi-sheet-list .bar a::after { inset: -7px -5px; }
+  /* cruces de registro del pliego */
+  .mi-sheet-list::before, .mi-sheet-list::after { content: ''; position: absolute; top: 50%; width: 3cqw; height: 3cqw; margin-top: -1.5cqw; border-radius: 50%; border: 1px solid var(--text2); background: linear-gradient(var(--text2) 0 0) center / 100% 1px no-repeat, linear-gradient(var(--text2) 0 0) center / 1px 100% no-repeat; }
+  .mi-sheet-list::before { left: 1.4cqw; } .mi-sheet-list::after { right: 1.4cqw; }
+  .mi-sheet-open { justify-self: start; min-height: 36px; }
+}
+
+/* ── el pliego abierto ── */
+.mi-sheet.is-open { inset: 0; width: auto; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; align-items: start; justify-items: center; gap: 14px; padding: 18px 20px; overflow: auto; background: var(--bg); border: 0; }
+.is-open .mi-sheet-title, .is-open .mi-sheet-slug { display: block; font-size: 13px; }
+.is-open .mi-sheet-open { position: fixed; top: 12px; right: 16px; z-index: 1; }
+.is-open .mi-sheet-list { width: 100%; max-width: 420px; display: grid; gap: 10px; align-content: start; }
+.is-open .mi-sheet-list li { height: auto; aspect-ratio: auto; max-width: none; }
+.is-open .mi-sheet-list a { display: grid; grid-template-columns: 64px minmax(0, 1fr); grid-template-rows: auto auto; place-items: center start; gap: 0 14px; min-height: 64px; padding: 8px 12px; font-size: 13px; }
+.is-open .mi-sheet-list .t, .is-open .mi-sheet-list .f { position: static; width: auto; height: auto; clip: auto; }
+.is-open .mi-sheet-list .n { grid-row: span 2; justify-self: center; font-size: 18px; }
+.is-open .mi-sheet-list .t { align-self: end; font-size: 15px; }
+.is-open .mi-sheet-list .f { align-self: start; font: 12px var(--mono); opacity: .8; }
+/* en la lista, las tintas de la tira van solo en la celda del número */
+.is-open .mi-sheet-list .bar a { background: var(--bg); color: var(--text); }
+.is-open .mi-sheet-list .bar .n { place-self: stretch; color: transparent; background: linear-gradient(90deg, var(--shu) 0 25%, var(--gunjo) 0 50%, var(--ukon) 0 75%, var(--tsutsuji) 0); }
+.is-open .mi-sheet-list .bar.is-current a { box-shadow: none; outline: 2px solid var(--text); outline-offset: 2px; }
+.is-open .mi-sheet-title { justify-self: start; display: flex; align-items: center; gap: .5em; min-height: 40px; }
+@media (min-width: 1040px) {
+  .mi-sheet.is-open { right: 0; bottom: 0; grid-template-rows: auto auto auto; align-content: center; gap: 20px; }
+  .is-open .mi-sheet-list { display: block; max-width: none; width: min(88vw, 104vh, 1080px); overflow: visible; }
+  .is-open .mi-sheet-list li { aspect-ratio: var(--ar); }
+  .is-open .mi-sheet-list a { display: block; min-height: 0; padding: 0; border-width: 1.5px; }
+  .is-open .mi-sheet-list a::after { inset: 0 0 -3.4em; }
+  .is-open .mi-sheet-list .n { position: absolute; left: .9cqw; top: .6cqw; font-size: max(13px, 1.5cqw); }
+  .is-open .mi-sheet-list .t, .is-open .mi-sheet-list .f { position: absolute; left: 0; white-space: nowrap; color: var(--text); opacity: 1; }
+  .is-open .mi-sheet-list .t { top: calc(100% + 6px); font: 400 13px var(--label); }
+  .is-open .mi-sheet-list .f { top: calc(100% + 26px); }
+  /* la forma de la sección; la fila de arriba va de cabeza, como en un pliego antes de doblarse */
+  .is-open .mi-sheet-list .fr { display: block; position: absolute; inset: 0; }
+  .is-open .mi-sheet-list .up .fr { transform: rotate(180deg); }
+  .is-open .mi-sheet-list .fr::before { content: ''; position: absolute; background: var(--ink); }
+  .is-open .mi-sheet-list .is-current a { background: var(--bg); color: var(--text); box-shadow: 0 0 0 3px var(--bg), 0 0 0 4.5px var(--text); }
+  .is-open .mi-sheet-list .bar a { color: transparent; background: linear-gradient(90deg, var(--shu) 0 25%, var(--gunjo) 0 50%, var(--ukon) 0 75%, var(--tsutsuji) 0); }
+  .is-open .mi-sheet-list .bar .n { background: none; }
+  .is-open .mi-sheet-list .bar.is-current a { outline: 0; box-shadow: 0 0 0 3px var(--bg), 0 0 0 4.5px var(--text); }
+  .is-open .mi-sheet-title { justify-self: center; }
+  .fr.circle::before { width: 60%; aspect-ratio: 1; left: 20%; bottom: 12%; border-radius: 50%; }
+  .fr.cap::before { width: 34%; top: 16%; bottom: 16%; right: 14%; border-radius: 999px; }
+  .fr.quarter::before { width: 62%; aspect-ratio: 1; right: 0; bottom: 0; border-radius: 100% 0 0 0; }
+  .fr.half::before { height: 70%; aspect-ratio: 1 / 2; right: 12%; top: 15%; border-radius: 0 999px 999px 0; }
+  .fr.pill::before { height: 46%; width: 30%; right: 4%; top: 27%; border-radius: 999px; }
+  .fr.dot::before { height: 68%; aspect-ratio: 1; left: 12%; top: 16%; border-radius: 50%; }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 1040px) {
+  .is-open .mi-sheet-list li { animation: sheet-in .28s steps(3) backwards; animation-delay: calc(var(--i) * 50ms); }
+  @keyframes sheet-in { from { opacity: 0; transform: translateY(14px); } }
+}

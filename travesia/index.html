@@ -205,9 +205,9 @@ shared/components/sensu-fan/. Fuente de los hechos: steps.md y el historial de g
       <h2 id="h-sigue">Lo que sigue</h2>
       <ul class="tv-next">
         <li><strong>rem</strong> · gótico, oscuro y vampírico, para creación artística.</li>
-        <li><strong>mirai</strong> · publicidad con temática japonesa: colores saturados, futurista, minimalista y geométrico.</li>
         <li><strong>extract</strong> · fantasía, para un libro.</li>
       </ul>
+      <p>El primero de los nuevos ya está: <a href="../mirai/"><strong>mirai</strong></a>, para campañas y marca, es el futuro como lo dibujó Japón en 1970, impreso en un pliego de imprenta.</p>
       <p>Mientras tanto, los doce siguen en revisión: falta elegir cómo se gana en el tablero de ludus y sus fuentes definitivas, y tarot tiene una lista corta de detalles. La travesía sigue.</p>
     </section>
 
@@ -225,8 +225,10 @@ import { sensu, mazo } from '../shared/components/brand/brand.js';
 import { mount as fan } from '../shared/components/sensu-fan/sensu-fan.js';
 import { loadTitleFonts } from '../shared/components/gallery/stage.js';
 import { mount as thenNow } from '../shared/components/gallery/then-now.js';
-import { THEMES } from '../assets/data/gallery/themes.js';
+import { THEMES as ALL } from '../assets/data/gallery/themes.js';
 import { HISTORY } from '../assets/data/gallery/history.js';
+// la travesía cuenta las doce pieles de mayo: un tema nuevo entra aquí cuando tenga su historia en history.js
+const THEMES = ALL.filter(t => HISTORY[t.id]);
 
 initTheme({ label: alt => (alt ? 'papel' : 'tinta'), aria: alt => `Cambiar a ${alt ? 'papel' : 'tinta'}` });
 document.getElementById('gl-mark').innerHTML = sensu({ mono: true, ink: 'currentColor', title: '' });

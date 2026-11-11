@@ -1,0 +1,230 @@
+/* ── PALETA (skill colorimetría) ──
+   Concepto: el futuro como lo dibujó Japón en 1970, impreso en un pliego.
+   Papel 胡粉 gofun, tinta 墨 sumi y cuatro tintas planas sin degradado:
+   朱 shu, 群青 gunjō, 鬱金 ukon y 躑躅 tsutsuji (compuesto sobre el eje de
+   29°, con tsutsuji como cuarto libre). El alterno es laca 漆 urushi con
+   las mismas tintas encendidas como matriz de puntos: no es un negativo.
+   Valores propios dentro del matiz tradicional. Contraste WCAG medido:
+   sumi sobre gofun 15.5; sobre shu 4.6, ukon 9.9 y tsutsuji 4.7; gofun
+   sobre gunjō 6.0. Las tintas `-ink` son las de texto sobre papel (5.6 a
+   6.0). Ukon contra el papel da 1.6: siempre con contorno o masa de sumi.
+   En urushi las tintas pasan de 6.0 a 12.1. Sin #000 ni #fff puros. */
+body {
+  --bg: #F4F1E9; --bg2: #EAE6DB; --bg3: #DDD8CA; --text: #1B1918; --text2: #55524F; --border: #BFB9AA;
+  --shu: #EB4A20; --gunjo: #3553B8; --ukon: #F5B91A; --tsutsuji: #E24A8F;
+  --shu-ink: #AE2F10; --gunjo-ink: #3553B8; --ukon-ink: #7D5A00; --tsutsuji-ink: #AD2864;
+  --on-shu: #1B1918; --on-gunjo: #F4F1E9; --on-ukon: #1B1918; --on-tsutsuji: #1B1918;
+  --mass: #1B1918; --dot-off: #BFB9AA;
+  --accent: var(--shu-ink); --accent-ink: var(--shu-ink);
+  --ok: var(--gunjo-ink); --warn: var(--ukon-ink); --danger: var(--shu-ink);
+  --ink: var(--shu); --ink-text: var(--shu-ink); --on-ink: var(--on-shu);
+  --title: 'Michroma', 'Zen Kaku Gothic New', sans-serif; --label: 'Major Mono Display', ui-monospace, monospace;
+  --read: 'Zen Kaku Gothic New', system-ui, sans-serif; --sans: var(--read); --jp: 'Zen Kaku Gothic New', sans-serif;
+  --mono: 'Fira Code', ui-monospace, monospace;
+  --radius: 0px; --radius-sm: 0px; --rail: 0px;
+}
+body.dark {
+  --bg: #15110F; --bg2: #1F1917; --bg3: #2B2320; --text: #EEEAE0; --text2: #ACA59B; --border: #4A3E39;
+  --shu: #FF5A30; --gunjo: #7C97FF; --ukon: #FFC83A; --tsutsuji: #FF62A6;
+  --shu-ink: #FF5A30; --gunjo-ink: #7C97FF; --ukon-ink: #FFC83A; --tsutsuji-ink: #FF62A6;
+  --on-shu: #15110F; --on-gunjo: #15110F; --on-ukon: #15110F; --on-tsutsuji: #15110F;
+  --mass: #5A4C46; --dot-off: #3A302C;
+  --jp: 'DotGothic16', 'Zen Kaku Gothic New', sans-serif;
+}
+[data-ink="shu"] { --ink: var(--shu); --ink-text: var(--shu-ink); --on-ink: var(--on-shu); }
+[data-ink="gunjo"] { --ink: var(--gunjo); --ink-text: var(--gunjo-ink); --on-ink: var(--on-gunjo); }
+[data-ink="ukon"] { --ink: var(--ukon); --ink-text: var(--ukon-ink); --on-ink: var(--on-ukon); }
+[data-ink="tsutsuji"] { --ink: var(--tsutsuji); --ink-text: var(--tsutsuji-ink); --on-ink: var(--on-tsutsuji); }
+[data-ink="sumi"] { --ink: var(--text); --ink-text: var(--text); --on-ink: var(--bg); }
+
+html { scroll-padding-top: 76px; }
+body { background: var(--bg); color: var(--text); font-family: var(--read); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+/* todo el japonés va en un solo peso: cada peso de una fuente japonesa pesa cerca de 1 MB */
+[lang="ja"] { font-family: var(--jp); font-weight: 700; }
+body.dark [lang="ja"] { font-weight: 400; }
+a { color: var(--ink-text); text-underline-offset: 3px; }
+::selection { background: var(--ink); color: var(--on-ink); }
+:focus-visible { outline: 2px solid var(--ink-text); outline-offset: 3px; border-radius: 0; }
+rt { font-size: .42em; font-family: var(--jp); letter-spacing: .08em; }
+
+/* Major Mono Display dibuja las mayúsculas con otro trazo: las etiquetas van en minúsculas para que el peso sea parejo */
+:is(.mi-count, .mi-kicker, .mi-sub, .mi-label, .mi-callout-t, th, .mi-credits dt, .doc dt, .doc-toc > p, .mi-sheet-list a, .fb-field > span, .fb-field > legend, .bf-field > label, .bf-field > legend, .bf-h, .bf-checks b, .db-h, .db-range) { text-transform: lowercase; }
+/* su trazo fino se pierde sobre un relleno: botones, insignias y nombres de tinta van en Michroma */
+:is(.mi-btn, .mi-sheet-open, .fb-btn, .bf-btn, .db-reset, .tx-fmt, .tx-modes button, .tx-copy, .tx-dl, .mi-badge:not([lang]), .spec-pill, .mi-ink b) { font-family: 'Michroma', sans-serif; font-size: 12px; font-weight: 400; text-transform: none; }
+/* las opciones llevan kanji: en 700, el mismo peso que el resto del japonés */
+.fb-choice span, .bf-opts span { font-weight: 700; }
+
+/* ── barra ── */
+.mi-top { position: fixed; inset: 0 0 auto 0; z-index: 30; height: 56px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--bg); border-bottom: 1.5px solid transparent; }
+.mi-top.is-scrolled { border-bottom-color: var(--text); }
+.mi-brand { font: 400 15px var(--title); color: var(--text); text-decoration: none; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; }
+.mi-brand [lang="ja"] { font-size: 17px; color: var(--shu-ink); }
+
+/* ── botones: cápsulas planas; el empuje es seco, en dos pasos ── */
+.mi-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 22px; font: 400 14px var(--label); color: var(--bg); background: var(--text); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; text-decoration: none; transition: transform .1s steps(2), box-shadow .1s steps(2); }
+.mi-btn.ghost { background: var(--bg); color: var(--text); }
+.mi-btn.ink { background: var(--ink); color: var(--on-ink); }
+.mi-btn.small { min-height: 36px; padding: 0 16px; }
+.mi-btn:hover, .mi-btn:focus-visible { transform: translate(-2px, -2px); box-shadow: 2px 2px 0 var(--ink); }
+.mi-btn.ink:hover, .mi-btn.ink:focus-visible { box-shadow: 2px 2px 0 var(--text); }
+.mi-btn:active { transform: none; box-shadow: none; }
+.mi-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ── secciones: cada una es un recuadro del pliego, con sus marcas de corte ── */
+main { padding-top: 56px; padding-right: var(--rail); }
+.mi-sec { position: relative; max-width: 1120px; margin: 0 auto; padding: 104px 56px 120px; }
+.mi-sec::before { content: ''; position: absolute; inset: 40px 14px; pointer-events: none; --m: var(--text2);
+  background:
+    linear-gradient(var(--m) 0 0) left 0 top 18px / 12px 1px, linear-gradient(var(--m) 0 0) left 18px top 0 / 1px 12px,
+    linear-gradient(var(--m) 0 0) right 0 top 18px / 12px 1px, linear-gradient(var(--m) 0 0) right 18px top 0 / 1px 12px,
+    linear-gradient(var(--m) 0 0) left 0 bottom 18px / 12px 1px, linear-gradient(var(--m) 0 0) left 18px bottom 0 / 1px 12px,
+    linear-gradient(var(--m) 0 0) right 0 bottom 18px / 12px 1px, linear-gradient(var(--m) 0 0) right 18px bottom 0 / 1px 12px;
+  background-repeat: no-repeat; }
+/* etiqueta vertical al margen, como el lomo de una carpeta */
+.mi-tate { position: absolute; top: 108px; right: 22px; writing-mode: vertical-rl; font-weight: 700; font-size: 14px; letter-spacing: .3em; color: var(--text2); }
+.mi-tate b { color: var(--ink-text); font-weight: 700; }
+
+/* ── cabecera: número, título y la instrucción ── */
+.mi-head { position: relative; display: grid; gap: 12px; margin-bottom: 64px; padding-bottom: 40px; }
+.mi-count { display: flex; align-items: center; gap: 14px; font: 400 13px var(--label); color: var(--text); }
+.mi-count [lang="ja"] { font-weight: 700; font-size: 14px; }
+.mi-ticks { width: 80px; height: 8px; background: linear-gradient(90deg, var(--text) 0 calc(var(--n) * 12px), var(--ink) 0 calc(var(--n) * 12px + 12px), var(--border) 0); -webkit-mask: repeating-linear-gradient(90deg, red 0 8px, transparent 8px 12px); mask: repeating-linear-gradient(90deg, red 0 8px, transparent 8px 12px); }
+.mi-head h2, .mi-title { font-family: var(--title); font-weight: 400; line-height: 1; }
+.mi-head h2 { font-size: clamp(32px, 5vw, 62px); display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; }
+.mi-head h2 [lang="ja"] { font-size: .5em; font-weight: 700; color: var(--ink-text); }
+.mi-instr { position: relative; z-index: 1; max-width: 34ch; margin-top: 10px; font-size: clamp(19px, 2.1vw, 25px); font-weight: 700; line-height: 1.5; }
+/* el hilo: el lienzo y la caja de estado los pone red-thread.js */
+.mi-thread { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.mi-state { position: absolute; left: 0; bottom: 0; font: 12px var(--mono); color: var(--text2); white-space: nowrap; }
+.mi-instr .ch { opacity: 0; }
+.mi-instr .ch.on { opacity: 1; }
+
+/* ── portada ── */
+/* la portada cabe en la primera pantalla: cabecera compacta y botones a la vista */
+.mi-hero { padding-top: 72px; } .mi-hero .mi-tate { top: 76px; }
+.mi-hero .mi-head { margin-bottom: 30px; }
+.mi-hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 56px; align-items: start; }
+.mi-kicker { font: 400 14px var(--label); color: var(--text); margin-bottom: 14px; }
+.mi-title { font-size: clamp(56px, 9.6vw, 134px); letter-spacing: -.03em; margin-left: -.05em; display: flex; align-items: flex-start; gap: .16em; }
+.mi-title [lang="ja"] { writing-mode: vertical-rl; font-size: .3em; font-weight: 700; letter-spacing: .12em; color: var(--shu-ink); margin-top: .22em; }
+.mi-title .cell { display: inline-block; animation: cell-in .4s steps(4) backwards; animation-delay: calc(var(--i) * 70ms + 120ms); }
+@keyframes cell-in { from { opacity: 0; transform: translateY(.5em); } 25% { opacity: 1; } }
+.mi-sub { margin-top: 26px; font: 400 14px var(--label); }
+.mi-lede { margin-top: 14px; max-width: 46ch; color: var(--text2); }
+.mi-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.mi-poster { justify-self: end; width: min(100%, 360px); }
+.mi-frame { position: relative; container-type: size; border: 1.5px solid var(--text); background: var(--bg); }
+.mi-poster .mi-frame { aspect-ratio: 515 / 728; }
+.mi-ficha { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 14px; margin-top: 10px; font: 12px var(--mono); color: var(--text2); }
+
+/* ── rejilla de paneles: fichas de imprenta, con filete arriba ── */
+.mi-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 44px 28px; }
+.mi-panel { grid-column: span 6; min-width: 0; border-top: 1.5px solid var(--text); padding-top: 14px; }
+.mi-panel.wide { grid-column: 1 / -1; }
+.mi-panel.third { grid-column: span 4; }
+.mi-label { display: flex; align-items: center; gap: 10px; font: 400 14px var(--label); margin-bottom: 18px; }
+.mi-label::before { content: ''; width: 10px; height: 10px; background: var(--ink); flex: none; }
+.mi-label [lang="ja"] { font-weight: 700; color: var(--text2); }
+.mi-note { color: var(--text2); font-size: 15px; max-width: 62ch; margin-bottom: 16px; }
+
+/* ── tintas: cada token con su kanji y su lectura ── */
+.mi-inks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.mi-ink { position: relative; min-height: 250px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; color: var(--c-on); background: var(--c); }
+.mi-ink ruby { font-size: clamp(40px, 5.4vw, 68px); font-weight: 700; line-height: 1.25; }
+.mi-ink p { font-size: 14px; line-height: 1.45; }
+.mi-ink b { display: block; font-size: 14px; margin-bottom: 2px; }
+.mi-ink .swatch-hex, .mi-base .swatch-hex { font: 12px var(--mono); color: inherit !important; }
+.mi-base { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1.5px solid var(--text); }
+.mi-base > div { padding: 14px; min-height: 112px; display: flex; flex-direction: column; justify-content: space-between; font-size: 13px; line-height: 1.4; background: var(--c); color: var(--c-on); }
+.mi-base ruby { font-size: 24px; font-weight: 700; }
+/* urushi: la tinta es una franja de puntos encendidos; el texto va sobre la laca */
+body.dark .mi-ink { background: var(--bg2); color: var(--text); padding-top: 76px; }
+body.dark .mi-ink::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 56px; background: radial-gradient(circle closest-side, var(--c) 0 60%, transparent 66%) 0 0 / 8px 8px; }
+body.dark .mi-ink ruby { color: var(--c); }
+/* lo que solo se dice en un modo (el papel es gofun de día y urushi de noche) */
+.on-dark, body.dark .on-light { display: none; }
+body.dark .on-dark { display: revert; }
+
+/* ── avisos, insignias, tabla y código ── */
+.mi-callout { border-top: 1.5px solid var(--text); padding: 12px 0 14px; display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 4px 12px; --k: var(--text); }
+.mi-callout::before { content: ''; width: 12px; height: 12px; margin-top: 6px; background: var(--k); grid-row: span 2; }
+.mi-callout.ok { --k: var(--gunjo); } .mi-callout.warn { --k: var(--ukon); box-shadow: none; } .mi-callout.danger { --k: var(--shu); }
+.mi-callout.warn::before { outline: 1.5px solid var(--text); outline-offset: -1.5px; }
+.mi-callout-t { font: 400 14px var(--label); }
+.mi-callout p:last-child { color: var(--text2); font-size: 15px; }
+.mi-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.mi-badge { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; font: 400 13px var(--label); border: 1.5px solid var(--text); color: var(--text); background: var(--bg); }
+.mi-badge.ok { background: var(--gunjo); color: var(--on-gunjo); } .mi-badge.warn { background: var(--ukon); color: var(--on-ukon); }
+.mi-badge.danger { background: var(--shu); color: var(--on-shu); } .mi-badge.mass { background: var(--text); color: var(--bg); }
+.mi-badge[lang="ja"] { font-family: var(--jp); font-weight: 700; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th { text-align: left; font: 400 13px var(--label); padding: 8px 12px 8px 0; border-bottom: 1.5px solid var(--text); white-space: nowrap; }
+td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+pre { background: var(--bg2); border-top: 1.5px solid var(--text); padding: 14px 16px; overflow-x: auto; font: 13px/1.65 var(--mono); color: var(--text); }
+code { font-family: var(--mono); font-size: .9em; }
+pre code { font-size: inherit; }
+.cm { color: var(--text2); } .kw { color: var(--gunjo-ink); } .str { color: var(--shu-ink); } .num { color: var(--tsutsuji-ink); } .fn { color: var(--ukon-ink); }
+
+/* ── la base de documentación, con la piel del tema ── */
+.doc { --doc-accent: var(--ink-text); --doc-line: var(--border); --doc-surface: var(--bg2); --doc-head: var(--title); --doc-radius: 0px; }
+.doc h1, .doc h2, .doc h3 { font-weight: 400; }
+.doc h1 { font-size: clamp(26px, 3.4vw, 40px); line-height: 1.15; }
+.doc h2 { border-bottom: 1.5px solid var(--text); font-size: clamp(19px, 2.2vw, 24px); }
+.doc h3 { font-size: 16px; }
+.doc dt { font: 400 14px var(--label); color: var(--text); }
+.doc blockquote { border-left: 0; border-top: 1.5px solid var(--text); padding: 18px 0 6px; font-size: 22px; }
+.doc sup, .doc sup a { font-size: 12px; line-height: 0; }
+.doc-toc { font-size: 14px; }
+.doc-toc > p { font: 400 13px var(--label); margin-bottom: 8px; }
+/* el nivel se lee en el texto; el color va en el cuadro de al lado, no en letra fina */
+.spec-chip, .spec-pill { border-radius: 0; }
+.spec-pill:is(.ok, .warn, .danger) { color: var(--text); border-color: var(--text); }
+.spec-pill.warn { background: var(--ukon); color: var(--on-ukon); } .spec-pill.danger { background: var(--shu); color: var(--on-shu); }
+.bf-checks :is(.ok, .miss) b { color: var(--text); }
+.bf-checks b::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 6px; background: var(--gunjo); }
+.bf-checks .miss b::before { background: var(--shu); }
+.bf-checks li { grid-template-columns: 8.5ch minmax(0, 1fr); }
+.tx-out { border: 1.5px solid var(--text); }
+
+/* ── guía de marca: los usos incorrectos, en pedazos (shatter.js) ── */
+.db-size-logo, .db-bad, .db-good { --logo-light: var(--shu); }
+.db-bad { display: grid; }
+.sh-q { grid-area: 1 / 1; display: block; }
+/* la decoración no baja a un inline-block: cada letra lleva su tachado */
+.sh-l { display: inline-block; text-decoration: line-through; text-decoration-color: var(--danger); text-decoration-thickness: 2px; }
+.sh-count { margin-left: 8px; font: 12px var(--mono); color: var(--text2); }
+.db-wrong:hover .db-stage, .db-wrong:focus-visible .db-stage { box-shadow: 3px 3px 0 var(--ink); }
+.db-wrong.is-fixed .db-stage { box-shadow: none; background: var(--bg2); }
+
+/* ── colofón ── */
+.mi-bar { display: flex; height: 26px; border: 1.5px solid var(--text); margin-bottom: 40px; }
+.mi-bar i { flex: 1; background: var(--c); }
+.mi-credits { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 24px; font-size: 15px; }
+.mi-credits dt { font: 400 14px var(--label); }
+.mi-credits dd { color: var(--text2); }
+.mi-lights { margin-top: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+/* el logo en matriz: cada celda mide 1em, traiga el glifo que traiga */
+.mi-dots { font: 15px/1 var(--mono); color: var(--dot-off); white-space: pre; overflow: hidden; border: 0; }
+.mi-dots :is(i, b, u) { display: inline-block; width: 1em; text-align: center; font-style: normal; font-weight: 400; text-decoration: none; }
+.mi-dots b { color: var(--text); } .mi-dots i { color: var(--shu-ink); }
+.mi-footer { padding: 28px 56px 110px; font: 12px var(--mono); color: var(--text2); max-width: 1120px; margin: 0 auto; }
+
+/* ── el riel de la derecha existe cuando cabe el pliego ── */
+@media (min-width: 1040px) { body { --rail: 236px; } }
+@media (max-width: 900px) {
+  .mi-sec { padding: 84px 22px 96px; } .mi-sec::before { inset: 30px 4px; } .mi-tate { display: none; }
+  .mi-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 44px; } .mi-poster { justify-self: start; width: min(100%, 340px); }
+  .mi-panel, .mi-panel.third { grid-column: 1 / -1; }
+  .mi-inks { grid-template-columns: repeat(2, minmax(0, 1fr)); } .mi-ink { min-height: 200px; }
+  .mi-base { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mi-top { padding: 0 16px; } .mi-footer { padding: 20px 22px 120px; }
+  .mi-head { margin-bottom: 44px; padding-bottom: 64px; }
+  .mi-state { white-space: normal; line-height: 1.5; }
+}
+@media (prefers-reduced-motion: reduce) { .mi-btn { transition: none; } .mi-title .cell { animation: none; } }
+@media print {
+  .mi-top, .mi-sheet, .mi-thread, .mi-state { display: none !important; }
+  main { padding: 0; } body.print-brief main > :not(#brief) { display: none; }
+  .mi-instr .ch { opacity: 1; }
+}

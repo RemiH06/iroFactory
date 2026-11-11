@@ -1,0 +1,37 @@
+/* doc-brand: estilos base con los tokens comunes; cada tema lo viste. */
+.db-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 28px; }
+.db-card { min-width: 0; display: grid; align-content: start; gap: 12px; }
+.db-h { font: 400 14px var(--label, var(--mono)); padding-bottom: 8px; border-bottom: 1.5px solid var(--text); margin: 0; }
+.db-h-wrong { margin-top: 48px; }
+.db-svg { display: block; width: 100%; height: auto; color: var(--text); overflow: visible; }
+.db-grid path { fill: none; stroke: var(--text2); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: .55; }
+.db-aux :is(circle, path) { fill: none; stroke: var(--ink-text, var(--accent)); stroke-width: 1.5; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
+.db-dim path { fill: none; stroke: var(--text); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.db-dim text { font: .62px var(--mono, monospace); fill: var(--text); }
+.db-hatch { stroke: var(--ink-text, var(--accent)); stroke-width: .09; }
+.db-clear { fill: none; stroke: var(--ink-text, var(--accent)); stroke-width: 1.5; stroke-dasharray: 5 4; vector-effect: non-scaling-stroke; }
+.db-plain :is(.db-grid, .db-aux, .db-dim) { display: none; }
+.db-check { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; cursor: pointer; }
+.db-check input { width: 18px; height: 18px; accent-color: var(--text); }
+.db-note { font-size: 14px; color: var(--text2); line-height: 1.5; }
+.db-size { height: 168px; display: grid; place-items: center; border: 1.5px solid var(--text); overflow: hidden; }
+.db-size-logo { display: block; color: var(--text); } .db-size-logo svg { display: block; width: 100%; height: auto; }
+.db-range { font: 13px var(--label, var(--mono)); }
+.db-card input[type="range"] { width: 100%; min-height: 32px; accent-color: var(--text); }
+.db-read { font: 12px var(--mono, monospace); color: var(--text2); }
+.db-read.miss { color: var(--danger); }
+
+.db-wrongs { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
+.db-wrong { width: 100%; display: grid; gap: 10px; padding: 0; font: inherit; text-align: left; color: var(--text); background: none; border: 0; cursor: pointer; }
+.db-stage { position: relative; display: grid; place-items: center; aspect-ratio: 1; border: 1.5px solid var(--text); overflow: hidden; }
+.db-bad, .db-good { grid-area: 1 / 1; width: 46%; } .db-bad svg, .db-good svg { display: block; width: 100%; height: auto; }
+.db-good, .db-label-good { display: none; }
+.db-label { font-size: 14px; line-height: 1.4; }
+.db-label-bad { text-decoration: line-through; text-decoration-color: var(--danger); text-decoration-thickness: 2px; }
+.is-fixed .db-bad, .is-fixed .db-label-bad { display: none; }
+.is-fixed .db-good { display: block; } .is-fixed .db-label-good { display: inline; }
+.is-fixed { cursor: default; }
+.db-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 24px; }
+.db-reset { min-height: 44px; padding: 0 16px; font: 13px var(--label, inherit); color: var(--text); background: var(--bg); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; }
+.db-status { font: 12px var(--mono, monospace); color: var(--text2); }
+@media (max-width: 900px) { .db-cards { grid-template-columns: minmax(0, 1fr); } .db-svg { max-width: 360px; } }

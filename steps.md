@@ -4,6 +4,8 @@ Reglas duras y referencia por tema: ver `CLAUDE.md`. Las secciones de abajo son 
 
 ## Siguiente sesión
 
+✅ **mirai** (hecho 2026-11-11, ver «mirai · campañas y marca» al final; falta la revisión del usuario). De los temas nuevos sigue rem.
+
 Ronda de mejoras a los primeros temas con lo aprendido en ludus y tarot (decidido 2026-10-13). Una sesión por tema, en este orden. Lo que el usuario valora y debe guiar cada tema: un juguete y una plantilla de documentación ligados al propósito del tema (como las tiradas de tarot), navegación que sea un objeto del concepto, y tarot como vara de calidad (relieve, materiales, Worker con caché para lo pesado, verificación en Chrome real, móvil y reduced motion).
 
 1. ✅ **odysseus** (hecho 2026-10-13, ver «odysseus · ronda de mejoras» al final; falta la revisión del usuario): bitácora que calcula de verdad (distancia haversine entre puertos, rumbo, hora local de cada puerto) como plantilla de documentación de lugares; trazar una ruta tocando puertos en orden (itinerario con tramos, totales y línea de tiempo); transición del mapa plano a un globo 3D al alejarse y de vuelta al acercarse a un puerto; gestos del mapa en móvil tan cómodos como los de metro.
@@ -19,7 +21,7 @@ Ronda de mejoras a los primeros temas con lo aprendido en ludus y tarot (decidid
 6e. ✅ **shui** (hecho 2026-10-14, ver «shui · ronda de mejoras» al final; falta la revisión del usuario): linaje de datos y esquemas de tablas.
 6f. ✅ **disco** (hecho 2026-10-14, ver «disco · ronda de mejoras» al final; falta la revisión del usuario): exportar tokens y banco de pruebas.
 6g. ✅ **ludus** (hecho 2026-10-14, ver «ludus · ronda de mejoras» al final; falta la revisión del usuario): documento de diseño del tablero con simulador de balance. Las fuentes de ludus siguen pendientes: las está investigando el usuario.
-7. ✅ Logo definitivo (hecho 2026-10-14, ver «logo · Mazo y Sensu» al final; falta la revisión del usuario). 8. ✅ Galería con el Sensu como navegación y página de la travesía (hecho 2026-10-14, ver «galería · el abanico y la travesía» al final; falta la revisión del usuario). Sigue en raíz: `robots.txt` y `sitemap.xml`; al final los temas nuevos rem, mirai y extract (el abanico ya cuenta los gajos de los datos). `CONTEXT.md` se fundió aquí y en CLAUDE.md (2026-10-14) y se borró.
+7. ✅ Logo definitivo (hecho 2026-10-14, ver «logo · Mazo y Sensu» al final; falta la revisión del usuario). 8. ✅ Galería con el Sensu como navegación y página de la travesía (hecho 2026-10-14, ver «galería · el abanico y la travesía» al final; falta la revisión del usuario). Sigue en raíz: `robots.txt` y `sitemap.xml`; al final los temas nuevos rem, extract y balam (mirai ya está) (el abanico ya cuenta los gajos de los datos). `CONTEXT.md` se fundió aquí y en CLAUDE.md (2026-10-14) y se borró.
 
 Pendientes chicos de tarot (revisados con el usuario solo en parte): orientación a mano de cada cráneo (algunos quedan con el pico hacia arriba), pips con motivos finos, relieve también en las cartas de las tiradas, cartas flotando delante del tapiz.
 
@@ -917,9 +919,12 @@ Reglas: se quitan «autocontenido en un solo archivo» y «el modo claro de ludu
 
 - **disco:** simulación de fluidos estilo WebGL Fluid Simulation de Pavel Dobryakov (https://paveldogreat.github.io/WebGL-Fluid-Simulation/), con fluidos de muchos colores y brillantes como el original (bloom y sunrays incluidos). shui ya tiene un Splash Cursor derivado de la misma base.
 - **Temas nuevos, fuera de la lista activa hasta terminar el rework de los 12** (decidido 2026-10-07):
-  - **rem** (13.º): gótico, oscuro, vampírico; para creación artística o similar. Fuentes candidatas: Showcard (https://www.ffonts.net/Showcard.font) y la etiqueta gothic de ffonts (https://www.ffonts.net/tag/0/gothic/page-2/). Revisar licencias.
-  - **mirai** (14.º): publicidad y afines; temática japonesa, colores saturados, futurista minimalista, geométrico y ligero. Fuentes: Sophia (https://www.ffonts.net/Sophia.font, revisar licencia) y Major Mono Display (Bunny).
-  - **extract** (15.º): fantasía, para el libro de 100%.
+  - **rem** (13.º): gótico, oscuro, vampírico; para creación artística o similar. Fuentes candidatas: Showcard (https://www.ffonts.net/Showcard.font) y la etiqueta gothic de ffonts (https://www.ffonts.net/tag/0/gothic/page-2/). Revisar licencias. Gimmick: murciélagos (2026-10-22).
+  - ✅ **mirai** (14.º; hecho 2026-11-11, ver «mirai · campañas y marca» al final): diseño y marketing (publicidad y afines); se parece a disco en algunas cosas pero el enfoque es otro. Temática japonesa, colores saturados, futurista minimalista, geométrico y ligero. Fuentes: Sophia (https://www.ffonts.net/Sophia.font, revisar licencia) y Major Mono Display (Bunny). Recursos de referencia: la página principal de https://playground.nothing.tech/ (2026-10-22).
+  - **extract** (15.º): fantasía, exclusivo para la saga *100*; los demás libros siguen en bookworm (2026-10-22).
+  - **balam** (16.º, agregado 2026-10-22): prehispánico, para fiestas y eventos; lucha libre y el jaguar. Comparte cosas con tarot y rem, pero el enfoque es distinto al de tarot y al de disco.
+  - **Propósitos** (aprobados 2026-11-10; de ahí salen el juguete y la plantilla de cada uno): rem, portafolio de obra artística (galería, ficha de pieza, proceso); mirai, campañas y marca (brief, piezas por formato, guía de marca); extract, el mundo de *100* (mapa, personajes, cronología, glosario); balam, eventos (cartel, programa, boletos, cartelera de lucha). Al construir cada uno, su fila pasa a la tabla de propósitos del CLAUDE.md. Orden (cambiado 2026-11-10): mirai primero, porque está más aterrizado; luego rem. Lo de mirai está en «mirai · campañas y marca» al final.
+  - **Audio** (2026-10-22): la idea es que todos los temas lo tengan, pero se pospone hasta QuetzBeats. Antecedente: `sherry/sound.js` (sintetizado, sin archivos, apagado por defecto).
 - **sherry: cerrado.** Se queda así: antiestético pero bien hecho, neon-punk. Fuera de pendientes la fuente y la paleta CMYK.
 - **apolo:** pétalos al 50% de su tamaño (base 3–7 × 2–4.5 px; la tormenta los multiplica por 5).
 - **Radiografías:** crédito a Sandra Raredon por las fotos y a la exhibición «X-Ray Vision: Fish Inside Out» del Smithsonian, en elixir, shui y THIRD_PARTY_NOTICES.
@@ -1265,3 +1270,47 @@ Decidido con el usuario: el relato va en página propia pero con los temas a la 
 - **Travesía** (`travesia/`): doce capítulos (para qué, mayo, la auditoría, apolo, prouns, atomizar, tarot como vara, métodos, inspiraciones, doce pieles, la marca, lo que sigue). En «Doce pieles», cada tema con su commit de nacimiento, cómo era y cómo es, y una cortina de antes y ahora (`then-now.js`, un range de verdad) con vista en vivo; el abanico fijo lleva a cada uno y sigue la lectura. En teléfono el abanico entra en el texto, abriendo hacia arriba. Menciona que el código se escribió en conversación con Claude: el usuario decide si se queda.
 - **Capturas** (`assets/img/travesia/`, 1200 × 750 WebP, 1.4 MB): antes, los `*_theme_demo.html` del commit 2d1e64a (la galería vieja, armando el sitio de mayo en una carpeta temporal); ahora, Chrome con GPU a 1440 × 900.
 - Verificado en Chrome: 1440, 1280, 1024, 390 × 844 y 844 × 390 sin scroll horizontal, papel y tinta, teclado en el abanico, vista en vivo, plegado, reduced motion, sin JS. Contraste de los tokens: texto 14.9:1, secundario 6.5 y 7.3, acento 5.4 y 6.6. Sin errores de consola.
+
+
+## mirai · campañas y marca (2026-11-11)
+
+Tema 13 de la colección (el 14.º de la lista: se adelantó a rem). Hecho; falta la revisión del usuario.
+
+**Concepto.** El futuro como lo dibujó Japón en 1970 (Expo 70, Metabolismo, carteles de Kamekura, pictogramas de Tokio 64), impreso en un pliego de imprenta: geometría, módulos de cápsula y mucho vacío (間). La voz es la de las instrucciones de Fluxus (Yoko Ono, *Grapefruit*): cada sección abre con una instrucción numerada, porque un brief también es una instrucción. Disco documenta el producto; mirai, cómo se comunica.
+
+**Letras.** Sophia quedó fuera: en ffonts es «free for personal use» y la regla 1 no lo admite. Títulos en Michroma (Bunny; de la familia de Eurostile, la letra del futuro de esos años), que también lleva botones, insignias y nombres de tinta. Major Mono Display para etiquetas y cifras, siempre en minúsculas: sus mayúsculas son otro dibujo, mezclan gruesas y finas y en texto corrido se ven rotas; y su trazo fino se pierde sobre un relleno, por eso los botones no la usan. Zen Kaku Gothic New para el texto (400 y 700) y DotGothic16 para el japonés en urushi. Fira Code para código.
+
+**Paleta** (valores propios dentro del matiz tradicional; no hay hex oficial de los 伝統色). Contraste WCAG medido:
+- *gofun* (claro): `--bg #F4F1E9`, `--bg2 #EAE6DB`, `--bg3 #DDD8CA`; *sumi* `--text #1B1918` (15.5:1), `--text2 #55524F` (6.9).
+- Tintas planas: *shu* `#EB4A20` (sumi encima 4.6; contra el papel 3.4), *gunjō* `#3553B8` (gofun encima 6.0), *ukon* `#F5B91A` (sumi encima 9.9; contra el papel 1.6: siempre con contorno o masa de sumi), *tsutsuji* `#E24A8F` (sumi encima 4.7; contra el papel 3.3).
+- Tintas como texto sobre papel: *shu* `#AE2F10` (5.8), *gunjō* `#3553B8` (6.0), *ukon* `#7D5A00` (5.6, ya es ocre: solo donde haga falta), *tsutsuji* `#AD2864` (5.7).
+- *urushi* (oscuro): `--bg #15110F`, `--bg2 #1F1917`, `--bg3 #2B2320`; `--text #EEEAE0` (15.6), `--text2 #ACA59B` (7.7); tintas encendidas *shu* `#FF5A30` (6.0), *gunjō* `#7C97FF` (6.9), *ukon* `#FFC83A` (12.1), *tsutsuji* `#FF62A6` (6.8).
+- Armonía: compuesto sobre el eje de 29° (*shu* 12°, *ukon* 44°, *gunjō* 226°) con *tsutsuji* 333° como cuarto libre. Una tinta por sección o por pieza; los estados usan las mismas tintas (pasa *gunjō*, pendiente *ukon*, falla *shu*) y el nivel siempre va escrito.
+
+**Qué tiene.**
+- **Siete secciones**, cada una un recuadro con marcas de corte, su número (`指示 03/06` y una tira de avance), su nombre en japonés al margen en vertical y su instrucción: Portada 表紙, Brief 指示書, Piezas 制作物, Marca 規定, Componentes 部品, Manual 手引き y Colofón 奥付. La última instrucción («Apaga la luz. Mira qué queda encendido.») es el botón de modo.
+- **Hilo rojo** (`red-thread.js`): una cadena de Verlet en canvas 2D, sin gravedad, enredada sobre la instrucción. Un cabo está fijo; el otro se jala con el cursor o al subir la cabecera por la pantalla, y la instrucción aparece celda por celda. Caja de estado en mono (ENREDADO, TENSANDO, TENDIDO; desenredo y distancia entre cabos). Siempre es *shu*, la única excepción a la tinta por sección; en urushi se dibuja con puntos sobre una rejilla de 5 px. Al tenderse, el bucle se detiene.
+- **Hoja de imposición** (`imposition.js`): un `<nav>` con siete enlaces, cada recuadro con la proporción de un formato (cartel B2, hoja A4, post 1:1, tarjeta 91 × 55, banner 970 × 250, historia 9:16 y la tira de control con las cuatro tintas), colocados en unidades del ancho del pliego (`cqw`). Tres vistas: tira inferior en teléfono, pliego chico en el riel derecho desde 1040 px y pliego completo al abrirlo, con la forma de cada sección (la fila de arriba va de cabeza, como en un pliego antes de doblarse) y cruces de registro. Flechas, Inicio, Fin y Esc; el resto de la página queda inerte mientras está abierto.
+- **Campaña de ejemplo: Mado 窓**, marca inventada de lámparas de cápsula («Enciende una ventana.» · 「窓に、灯りをひとつ。」). Datos en `assets/data/mirai/campaign.js`. Un solo estado (`campaign` en `kit.js`) alimenta el brief, el cartel de la portada y el tablero.
+- **Brief** (`doc-brief`, compartido): objetivo con límite de 12 palabras que tacha lo que sobra, audiencia, mensaje único, tono (sí y no), formatos, tinta, fecha y criterio de éxito; revisión en vivo de seis reglas, calendario de salida calculado desde la fecha (historia 7 días antes, cartel 3 días antes, post y banner el día), borrador en `localStorage`, copiar o descargar en Markdown e imprimir como hoja.
+- **Piezas** (`format-board`, compartido, y `plate.js`): la misma pieza a la vez en cartel, post, historia y banner. Un compositor con semilla reparte formas sobre una retícula de módulos con tres vocabularios (círculo, cápsula con ojo, cuarto y medio círculo): masas de sumi, una sola tinta en la tesela más grande, una hueca y celdas vacías. Cada formato tiene sus reglas por container queries (el cartel apila, el banner va en horizontal, la historia deja libre el 13 % arriba y abajo). Ficha técnica al pie, zonas seguras y especificaciones en Markdown. Los formatos que el brief no pide salen atenuados.
+- **Marca** (`doc-brand`, compartido): construcción del logo sobre su retícula de 8, área de respeto de 2 módulos, tamaño mínimo con deslizador (16 px), tintas con kanji y furigana, letras, contraste en vivo, el logo en matriz de ceros y puntos, tabla de voz y exportación de tokens. **Lo que no** (`shatter.js`, anime.js): seis usos incorrectos que tiemblan con el cursor, se parten en cuatro al primer clic y al cuarto salen volando y dejan el uso correcto; con teclado, Enter; con reduced motion, un clic corrige.
+- **Urushi**: las mismas formas y muestras de tinta, encendidas como matriz de puntos (`radial-gradient` de borde duro recortado por la forma); el japonés pasa a DotGothic16.
+
+**Decisiones.**
+- Las piezas son CSS, no SVG ni canvas: sin JS se ven igual (cada formato trae una pieza fija con una sola forma) y el reacomodo por formato es de container queries. El costo es que no se exportan como imagen; si se quiere, haría falta un segundo dibujante en SVG.
+- anime.js solo en «lo que no». El resto del movimiento es CSS con `steps()` (formas que entran por módulos, título por celdas, recuadros del pliego) y el canvas del hilo. Sin Three.js ni shaders: las tintas planas no los piden.
+- Sin franjas laterales de color, sin sombras difusas, sin degradados visibles. Radio 0 en recuadros y cápsula completa en botones.
+- La portada cabe en la primera pantalla (botones a la vista en 1366 × 768 y 1024 × 768).
+- Galería: mirai no tiene proun todavía; su gajo y su ventana llevan una lámina del compositor (`assets/img/mirai/proun_*.webp`, sacada de `_dev/mirai-lamina.html` con `c=9&r=5&seed=7&forma=circulo`). Color del gajo: *shu*, entre ludus y forge. La travesía filtra a los temas con historia en `history.js` (los doce de mayo) y menciona a mirai en «Lo que sigue».
+
+**Fuentes japonesas de Bunny** (hallazgo, ya en CLAUDE.md). Su CSS no trae `unicode-range` en la rebanada `japanese` ni en las numeradas: cada peso usado baja cerca de 1 MB aunque el texto sea latino, y un glifo que falte (la «ō») hace bajar las ~120 rebanadas. La página pasó de 127 archivos y 5.7 MB a 8 y 2.4 MB con dos pesos de Zen Kaku, todo el japonés en 700 y «gunjo» sin macrón donde pinta Zen Kaku (el macrón queda solo en Michroma, que sí lo trae). La galería y la travesía cargan Zen Kaku en tres pesos: falta medirlas.
+
+**Verificado** en Chrome real (headless, `channel: chrome`): 1440 × 900, 1366 × 768, 1024 × 768, 844 × 390, 390 × 844 y 360 × 740, en los dos modos: sin scroll horizontal, consola limpia, sin texto bajo 12 px fuera de las piezas (que son imagen: llevan `role="img"` y su ficha). Brief (tachar, quitar un formato, Markdown, borrador que sobrevive a recargar, volver al ejemplo), tablero (forma, tinta, titular, zonas seguras, especificaciones), usos incorrectos con ratón y con teclado, tamaño mínimo, pliego (flechas, Fin, abrir, Esc, clic). Sin JS: instrucciones completas, pliego como enlaces, brief y piezas fijos. Reduced motion: hilo tendido y texto completo, ninguna animación de CSS corriendo. Impresión del brief: solo esa sección (comprobado con el medio `print` emulado, no en la vista previa). Galería con 13 gajos y travesía con 12 pieles, sin errores.
+
+**Pendiente.**
+- El nombre de la marca de ejemplo: el usuario dudó de «Mado». Cambiarlo es `BRAND` en `campaign.js` y el texto fijo de `mirai/index.html`.
+- Proun definitivo para la galería.
+- No se probó en un teléfono real, ni en Firefox o Safari, ni con lector de pantalla.
+- Sin JS el botón de modo se ve pero no hace nada (igual que en los demás temas).
+- Las pruebas no entran al repo: se corrieron desde una carpeta temporal.

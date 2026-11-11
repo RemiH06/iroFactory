@@ -6,6 +6,7 @@
 // color   · el del gajo en la marca (shared/components/brand/brand.js)
 // title   · la letra de títulos del tema: archivo de assets/fonts o familia de Bunny
 // proun   · collage del tema por modo; `tint` lo pasa a duotono (forge no tiene proun)
+//           (mirai tampoco: lleva una lámina de su compositor de formas, _dev/mirai-lamina.html)
 // env     · fondo y texto del modo por defecto, para la muestra
 // born    · fecha del primer commit del tema
 
@@ -22,6 +23,19 @@ export const THEMES = [
     proun: { light: 'assets/img/ludus/proun_light.webp', dark: 'assets/img/ludus/proun_dark.webp' },
     palette: ['#0CDFC6', '#F08A2A', '#E7F087', '#3FD43A', '#4C74FF', '#C24ACF'],
     env: { bg: '#0D0B10', text: '#F1ECE4' },
+  },
+  {
+    id: 'mirai', color: '#EB4A20', born: '2026-11-11',
+    purpose: 'Campañas y marca',
+    pitch: 'El futuro como lo dibujó Japón en 1970, impreso en un pliego: tintas planas con nombre, módulos de cápsula y mucho vacío. Cada sección abre con una instrucción.',
+    nav: 'Una hoja de imposición: un recuadro por sección con la proporción de un formato de la campaña; se abre el pliego completo.',
+    toy: 'Una pieza que se recompone a la vez en cartel, post, historia y banner, y un hilo rojo que se tiende para revelar cada instrucción.',
+    template: 'Brief de campaña que se revisa solo y se exporta a Markdown, y guía de marca con construcción del logo, área de respeto y usos incorrectos que se rompen.',
+    mode: 'gofun · alterno urushi', fonts: 'Michroma · Major Mono Display · Zen Kaku Gothic New · DotGothic16',
+    title: { family: 'Michroma', bunny: 'michroma:400' },
+    proun: { light: 'assets/img/mirai/proun_light.webp', dark: 'assets/img/mirai/proun_dark.webp' },
+    palette: ['#EB4A20', '#3553B8', '#F5B91A', '#E24A8F', '#1B1918', '#F4F1E9'],
+    env: { bg: '#F4F1E9', text: '#1B1918' },
   },
   {
     id: 'forge', color: '#E86A14', born: '2026-05-14',
