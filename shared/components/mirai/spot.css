@@ -1,0 +1,45 @@
+/* mirai · spot: el animatic. Con JS y movimiento permitido (.is-pinned) la
+   pista mide varias pantallas y el cuadro se queda fijo mientras se recorre;
+   sin eso, el cuadro va en el flujo y se maneja con el deslizador. */
+.sp-stage { --spw: min(100%, calc((100svh - 56px - var(--navh, 0px) - 220px) * 16 / 9)); display: grid; gap: 14px; align-content: center; }
+.is-pinned .sp-track { height: 380vh; }
+.is-pinned .sp-stage { position: sticky; top: 56px; height: calc(100svh - 56px - var(--navh, 0px)); }
+.sp-frame { width: var(--spw); aspect-ratio: 16 / 9; overflow: hidden; }
+.sp-canvas { display: block; width: 100%; height: 100%; }
+/* urushi: la matriz apagada es el fondo; el lienzo solo pinta los puntos encendidos */
+body.dark :is(.sp-frame, .sp-board .mi-frame) { background: radial-gradient(circle closest-side, color-mix(in srgb, var(--dot-off) 62%, var(--bg)) 0 30%, transparent 42%) 0 0 / var(--pitch, 8px) var(--pitch, 8px), var(--bg); }
+/* el texto de cada plano: entra uno mientras sale el otro */
+.sp-lines { display: grid; width: var(--spw); min-height: 3.3em; align-items: start; }
+.sp-line { grid-area: 1 / 1; font: 400 clamp(19px, 2.9vw, 38px)/1.16 var(--title); letter-spacing: -.02em; opacity: 0; translate: 0 .45em; transition: opacity .4s ease-out, translate .8s var(--ease-out); }
+.sp-line.on { opacity: 1; translate: none; transition-delay: .14s; }
+.sp-line [lang="ja"] { display: block; margin-top: .5em; font-size: max(.46em, 13px); letter-spacing: 0; color: var(--ink-text); }
+.sp-hud { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 20px; width: var(--spw); font: 12px var(--mono); color: var(--text2); }
+.sp-tc { color: var(--text); font-variant-numeric: tabular-nums; }
+.sp-bar { display: flex; align-items: center; gap: 14px; width: var(--spw); }
+.sp-range { flex: 1; min-width: 0; min-height: 36px; accent-color: var(--shu-ink); }
+.sp-play { flex: none; min-width: 124px; }
+
+/* storyboard y guion */
+.sp-doc { margin-top: 56px; }
+#mi-spot:not(.is-live) .sp-boards { display: none; }
+.sp-board { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px 16px; }
+.sp-board .mi-frame { aspect-ratio: 16 / 9; overflow: hidden; }
+.sp-board canvas { display: block; width: 100%; height: 100%; }
+.sp-board p { margin-top: 8px; font-size: 13px; line-height: 1.4; color: var(--text2); }
+.sp-board b { display: block; font: 400 12px var(--mono); color: var(--text); }
+/* en teléfono la tabla conserva su ancho y se recorre de lado dentro de su envoltura */
+.sp-script { min-width: 620px; }
+.sp-script td, .sp-script th { transition: background-color .5s var(--ease-out); }
+.sp-script tr[aria-current] td { background: color-mix(in srgb, var(--ink) 16%, transparent); }
+.sp-script button { min-width: 44px; min-height: 32px; padding: 0 10px; font: 12px var(--mono); color: var(--text); background: var(--bg); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; transition: background-color .3s ease-out, color .3s ease-out; }
+.sp-script tr[aria-current] button, .sp-script button:hover { background: var(--text); color: var(--bg); }
+#mi-spot:not(.is-live) .sp-script button { border: 0; padding: 0; min-width: 0; cursor: default; }
+@media (max-width: 900px) {
+  .is-pinned .sp-track { height: 320vh; }
+  .sp-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sp-doc { margin-top: 36px; }
+}
+/* sin cuadro fijo (reduced motion o pantalla baja) el cuadro no depende del alto de la ventana */
+#mi-spot:not(.is-pinned) .sp-stage { --spw: min(100%, 720px); }
+@media (prefers-reduced-motion: reduce) { .sp-line { transition: none; } .sp-play { display: none; } }
+@media print { .sp-stage { display: none; } }

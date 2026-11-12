@@ -7,8 +7,11 @@
 //   compose(semilla, columnas, filas, forma) → [{ x, y, w, h, shape, k }]
 //   artHTML(columnas, filas, { forma, seed }) → HTML del bloque de formas
 //   pieceHTML(formato, { titular, tinta, forma, seed }) → HTML de la pieza
+//   paintPiece(host, formato, estado) → pinta o actualiza la pieza sin repetir la
+//     entrada de las formas cuando solo cambian el texto o la tinta
 // ══════════════════════════════════════════════════════
 import { BRAND, logo } from '../../../assets/data/mirai/campaign.js';
+import { reduceMotion } from '../../core/core.js';
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 // mulberry32: misma semilla, misma pieza
@@ -53,7 +56,18 @@ const tileHTML = (t, i, cols, rows) => {
 // solo el bloque de formas (lo usan la pieza y la lámina de la galería)
 export const artHTML = (c, r, { forma, seed }) => `<div class="pc-art" style="--c:${c};--r:${r}">${compose(seed, c, r, forma).map((t, i) => tileHTML(t, i, c, r)).join('')}</div>`;
 
+const artKey = (fmt, s) => `${fmt.id}:${s.forma}:${s.seed}`;
 export function pieceHTML(fmt, state) {
-  return `<div class="pc" data-ink="${esc(state.tinta)}">${artHTML(fmt.art[0], fmt.art[1], state)}`
+  return `<div class="pc" data-ink="${esc(state.tinta)}" data-key="${artKey(fmt, state)}">${artHTML(fmt.art[0], fmt.art[1], state)}`
     + `<div class="pc-text"><p class="pc-title">${esc(state.titular)}</p><span class="pc-logo">${logo()}</span><p class="pc-ja" lang="ja">${BRAND.claimJa}</p></div></div>`;
+}
+
+// El texto y la tinta cambian en su lugar (la tinta transiciona por CSS); si cambia
+// el arte, las formas que estaban se encogen y entran las nuevas con su resorte.
+export function paintPiece(host, fmt, state) {
+  const pc = host.querySelector(':scope > .pc'), put = () => { host.innerHTML = pieceHTML(fmt, state); };
+  if (pc && pc.dataset.key === artKey(fmt, state)) { pc.dataset.ink = state.tinta; pc.querySelector('.pc-title').textContent = state.titular; return; }
+  const art = pc?.dataset.key && pc.querySelector('.pc-art');
+  if (!art || reduceMotion.matches) return put(); // primera pintura o sin movimiento: directo
+  art.classList.add('is-leaving'); clearTimeout(host._swap); host._swap = setTimeout(put, 260);
 }

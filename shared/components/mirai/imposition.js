@@ -28,7 +28,10 @@ export function mount({ nav = '#mi-sheet', inert = ['main', '.mi-top'] } = {}) {
     e.preventDefault(); links[(to + links.length) % links.length].focus();
   });
 
-  function open(on) {
+  // abrir y cerrar: el recuadro chico se transforma en el pliego (transición de vista; sin ella, cambia de golpe)
+  const calm = matchMedia('(prefers-reduced-motion: reduce)');
+  const open = on => (document.startViewTransition && !calm.matches ? document.startViewTransition(() => flip(on)) : flip(on));
+  function flip(on) {
     root.classList.toggle('is-open', on);
     btn.setAttribute('aria-expanded', String(on)); btn.textContent = on ? 'Cerrar el pliego' : 'Pliego';
     inert.forEach(s => document.querySelectorAll(s).forEach(el => { el.inert = on; }));

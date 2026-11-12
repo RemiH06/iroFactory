@@ -22,8 +22,10 @@ de ejemplo, es inventada.
 <link rel="stylesheet" href="../shared/components/doc-brief/doc-brief.css">
 <link rel="stylesheet" href="../shared/components/format-board/format-board.css">
 <link rel="stylesheet" href="../shared/components/doc-brand/doc-brand.css">
+<link rel="stylesheet" href="../shared/components/doc-motion/doc-motion.css">
 <link rel="stylesheet" href="mirai.css">
 <link rel="stylesheet" href="../shared/components/mirai/plate.css">
+<link rel="stylesheet" href="../shared/components/mirai/spot.css">
 <link rel="stylesheet" href="../shared/components/mirai/imposition.css">
 </head>
 <body>
@@ -39,7 +41,7 @@ de ejemplo, es inventada.
 <section class="mi-sec mi-hero" id="portada" data-ink="shu" aria-labelledby="mi-h-portada">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>表紙</b> ひょうし</span>
   <header class="mi-head">
-    <p class="mi-count"><span lang="ja">指示</span> 00/06 <span class="mi-ticks" style="--n:0" aria-hidden="true"></span></p>
+    <p class="mi-count"><span lang="ja">指示</span> 00/07 <span class="mi-ticks" style="--n:0" aria-hidden="true"></span></p>
     <p class="mi-instr">Imagina el año 2070. Dibújalo con un círculo.</p>
   </header>
   <div class="mi-hero-grid">
@@ -60,11 +62,64 @@ de ejemplo, es inventada.
   </div>
 </section>
 
-<!-- 01 · Brief -->
+<div class="mi-ticker" aria-hidden="true"><p><span>enciende una ventana</span><span lang=ja>窓に、灯りをひとつ。</span><span>mirai 2070</span><span lang=ja>未来</span><span>enciende una ventana</span><span lang=ja>窓に、灯りをひとつ。</span><span>mirai 2070</span><span lang=ja>未来</span><span>enciende una ventana</span><span lang=ja>窓に、灯りをひとつ。</span><span>mirai 2070</span><span lang=ja>未来</span><span>enciende una ventana</span><span lang=ja>窓に、灯りをひとつ。</span><span>mirai 2070</span><span lang=ja>未来</span></p></div>
+
+<!-- 01 · Spot -->
+<section class="mi-sec" id="spot" data-ink="shu" aria-labelledby="mi-h-spot">
+  <span class="mi-tate" lang="ja" aria-hidden="true"><b>映像</b> えいぞう</span>
+  <header class="mi-head">
+    <p class="mi-count"><span lang="ja">指示</span> 01/07 <span class="mi-ticks" style="--n:1" aria-hidden="true"></span></p>
+    <h2 id="mi-h-spot">Spot <span lang="ja">映像</span></h2>
+    <p class="mi-instr">Baja despacio. Deja que se abra sola.</p>
+  </header>
+  <div id="mi-spot">
+    <div class="sp-track">
+      <div class="sp-stage" hidden>
+        <div class="sp-frame mi-frame"><canvas class="sp-canvas" role="img" aria-label="Spot de la campaña"></canvas></div>
+        <div class="sp-lines" aria-hidden="true">
+          <p class="sp-line on">De noche, una calle.</p>
+          <p class="sp-line">Algo se abre.</p>
+          <p class="sp-line">Se enciende.</p>
+          <p class="sp-line">Es una ventana.</p>
+          <p class="sp-line"><span data-titular>Enciende una ventana.</span> <span lang="ja">窓に、灯りをひとつ。</span></p>
+        </div>
+        <div class="sp-hud"><span class="sp-tc">00:00:00</span><span class="sp-shot">plano 1/5</span><span>16:9 · 15 s · 24 cuadros por segundo</span></div>
+        <div class="sp-bar"><button type="button" class="mi-btn small ghost sp-play" aria-pressed="false">Reproducir</button><label class="sr-only" for="sp-range">Posición en el spot</label><input id="sp-range" class="sp-range" type="range" min="0" max="1000" value="0"></div>
+      </div>
+    </div>
+    <div class="mi-grid sp-doc">
+      <div class="mi-panel wide sp-boards">
+        <h3 class="mi-label">Storyboard <span lang="ja">絵コンテ</span></h3>
+        <ol class="sp-board">
+          <li><div class="mi-frame"><canvas data-t="1.6" aria-hidden="true"></canvas></div><p><b>01 · 00:00</b>La lámpara, cerrada.</p></li>
+          <li><div class="mi-frame"><canvas data-t="5.4" aria-hidden="true"></canvas></div><p><b>02 · 00:03</b>Se abre pétalo por pétalo.</p></li>
+          <li><div class="mi-frame"><canvas data-t="8.7" aria-hidden="true"></canvas></div><p><b>03 · 00:07</b>El centro enciende y late.</p></li>
+          <li><div class="mi-frame"><canvas data-t="11.5" aria-hidden="true"></canvas></div><p><b>04 · 00:10</b>La cámara se aleja.</p></li>
+          <li><div class="mi-frame"><canvas data-t="14.6" aria-hidden="true"></canvas></div><p><b>05 · 00:13</b>Queda una ventana.</p></li>
+        </ol>
+      </div>
+      <div class="mi-panel wide">
+        <h3 class="mi-label">Guion técnico</h3>
+        <p class="mi-note">El spot dura quince segundos y no tiene voz. La lámpara de Mado se abre como una flor; cuando la cámara se aleja, esa luz es una ventana entre muchas. El titular y la tinta salen del brief.</p>
+        <div class="table-wrap"><table class="sp-script">
+          <thead><tr><th>Plano</th><th>Tiempo</th><th>Encuadre</th><th>Acción</th><th>Texto</th></tr></thead>
+          <tbody>
+            <tr data-t0="0" data-t1="3"><td><button type="button" aria-label="Ir al plano 1">01</button></td><td>00:00 a 00:03</td><td>General</td><td data-accion>De noche. La lámpara está cerrada, como un botón de flor.</td><td>De noche, una calle.</td></tr>
+            <tr data-t0="3" data-t1="7.5"><td><button type="button" aria-label="Ir al plano 2">02</button></td><td>00:03 a 00:07</td><td>Medio</td><td data-accion>Los pétalos se abren uno tras otro, desde la punta.</td><td>Algo se abre.</td></tr>
+            <tr data-t0="7.5" data-t1="10"><td><button type="button" aria-label="Ir al plano 3">03</button></td><td>00:07 a 00:10</td><td>Detalle</td><td data-accion>El centro se enciende con la tinta de la campaña y late dos veces.</td><td>Se enciende.</td></tr>
+            <tr data-t0="10" data-t1="13"><td><button type="button" aria-label="Ir al plano 4">04</button></td><td>00:10 a 00:13</td><td>General</td><td data-accion>La cámara se aleja: la flor se recoge y es una ventana entre veinte apagadas.</td><td>Es una ventana.</td></tr>
+            <tr data-t0="13" data-t1="15"><td><button type="button" aria-label="Ir al plano 5">05</button></td><td>00:13 a 00:15</td><td>Cierre</td><td data-accion>Las demás ventanas se atenúan. Entra el titular.</td><td>El titular del brief.</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · Brief -->
 <section class="mi-sec" id="brief" data-ink="gunjo" aria-labelledby="mi-h-brief">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>指示書</b> しじしょ</span>
   <header class="mi-head">
-    <p class="mi-count"><span lang="ja">指示</span> 01/06 <span class="mi-ticks" style="--n:1" aria-hidden="true"></span></p>
+    <p class="mi-count"><span lang="ja">指示</span> 02/07 <span class="mi-ticks" style="--n:2" aria-hidden="true"></span></p>
     <h2 id="mi-h-brief">Brief <span lang="ja">指示書</span></h2>
     <p class="mi-instr">Escribe lo que quieres decir en una línea. Tacha la mitad.</p>
   </header>
@@ -83,11 +138,11 @@ de ejemplo, es inventada.
   </div>
 </section>
 
-<!-- 02 · Piezas -->
+<!-- 03 · Piezas -->
 <section class="mi-sec" id="piezas" data-ink="tsutsuji" aria-labelledby="mi-h-piezas">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>制作物</b> せいさくぶつ</span>
   <header class="mi-head">
-    <p class="mi-count"><span lang="ja">指示</span> 02/06 <span class="mi-ticks" style="--n:2" aria-hidden="true"></span></p>
+    <p class="mi-count"><span lang="ja">指示</span> 03/07 <span class="mi-ticks" style="--n:3" aria-hidden="true"></span></p>
     <h2 id="mi-h-piezas">Piezas <span lang="ja">制作物</span></h2>
     <p class="mi-instr">Di lo mismo en cuatro tamaños. Que no cambie lo que dices.</p>
   </header>
@@ -102,11 +157,13 @@ de ejemplo, es inventada.
   </div>
 </section>
 
-<!-- 03 · Marca -->
+<div class="mi-ticker" aria-hidden="true"><p><span>una pieza, cuatro tamaños</span><span lang=ja>制作物</span><span>sumi y una tinta</span><span lang=ja>墨</span><span>una pieza, cuatro tamaños</span><span lang=ja>制作物</span><span>sumi y una tinta</span><span lang=ja>墨</span><span>una pieza, cuatro tamaños</span><span lang=ja>制作物</span><span>sumi y una tinta</span><span lang=ja>墨</span><span>una pieza, cuatro tamaños</span><span lang=ja>制作物</span><span>sumi y una tinta</span><span lang=ja>墨</span></p></div>
+
+<!-- 04 · Marca -->
 <section class="mi-sec" id="marca" data-ink="ukon" aria-labelledby="mi-h-marca">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>規定</b> きてい</span>
   <header class="mi-head">
-    <p class="mi-count"><span lang="ja">指示</span> 03/06 <span class="mi-ticks" style="--n:3" aria-hidden="true"></span></p>
+    <p class="mi-count"><span lang="ja">指示</span> 04/07 <span class="mi-ticks" style="--n:4" aria-hidden="true"></span></p>
     <h2 id="mi-h-marca">Marca <span lang="ja">規定</span></h2>
     <p class="mi-instr">Dibuja una ventana. No la muevas.</p>
   </header>
@@ -115,6 +172,15 @@ de ejemplo, es inventada.
       <h3 class="mi-label">Logo <span lang="ja">窓</span></h3>
       <p class="mi-note">Mado quiere decir ventana. El logo es la ventana redonda de una cápsula: un módulo redondeado y un círculo, sobre una retícula de ocho. De día es tinta plana; de noche, la ventana se enciende.</p>
       <div id="mi-brand"><p class="mi-note">Las láminas de construcción, área de respeto y tamaño mínimo necesitan JavaScript.</p></div>
+    </div>
+    <div class="mi-panel wide">
+      <h3 class="mi-label">Versiones</h3>
+      <ul class="mi-lockups">
+        <li><div class="mi-lockup" role="img" aria-label="Logo horizontal: símbolo y la palabra mado"><svg class="mado" viewBox="0 0 8 8" aria-hidden="true" focusable="false"><rect width="8" height="8" rx="2" fill="var(--logo-mass, currentColor)"/><circle cx="4" cy="4" r="2.25" fill="var(--logo-light, var(--shu))"/></svg><span class="lk-word">mado</span></div><p>Horizontal · la de siempre</p></li>
+        <li><div class="mi-lockup v" role="img" aria-label="Logo vertical: símbolo, la palabra mado y su kanji"><svg class="mado" viewBox="0 0 8 8" aria-hidden="true" focusable="false"><rect width="8" height="8" rx="2" fill="var(--logo-mass, currentColor)"/><circle cx="4" cy="4" r="2.25" fill="var(--logo-light, var(--shu))"/></svg><span class="lk-word">mado</span><span class="lk-ja" lang="ja">窓</span></div><p>Vertical · con su kanji</p></li>
+        <li><div class="mi-lockup inv" role="img" aria-label="Logo invertido, sobre tinta sumi"><svg class="mado" viewBox="0 0 8 8" aria-hidden="true" focusable="false"><rect width="8" height="8" rx="2" fill="var(--logo-mass, currentColor)"/><circle cx="4" cy="4" r="2.25" fill="var(--logo-light, var(--shu))"/></svg><span class="lk-word">mado</span></div><p>Invertida · sobre sumi</p></li>
+        <li><div class="mi-lockup mark" role="img" aria-label="Solo el símbolo"><svg class="mado" viewBox="0 0 8 8" aria-hidden="true" focusable="false"><rect width="8" height="8" rx="2" fill="var(--logo-mass, currentColor)"/><circle cx="4" cy="4" r="2.25" fill="var(--logo-light, var(--shu))"/></svg></div><p>Símbolo · menos de 24 px de alto</p></li>
+      </ul>
     </div>
     <div class="mi-panel wide">
       <h3 class="mi-label">Tintas <span lang="ja">色</span></h3>
@@ -157,17 +223,22 @@ de ejemplo, es inventada.
         </tbody></table></div>
     </div>
     <div class="mi-panel wide">
+      <h3 class="mi-label">Movimiento <span lang="ja">動き</span></h3>
+      <p class="mi-note">Todo lo que se mueve sale rápido, frena y termina exactamente en su módulo. Tres curvas bastan: una para entrar, una para ir y volver y un resorte corto para asentarse. Nada va a saltos ni se queda oscilando.</p>
+      <div id="mi-motion"><p class="mi-note">Las gráficas de las curvas necesitan JavaScript; sus valores están en los tokens.</p></div>
+    </div>
+    <div class="mi-panel wide">
       <h3 class="mi-label">Tokens</h3>
       <div id="mi-tokens"><p class="mi-note">El exportador necesita JavaScript; los valores están en las muestras de arriba.</p></div>
     </div>
   </div>
 </section>
 
-<!-- 04 · Componentes -->
+<!-- 05 · Componentes -->
 <section class="mi-sec" id="componentes" data-ink="gunjo" aria-labelledby="mi-h-componentes">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>部品</b> ぶひん</span>
   <header class="mi-head">
-    <p class="mi-count"><span lang="ja">指示</span> 04/06 <span class="mi-ticks" style="--n:4" aria-hidden="true"></span></p>
+    <p class="mi-count"><span lang="ja">指示</span> 05/07 <span class="mi-ticks" style="--n:5" aria-hidden="true"></span></p>
     <h2 id="mi-h-componentes">Componentes <span lang="ja">部品</span></h2>
     <p class="mi-instr">Cuenta las piezas. Quita una.</p>
   </header>
@@ -206,11 +277,11 @@ de ejemplo, es inventada.
   </div>
 </section>
 
-<!-- 05 · Manual -->
+<!-- 06 · Manual -->
 <section class="mi-sec" id="manual" data-ink="shu" aria-labelledby="mi-h-manual">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>手引き</b> てびき</span>
   <header class="mi-head">
-    <p class="mi-count"><span lang="ja">指示</span> 05/06 <span class="mi-ticks" style="--n:5" aria-hidden="true"></span></p>
+    <p class="mi-count"><span lang="ja">指示</span> 06/07 <span class="mi-ticks" style="--n:6" aria-hidden="true"></span></p>
     <h2 id="mi-h-manual">Manual <span lang="ja">手引き</span></h2>
     <p class="mi-instr">Lee esta hoja. Dóblala.</p>
   </header>
@@ -253,12 +324,12 @@ Sí: … No: …
       <figure>
 <pre aria-label="El pliego con los recuadros de la campaña">┌──────────────────────────────────┐
 │ ┌────┐ ┌────┐ ┌──────┐   ┌───┐   │
-│ │ 00 │ │ 01 │ │  02  │   │05 │   │
+│ │ 00 │ │ 02 │ │  03  │   │06 │   │
 │ └────┘ └────┘ └──────┘   └───┘   │
-│ ┌──────┐ ┌──────────────────┐    │
-│ │  03  │ │        04        │    │
-│ └──────┘ └──────────────────┘    │
-│ ▇▇▇▇▇▇▇▇▇▇▇▇▇ 06 ▇▇▇▇▇▇▇▇▇▇▇▇▇▇  │
+│ ┌─────┐ ┌───────┐ ┌───────────┐  │
+│ │ 04  │ │  01   │ │    05     │  │
+│ └─────┘ └───────┘ └───────────┘  │
+│ ▇▇▇▇▇▇▇▇▇▇▇▇▇ 07 ▇▇▇▇▇▇▇▇▇▇▇▇▇▇  │
 └──────────────────────────────────┘</pre>
         <figcaption><b>Figura 1.</b> La hoja de imposición: un recuadro por sección, cada uno con la proporción de un formato. La tira de abajo es la de control de color.</figcaption>
       </figure>
@@ -274,11 +345,13 @@ Sí: … No: …
   </div>
 </section>
 
-<!-- 06 · Colofón -->
+<div class="mi-ticker" aria-hidden="true"><p><span>apaga la luz</span><span lang=ja>漆</span><span>mira qué queda encendido</span><span lang=ja>灯り</span><span>apaga la luz</span><span lang=ja>漆</span><span>mira qué queda encendido</span><span lang=ja>灯り</span><span>apaga la luz</span><span lang=ja>漆</span><span>mira qué queda encendido</span><span lang=ja>灯り</span><span>apaga la luz</span><span lang=ja>漆</span><span>mira qué queda encendido</span><span lang=ja>灯り</span></p></div>
+
+<!-- 07 · Colofón -->
 <section class="mi-sec" id="colofon" data-ink="sumi" aria-labelledby="mi-h-colofon">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>奥付</b> おくづけ</span>
   <header class="mi-head">
-    <p class="mi-count"><span lang="ja">指示</span> 06/06 <span class="mi-ticks" style="--n:6" aria-hidden="true"></span></p>
+    <p class="mi-count"><span lang="ja">指示</span> 07/07 <span class="mi-ticks" style="--n:7" aria-hidden="true"></span></p>
     <h2 id="mi-h-colofon">Colofón <span lang="ja">奥付</span></h2>
     <p class="mi-instr">Apaga la luz. Mira qué queda encendido.</p>
   </header>
@@ -300,12 +373,13 @@ Sí: … No: …
   <p class="mi-sheet-title"><span lang="ja">面付け</span> · pliego</p>
   <ol class="mi-sheet-list">
     <li class="up" data-ink="shu" style="--x:7;--y:7;--w:15;--ar:515/728;--i:0"><a href="#portada"><span class="fr circle" aria-hidden="true"></span><span class="n">00</span><span class="t">Portada</span><span class="f">cartel · b2</span></a></li>
-    <li class="up" data-ink="gunjo" style="--x:29;--y:7;--w:15;--ar:210/297;--i:1"><a href="#brief"><span class="fr half" aria-hidden="true"></span><span class="n">01</span><span class="t">Brief</span><span class="f">hoja · a4</span></a></li>
-    <li class="up" data-ink="tsutsuji" style="--x:51;--y:7;--w:21;--ar:1;--i:2"><a href="#piezas"><span class="fr quarter" aria-hidden="true"></span><span class="n">02</span><span class="t">Piezas</span><span class="f">post · 1:1</span></a></li>
-    <li data-ink="ukon" style="--x:7;--y:38;--w:22;--ar:91/55;--i:4"><a href="#marca"><span class="fr dot" aria-hidden="true"></span><span class="n">03</span><span class="t">Marca</span><span class="f">tarjeta · 91 × 55</span></a></li>
-    <li data-ink="gunjo" style="--x:36;--y:38;--w:57;--ar:970/250;--i:5"><a href="#componentes"><span class="fr pill" aria-hidden="true"></span><span class="n">04</span><span class="t">Componentes</span><span class="f">banner · 970 × 250</span></a></li>
-    <li class="up" data-ink="shu" style="--x:79;--y:7;--w:14;--ar:9/16;--i:3"><a href="#manual"><span class="fr cap" aria-hidden="true"></span><span class="n">05</span><span class="t">Manual</span><span class="f">historia · 9:16</span></a></li>
-    <li class="bar" data-ink="sumi" style="--x:7;--y:60;--w:86;--ar:86/6;--i:6"><a href="#colofon"><span class="n">06</span><span class="t">Colofón</span><span class="f">tira de control</span></a></li>
+    <li data-ink="shu" style="--x:30;--y:38;--w:21;--ar:16/9;--i:5"><a href="#spot"><span class="fr flor" aria-hidden="true"></span><span class="n">01</span><span class="t">Spot</span><span class="f">video · 16:9</span></a></li>
+    <li class="up" data-ink="gunjo" style="--x:29;--y:7;--w:15;--ar:210/297;--i:1"><a href="#brief"><span class="fr half" aria-hidden="true"></span><span class="n">02</span><span class="t">Brief</span><span class="f">hoja · a4</span></a></li>
+    <li class="up" data-ink="tsutsuji" style="--x:51;--y:7;--w:21;--ar:1;--i:2"><a href="#piezas"><span class="fr quarter" aria-hidden="true"></span><span class="n">03</span><span class="t">Piezas</span><span class="f">post · 1:1</span></a></li>
+    <li data-ink="ukon" style="--x:7;--y:38;--w:19;--ar:91/55;--i:4"><a href="#marca"><span class="fr dot" aria-hidden="true"></span><span class="n">04</span><span class="t">Marca</span><span class="f">tarjeta · 91 × 55</span></a></li>
+    <li data-ink="gunjo" style="--x:55;--y:38;--w:38;--ar:970/250;--i:6"><a href="#componentes"><span class="fr pill" aria-hidden="true"></span><span class="n">05</span><span class="t">Componentes</span><span class="f">banner · 970 × 250</span></a></li>
+    <li class="up" data-ink="shu" style="--x:79;--y:7;--w:14;--ar:9/16;--i:3"><a href="#manual"><span class="fr cap" aria-hidden="true"></span><span class="n">06</span><span class="t">Manual</span><span class="f">historia · 9:16</span></a></li>
+    <li class="bar" data-ink="sumi" style="--x:7;--y:60;--w:86;--ar:86/6;--i:7"><a href="#colofon"><span class="n">07</span><span class="t">Colofón</span><span class="f">tira de control</span></a></li>
   </ol>
   <p class="mi-sheet-slug" aria-hidden="true"></p>
   <button type="button" class="mi-sheet-open" aria-expanded="false" hidden>Pliego</button>
@@ -316,10 +390,12 @@ Sí: … No: …
 import { mount as kit, campaign, setCampaign, onCampaign, dotLogo } from '../shared/components/mirai/kit.js';
 import { mount as imposition } from '../shared/components/mirai/imposition.js';
 import { mount as redThread } from '../shared/components/mirai/red-thread.js';
-import { pieceHTML } from '../shared/components/mirai/plate.js';
+import { paintPiece } from '../shared/components/mirai/plate.js';
+import { mount as mountSpot } from '../shared/components/mirai/spot.js';
 import { mount as docBrief, words } from '../shared/components/doc-brief/doc-brief.js';
 import { mount as formatBoard } from '../shared/components/format-board/format-board.js';
 import { mount as docBrand } from '../shared/components/doc-brand/doc-brand.js';
+import { mount as docMotion } from '../shared/components/doc-motion/doc-motion.js';
 import { mount as docProse } from '../shared/components/doc-prose/doc-prose.js';
 import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-specimen.js';
 import { mount as tokenExport } from '../shared/components/token-export/token-export.js';
@@ -334,7 +410,7 @@ const inkOptions = INKS.map(i => [i.id, `${i.kanji} ${i.id}`, { style: `--c:var(
 // ── portada: el cartel es la pieza de la campaña ──
 const poster = document.getElementById('mi-poster'), posterInks = document.getElementById('mi-poster-inks'), recompose = document.getElementById('mi-recompose');
 const paintPoster = () => {
-  poster.innerHTML = pieceHTML(FORMATS[0], campaign);
+  paintPiece(poster, FORMATS[0], campaign);
   poster.setAttribute('aria-label', `Cartel de ${BRAND.name}: formas en sumi y ${campaign.tinta} sobre papel, con el titular «${campaign.titular}»`);
   posterInks.innerHTML = `2 tintas: <span lang="ja">墨 + ${inkOf(campaign.tinta).kanji}</span>`;
 };
@@ -342,8 +418,17 @@ recompose.hidden = false;
 recompose.addEventListener('click', () => setCampaign({ seed: campaign.seed + 1 }));
 
 // ── brief ──
+const briefHost = document.getElementById('mi-brief');
 const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const day = s => { const d = new Date(s + 'T12:00'); return Number.isNaN(d.getTime()) ? null : d; };
+const checks = [
+  v => ({ ok: words(v.objetivo).length > 0 && words(v.objetivo).length <= 12, text: 'El objetivo cabe en una línea de 12 palabras.' }),
+  v => ({ ok: v.mensaje.trim().length > 0 && v.mensaje.trim().length <= 40, text: 'El mensaje cabe en un titular de 40 caracteres.' }),
+  v => ({ ok: !!(v.si.trim() && v.no.trim()), text: 'El tono dice lo que sí y lo que no.' }),
+  v => ({ ok: v.entregables.length > 0, text: 'Hay al menos un formato.' }),
+  v => ({ ok: !!day(v.salida) && v.salida >= iso(new Date()), text: 'La fecha de salida no ha pasado.' }),
+  v => ({ ok: /\d/.test(v.exito), text: 'El criterio de éxito trae un número.' }),
+];
 const brief = docBrief({
   el: '#mi-brief', name: `Brief · ${BRAND.name}`, storage: 'mirai-brief',
   value: { ...BRIEF, salida: iso(new Date(Date.now() + 21 * 864e5)) },
@@ -359,22 +444,17 @@ const brief = docBrief({
     { id: 'tinta', label: 'Tinta de la campaña', type: 'choice', options: inkOptions },
     { id: 'exito', label: 'Criterio de éxito', type: 'text', wide: true, max: 90 },
   ],
-  checks: [
-    v => ({ ok: words(v.objetivo).length > 0 && words(v.objetivo).length <= 12, text: 'El objetivo cabe en una línea de 12 palabras.' }),
-    v => ({ ok: v.mensaje.trim().length > 0 && v.mensaje.trim().length <= 40, text: 'El mensaje cabe en un titular de 40 caracteres.' }),
-    v => ({ ok: !!(v.si.trim() && v.no.trim()), text: 'El tono dice lo que sí y lo que no.' }),
-    v => ({ ok: v.entregables.length > 0, text: 'Hay al menos un formato.' }),
-    v => ({ ok: !!day(v.salida) && v.salida >= iso(new Date()), text: 'La fecha de salida no ha pasado.' }),
-    v => ({ ok: /\d/.test(v.exito), text: 'El criterio de éxito trae un número.' }),
-  ],
+  checks,
   tables: v => {
     const d0 = day(v.salida);
     const rows = !d0 ? [] : FORMATS.filter(f => v.entregables.includes(f.id)).map(f => ({ f, d: new Date(d0.getTime() + f.day * 864e5) })).sort((a, b) => a.d - b.d)
       .map(({ f, d }) => [d.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' }), f.name, f.where, f.size]);
     return [{ title: 'Calendario de salida', head: ['Fecha', 'Pieza', 'Dónde', 'Medidas'], rows }];
   },
-  onChange: v => setCampaign({ titular: v.mensaje, tinta: v.tinta, formatos: v.entregables }, 'brief'),
+  onChange: v => { setCampaign({ titular: v.mensaje, tinta: v.tinta, formatos: v.entregables }, 'brief'); briefHost.classList.toggle('is-approved', checks.every(c => c(v).ok)); },
 });
+// el sello de «校了» (prueba aprobada): cae sobre la revisión cuando el brief pasa las seis reglas
+briefHost.querySelector('.bf-side').insertAdjacentHTML('afterbegin', '<span class="mi-hanko" lang="ja" aria-hidden="true">校了</span>');
 
 // ── piezas: la misma en cuatro formatos ──
 const board = formatBoard({
@@ -384,6 +464,7 @@ const board = formatBoard({
     { id: 'forma', label: 'Forma', type: 'choice', options: FORMS },
     { id: 'tinta', label: 'Tinta', type: 'choice', options: inkOptions },
     { id: 'seed', label: 'Recomponer', type: 'button' },
+    { id: 'ctx', label: 'En contexto', type: 'toggle', className: 'show-context' },
   ],
   value: () => campaign,
   onChange: (id, val) => {
@@ -391,13 +472,15 @@ const board = formatBoard({
     setCampaign({ [id]: val }, 'board');
     if (id === 'titular') brief.set({ mensaje: val }); if (id === 'tinta') brief.set({ tinta: val });
   },
-  render: pieceHTML,
+  paint: paintPiece,
   describe: (f, s) => `${f.name} de ${BRAND.name}: «${s.titular}» en sumi y ${s.tinta}`,
   spec: (f, s) => [`2 tintas: sumi + ${s.tinta}`, f.safe[0] ? `libres ${f.safe[0]} % arriba y abajo` : 'margen 7 %'],
   specHead: ['Tintas', 'Zona segura'],
   active: s => s.formatos,
 });
-onCampaign(() => { paintPoster(); board.update(); });
+// ── spot: el animatic con el scroll como cabezal ──
+const spot = mountSpot({ el: '#mi-spot', state: () => campaign });
+onCampaign(() => { paintPoster(); board.update(); spot?.update(); });
 paintPoster();
 
 // ── marca ──
@@ -418,6 +501,10 @@ const brandOpts = {
 // los usos incorrectos tiemblan y se rompen con anime.js; si no carga, se corrigen con un clic
 import('../shared/components/mirai/shatter.js').then(m => { const sh = m.shatter({ hits: 4 }); docBrand({ ...brandOpts, enhance: sh.arm, onWrong: sh.hit }); }, () => docBrand(brandOpts));
 
+docMotion({ el: '#mi-motion', curves: [
+  { name: 'Entrar', token: '--ease-out', duration: 700, use: 'Lo que llega: sale rápido y frena en su lugar' },
+  { name: 'Ir y volver', token: '--ease-in-out', duration: 850, use: 'Cambios de estado y de modo' },
+  { name: 'Asentar', token: '--spring', duration: 950, use: 'Formas que encajan en su módulo, con un rebote corto' }] });
 docSpecimen({
   type: { el: '#mi-type', fonts: [
     { name: 'mirai 2070', family: 'var(--title)', size: 38, use: 'Michroma · títulos' },

@@ -1314,3 +1314,29 @@ Tema 13 de la colección (el 14.º de la lista: se adelantó a rem). Hecho; falt
 - No se probó en un teléfono real, ni en Firefox o Safari, ni con lector de pantalla.
 - Sin JS el botón de modo se ve pero no hace nada (igual que en los demás temas).
 - Las pruebas no entran al repo: se corrieron desde una carpeta temporal.
+
+## mirai · segunda ronda: movimiento y detalle (2026-11-11)
+
+Revisión del usuario sobre la primera versión: las animaciones no eran fluidas y el tema se veía bien pero simple; tiene que ser más extenso en detalles que los anteriores, con tarot como vara, y tan fluido como se pueda. Hecho; falta su revisión.
+
+**El movimiento cambió de idea.** «Seco y en cuadrícula» se había hecho con `steps()` y se sentía a saltos. Ahora es continuo y con inercia, y siempre termina exactamente en su módulo. Tres curvas, en tokens: `--ease-out` (entrar), `--ease-in-out` (ir y volver) y `--spring` (asentar; un resorte subamortiguado muestreado a `linear()`, más `--spring-soft`). Lo que cambió con ellas:
+- **Formas de las piezas**: llegan con resorte desde su borde. El titular y la tinta cambian en su lugar (`paintPiece`: la tinta transiciona, también dentro del degradado de puntos de urushi, con `@property --f`); antes cada tecla volvía a montar la pieza y repetía la entrada. Al recomponer, las formas viejas se encogen y entran las nuevas.
+- **Hilo rojo**: el cabo persigue su meta con inercia (independiente de los cuadros por segundo) y las letras suben a su lugar con transición. Ya tendido es una cuerda: el cursor la pulsa al cruzarla (ecuación de onda con los cabos fijos) y el bucle se detiene cuando la vibración ya no se ve.
+- **Cambio de modo**: transición de vista con un círculo que crece desde el botón (la luz se va o vuelve). **Pliego**: el recuadro chico se transforma en el pliego abierto (`view-transition-name`). Sin la API o con reduced motion, el cambio es directo.
+- **Título** de la portada: cada letra sube desde detrás de su renglón. **Botones**: se levantan y se asientan con resorte. **Usos incorrectos**: golpe corto que regresa con resorte de anime.js; al romperse salen despedidos y frenan. **Entrada de contenido**: lo que está debajo de la primera pantalla sube al entrar (se arma solo con JS y sin reduced motion).
+- **Cartel de la portada**: sigue al cursor; cada forma se corre según su profundidad (propiedad `translate`, aparte del `transform` de la entrada).
+- **Con reduced motion** nada transiciona ni se anima en la página (regla general en `mirai.css`).
+
+**Sección nueva: Spot 映像** (`spot.js`, ahora son ocho secciones y ocho recuadros en el pliego; el del spot es de 16:9). Un animatic de 15 s a 24 cuadros con el scroll como cabezal: mientras la sección cruza la pantalla, el cuadro se queda fijo y la película avanza con inercia. La lámpara de Mado está cerrada como un botón de flor (doce cápsulas afuera y seis adentro, plegadas); se abre pétalo por pétalo desde la punta, el centro se enciende con la tinta de la campaña y late dos veces, y al alejarse la cámara la flor se recoge en un módulo: es una ventana entre veinte apagadas. El último plano trae el titular del brief. Código de tiempo, deslizador (también con teclado), botón de reproducir (corre el scroll solo y cualquier gesto lo detiene), storyboard de cinco cuadros y guion técnico que marca el plano vigente y salta a cada uno. Una sola función dibuja cualquier instante; en urushi la escena se pinta en un lienzo de 144 columnas y cada celda encendida es un punto. Con reduced motion o en pantallas de menos de 520 px de alto no hay cuadro fijo: queda el deslizador. Medido en Chrome con la gráfica integrada de la laptop: 16.6 ms por cuadro en promedio al recorrerlo, en los dos modos.
+
+**Detalles nuevos.**
+- **Tiras de texto** entre secciones que corren con el scroll, no con el reloj (`animation-timeline: view()`), y el hilo como línea de avance bajo la barra (`scroll()`).
+- **Sello 校了** (prueba aprobada): cae con resorte sobre la revisión cuando el brief pasa las seis reglas y se levanta cuando deja de pasar.
+- **Piezas en contexto** (control `toggle` nuevo de `format-board`): el cartel enmarcado, el post con su cabecera, la historia en un teléfono (las barras de la interfaz caen justo en las zonas que la pieza deja libres) y el banner en un navegador.
+- **Marca**: versiones del logo (horizontal, vertical con kanji, invertida y símbolo) y panel de **movimiento** (`doc-motion`, compartido): las tres curvas con su gráfica medida al navegador, una muestra que se repite y su valor para copiar.
+
+**Referencias.** La flor que se abre viene de una idea guardada (un ramo dibujado con caracteres que pasa de tallos a flores); aquí es la lámpara del spot. Falta que el usuario confirme que era esa nota antes de consumirla. El portafolio de Marina Budarina quedó como referente de autor en la skill `frontend-design` (`references/referentes.md`): de ahí salen el scroll que transforma un solo objeto y el control mínimo alrededor de la pieza.
+
+**Verificado** en Chrome real: los seis tamaños en los dos modos sin scroll horizontal ni errores de consola; sin texto bajo 12 px fuera de las piezas; sin JS (ocho instrucciones, ocho enlaces, guion técnico legible, sin cuadro del spot); reduced motion (cero animaciones corriendo, hilo tendido, spot con deslizador); impresión del brief. Interacciones: tinta y titular sin remontar la pieza, recomponer, contexto, sello, spot (guion, teclado, reproducir, rueda), transiciones de vista y cuerda.
+
+**Pendiente / candidatos para otra ronda** (sin hacer): laboratorio de sobreimpresión (dos tintas que se enciman y un deslizador de registro), pictogramas de la campaña sobre la retícula con transición entre ellos, exportar las piezas como imagen, y medir las fuentes de la galería. Sigue pendiente el nombre «Mado» y el proun definitivo.

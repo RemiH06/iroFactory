@@ -8,7 +8,10 @@
    sumi sobre gofun 15.5; sobre shu 4.6, ukon 9.9 y tsutsuji 4.7; gofun
    sobre gunjō 6.0. Las tintas `-ink` son las de texto sobre papel (5.6 a
    6.0). Ukon contra el papel da 1.6: siempre con contorno o masa de sumi.
-   En urushi las tintas pasan de 6.0 a 12.1. Sin #000 ni #fff puros. */
+   En urushi las tintas pasan de 6.0 a 12.1. Sin #000 ni #fff puros.
+   Movimiento: continuo y con inercia, y siempre termina en su módulo.
+   Tres curvas (tokens --ease-out, --ease-in-out y --spring): salir rápido
+   y frenar, ir y volver, y asentarse con un rebote corto. Nada va a saltos. */
 body {
   --bg: #F4F1E9; --bg2: #EAE6DB; --bg3: #DDD8CA; --text: #1B1918; --text2: #55524F; --border: #BFB9AA;
   --shu: #EB4A20; --gunjo: #3553B8; --ukon: #F5B91A; --tsutsuji: #E24A8F;
@@ -21,7 +24,10 @@ body {
   --title: 'Michroma', 'Zen Kaku Gothic New', sans-serif; --label: 'Major Mono Display', ui-monospace, monospace;
   --read: 'Zen Kaku Gothic New', system-ui, sans-serif; --sans: var(--read); --jp: 'Zen Kaku Gothic New', sans-serif;
   --mono: 'Fira Code', ui-monospace, monospace;
-  --radius: 0px; --radius-sm: 0px; --rail: 0px;
+  --radius: 0px; --radius-sm: 0px; --rail: 0px; --navh: 52px;
+  --ease-out: cubic-bezier(.16, 1, .3, 1); --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --spring: linear(0, 0.062, 0.209, 0.391, 0.574, 0.737, 0.869, 0.966, 1.031, 1.067, 1.082, 1.082, 1.072, 1.058, 1.043, 1.028, 1.016, 1.006, 1, 0.996, 0.994, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 1, 1, 1, 1.001, 1.001, 1.001, 1);
+  --spring-soft: linear(0, 0.044, 0.147, 0.276, 0.41, 0.537, 0.648, 0.742, 0.818, 0.878, 0.923, 0.955, 0.978, 0.993, 1.003, 1.008, 1.01, 1.011, 1.011, 1.009, 1.008, 1.006, 1.005, 1.004, 1.003, 1.002, 1.001, 1.001, 1, 1, 1, 1, 1, 1, 1);
 }
 body.dark {
   --bg: #15110F; --bg2: #1F1917; --bg3: #2B2320; --text: #EEEAE0; --text2: #ACA59B; --border: #4A3E39;
@@ -48,26 +54,31 @@ a { color: var(--ink-text); text-underline-offset: 3px; }
 rt { font-size: .42em; font-family: var(--jp); letter-spacing: .08em; }
 
 /* Major Mono Display dibuja las mayúsculas con otro trazo: las etiquetas van en minúsculas para que el peso sea parejo */
-:is(.mi-count, .mi-kicker, .mi-sub, .mi-label, .mi-callout-t, th, .mi-credits dt, .doc dt, .doc-toc > p, .mi-sheet-list a, .fb-field > span, .fb-field > legend, .bf-field > label, .bf-field > legend, .bf-h, .bf-checks b, .db-h, .db-range) { text-transform: lowercase; }
+:is(.mi-count, .mi-kicker, .mi-sub, .mi-label, .mi-callout-t, th, .mi-credits dt, .doc dt, .doc-toc > p, .mi-sheet-list a, .fb-field > span, .fb-field > legend, .bf-field > label, .bf-field > legend, .bf-h, .bf-checks b, .db-h, .db-range, .dm-name) { text-transform: lowercase; }
 /* su trazo fino se pierde sobre un relleno: botones, insignias y nombres de tinta van en Michroma */
-:is(.mi-btn, .mi-sheet-open, .fb-btn, .bf-btn, .db-reset, .tx-fmt, .tx-modes button, .tx-copy, .tx-dl, .mi-badge:not([lang]), .spec-pill, .mi-ink b) { font-family: 'Michroma', sans-serif; font-size: 12px; font-weight: 400; text-transform: none; }
+:is(.mi-btn, .mi-sheet-open, .fb-btn, .bf-btn, .db-reset, .tx-fmt, .tx-modes button, .tx-copy, .tx-dl, .dm-copy, .mi-badge:not([lang]), .spec-pill, .mi-ink b) { font-family: 'Michroma', sans-serif; font-size: 12px; font-weight: 400; text-transform: none; }
 /* las opciones llevan kanji: en 700, el mismo peso que el resto del japonés */
 .fb-choice span, .bf-opts span { font-weight: 700; }
 
 /* ── barra ── */
 .mi-top { position: fixed; inset: 0 0 auto 0; z-index: 30; height: 56px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--bg); border-bottom: 1.5px solid transparent; }
 .mi-top.is-scrolled { border-bottom-color: var(--text); }
+/* el hilo llega hasta donde va la lectura */
+@supports (animation-timeline: scroll()) {
+  .mi-top::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1.5px; height: 1.5px; background: var(--shu); transform-origin: left; animation: top-thread linear both; animation-timeline: scroll(root); }
+  @keyframes top-thread { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
 .mi-brand { font: 400 15px var(--title); color: var(--text); text-decoration: none; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; }
 .mi-brand [lang="ja"] { font-size: 17px; color: var(--shu-ink); }
 
-/* ── botones: cápsulas planas; el empuje es seco, en dos pasos ── */
-.mi-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 22px; font: 400 14px var(--label); color: var(--bg); background: var(--text); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; text-decoration: none; transition: transform .1s steps(2), box-shadow .1s steps(2); }
+/* ── botones: cápsulas planas que se levantan al acercarse y se asientan al soltar ── */
+.mi-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 22px; font: 400 14px var(--label); color: var(--bg); background: var(--text); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; text-decoration: none; transition: transform .35s var(--spring-soft), box-shadow .35s var(--spring-soft), background-color .25s ease-out, color .25s ease-out; }
 .mi-btn.ghost { background: var(--bg); color: var(--text); }
 .mi-btn.ink { background: var(--ink); color: var(--on-ink); }
 .mi-btn.small { min-height: 36px; padding: 0 16px; }
-.mi-btn:hover, .mi-btn:focus-visible { transform: translate(-2px, -2px); box-shadow: 2px 2px 0 var(--ink); }
-.mi-btn.ink:hover, .mi-btn.ink:focus-visible { box-shadow: 2px 2px 0 var(--text); }
-.mi-btn:active { transform: none; box-shadow: none; }
+.mi-btn:hover, .mi-btn:focus-visible { transform: translate(-3px, -3px); box-shadow: 3px 3px 0 var(--ink); }
+.mi-btn.ink:hover, .mi-btn.ink:focus-visible { box-shadow: 3px 3px 0 var(--text); }
+.mi-btn:active { transform: none; box-shadow: 0 0 0 var(--ink); transition-duration: .08s; }
 .mi-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* ── secciones: cada una es un recuadro del pliego, con sus marcas de corte ── */
@@ -88,7 +99,7 @@ main { padding-top: 56px; padding-right: var(--rail); }
 .mi-head { position: relative; display: grid; gap: 12px; margin-bottom: 64px; padding-bottom: 40px; }
 .mi-count { display: flex; align-items: center; gap: 14px; font: 400 13px var(--label); color: var(--text); }
 .mi-count [lang="ja"] { font-weight: 700; font-size: 14px; }
-.mi-ticks { width: 80px; height: 8px; background: linear-gradient(90deg, var(--text) 0 calc(var(--n) * 12px), var(--ink) 0 calc(var(--n) * 12px + 12px), var(--border) 0); -webkit-mask: repeating-linear-gradient(90deg, red 0 8px, transparent 8px 12px); mask: repeating-linear-gradient(90deg, red 0 8px, transparent 8px 12px); }
+.mi-ticks { width: 92px; height: 8px; background: linear-gradient(90deg, var(--text) 0 calc(var(--n) * 12px), var(--ink) 0 calc(var(--n) * 12px + 12px), var(--border) 0); -webkit-mask: repeating-linear-gradient(90deg, red 0 8px, transparent 8px 12px); mask: repeating-linear-gradient(90deg, red 0 8px, transparent 8px 12px); }
 .mi-head h2, .mi-title { font-family: var(--title); font-weight: 400; line-height: 1; }
 .mi-head h2 { font-size: clamp(32px, 5vw, 62px); display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; }
 .mi-head h2 [lang="ja"] { font-size: .5em; font-weight: 700; color: var(--ink-text); }
@@ -96,8 +107,10 @@ main { padding-top: 56px; padding-right: var(--rail); }
 /* el hilo: el lienzo y la caja de estado los pone red-thread.js */
 .mi-thread { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .mi-state { position: absolute; left: 0; bottom: 0; font: 12px var(--mono); color: var(--text2); white-space: nowrap; }
-.mi-instr .ch { opacity: 0; }
-.mi-instr .ch.on { opacity: 1; }
+/* cada letra sube a su lugar cuando el hilo pasa por ella */
+.mi-instr .w { display: inline-block; white-space: nowrap; }
+.mi-instr .ch { display: inline-block; opacity: 0; translate: 0 .4em; transition: opacity .45s ease-out, translate .7s var(--spring-soft); }
+.mi-instr .ch.on { opacity: 1; translate: none; }
 
 /* ── portada ── */
 /* la portada cabe en la primera pantalla: cabecera compacta y botones a la vista */
@@ -107,8 +120,10 @@ main { padding-top: 56px; padding-right: var(--rail); }
 .mi-kicker { font: 400 14px var(--label); color: var(--text); margin-bottom: 14px; }
 .mi-title { font-size: clamp(56px, 9.6vw, 134px); letter-spacing: -.03em; margin-left: -.05em; display: flex; align-items: flex-start; gap: .16em; }
 .mi-title [lang="ja"] { writing-mode: vertical-rl; font-size: .3em; font-weight: 700; letter-spacing: .12em; color: var(--shu-ink); margin-top: .22em; }
-.mi-title .cell { display: inline-block; animation: cell-in .4s steps(4) backwards; animation-delay: calc(var(--i) * 70ms + 120ms); }
-@keyframes cell-in { from { opacity: 0; transform: translateY(.5em); } 25% { opacity: 1; } }
+/* el título sube letra por letra desde detrás de su renglón */
+.mi-title .cell { display: inline-block; clip-path: inset(-.3em -.12em -.04em -.12em); }
+.mi-title .cell > span { display: inline-block; animation: cell-in 1.1s var(--ease-out) backwards; animation-delay: calc(var(--i) * 75ms + 150ms); }
+@keyframes cell-in { from { transform: translateY(112%); } }
 .mi-sub { margin-top: 26px; font: 400 14px var(--label); }
 .mi-lede { margin-top: 14px; max-width: 46ch; color: var(--text2); }
 .mi-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
@@ -116,6 +131,10 @@ main { padding-top: 56px; padding-right: var(--rail); }
 .mi-frame { position: relative; container-type: size; border: 1.5px solid var(--text); background: var(--bg); }
 .mi-poster .mi-frame { aspect-ratio: 515 / 728; }
 .mi-ficha { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 14px; margin-top: 10px; font: 12px var(--mono); color: var(--text2); }
+
+/* ── lo que entra a pantalla sube a su lugar (kit.js arma `.rise` solo si hay JS y movimiento) ── */
+.rise { opacity: 0; translate: 0 26px; transition: opacity .7s ease-out, translate 1s var(--ease-out); transition-delay: calc(var(--ri, 0) * 80ms); }
+.rise.is-in { opacity: 1; translate: none; }
 
 /* ── rejilla de paneles: fichas de imprenta, con filete arriba ── */
 .mi-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 44px 28px; }
@@ -197,6 +216,56 @@ pre code { font-size: inherit; }
 .db-wrong:hover .db-stage, .db-wrong:focus-visible .db-stage { box-shadow: 3px 3px 0 var(--ink); }
 .db-wrong.is-fixed .db-stage { box-shadow: none; background: var(--bg2); }
 
+/* ── tira de texto entre secciones: corre con el scroll, no con el reloj ── */
+.mi-ticker { overflow: hidden; padding: 11px 0; border-block: 1.5px solid var(--text); }
+.mi-ticker p { display: flex; width: max-content; font: 400 clamp(14px, 1.5vw, 18px)/1.2 var(--title); white-space: nowrap; }
+.mi-ticker span::after { content: ''; display: inline-block; width: 8px; height: 8px; margin: 0 2em; background: var(--shu); vertical-align: middle; }
+@supports (animation-timeline: view()) {
+  .mi-ticker p { animation: tick linear both; animation-timeline: view(); }
+  @keyframes tick { from { transform: translateX(-2%); } to { transform: translateX(-30%); } }
+}
+
+/* ── versiones del logo ── */
+.mi-lockups { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 20px; }
+.mi-lockups p { margin-top: 8px; font-size: 13px; line-height: 1.4; color: var(--text2); }
+.mi-lockup { display: flex; align-items: center; justify-content: center; gap: 14px; aspect-ratio: 16 / 10; border: 1.5px solid var(--text); --logo-light: var(--shu); }
+.mi-lockup svg { width: 44px; height: 44px; flex: none; }
+.lk-word { font: 400 26px/1 var(--title); letter-spacing: -.02em; }
+.mi-lockup.v { flex-direction: column; gap: 8px; } .mi-lockup.v .lk-word { font-size: 17px; } .lk-ja { font-size: 14px; line-height: 1; }
+.mi-lockup.inv { background: var(--text); color: var(--bg); }
+.mi-lockup.mark svg { width: 24px; height: 24px; }
+
+/* ── el sello de «校了» (prueba aprobada) cae sobre la revisión cuando el brief pasa las seis reglas ── */
+.bf-side { position: relative; }
+.bf { overflow-x: clip; } /* el sello, mientras cae, no ensancha la página */
+.dm-code code { font-size: inherit; }
+.mi-hanko { position: absolute; top: -58px; right: 0; display: grid; place-items: center; width: 48px; height: 48px; writing-mode: vertical-rl; font-size: 17px; line-height: 1; letter-spacing: .08em; color: var(--shu-ink); border: 2.5px solid var(--shu); border-radius: 6px; pointer-events: none;
+  opacity: 0; scale: 1.9; rotate: -22deg; transition: opacity .18s ease-in, scale .3s ease-in, rotate .3s ease-in; }
+.is-approved .mi-hanko { opacity: 1; scale: 1; rotate: -8deg; transition: opacity .12s ease-out, scale .55s var(--spring), rotate .55s var(--spring); }
+
+/* ── el uso correcto llega con resorte cuando el incorrecto se rompe ── */
+.is-fixed .db-good { animation: good-in .8s var(--spring) backwards; }
+@keyframes good-in { from { scale: .35; opacity: 0; } 35% { opacity: 1; } }
+.db-stage { transition: background-color .5s ease-out, box-shadow .3s var(--ease-out); }
+
+/* ── piezas en contexto: cada formato en donde vive (tablero con .show-context) ── */
+.fb-fig { transition: padding .6s var(--ease-out); }
+.fb-frame { transition: border-radius .6s var(--ease-out), box-shadow .6s var(--ease-out), opacity .4s ease-out; }
+.fb-fig::before { content: ''; display: block; height: 0; opacity: 0; border: 1.5px solid var(--text); border-bottom: 0; transition: height .6s var(--ease-out), opacity .4s ease-out; }
+/* cartel: enmarcado, como en un parabús */
+.show-context .fb-fig[data-id="cartel"] { padding: 10px; }
+.show-context .fb-fig[data-id="cartel"] .fb-frame { box-shadow: 0 0 0 8.5px var(--bg), 0 0 0 10px var(--text); }
+/* post: la cabecera de una publicación (foto de perfil y dos renglones) */
+.show-context .fb-fig[data-id="post"]::before { height: 40px; opacity: 1; background: radial-gradient(circle at 20px 50%, var(--text) 9px, transparent 9.6px), linear-gradient(var(--text) 0 0) 40px 14px / 28% 4px no-repeat, linear-gradient(var(--border) 0 0) 40px 24px / 18% 4px no-repeat; }
+/* historia: un teléfono; las barras de la interfaz caen justo en las zonas que la pieza deja libres */
+.show-context .fb-fig[data-id="historia"] .fb-frame { border-radius: 26px; box-shadow: 0 0 0 5px var(--text); }
+.fb-fig[data-id="historia"] .fb-frame::before, .fb-fig[data-id="historia"] .fb-frame::after { content: ''; position: absolute; z-index: 2; opacity: 0; transition: opacity .5s ease-out .15s; pointer-events: none; }
+.fb-fig[data-id="historia"] .fb-frame::before { top: 4%; left: 6%; right: 6%; height: 3px; background: repeating-linear-gradient(90deg, var(--text) 0 31%, transparent 31% 34.5%); }
+.fb-fig[data-id="historia"] .fb-frame::after { bottom: 3.6%; left: 6%; right: 26%; height: 6.4%; max-height: 36px; border: 1.5px solid var(--text); border-radius: 999px; }
+.show-context .fb-fig[data-id="historia"] .fb-frame::before, .show-context .fb-fig[data-id="historia"] .fb-frame::after { opacity: 1; }
+/* banner: la barra de un navegador */
+.show-context .fb-fig[data-id="banner"]::before { height: 26px; opacity: 1; background: radial-gradient(circle at 14px 50%, var(--text) 3.5px, transparent 4.1px), radial-gradient(circle at 28px 50%, var(--text) 3.5px, transparent 4.1px), radial-gradient(circle at 42px 50%, var(--text) 3.5px, transparent 4.1px), linear-gradient(var(--border) 0 0) 64px 50% / 34% 8px no-repeat; }
+
 /* ── colofón ── */
 .mi-bar { display: flex; height: 26px; border: 1.5px solid var(--text); margin-bottom: 40px; }
 .mi-bar i { flex: 1; background: var(--c); }
@@ -211,7 +280,7 @@ pre code { font-size: inherit; }
 .mi-footer { padding: 28px 56px 110px; font: 12px var(--mono); color: var(--text2); max-width: 1120px; margin: 0 auto; }
 
 /* ── el riel de la derecha existe cuando cabe el pliego ── */
-@media (min-width: 1040px) { body { --rail: 236px; } }
+@media (min-width: 1040px) { body { --rail: 236px; --navh: 0px; } }
 @media (max-width: 900px) {
   .mi-sec { padding: 84px 22px 96px; } .mi-sec::before { inset: 30px 4px; } .mi-tate { display: none; }
   .mi-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 44px; } .mi-poster { justify-self: start; width: min(100%, 340px); }
@@ -220,11 +289,27 @@ pre code { font-size: inherit; }
   .mi-base { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .mi-top { padding: 0 16px; } .mi-footer { padding: 20px 22px 120px; }
   .mi-head { margin-bottom: 44px; padding-bottom: 64px; }
+  .mi-lockups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mi-hanko { position: static; margin: 0 0 12px auto; }
   .mi-state { white-space: normal; line-height: 1.5; }
 }
-@media (prefers-reduced-motion: reduce) { .mi-btn { transition: none; } .mi-title .cell { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .mi-btn, .mi-instr .ch, .mi-hanko, .fb-fig, .fb-frame, .fb-fig::before { transition: none; } .mi-ticker p, .is-fixed .db-good { animation: none; } .mi-title .cell > span { animation: none; } .mi-top::after { animation: none; transform: scaleX(0); } }
+
+/* con reduced motion nada transiciona ni se anima en esta página, tampoco lo de los componentes compartidos */
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; } }
+
+/* ── transiciones de vista ──
+   Cambio de modo: la luz se va (o vuelve) en un círculo que crece desde el botón.
+   Pliego: el recuadro chico se transforma en el pliego abierto. */
+.mi-sheet-list { view-transition-name: mi-sheet; }
+html.vt-theme .mi-sheet-list { view-transition-name: none; }
+::view-transition-group(mi-sheet) { animation-duration: .65s; animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
+::view-transition-old(mi-sheet), ::view-transition-new(mi-sheet) { height: 100%; object-fit: fill; }
+html.vt-theme::view-transition-old(root), html.vt-theme::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html.vt-theme::view-transition-new(root) { z-index: 2; }
 @media print {
   .mi-top, .mi-sheet, .mi-thread, .mi-state { display: none !important; }
   main { padding: 0; } body.print-brief main > :not(#brief) { display: none; }
+  .rise { opacity: 1; translate: none; } .mi-ticker { display: none; }
   .mi-instr .ch { opacity: 1; }
 }

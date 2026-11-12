@@ -20,15 +20,17 @@
 .fb-fig { flex: var(--ar) 1 0; min-width: 0; margin: 0; }
 .fb-fig[style*="--ar:2"], .fb-fig[style*="--ar:3"], .fb-fig[style*="--ar:4"] { flex-basis: 100%; }
 .fb-frame { position: relative; container-type: size; width: 100%; border: 1.5px solid var(--text); background: var(--bg); overflow: hidden; }
+.fb-piece { position: absolute; inset: 0; }
+.fb-frame { transition: opacity .4s ease-out; }
 .fb-fig.is-off .fb-frame { opacity: .32; }
 .fb-spec { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 10px; font: 12px/1.5 var(--mono, monospace); color: var(--text2); }
 .fb-spec b { font-weight: 400; color: var(--text); }
 .fb-off { color: var(--danger); }
 /* zonas seguras: franjas rayadas arriba y abajo y el margen de la pieza */
-.fb-guides { position: absolute; inset: 0; display: none; pointer-events: none; --h: color-mix(in srgb, var(--ink-text, var(--accent)) 70%, transparent);
+.fb-guides { position: absolute; inset: 0; opacity: 0; transition: opacity .35s ease-out; pointer-events: none; --h: color-mix(in srgb, var(--ink-text, var(--accent)) 70%, transparent);
   background: repeating-linear-gradient(135deg, var(--h) 0 1.5px, transparent 1.5px 7px) top / 100% var(--st) no-repeat, repeating-linear-gradient(135deg, var(--h) 0 1.5px, transparent 1.5px 7px) bottom / 100% var(--sb) no-repeat; }
 .fb-guides::after { content: ''; position: absolute; inset: 7cqmin; border: 1.5px dashed var(--ink-text, var(--accent)); }
-.show-safe .fb-guides { display: block; }
+.show-safe .fb-guides { opacity: 1; }
 .fb-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 28px; }
 .fb-status { font: 12px var(--mono, monospace); color: var(--text2); }
 @media (max-width: 700px) { .fb-fig { flex: 0 0 100%; max-width: calc(var(--ar) * 430px); } .fb-controls { gap: 14px; } }

@@ -7,9 +7,11 @@
 //   mount({
 //     el, name,
 //     formats: [{ id, name, size, note, ratio: [ancho, alto], safe: [arriba %, abajo %] }],
-//     controls: [{ id, label, type: 'text' | 'choice' | 'button', max, options: [[valor, etiqueta, { style, lang }]] }],
+//     controls: [{ id, label, type: 'text' | 'choice' | 'button' | 'toggle', max, className, options: [[valor, etiqueta, { style, lang }]] }],
+//       ('toggle' no avisa al tema: solo pone o quita `className` en el tablero, para vistas como «en contexto»)
 //     value: () => estado, onChange(id, valor),
-//     render(formato, estado) → HTML, describe(formato, estado) → texto alternativo,
+//     render(formato, estado) → HTML  o  paint(host, formato, estado) si el tema actualiza la pieza en su lugar,
+//     describe(formato, estado) → texto alternativo,
 //     spec(formato, estado) → [celdas extra de la ficha], specHead: [títulos de esas celdas],
 //     active: estado → [ids de los formatos que entran] })
 //   → { update() }   vuelve a pintar con el estado vigente
@@ -17,7 +19,7 @@
 // ══════════════════════════════════════════════════════
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
-export function mount({ el, name = 'pieza', formats, controls = [], value, onChange = () => {}, render, describe = f => f.name, spec = () => [], specHead = [], active = () => formats.map(f => f.id) } = {}) {
+export function mount({ el, name = 'pieza', formats, controls = [], value, onChange = () => {}, render, paint, describe = f => f.name, spec = () => [], specHead = [], active = () => formats.map(f => f.id) } = {}) {
   const root = typeof el === 'string' ? document.querySelector(el) : el;
   if (!root) return null;
   const uid = 'fb-' + Math.random().toString(36).slice(2, 7);
@@ -25,12 +27,13 @@ export function mount({ el, name = 'pieza', formats, controls = [], value, onCha
     const v = value()[c.id];
     if (c.type === 'text') return `<label class="fb-field"><span>${esc(c.label)}</span><input type="text" data-id="${c.id}" value="${esc(v)}"${c.max ? ` maxlength="${c.max}"` : ''} autocomplete="off"></label>`;
     if (c.type === 'choice') return `<fieldset class="fb-field"><legend>${esc(c.label)}</legend><div class="fb-choice">${c.options.map(([val, label, o = {}]) => `<label${o.style ? ` style="${esc(o.style)}"` : ''}><input type="radio" name="${uid}-${c.id}" data-id="${c.id}" value="${esc(val)}"${val === v ? ' checked' : ''}><span${o.lang ? ` lang="${o.lang}"` : ''}>${esc(label)}</span></label>`).join('')}</div></fieldset>`;
+    if (c.type === 'toggle') return `<button type="button" class="fb-btn" data-toggle="${esc(c.className)}" aria-pressed="false">${esc(c.label)}</button>`;
     return `<button type="button" class="fb-btn" data-id="${c.id}">${esc(c.label)}</button>`;
   };
   root.innerHTML = `<form class="fb-controls" aria-label="Controles de la pieza">${controls.map(control).join('')}<button type="button" class="fb-btn" data-safe aria-pressed="false">Zonas seguras</button></form>`
     + `<div class="fb-frames"></div><div class="fb-foot"><button type="button" class="fb-btn" data-copy>Copiar especificaciones</button><span class="fb-status" role="status"></span></div>`;
   const frames = root.querySelector('.fb-frames'), status = root.querySelector('.fb-status');
-  frames.innerHTML = formats.map(f => `<figure class="fb-fig" data-id="${f.id}" style="--ar:${(f.ratio[0] / f.ratio[1]).toFixed(4)}"><div class="fb-frame" role="img" style="aspect-ratio:${f.ratio[0]}/${f.ratio[1]}"></div><figcaption class="fb-spec"></figcaption></figure>`).join('');
+  frames.innerHTML = formats.map(f => `<figure class="fb-fig" data-id="${f.id}" style="--ar:${(f.ratio[0] / f.ratio[1]).toFixed(4)}"><div class="fb-frame" role="img" style="aspect-ratio:${f.ratio[0]}/${f.ratio[1]}"><div class="fb-piece"></div><span class="fb-guides" aria-hidden="true" style="--st:${f.safe?.[0] || 0}%;--sb:${f.safe?.[1] || 0}%"></span></div><figcaption class="fb-spec"></figcaption></figure>`).join('');
 
   const row = (f, s) => [f.name, f.size, f.note, ...spec(f, s)];
   function update() {
@@ -38,7 +41,7 @@ export function mount({ el, name = 'pieza', formats, controls = [], value, onCha
     formats.forEach(f => {
       const fig = frames.querySelector(`[data-id="${f.id}"]`), frame = fig.firstElementChild, off = !on.includes(f.id);
       fig.classList.toggle('is-off', off);
-      frame.innerHTML = render(f, s) + `<span class="fb-guides" aria-hidden="true" style="--st:${f.safe?.[0] || 0}%;--sb:${f.safe?.[1] || 0}%"></span>`;
+      if (paint) paint(frame.firstElementChild, f, s); else frame.firstElementChild.innerHTML = render(f, s);
       frame.setAttribute('aria-label', describe(f, s));
       fig.lastElementChild.innerHTML = row(f, s).map((c, i) => (i ? `<span>${esc(c)}</span>` : `<b>${esc(c)}</b>`)).join('') + (off ? '<span class="fb-off">fuera del brief</span>' : '');
     });
@@ -50,6 +53,7 @@ export function mount({ el, name = 'pieza', formats, controls = [], value, onCha
   root.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     if (b.dataset.id) return onChange(b.dataset.id, true);
+    if (b.dataset.toggle) { b.setAttribute('aria-pressed', String(root.classList.toggle(b.dataset.toggle))); return; }
     if ('safe' in b.dataset) { const onNow = root.classList.toggle('show-safe'); b.setAttribute('aria-pressed', String(onNow)); return; }
     if ('copy' in b.dataset) {
       const s = value(), head = ['Formato', 'Medidas', 'Nota', ...specHead], on = active(s);

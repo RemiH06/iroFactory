@@ -7,15 +7,17 @@
 .mi-sheet-title, .mi-sheet-slug { display: none; font: 12px var(--mono); color: var(--text2); }
 .mi-sheet-title [lang="ja"] { font-weight: 700; color: var(--text); }
 .mi-sheet-list { list-style: none; flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; }
-.mi-sheet-list li { height: 36px; aspect-ratio: var(--ar); min-width: 26px; max-width: 46px; }
-.mi-sheet-list a { position: relative; display: grid; place-items: center; width: 100%; height: 100%; font: 400 12px var(--label); color: var(--text); text-decoration: none; background: var(--bg); border: 1.5px solid var(--text); }
+.mi-sheet-list li { flex: 1 1 0; height: 34px; min-width: 24px; max-width: min(calc(34px * var(--ar)), 44px); }
+.mi-sheet-list a { position: relative; display: grid; place-items: center; width: 100%; height: 100%; font: 400 12px var(--label); color: var(--text); text-decoration: none; background: var(--bg); border: 1.5px solid var(--text); transition: background-color .45s var(--ease-out), color .3s ease-out, box-shadow .35s var(--ease-out); }
 .mi-sheet-list .is-current a { background: var(--ink); color: var(--on-ink); }
+.mi-sheet-list a:hover { box-shadow: 2px 2px 0 var(--ink); }
 .mi-sheet-list .t, .mi-sheet-list .f { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .mi-sheet-list .fr { display: none; }
 /* la tira de control lleva las cuatro tintas */
 .mi-sheet-list .bar a { background: linear-gradient(90deg, var(--shu) 0 25%, var(--gunjo) 0 50%, var(--ukon) 0 75%, var(--tsutsuji) 0); color: transparent; }
 .mi-sheet-list .bar.is-current a { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--text); }
-.mi-sheet-open { flex: none; min-height: 40px; padding: 0 14px; font: 400 13px var(--label); color: var(--bg); background: var(--text); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; }
+.mi-sheet-open { flex: none; min-height: 40px; padding: 0 14px; font: 400 13px var(--label); color: var(--bg); background: var(--text); border: 1.5px solid var(--text); border-radius: 999px; cursor: pointer; transition: transform .35s var(--spring-soft); }
+.mi-sheet-open:hover { transform: translateY(-2px); }
 
 /* ── escritorio: el pliego en el riel ── */
 @media (min-width: 1040px) {
@@ -23,7 +25,7 @@
   .mi-sheet-title, .mi-sheet-slug { display: block; }
   .mi-sheet-slug { min-height: 2.9em; line-height: 1.45; }
   .mi-sheet-list { position: relative; display: block; aspect-ratio: 4 / 3; container-type: inline-size; background: var(--bg); border: 1.5px solid var(--text); }
-  .mi-sheet-list li { position: absolute; left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); width: calc(var(--w) * 1cqw); height: auto; min-width: 0; max-width: none; }
+  .mi-sheet-list li { position: absolute; left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); width: calc(var(--w) * 1cqw); height: auto; aspect-ratio: var(--ar); min-width: 0; max-width: none; }
   .mi-sheet-list a { border-width: 1px; font-size: 12px; }
   .mi-sheet-list a::after { content: ''; position: absolute; inset: -5px; } /* más zona para el clic */
   .mi-sheet-list .bar a::after { inset: -7px -5px; }
@@ -73,9 +75,12 @@
   .fr.quarter::before { width: 62%; aspect-ratio: 1; right: 0; bottom: 0; border-radius: 100% 0 0 0; }
   .fr.half::before { height: 70%; aspect-ratio: 1 / 2; right: 12%; top: 15%; border-radius: 0 999px 999px 0; }
   .fr.pill::before { height: 46%; width: 30%; right: 4%; top: 27%; border-radius: 999px; }
+  /* el spot: una flor de cuatro pétalos, en dos cápsulas cruzadas */
+  .fr.flor::before, .fr.flor::after { content: ''; position: absolute; left: 50%; top: 50%; width: 50%; height: 26%; margin: -13% 0 0 -25%; border-radius: 999px; background: var(--ink); }
+  .fr.flor::after { rotate: 90deg; }
   .fr.dot::before { height: 68%; aspect-ratio: 1; left: 12%; top: 16%; border-radius: 50%; }
 }
 @media (prefers-reduced-motion: no-preference) and (min-width: 1040px) {
-  .is-open .mi-sheet-list li { animation: sheet-in .28s steps(3) backwards; animation-delay: calc(var(--i) * 50ms); }
-  @keyframes sheet-in { from { opacity: 0; transform: translateY(14px); } }
+  .is-open .mi-sheet-list .fr::before, .is-open .mi-sheet-list .fr::after { animation: sheet-in .9s var(--spring) backwards; animation-delay: calc(var(--i) * 55ms + 260ms); }
+  @keyframes sheet-in { from { scale: 0; } }
 }
