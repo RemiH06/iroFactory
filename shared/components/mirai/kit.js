@@ -31,15 +31,23 @@ export function dotLogo(n = 15) {
   return out;
 }
 
-// ── cambio de modo: la luz se va (o vuelve) en un círculo que crece desde el botón ──
+// ── cambios de toda la página (modo y tirada) como transición de vista ──
+// La página nueva se descubre con `frames` sobre la vieja; sin la API o con
+// reduced motion, el cambio es directo.
 let ctl;
+export function swap(change, frames, opts) {
+  if (!document.startViewTransition || reduceMotion.matches) return change();
+  const root = document.documentElement; root.classList.add('vt-swap');
+  const vt = document.startViewTransition(change);
+  vt.ready.then(() => root.animate(frames, { ...opts, pseudoElement: '::view-transition-new(root)' })).catch(() => {});
+  vt.finished.finally(() => root.classList.remove('vt-swap'));
+}
+// vuelve a avisar del modo vigente: repinta lienzos, etiquetas y contraste con los colores nuevos
+export const refresh = () => ctl.set(theme.alt);
+// la luz se va (o vuelve) en un círculo que crece desde el botón
 function switchMode(btn) {
-  if (!document.startViewTransition || reduceMotion.matches) return ctl.toggle();
   const r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2, R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-  const root = document.documentElement; root.classList.add('vt-theme');
-  const vt = document.startViewTransition(() => ctl.toggle());
-  vt.ready.then(() => root.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${R}px at ${x}px ${y}px)`] }, { duration: 850, easing: 'cubic-bezier(.65, 0, .35, 1)', pseudoElement: '::view-transition-new(root)' })).catch(() => {});
-  vt.finished.finally(() => root.classList.remove('vt-theme'));
+  swap(() => ctl.toggle(), { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${R}px at ${x}px ${y}px)`] }, { duration: 850, easing: 'cubic-bezier(.65, 0, .35, 1)' });
 }
 
 export function mount() {

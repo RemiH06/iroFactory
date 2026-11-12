@@ -1340,3 +1340,30 @@ Revisión del usuario sobre la primera versión: las animaciones no eran fluidas
 **Verificado** en Chrome real: los seis tamaños en los dos modos sin scroll horizontal ni errores de consola; sin texto bajo 12 px fuera de las piezas; sin JS (ocho instrucciones, ocho enlaces, guion técnico legible, sin cuadro del spot); reduced motion (cero animaciones corriendo, hilo tendido, spot con deslizador); impresión del brief. Interacciones: tinta y titular sin remontar la pieza, recomponer, contexto, sello, spot (guion, teclado, reproducir, rueda), transiciones de vista y cuerda.
 
 **Pendiente / candidatos para otra ronda** (sin hacer): laboratorio de sobreimpresión (dos tintas que se enciman y un deslizador de registro), pictogramas de la campaña sobre la retícula con transición entre ellos, exportar las piezas como imagen, y medir las fuentes de la galería. Sigue pendiente el nombre «Mado» y el proun definitivo.
+
+## mirai · tiradas (2026-11-11)
+
+Pedido del usuario: distintas paletas, como los biomas de tarot, una con cada tinta. Hecho; falta su revisión.
+
+**Cuatro tiradas (刷り).** La página se imprime con una de las cuatro tintas como clave. Cada tirada trae su papel, su tinta de texto, su laca para urushi y el orden en que las otras tres visten las secciones:
+
+| Tirada | Papel | Texto | Laca (urushi) | Secciones 1 · 2 · 3 |
+|---|---|---|---|---|
+| 朱刷り | 胡粉 `#F4F1E9` | 墨 `#1B1918` | 漆黒 `#15110F` | gunjo · tsutsuji · ukon |
+| 群青刷り | 卯の花 `#EEF2F3` | 濃藍 `#131A33` | 搗色 `#0F1325` | shu · ukon · tsutsuji |
+| 鬱金刷り | 白鼠 `#E7E5DF` | 憲法黒茶 `#221A0C` | 黒茶 `#17130B` | gunjo · tsutsuji · shu |
+| 躑躅刷り | 桜色 `#F7EDEF` | 黒紅 `#251721` | 茄子紺 `#180F16` | gunjo · ukon · shu |
+
+Las cuatro tintas no cambian entre tiradas; en 鬱金刷り las de texto bajan un punto (`#A42C0F`, `#3352B4`, `#6E4F00`, `#A2255D`) por el papel gris, y en 躑躅刷り, la de tsutsuji (`#A6265F`). Contraste medido en las ocho combinaciones (y confirmado en el panel de contraste de la página): texto sobre papel de 13.7 a 15.8, secundario de 5.4 a 8.0, las tintas como texto de 4.9 a 6.9, texto sobre las tintas de 4.5 a 12.1. Lo que se queda en shu en todas: el hilo rojo (es el hilo del destino, no la marca), la línea de avance, el sello 校了 (tinta de sello) y los avisos de error.
+
+**Cómo está hecho.**
+- Los colores viven en `mirai.css`, en selectores `[data-palette]` que también aplican a descendientes: una muestra con su `data-palette` se pinta sola con los colores de su tirada. Lo que se deriva (`--on-*`, `--mass`, `--accent`, `--ink`) se declara en `body, [data-palette]` para que se calcule en cada elemento con tirada propia.
+- Las secciones y los recuadros del pliego dicen su papel (`data-role` 0 a 3) y el CSS les da la tinta: 0 es la clave (portada, spot y manual), 1 brief y componentes, 2 piezas, 3 marca. Sin JS queda la tirada de shu, igual que antes.
+- `palettes.js` guarda nombres y estado (como `biomes.js` de tarot) y recuerda la tirada; un script en línea al abrir `<body>` la pone antes de la primera pintura, así no parpadea la de shu al recargar.
+- `tiradas.js`: la pastilla de la barra pasa a la siguiente; en Marca, el panel «Tiradas» muestra las cuatro, cada una con una lámina del compositor de formas en su tinta, sus seis colores y los nombres de su papel y su tinta (o su laca, de noche). Las muestras base de la guía nombran el papel y la tinta de la tirada puesta.
+- El cambio es una transición de vista: la hoja nueva entra de izquierda a derecha, como por la prensa (`swap` en `kit.js`, que comparte con el cambio de modo). `refresh()` vuelve a avisar del modo para repintar el spot, el storyboard, las etiquetas y el contraste.
+- La campaña se imprime en la tinta de la tirada: al cambiarla, el brief, el cartel, las piezas y el spot pasan a esa tinta (en las piezas se pueden seguir probando otras).
+- En teléfono la pastilla dice solo su tinta (群青) y la marca, solo «mirai», para que la barra quepa en un renglón a 360 px.
+- Las fuentes no crecen: los kanji nuevos están en la rebanada que ya se bajaba (8 archivos en las cuatro tiradas).
+
+**Verificado** en Chrome real: las cuatro tiradas en los dos modos, la pastilla, las muestras, la persistencia al recargar, la transición, el teléfono a 390 y 360 sin desborde, y las pruebas completas de la página sin errores.

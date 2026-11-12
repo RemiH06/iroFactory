@@ -29,16 +29,20 @@ de ejemplo, es inventada.
 <link rel="stylesheet" href="../shared/components/mirai/imposition.css">
 </head>
 <body>
+<script>try { var t = localStorage.getItem('mirai:tirada'); if (/^(gunjo|ukon|tsutsuji)$/.test(t)) document.body.dataset.palette = t; } catch (e) {}</script>
 
 <header class="mi-top">
   <a class="mi-brand" href="#portada" aria-label="mirai · portada">mirai <span lang="ja" aria-hidden="true">未来</span></a>
-  <button class="mi-btn ghost small" type="button" data-theme-toggle aria-label="Cambiar a urushi, el modo oscuro"><span lang="ja">漆</span> apagar la luz</button>
+  <div class="mi-tools">
+    <button class="mi-pill" id="mi-tirada" type="button" hidden></button>
+    <button class="mi-btn ghost small" type="button" data-theme-toggle aria-label="Cambiar a urushi, el modo oscuro"><span lang="ja">漆</span> apagar la luz</button>
+  </div>
 </header>
 
 <main>
 
 <!-- 00 · Portada -->
-<section class="mi-sec mi-hero" id="portada" data-ink="shu" aria-labelledby="mi-h-portada">
+<section class="mi-sec mi-hero" id="portada" data-role="0" aria-labelledby="mi-h-portada">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>表紙</b> ひょうし</span>
   <header class="mi-head">
     <p class="mi-count"><span lang="ja">指示</span> 00/07 <span class="mi-ticks" style="--n:0" aria-hidden="true"></span></p>
@@ -65,7 +69,7 @@ de ejemplo, es inventada.
 <div class="mi-ticker" aria-hidden="true"><p><span>enciende una ventana</span><span lang=ja>窓に、灯りをひとつ。</span><span>mirai 2070</span><span lang=ja>未来</span><span>enciende una ventana</span><span lang=ja>窓に、灯りをひとつ。</span><span>mirai 2070</span><span lang=ja>未来</span><span>enciende una ventana</span><span lang=ja>窓に、灯りをひとつ。</span><span>mirai 2070</span><span lang=ja>未来</span><span>enciende una ventana</span><span lang=ja>窓に、灯りをひとつ。</span><span>mirai 2070</span><span lang=ja>未来</span></p></div>
 
 <!-- 01 · Spot -->
-<section class="mi-sec" id="spot" data-ink="shu" aria-labelledby="mi-h-spot">
+<section class="mi-sec" id="spot" data-role="0" aria-labelledby="mi-h-spot">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>映像</b> えいぞう</span>
   <header class="mi-head">
     <p class="mi-count"><span lang="ja">指示</span> 01/07 <span class="mi-ticks" style="--n:1" aria-hidden="true"></span></p>
@@ -116,7 +120,7 @@ de ejemplo, es inventada.
 </section>
 
 <!-- 02 · Brief -->
-<section class="mi-sec" id="brief" data-ink="gunjo" aria-labelledby="mi-h-brief">
+<section class="mi-sec" id="brief" data-role="1" aria-labelledby="mi-h-brief">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>指示書</b> しじしょ</span>
   <header class="mi-head">
     <p class="mi-count"><span lang="ja">指示</span> 02/07 <span class="mi-ticks" style="--n:2" aria-hidden="true"></span></p>
@@ -139,7 +143,7 @@ de ejemplo, es inventada.
 </section>
 
 <!-- 03 · Piezas -->
-<section class="mi-sec" id="piezas" data-ink="tsutsuji" aria-labelledby="mi-h-piezas">
+<section class="mi-sec" id="piezas" data-role="2" aria-labelledby="mi-h-piezas">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>制作物</b> せいさくぶつ</span>
   <header class="mi-head">
     <p class="mi-count"><span lang="ja">指示</span> 03/07 <span class="mi-ticks" style="--n:3" aria-hidden="true"></span></p>
@@ -160,7 +164,7 @@ de ejemplo, es inventada.
 <div class="mi-ticker" aria-hidden="true"><p><span>una pieza, cuatro tamaños</span><span lang=ja>制作物</span><span>sumi y una tinta</span><span lang=ja>墨</span><span>una pieza, cuatro tamaños</span><span lang=ja>制作物</span><span>sumi y una tinta</span><span lang=ja>墨</span><span>una pieza, cuatro tamaños</span><span lang=ja>制作物</span><span>sumi y una tinta</span><span lang=ja>墨</span><span>una pieza, cuatro tamaños</span><span lang=ja>制作物</span><span>sumi y una tinta</span><span lang=ja>墨</span></p></div>
 
 <!-- 04 · Marca -->
-<section class="mi-sec" id="marca" data-ink="ukon" aria-labelledby="mi-h-marca">
+<section class="mi-sec" id="marca" data-role="3" aria-labelledby="mi-h-marca">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>規定</b> きてい</span>
   <header class="mi-head">
     <p class="mi-count"><span lang="ja">指示</span> 04/07 <span class="mi-ticks" style="--n:4" aria-hidden="true"></span></p>
@@ -192,12 +196,17 @@ de ejemplo, es inventada.
         <div class="mi-ink" style="--c:var(--tsutsuji);--c-on:var(--on-tsutsuji)"><ruby lang="ja">躑躅<rt>つつじ</rt></ruby><p><b>tsutsuji</b>rosa azalea<br><span class="swatch-hex" id="hex-tsutsuji"></span></p></div>
       </div>
       <div class="mi-base" style="margin-top:28px">
-        <div style="--c:var(--bg);--c-on:var(--text)"><ruby lang="ja" class="on-light">胡粉<rt>ごふん</rt></ruby><ruby lang="ja" class="on-dark">漆<rt>うるし</rt></ruby><span>--bg · <span class="on-light">papel</span><span class="on-dark">laca</span><br><span class="swatch-hex" id="hex-bg"></span></span></div>
+        <div style="--c:var(--bg);--c-on:var(--text)"><ruby lang="ja" class="on-light" data-pname="paper">胡粉<rt>ごふん</rt></ruby><ruby lang="ja" class="on-dark" data-pname="night">漆黒<rt>しっこく</rt></ruby><span>--bg · <span class="on-light">papel</span><span class="on-dark">laca</span><br><span class="swatch-hex" id="hex-bg"></span></span></div>
         <div style="--c:var(--bg2);--c-on:var(--text)"><span>--bg2</span><span class="swatch-hex" id="hex-bg2"></span></div>
         <div style="--c:var(--bg3);--c-on:var(--text)"><span>--bg3</span><span class="swatch-hex" id="hex-bg3"></span></div>
         <div style="--c:var(--text2);--c-on:var(--bg)"><span>--text2</span><span class="swatch-hex" id="hex-text2"></span></div>
-        <div style="--c:var(--text);--c-on:var(--bg)"><ruby lang="ja" class="on-light">墨<rt>すみ</rt></ruby><ruby lang="ja" class="on-dark">胡粉<rt>ごふん</rt></ruby><span>--text · <span class="on-light">tinta</span><span class="on-dark">luz</span><br><span class="swatch-hex" id="hex-text"></span></span></div>
+        <div style="--c:var(--text);--c-on:var(--bg)"><ruby lang="ja" class="on-light" data-pname="sumi">墨<rt>すみ</rt></ruby><ruby lang="ja" class="on-dark" data-pname="paper">胡粉<rt>ごふん</rt></ruby><span>--text · <span class="on-light">tinta</span><span class="on-dark">luz</span><br><span class="swatch-hex" id="hex-text"></span></span></div>
       </div>
+    </div>
+    <div class="mi-panel wide">
+      <h3 class="mi-label">Tiradas <span lang="ja">刷り</span></h3>
+      <p class="mi-note">La página se imprime con una de las cuatro tintas como clave. Cada tirada trae su papel, su tinta de texto, su laca para urushi y el orden en que las otras tres visten las secciones. El hilo rojo, el sello y los avisos de error se quedan en shu en todas.</p>
+      <div id="mi-tiradas"><p class="mi-note">Cambiar de tirada necesita JavaScript; sin él, la página se queda en la de shu.</p></div>
     </div>
     <div class="mi-panel">
       <h3 class="mi-label">Letras</h3>
@@ -235,7 +244,7 @@ de ejemplo, es inventada.
 </section>
 
 <!-- 05 · Componentes -->
-<section class="mi-sec" id="componentes" data-ink="gunjo" aria-labelledby="mi-h-componentes">
+<section class="mi-sec" id="componentes" data-role="1" aria-labelledby="mi-h-componentes">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>部品</b> ぶひん</span>
   <header class="mi-head">
     <p class="mi-count"><span lang="ja">指示</span> 05/07 <span class="mi-ticks" style="--n:5" aria-hidden="true"></span></p>
@@ -278,7 +287,7 @@ de ejemplo, es inventada.
 </section>
 
 <!-- 06 · Manual -->
-<section class="mi-sec" id="manual" data-ink="shu" aria-labelledby="mi-h-manual">
+<section class="mi-sec" id="manual" data-role="0" aria-labelledby="mi-h-manual">
   <span class="mi-tate" lang="ja" aria-hidden="true"><b>手引き</b> てびき</span>
   <header class="mi-head">
     <p class="mi-count"><span lang="ja">指示</span> 06/07 <span class="mi-ticks" style="--n:6" aria-hidden="true"></span></p>
@@ -372,13 +381,13 @@ Sí: … No: …
 <nav class="mi-sheet" id="mi-sheet" aria-label="Secciones">
   <p class="mi-sheet-title"><span lang="ja">面付け</span> · pliego</p>
   <ol class="mi-sheet-list">
-    <li class="up" data-ink="shu" style="--x:7;--y:7;--w:15;--ar:515/728;--i:0"><a href="#portada"><span class="fr circle" aria-hidden="true"></span><span class="n">00</span><span class="t">Portada</span><span class="f">cartel · b2</span></a></li>
-    <li data-ink="shu" style="--x:30;--y:38;--w:21;--ar:16/9;--i:5"><a href="#spot"><span class="fr flor" aria-hidden="true"></span><span class="n">01</span><span class="t">Spot</span><span class="f">video · 16:9</span></a></li>
-    <li class="up" data-ink="gunjo" style="--x:29;--y:7;--w:15;--ar:210/297;--i:1"><a href="#brief"><span class="fr half" aria-hidden="true"></span><span class="n">02</span><span class="t">Brief</span><span class="f">hoja · a4</span></a></li>
-    <li class="up" data-ink="tsutsuji" style="--x:51;--y:7;--w:21;--ar:1;--i:2"><a href="#piezas"><span class="fr quarter" aria-hidden="true"></span><span class="n">03</span><span class="t">Piezas</span><span class="f">post · 1:1</span></a></li>
-    <li data-ink="ukon" style="--x:7;--y:38;--w:19;--ar:91/55;--i:4"><a href="#marca"><span class="fr dot" aria-hidden="true"></span><span class="n">04</span><span class="t">Marca</span><span class="f">tarjeta · 91 × 55</span></a></li>
-    <li data-ink="gunjo" style="--x:55;--y:38;--w:38;--ar:970/250;--i:6"><a href="#componentes"><span class="fr pill" aria-hidden="true"></span><span class="n">05</span><span class="t">Componentes</span><span class="f">banner · 970 × 250</span></a></li>
-    <li class="up" data-ink="shu" style="--x:79;--y:7;--w:14;--ar:9/16;--i:3"><a href="#manual"><span class="fr cap" aria-hidden="true"></span><span class="n">06</span><span class="t">Manual</span><span class="f">historia · 9:16</span></a></li>
+    <li class="up" data-role="0" style="--x:7;--y:7;--w:15;--ar:515/728;--i:0"><a href="#portada"><span class="fr circle" aria-hidden="true"></span><span class="n">00</span><span class="t">Portada</span><span class="f">cartel · b2</span></a></li>
+    <li data-role="0" style="--x:30;--y:38;--w:21;--ar:16/9;--i:5"><a href="#spot"><span class="fr flor" aria-hidden="true"></span><span class="n">01</span><span class="t">Spot</span><span class="f">video · 16:9</span></a></li>
+    <li class="up" data-role="1" style="--x:29;--y:7;--w:15;--ar:210/297;--i:1"><a href="#brief"><span class="fr half" aria-hidden="true"></span><span class="n">02</span><span class="t">Brief</span><span class="f">hoja · a4</span></a></li>
+    <li class="up" data-role="2" style="--x:51;--y:7;--w:21;--ar:1;--i:2"><a href="#piezas"><span class="fr quarter" aria-hidden="true"></span><span class="n">03</span><span class="t">Piezas</span><span class="f">post · 1:1</span></a></li>
+    <li data-role="3" style="--x:7;--y:38;--w:19;--ar:91/55;--i:4"><a href="#marca"><span class="fr dot" aria-hidden="true"></span><span class="n">04</span><span class="t">Marca</span><span class="f">tarjeta · 91 × 55</span></a></li>
+    <li data-role="1" style="--x:55;--y:38;--w:38;--ar:970/250;--i:6"><a href="#componentes"><span class="fr pill" aria-hidden="true"></span><span class="n">05</span><span class="t">Componentes</span><span class="f">banner · 970 × 250</span></a></li>
+    <li class="up" data-role="0" style="--x:79;--y:7;--w:14;--ar:9/16;--i:3"><a href="#manual"><span class="fr cap" aria-hidden="true"></span><span class="n">06</span><span class="t">Manual</span><span class="f">historia · 9:16</span></a></li>
     <li class="bar" data-ink="sumi" style="--x:7;--y:60;--w:86;--ar:86/6;--i:7"><a href="#colofon"><span class="n">07</span><span class="t">Colofón</span><span class="f">tira de control</span></a></li>
   </ol>
   <p class="mi-sheet-slug" aria-hidden="true"></p>
@@ -392,6 +401,8 @@ import { mount as imposition } from '../shared/components/mirai/imposition.js';
 import { mount as redThread } from '../shared/components/mirai/red-thread.js';
 import { paintPiece } from '../shared/components/mirai/plate.js';
 import { mount as mountSpot } from '../shared/components/mirai/spot.js';
+import { mount as tiradas } from '../shared/components/mirai/tiradas.js';
+import { onPalette, palette } from '../shared/components/mirai/palettes.js';
 import { mount as docBrief, words } from '../shared/components/doc-brief/doc-brief.js';
 import { mount as formatBoard } from '../shared/components/format-board/format-board.js';
 import { mount as docBrand } from '../shared/components/doc-brand/doc-brand.js';
@@ -401,7 +412,7 @@ import { mount as docSpecimen } from '../shared/components/doc-specimen/doc-spec
 import { mount as tokenExport } from '../shared/components/token-export/token-export.js';
 import { BRAND, BRIEF, FORMATS, FORMS, INKS, logo } from '../assets/data/mirai/campaign.js';
 
-kit(); imposition(); docProse();
+kit(); imposition(); docProse(); tiradas();
 redThread();
 
 const inkOf = id => INKS.find(i => i.id === id) || INKS[0];
@@ -431,7 +442,7 @@ const checks = [
 ];
 const brief = docBrief({
   el: '#mi-brief', name: `Brief · ${BRAND.name}`, storage: 'mirai-brief',
-  value: { ...BRIEF, salida: iso(new Date(Date.now() + 21 * 864e5)) },
+  value: { ...BRIEF, tinta: palette().id, salida: iso(new Date(Date.now() + 21 * 864e5)) },
   fields: [
     { id: 'marca', label: 'Marca', type: 'text', max: 60 },
     { id: 'salida', label: 'Fecha de salida', type: 'date' },
@@ -480,6 +491,8 @@ const board = formatBoard({
 });
 // ── spot: el animatic con el scroll como cabezal ──
 const spot = mountSpot({ el: '#mi-spot', state: () => campaign });
+// la campaña se imprime en la tinta de la tirada (en las piezas se pueden probar otras)
+onPalette(p => { brief.set({ tinta: p.id }); setCampaign({ tinta: p.id }, 'palette'); });
 onCampaign(() => { paintPoster(); board.update(); spot?.update(); });
 paintPoster();
 
